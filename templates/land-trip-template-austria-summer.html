@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Austrian Mountain Summer Retreat — Land Trip Template</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* brand green — --green-dark is the requested hex #708F53, used for solid
+       buttons and active states. --green is a lighter tint of that same hue, used
+       for borders/tints/subtle accents and the wordmark; --green-hover is darker
+       still, for :hover on those solid elements. */
+    --green:#A5BD8E;
+    --green-dark:#708F53;
+    --green-hover:#2D3A22;
+    /* pulled straight from the badge's own gradient: night-sky navy at the top,
+       teal-blue sea, warm sunset orange and brick-red, gold script, cream patch backing */
+    --dark:#152230;
+    --dark-soft:#1e3040;
+    --blue:#2f7f8a;
+    --blue-tint:color-mix(in srgb, var(--blue) 22%, white);
+    --blue-line:color-mix(in srgb, var(--blue) 48%, white);
+    --green-tint:color-mix(in srgb, var(--green) 14%, white);
+    --sky-tint:color-mix(in srgb, var(--blue) 16%, var(--white));
+    --sky-line:color-mix(in srgb, var(--blue) 42%, var(--white));
+    --green-line:color-mix(in srgb, var(--green) 42%, white);
+    --green-soft:color-mix(in srgb, var(--green) 55%, white);
+    --white:#fffdf7;
+    --paper:#f4f1e9;
+    --line:rgba(21,34,48,0.16);
+    --line-on-dark:rgba(255,255,255,0.2);
+    --muted:#6d6552;
+    --sunset-1:#c14a2f;
+    --sunset-2:#e0893c;
+    --sunset-tint:color-mix(in srgb, var(--sunset-1) 12%, var(--white));
+    --gold:#d9a441;
+    --star:rgba(255,255,255,0.85);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Titillium Web', sans-serif;
+    color:var(--dark);
+    background:var(--paper);
+    line-height:1.6;
+  }
+  .brand-stripe{
+    height:5px;width:100%;
+    background:linear-gradient(90deg, var(--blue) 0%, var(--sunset-2) 55%, var(--sunset-1) 100%);
+  }
+
+  /* GLOBAL NAV — shared across the Cruises page and the Admin dashboard */
+  .global-nav{background:var(--dark-soft);border-bottom:1px solid var(--line-on-dark);}
+  .global-nav .wrap{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;gap:16px;flex-wrap:wrap;}
+  .gn-logo{display:flex;align-items:baseline;gap:8px;text-decoration:none;}
+  .gn-logo .gn-script{font-family:'Caveat',cursive;font-weight:700;font-size:26px;color:var(--gold);line-height:1;}
+  .gn-logo .gn-sans{font-family:'Titillium Web',sans-serif;font-weight:600;font-size:14px;color:var(--green);letter-spacing:.02em;}
+  .gn-links{display:flex;gap:26px;}
+  .gn-link{
+    padding:4px 0;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:14px;
+    text-decoration:none;color:#c7ccd1;
+    transition:color .15s ease;
+  }
+  .gn-link:hover{color:var(--white);}
+  .gn-link.active{color:var(--green);}
+  /* RETRO PATCH: stitched-edge treatment, like an embroidered badge border */
+  .pricing-card, .cabin-tile, .proof-chip, .roster-full-card, .flight-card, .amenity-group, .stop-card{
+    outline:1.5px dashed rgba(21,34,48,0.3);
+    outline-offset:-6px;
+  }
+  section.dark-section .roster-full-card, section.dark-section .proof-chip{
+    outline-color:rgba(21,34,48,0.22);
+  }
+  h1,h2,h3,h4{
+    font-family:'Libre Baskerville', serif;
+    font-weight:700;
+    margin:0 0 .4em 0;
+    color:var(--dark);
+  }
+  a{color:inherit;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+  .concept-note{
+    background:var(--dark);
+    border-bottom:1px solid var(--gold);
+    color:var(--gold);
+    font-size:13px;
+    text-align:center;
+    padding:8px 16px;
+    font-family:'Titillium Web',sans-serif;
+  }
+
+  /* HERO */
+  .hero{
+    position:relative;
+    background-color:var(--dark);
+    background-image:
+      linear-gradient(180deg, rgba(21,34,48,0.6) 0%, rgba(13,22,32,0.84) 100%),
+      linear-gradient(135deg, var(--hero-a) 0%, var(--hero-b) 55%, var(--hero-c) 100%);
+    background-position:center 30%;
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-blend-mode:multiply, normal;
+    color:var(--white);
+    padding:56px 0 40px;
+  }
+  .mountain-divider{
+    position:absolute;left:0;right:0;bottom:-1px;width:100%;height:34px;display:block;line-height:0;
+  }
+  .mountain-divider path{fill:var(--dark);}
+  .mountain-divider.flip path{fill:var(--paper);}
+  .eyebrow{
+    font-family:'Titillium Web',sans-serif;
+    font-weight:800;
+    color:var(--green-dark);
+    text-transform:uppercase;
+    letter-spacing:.13em;
+    font-size:12px;
+    margin-bottom:10px;
+  }
+  .hero .eyebrow{color:var(--gold);}
+  .hero h1{
+    color:var(--white);
+    font-size:clamp(30px,4.2vw,46px);
+    line-height:1.15;
+    max-width:720px;
+  }
+  .badge-row{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 22px;}
+  .badge{
+    background:rgba(90,158,83,0.16);
+    border:1px solid rgba(90,158,83,0.4);
+    color:var(--green-soft);
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:13.5px;
+    font-weight:600;
+  }
+  .hero p.lede{max-width:640px;color:#d9dbe0;font-size:16px;}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px;}
+  .btn{
+    display:inline-block;
+    padding:13px 26px;
+    border-radius:6px;
+    font-weight:700;
+    font-size:14.5px;
+    text-decoration:none;
+    letter-spacing:.02em;
+    cursor:pointer;
+    border:2px solid transparent;
+    transition:transform .12s ease, opacity .12s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{background:var(--green-dark);color:var(--white);}
+  .btn-primary:hover{background:var(--green-hover);}
+  .btn-outline{background:transparent;border-color:rgba(255,255,255,.5);color:var(--white);}
+  .btn-outline:hover{border-color:var(--white);}
+
+  /* OVERVIEW (picture + description) */
+  .overview{background:var(--paper);border-bottom:1px solid var(--line);}
+  .overview-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:48px;align-items:stretch;}
+  .overview-media{
+    width:100%;height:100%;border-radius:10px;overflow:hidden;
+    background:var(--sky-tint);border:1px solid var(--sky-line);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .overview-media span{
+    font-size:13px;color:var(--muted);font-weight:600;text-align:center;padding:0 24px;
+  }
+  .overview h1{color:var(--dark);font-size:28px;line-height:1.25;margin-bottom:14px;}
+  .overview p.lede{color:#4a4e55;font-size:15.5px;margin:0 0 14px;}
+  .overview .hero-cta{margin-top:22px;}
+
+  /* AT-A-GLANCE BAR */
+  .facts-bar{
+    background:var(--dark-soft);
+  }
+  .facts-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:0;
+    padding:18px 0;
+  }
+  .fact{padding:0 18px;border-left:1px solid var(--line-on-dark);}
+  .fact:first-child{border-left:none;}
+  .fact .label{font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:#9aa4ae;font-weight:700;}
+  .fact .value{font-size:15.5px;font-weight:700;margin-top:3px;color:var(--white);}
+  .fact .value.price{color:var(--gold);}
+
+  /* STICKY SUBNAV */
+  .subnav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(253,250,242,0.94);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .subnav-inner{display:flex;gap:4px;overflow-x:auto;padding:0;}
+  .subnav a{
+    white-space:nowrap;
+    padding:14px 16px;
+    font-size:14px;
+    font-weight:600;
+    color:var(--muted);
+    text-decoration:none;
+    border-bottom:3px solid transparent;
+  }
+  .subnav a:hover, .subnav a.active{color:var(--dark);border-bottom-color:var(--green);}
+
+  section{padding:56px 0;}
+  section.tint{background:var(--sky-tint);}
+  section.dark-section{background:var(--dark);color:var(--white);position:relative;overflow:hidden;}
+  section.dark-section h2, section.dark-section h3, section.dark-section h4{color:var(--white);}
+  section.dark-section .section-head p{color:#c7ccd1;}
+  section.dark-section .section-head .eyebrow{color:var(--gold);}
+  section.dark-section .value-prop p{color:#c3c9d0;}
+
+  /* NIGHT SKY: scattered stars + moon accent for community section */
+  section.night-sky{
+    background-image:
+      radial-gradient(1.6px 1.6px at 6% 18%, var(--star), transparent 60%),
+      radial-gradient(1.3px 1.3px at 14% 62%, var(--star), transparent 60%),
+      radial-gradient(1.8px 1.8px at 24% 30%, var(--star), transparent 60%),
+      radial-gradient(1.2px 1.2px at 33% 78%, var(--star), transparent 60%),
+      radial-gradient(1.6px 1.6px at 46% 12%, var(--star), transparent 60%),
+      radial-gradient(1.3px 1.3px at 58% 55%, var(--star), transparent 60%),
+      radial-gradient(1.8px 1.8px at 68% 22%, var(--star), transparent 60%),
+      radial-gradient(1.2px 1.2px at 77% 70%, var(--star), transparent 60%),
+      radial-gradient(1.6px 1.6px at 88% 16%, var(--star), transparent 60%),
+      radial-gradient(1.4px 1.4px at 94% 60%, var(--star), transparent 60%),
+      radial-gradient(1.3px 1.3px at 40% 90%, var(--star), transparent 60%),
+      radial-gradient(1.5px 1.5px at 82% 88%, var(--star), transparent 60%);
+    background-repeat:no-repeat;
+  }
+  .moon-eyebrow:before{content:"☾  ";color:var(--gold);}
+  .section-head{max-width:640px;margin-bottom:32px;}
+  .section-head h2{font-size:clamp(24px,3vw,32px);}
+  .section-head p{color:var(--muted);font-size:15.5px;}
+  .section-head.center{max-width:640px;margin-left:auto;margin-right:auto;text-align:center;}
+
+  /* WHY BOOK WITH US: compact value props + proof strip */
+  .value-props{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:4px 0 28px;}
+  .value-prop{display:flex;gap:13px;align-items:flex-start;}
+  .value-num-wrap{
+    flex:0 0 38px;width:38px;height:38px;background:var(--gold);
+    clip-path:polygon(50% 0%, 100% 100%, 0% 100%);
+    display:flex;align-items:flex-end;justify-content:center;padding-bottom:2px;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,0.35));
+  }
+  .value-num{
+    width:32px;height:32px;background:linear-gradient(160deg, var(--sunset-2), var(--sunset-1));color:var(--white);
+    display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px;
+    font-weight:700;font-family:'Libre Baskerville',serif;font-size:13px;
+    clip-path:polygon(50% 0%, 100% 100%, 0% 100%);
+  }
+  .value-prop h4{font-size:14.5px;margin:0 0 3px;}
+  .value-prop p{font-size:13px;color:var(--muted);margin:0;line-height:1.45;}
+
+  /* ROSTER */
+  .roster-full-card{
+    background:var(--white);border:1px solid var(--green-line);border-radius:14px;
+    padding:20px 24px;margin-bottom:22px;
+  }
+  #rosterCardFull h3{color:var(--dark);}
+  .rf-columns{display:grid;grid-template-columns:1fr 1.35fr;gap:0;align-items:start;}
+  .rf-col-left{padding-right:26px;border-right:1px dashed var(--line);}
+  .rf-col-right{padding-left:26px;}
+  .rf-head{margin-bottom:12px;}
+  .rf-head h3{font-family:'Libre Baskerville',serif;font-size:16px;margin:0 0 2px;}
+  .rf-sub{font-size:12px;color:var(--muted);}
+  .rf-stats{display:flex;gap:22px;flex-wrap:wrap;}
+  .rf-stat .r-num{font-family:'Libre Baskerville',serif;font-size:23px;font-weight:700;color:var(--green-dark);line-height:1;}
+  .rf-stat .r-label{font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.04em;}
+  .rf-ages-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:10px;}
+  .rf-bracket-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+  .rf-bracket-row:last-child{margin-bottom:0;}
+  .rf-bracket-name{flex:0 0 66px;font-size:12px;color:var(--dark);font-weight:600;white-space:nowrap;}
+  .rf-bracket-track{flex:1;height:6px;background:var(--green-tint);border-radius:5px;overflow:hidden;}
+  .rf-bracket-fill{height:100%;background:var(--green);border-radius:5px;}
+  .rf-bracket-count{flex:0 0 20px;text-align:right;font-size:11.5px;color:var(--muted);font-weight:600;}
+  .roster-full-placeholder h3{font-family:'Libre Baskerville',serif;font-size:16px;margin:0 0 6px;}
+  .roster-full-placeholder p{font-size:13px;color:var(--muted);line-height:1.55;margin:0 0 14px;max-width:520px;}
+  .roster-full-placeholder .btn{font-size:13px;padding:9px 18px;}
+  @media (max-width:760px){
+    .rf-columns{grid-template-columns:1fr;}
+    .rf-col-left{padding-right:0;border-right:none;border-bottom:1px dashed var(--line);padding-bottom:16px;margin-bottom:16px;}
+    .rf-col-right{padding-left:0;}
+    .rf-stats{gap:22px;}
+    .rf-bracket-name{flex-basis:60px;}
+  }
+
+  .proof-strip-wrap{border-top:1px solid var(--green-line);padding-top:20px;}
+  section.dark-section .proof-strip-wrap{border-top-color:var(--line-on-dark);}
+  section.dark-section .proof-label{color:var(--star);}
+  .proof-head-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .proof-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:0;}
+  .proof-arrows{display:flex;gap:8px;}
+  .proof-arrow-btn{
+    width:30px;height:30px;border-radius:50%;border:1px solid var(--green-line);background:var(--white);
+    color:var(--green-dark);font-size:17px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    transition:background .15s;
+  }
+  .proof-arrow-btn:hover{background:var(--green-tint);}
+  .proof-strip{
+    display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;
+    padding-bottom:4px;-ms-overflow-style:none;scrollbar-width:none;
+  }
+  .proof-strip::-webkit-scrollbar{display:none;}
+  .proof-chip{
+    flex:0 0 calc((100% - 28px) / 3);scroll-snap-align:start;display:flex;gap:11px;align-items:flex-start;
+    background:var(--white);border:1px solid var(--green-line);border-radius:10px;padding:13px 15px;
+  }
+  .proof-avatar{
+    flex:0 0 34px;width:34px;height:34px;border-radius:50%;overflow:hidden;
+    background:linear-gradient(135deg, var(--dark), var(--dark-soft));color:var(--green-soft);
+    display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.02em;text-align:center;line-height:1.1;
+    box-shadow:0 0 0 2px var(--gold);
+  }
+  .proof-avatar img{width:100%;height:100%;object-fit:cover;}
+  .proof-chip p{font-size:12px;color:var(--dark);margin:0 0 4px;line-height:1.4;}
+  .proof-chip .who{font-size:11px;color:var(--green-dark);font-weight:700;text-transform:uppercase;letter-spacing:.03em;}
+  @media (max-width:760px){
+    .value-props{grid-template-columns:1fr;gap:18px;}
+    .proof-chip{flex:0 0 82%;}
+  }
+  @media (min-width:761px) and (max-width:1000px){
+    .proof-chip{flex:0 0 calc((100% - 14px) / 2);}
+  }
+
+  /* PHOTO SLOTS — placeholders ready to swap for real images */
+  .photo-slot{
+    background:var(--sky-tint);border:1px dashed var(--sky-line);color:var(--muted);
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    font-size:10.5px;font-weight:600;line-height:1.3;overflow:hidden;padding:4px;
+  }
+  .photo-slot img{width:100%;height:100%;object-fit:cover;display:block;}
+
+  /* Full-bleed photo strips used as transitions between sections */
+  .photo-strip{display:grid;grid-template-columns:repeat(4,1fr);width:100%;background:var(--white);}
+  .photo-strip .photo-slot{
+    aspect-ratio:1/1;border-radius:0;border:none;padding:0;background:var(--white);
+    border-right:1px solid var(--white);
+  }
+  .photo-strip .photo-slot:last-child{border-right:none;}
+  @media (max-width:600px){.photo-strip{grid-template-columns:repeat(2,1fr);}}
+
+  .cabin-photo{aspect-ratio:16/10;margin:-16px -16px 12px;border-radius:10px 10px 0 0;font-size:10px;}
+
+  /* ITINERARY + EXCURSIONS TIMELINE */
+  .timeline{position:relative;padding-left:28px;}
+  .timeline:before{
+    content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:var(--line);
+  }
+  .stop{position:relative;margin-bottom:14px;}
+  .stop:before{
+    content:"";position:absolute;left:-28px;top:6px;width:14px;height:14px;border-radius:50%;
+    background:var(--white);border:3px solid var(--green);
+  }
+  .stop.sea:before{border-color:var(--blue);}
+  .stop-card{
+    background:var(--white);border:1px solid var(--line);border-radius:10px;overflow:hidden;
+  }
+  .stop.sea .stop-card{background:var(--blue-tint);border-color:var(--blue-line);}
+  .stop-card-inner{display:flex;align-items:stretch;}
+  .stop-photo{flex:0 0 35%;width:35%;min-height:110px;border-radius:0;border:none;font-size:11px;}
+  .stop-content{flex:1;min-width:0;padding:14px 18px;}
+  .stop-top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;}
+  .stop-day{font-size:12.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
+  .stop-title{font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;margin:2px 0 2px;}
+  .stop-times{font-size:13px;color:var(--muted);}
+  .excursion-toggle{
+    margin-top:10px;
+    background:none;border:none;color:var(--green-dark);font-weight:700;font-size:13px;
+    cursor:pointer;padding:0;display:inline-flex;align-items:center;gap:6px;font-family:'Titillium Web',sans-serif;
+  }
+  .excursion-toggle .chev{transition:transform .15s ease;}
+  .excursion-toggle.open .chev{transform:rotate(180deg);}
+  .excursion-body{
+    display:none;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);
+    font-size:13.5px;color:#3c4048;
+  }
+  .excursion-body.open{display:block;}
+  .excursion-body .ex-name{font-weight:700;display:block;margin-bottom:4px;color:var(--dark);}
+  .excursion-body .ex-price{display:block;font-size:12.5px;font-weight:700;color:var(--green-dark);margin-bottom:8px;}
+  @media (max-width:560px){
+    .stop-card-inner{flex-direction:column;}
+    .stop-photo{flex:0 0 auto;width:100%;aspect-ratio:16/8;min-height:0;}
+  }
+
+  /* PRICING CALCULATOR */
+  .pricing-card{
+    background:var(--white);border:1px solid var(--line);border-radius:16px;
+    padding:32px;box-shadow:0 8px 30px rgba(36,40,48,0.06);
+  }
+  .calc-row-label{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:10px;}
+  .guest-select{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;}
+  .pill-btn{
+    padding:10px 20px;border-radius:24px;border:2px solid var(--line);background:var(--white);
+    font-family:'Titillium Web',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;color:var(--dark);
+  }
+  .pill-btn.active{border-color:var(--green-dark);background:var(--green-dark);color:var(--white);}
+  .cabin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:28px;}
+  .cabin-tile{
+    border:2px solid var(--line);border-radius:12px;padding:16px;cursor:pointer;background:var(--white);
+    transition:border-color .12s ease, box-shadow .12s ease;
+  }
+  .cabin-tile:hover{border-color:#c9dcc7;}
+  .cabin-tile.active{border-color:var(--green);box-shadow:0 0 0 3px rgba(90,158,83,0.15);}
+  .cabin-tile .cname{font-family:'Libre Baskerville',serif;font-weight:700;font-size:16.5px;}
+  .cabin-tile .cdesc{font-size:12.5px;color:var(--muted);margin:6px 0 10px;min-height:44px;}
+  .cabin-tile .cprice{font-size:18px;font-weight:700;color:var(--green-dark);}
+  .cabin-tile .cprice small{font-size:11.5px;color:var(--muted);font-weight:600;}
+
+  .cabin-tile.sold-out{position:relative;cursor:not-allowed;border-color:var(--line);overflow:hidden;}
+  .cabin-tile.sold-out .photo-slot{filter:grayscale(1);opacity:.55;}
+  .cabin-tile.sold-out .cname,
+  .cabin-tile.sold-out .cdesc{opacity:.5;}
+  .cabin-tile.sold-out:hover{border-color:var(--line);}
+  .cabin-tile .cprice-soldout{font-size:13.5px;font-weight:700;color:var(--sunset-1);text-transform:uppercase;letter-spacing:.03em;}
+  .sold-out-ribbon{
+    position:absolute;top:14px;right:-34px;z-index:2;transform:rotate(45deg);
+    background:var(--sunset-1);color:var(--white);font-size:11px;font-weight:700;text-transform:uppercase;
+    letter-spacing:.06em;padding:4px 40px;box-shadow:0 1px 3px rgba(0,0,0,0.25);
+  }
+  .price-summary{
+    display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between;
+    background:var(--sky-tint);border-radius:12px;padding:22px 26px;
+  }
+  .price-summary .total .t-label{font-size:12.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;}
+  .price-summary .total .t-value{font-family:'Libre Baskerville',serif;font-size:34px;font-weight:700;color:var(--dark);}
+  .price-summary .total .t-sub{font-size:13px;color:var(--muted);}
+  .price-meta{display:flex;gap:26px;flex-wrap:wrap;font-size:13.5px;color:var(--muted);}
+  .price-meta strong{color:var(--dark);}
+  .contact-quote{
+    display:none;text-align:center;padding:30px 10px;
+  }
+  .contact-quote.show{display:block;}
+  .contact-quote p{color:var(--muted);max-width:420px;margin:0 auto 16px;}
+  .fine-print{margin-top:18px;font-size:12.5px;color:var(--muted);}
+  details.terms{margin-top:18px;border-top:1px solid var(--line);padding-top:14px;}
+  details.terms summary{cursor:pointer;font-weight:700;font-size:13.5px;color:var(--green-dark);}
+  details.terms .terms-body{font-size:13px;color:var(--muted);margin-top:10px;}
+  .terms-body h5{font-size:13.5px;font-weight:700;color:var(--dark);margin:18px 0 6px;}
+  .terms-body h5:first-child{margin-top:0;}
+  .terms-body p{margin:0 0 10px;}
+  .terms-body p:last-child{margin-bottom:0;}
+  .terms-body ol{margin:8px 0 12px;padding-left:20px;}
+  .terms-body li{margin-bottom:8px;}
+  .terms-body a{color:var(--green-dark);text-decoration:underline;}
+
+  .terms-body strong{color:var(--dark);}
+  .terms-body .tli-link{color:var(--green-dark);font-weight:700;text-decoration:none;}
+  .terms-body .tli-link:hover{text-decoration:underline;}
+
+  /* INCLUDED */
+  .incl-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+  .incl-col h4{font-size:15px;}
+  .incl-list{list-style:none;margin:0;padding:0;}
+  .incl-list li{padding:7px 0 7px 26px;position:relative;font-size:14.5px;border-bottom:1px solid var(--line);}
+  .incl-list.yes li:before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:700;}
+  .incl-list.no li:before{content:"–";position:absolute;left:2px;color:var(--sunset-1);font-weight:700;}
+
+  /* FLIGHTS */
+  .flight-airport-callout{
+    display:flex;align-items:center;gap:14px;background:var(--sky-tint);border:1px solid var(--sky-line);
+    border-radius:12px;padding:16px 20px;margin-bottom:26px;
+  }
+  .flight-airport-callout .plane-badge{
+    width:40px;height:40px;border-radius:50%;background:var(--dark);color:var(--blue);
+    display:flex;align-items:center;justify-content:center;font-size:17px;flex:0 0 40px;
+  }
+  .flight-airport-callout .airport-name{font-family:'Libre Baskerville',serif;font-weight:700;font-size:16px;}
+  .flight-airport-callout .airport-sub{font-size:13px;color:var(--muted);}
+
+  .flight-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:14px;}
+  .flight-card{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--white);}
+  .flight-card .city{font-family:'Libre Baskerville',serif;font-weight:700;font-size:15.5px;}
+  .flight-card .route{font-size:12px;color:var(--muted);margin:2px 0 10px;}
+  .flight-card .price{font-size:19px;font-weight:700;color:var(--dark);}
+  .flight-card .price small{font-size:11px;color:var(--muted);font-weight:600;display:block;margin-top:2px;}
+  .flight-note{font-size:12.5px;color:var(--muted);margin-bottom:26px;}
+
+  .flight-cta{
+    display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;
+    background:var(--dark);border-radius:14px;padding:22px 26px;color:var(--white);
+  }
+  .flight-cta h4{color:var(--white);font-size:16px;margin:0 0 4px;}
+  .flight-cta p{color:#c7ccd1;font-size:13px;margin:0;max-width:420px;}
+
+  /* AMENITIES ACCORDION */
+  .amenity-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;}
+  .amenity-group{border:1px solid var(--line);border-radius:10px;background:var(--white);padding:16px 18px;}
+  .amenity-group h4{font-size:14.5px;color:var(--green-dark);margin-bottom:8px;}
+  .amenity-group ul{margin:0;padding-left:18px;font-size:13.5px;color:#3c4048;}
+  .amenity-group li{margin-bottom:4px;}
+
+  /* FAQ */
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-item summary{
+    padding:16px 0;cursor:pointer;font-family:'Libre Baskerville',serif;font-weight:700;font-size:16px;
+    list-style:none;display:flex;justify-content:space-between;align-items:center;
+  }
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary:after{content:"+";font-size:20px;color:var(--green-dark);font-weight:400;}
+  .faq-item[open] summary:after{content:"–";}
+  .faq-item .faq-a{padding:0 0 18px;color:#3c4048;font-size:14.5px;max-width:760px;}
+  .faq-item .faq-a p{margin:0 0 12px;}
+  .faq-item .faq-a p:last-child{margin-bottom:0;}
+  .faq-item .faq-a a{color:var(--green-dark);font-weight:600;}
+  .faq-category-label{
+    font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--green-dark);
+    margin:34px 0 4px;
+  }
+  .faq-category-label:first-child{margin-top:0;}
+
+  /* CTA — split photo + content */
+  #join, #joinMid{padding:0;}
+  .join-split{display:grid;grid-template-columns:auto 1fr;height:283px;overflow:hidden;}
+  .join-photo{height:100%;border-radius:0;border:none;font-size:13px;padding:0;background:var(--dark);display:flex;}
+  .join-photo img{height:100%;width:auto;display:block;object-fit:contain;}
+  .join-content{
+    background-color:var(--dark);
+    background-image:
+      radial-gradient(1.6px 1.6px at 8% 22%, var(--star), transparent 60%),
+      radial-gradient(1.3px 1.3px at 18% 68%, var(--star), transparent 60%),
+      radial-gradient(1.8px 1.8px at 30% 15%, var(--star), transparent 60%),
+      radial-gradient(1.2px 1.2px at 44% 80%, var(--star), transparent 60%),
+      radial-gradient(1.6px 1.6px at 58% 30%, var(--star), transparent 60%),
+      radial-gradient(1.3px 1.3px at 70% 65%, var(--star), transparent 60%),
+      radial-gradient(1.8px 1.8px at 82% 20%, var(--star), transparent 60%),
+      radial-gradient(1.4px 1.4px at 92% 75%, var(--star), transparent 60%);
+    background-repeat:no-repeat;
+    display:flex;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;padding:20px 36px;height:100%;box-sizing:border-box;overflow:hidden;
+  }
+  .join-content h2{margin-bottom:8px;font-size:22px;color:var(--white);}
+  .join-content p{color:#c3c9d0;max-width:400px;margin:0 0 14px;font-size:13.5px;}
+  .join-content .btn{padding:10px 22px;font-size:13.5px;}
+  @media (max-width:760px){
+    .join-split{grid-template-columns:1fr;height:auto;}
+    .join-photo{height:200px;width:100%;}
+    .join-photo img{width:100%;height:100%;object-fit:cover;}
+    .join-content{padding:24px 24px;height:auto;}
+  }
+
+  /* BOOKING FORM MODAL — compact, one or two questions per step */
+  .modal-overlay{
+    display:none;position:fixed;inset:0;z-index:200;background:rgba(18,28,38,0.68);
+    padding:24px;overflow-y:auto;align-items:flex-start;justify-content:center;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal-inner{width:100%;max-width:440px;margin:auto;position:relative;}
+  .modal-close{
+    position:absolute;top:14px;right:14px;background:none;border:none;font-size:22px;line-height:1;
+    color:var(--muted);cursor:pointer;padding:4px;z-index:2;
+  }
+  .modal-close:hover{color:var(--dark);}
+  .booking-form-wrap{
+    position:relative;width:100%;background:var(--white);border-radius:14px;
+    padding:26px 26px 22px;box-shadow:0 20px 50px rgba(0,0,0,0.35);color:var(--dark);
+  }
+  .form-demo-flag{
+    display:inline-block;background:var(--green-tint);border:1px solid var(--green-line);color:var(--green-dark);
+    font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;margin-bottom:12px;
+  }
+  .booking-intro h3{font-size:17px;margin:0 0 4px;}
+  .booking-intro p{color:var(--muted);font-size:12.5px;margin:0 0 18px;line-height:1.45;}
+
+  .form-progress-bar{height:4px;background:var(--line);border-radius:4px;overflow:hidden;}
+  .form-progress-fill{height:100%;width:12.5%;background:var(--green);border-radius:4px;transition:width .25s ease;}
+  .form-progress-text{font-size:11px;color:var(--muted);font-weight:600;margin:7px 0 20px;}
+
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:13.5px;font-weight:700;color:var(--dark);margin-bottom:6px;}
+  .field input[type=text], .field input[type=email], .field input[type=tel], .field input[type=date],
+  .field select, .field textarea{
+    width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:7px;
+    font-family:'Titillium Web',sans-serif;font-size:13.5px;color:var(--dark);background:var(--white);
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{outline:2px solid var(--green);outline-offset:1px;}
+  .field textarea{resize:vertical;}
+  .field-hint{font-size:12.5px;color:var(--muted);margin-bottom:12px;}
+
+  .radio-row{display:flex;flex-direction:column;gap:7px;}
+  .radio-opt{display:flex;align-items:flex-start;gap:7px;font-size:13.5px;color:var(--dark);font-weight:400;cursor:pointer;}
+  .radio-opt input{margin-top:3px;}
+
+  .passenger-block{border:1px solid var(--line);border-radius:9px;padding:12px 14px;margin-bottom:10px;}
+  .passenger-block-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .passenger-block-head h5{margin:0;font-size:13px;font-family:'Libre Baskerville',serif;}
+  .remove-passenger{background:none;border:none;color:var(--sunset-1);font-size:11.5px;font-weight:700;cursor:pointer;padding:0;}
+  .passenger-field-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;}
+  .add-passenger-btn{
+    background:none;border:1.5px dashed var(--line);color:var(--green-dark);font-weight:700;font-size:13px;
+    width:100%;padding:9px;border-radius:7px;cursor:pointer;font-family:'Titillium Web',sans-serif;
+  }
+  .add-passenger-btn:hover{border-color:var(--green);}
+  .quote-tally{font-size:12.5px;font-weight:700;padding:8px 12px;border-radius:7px;margin-bottom:12px;background:var(--green-tint);color:var(--green-dark);}
+  .quote-tally.mismatch{background:var(--sunset-tint);color:var(--sunset-1);}
+  .quote-error{font-size:12px;color:var(--sunset-1);font-weight:600;margin-top:8px;display:none;}
+  .quote-error.show{display:block;}
+
+  .form-nav{display:flex;justify-content:space-between;align-items:center;margin-top:18px;}
+  .back-link{background:none;border:none;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;padding:8px 2px;}
+  .back-link:hover{color:var(--dark);}
+  .btn-sm{padding:9px 20px;font-size:13px;}
+
+  .review-box{margin-top:16px;border:1px solid var(--sky-line);border-radius:9px;padding:14px 16px;background:var(--sky-tint);}
+  .review-box h4{font-size:13px;margin-bottom:8px;}
+  .review-row{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;padding:4px 0;border-bottom:1px solid var(--line);}
+  .review-row:last-child{border-bottom:none;}
+  .review-row .k{color:var(--muted);}
+  .review-row .v{color:var(--dark);font-weight:600;text-align:right;}
+
+  .form-success{position:relative;width:100%;background:var(--white);border-radius:14px;padding:34px 26px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.35);}
+  .form-success h3{font-size:17px;}
+  .form-success p{color:var(--muted);font-size:13px;max-width:360px;margin:0 auto 16px;}
+
+  @media (max-width:520px){
+    .booking-form-wrap, .form-success{padding-left:18px;padding-right:18px;}
+  }
+
+  /* STICKY MOBILE BAR */
+  .sticky-bar{
+    position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--white);
+    border-top:1px solid var(--line);box-shadow:0 -4px 16px rgba(0,0,0,0.08);
+    display:none;align-items:center;justify-content:space-between;padding:12px 18px;
+  }
+  .sticky-bar .sb-price{font-family:'Libre Baskerville',serif;font-weight:700;font-size:16px;}
+  .sticky-bar .sb-price span{display:block;font-size:11px;color:var(--muted);font-family:'Titillium Web',sans-serif;font-weight:600;}
+
+  footer{background:var(--dark);padding:30px 0;text-align:center;font-size:13px;color:var(--green-soft);}
+  footer::before{content:"✦";display:block;color:var(--gold);font-size:14px;margin-bottom:8px;}
+
+  @media (max-width:860px){
+    .facts-grid{grid-template-columns:repeat(2,1fr);row-gap:16px;}
+    .fact:nth-child(3){border-left:none;}
+    .incl-grid{grid-template-columns:1fr;}
+    .sticky-bar{display:flex;}
+    body{padding-bottom:70px;}
+    .overview-grid{grid-template-columns:1fr;}
+    .overview-media{height:auto;aspect-ratio:16/10;}
+    .carousel-wrap{padding:0 40px;}
+  }
+
+  /* ===================== LAND TRIP TEMPLATE ===================== */
+  /* Every color on the page comes from the trip's THEME (set in the data). These rules
+     replace the few colors the base template had hard-coded. */
+  .badge{background:color-mix(in srgb, var(--green) 18%, transparent);border-color:color-mix(in srgb, var(--green) 50%, transparent);color:var(--green-soft);}
+  .subnav{background:color-mix(in srgb, var(--white) 94%, transparent);}
+  .subnav a:hover, .subnav a.active{border-bottom-color:var(--green-dark);}
+  .fact .label{color:color-mix(in srgb, var(--white) 55%, var(--dark));}
+  .hero p.lede, section.dark-section .section-head p{color:color-mix(in srgb, var(--white) 82%, var(--dark));}
+  .overview p.lede, .faq-item .faq-a, .stop-desc{color:color-mix(in srgb, var(--dark) 82%, var(--white));}
+  .gn-link{color:color-mix(in srgb, var(--white) 75%, var(--dark));}
+  .gn-logo .gn-sans{color:var(--green);}
+  .stop:before{border-color:var(--green-dark);}
+  .rf-stat .r-num{color:var(--green-dark);}
+  .itin-note{background:color-mix(in srgb, var(--gold) 14%, var(--white));border-color:color-mix(in srgb, var(--gold) 50%, var(--white));}
+  .itin-note .in-icon, .based-on{color:var(--gold-ink);}
+  .hero{background-color:var(--dark);}
+  footer{color:var(--green-soft);}
+  .hero .hero-photo-label{position:absolute;top:14px;right:18px;font-size:11px;color:rgba(255,255,255,0.6);}
+  .hero p.lede{margin:0 0 4px;}
+  section[id]{scroll-margin-top:60px;}
+
+  /* departure switch in the hero (quiet, same look as the outline button) */
+  .hero-cta.dep-switch{align-items:stretch;gap:10px;margin-top:28px;}
+  .hp-field{
+    position:relative;display:flex;flex-direction:column;justify-content:center;min-width:250px;
+    padding:6px 38px 6px 14px;border:1.5px solid rgba(255,255,255,0.4);border-radius:6px;
+    background:rgba(21,34,48,0.42);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);cursor:pointer;
+  }
+  .hp-field:hover{border-color:var(--white);}
+  .hp-field:after{
+    content:"";position:absolute;right:15px;top:50%;margin-top:-2px;pointer-events:none;
+    border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid rgba(255,255,255,0.75);
+  }
+  .hp-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);line-height:1.3;}
+  .hero-cta .btn{display:inline-flex;align-items:center;}
+  @media (max-width:640px){ .hp-field{flex:1 1 100%;min-width:0;} .hero-cta.dep-switch .btn{flex:1 1 100%;justify-content:center;} }
+
+  /* custom dropdown */
+  .cs{position:relative;display:block;min-width:0;}
+  .cs-native{position:absolute !important;opacity:0;pointer-events:none;width:1px !important;height:1px !important;}
+  .cs-btn{all:unset;box-sizing:border-box;display:block;width:100%;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    font-family:'Titillium Web',sans-serif;font-weight:700;font-size:14.5px;color:var(--white);line-height:1.35;}
+  .cs.flip .cs-list{left:auto;right:-15px;}
+  .cs-list{display:none;position:absolute;z-index:400;left:-15px;top:calc(100% + 8px);min-width:270px;margin:0;padding:4px;list-style:none;
+    background:var(--white);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgba(10,18,26,0.18);}
+  .cs.open .cs-list{display:block;}
+  .cs-host-open{position:relative;z-index:500 !important;}
+  .mountain-divider{pointer-events:none;}
+  .cs-opt{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:5px;cursor:pointer;outline:none;
+    font-family:'Titillium Web',sans-serif;font-size:14px;font-weight:600;color:var(--dark);white-space:nowrap;}
+  .cs-opt:hover, .cs-opt:focus{background:var(--paper);}
+  .cs-opt[aria-selected="true"]{font-weight:700;}
+  .cs-opt .o-status{margin-left:auto;font-size:11.5px;font-weight:700;color:var(--muted);}
+  .cs-opt .o-status.soldout{color:var(--sunset-1);}
+
+  /* small "Showing:" pickers inside sections */
+  .mini-picker{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin:-14px 0 24px;padding:10px 14px;
+    background:var(--white);border:1.5px solid color-mix(in srgb, var(--gold) 55%, var(--white));border-radius:12px;font-size:14px;font-weight:700;}
+  .mini-picker .mp-label{font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--gold-ink);}
+  .mini-picker .cs{display:inline-block;}
+  .mini-picker .cs-btn{font-size:14px;color:var(--dark);padding:7px 32px 7px 12px;border:2px solid var(--line);border-radius:9px;background:var(--white);position:relative;}
+  .mini-picker .cs-btn:after{content:"";position:absolute;right:12px;top:50%;margin-top:-2px;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid var(--muted);}
+  .mini-picker .cs-btn:hover{border-color:var(--gold);}
+  .mini-picker .cs-list{left:0;top:calc(100% + 4px);}
+
+  /* pinned departure chip in the sticky menu */
+  .subnav-inner.subnav-split{overflow:visible;gap:12px;}
+  .subnav-links{display:flex;gap:4px;overflow-x:auto;flex:1;min-width:0;scrollbar-width:none;}
+  .subnav-links::-webkit-scrollbar{display:none;}
+  .subnav a.subnav-dep, .subnav a.subnav-dep:hover{flex:0 0 auto;white-space:nowrap;align-self:center;padding:6px 14px;border:none;border-radius:20px;
+    background:var(--dark);color:var(--white);font-weight:700;font-size:13px;}
+  .subnav a.subnav-dep .chg{color:var(--gold);margin-left:6px;}
+  @media (max-width:600px){ .subnav a.subnav-dep .dep-text{display:none;} .subnav a.subnav-dep .chg{margin-left:0;} }
+
+  .fb-join{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px 18px;margin-top:6px;font-size:14.5px;color:rgba(255,255,255,0.82);}
+  .fb-join:empty{display:none;}
+  .fb-join .btn{padding:10px 20px;font-size:14px;}
+  /* highlight cards */
+  .hl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px;}
+  .hl-card{background:var(--white);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  .hl-card .photo-slot{aspect-ratio:16/10;border:none;border-radius:0;}
+  .hl-card h4{font-size:15.5px;margin:14px 16px 4px;}
+  .hl-card p{font-size:13.5px;color:#4a4e55;margin:0 16px 16px;line-height:1.5;}
+  @media (max-width:860px){ .hl-grid{grid-template-columns:1fr 1fr;} }
+  @media (max-width:560px){ .hl-grid{grid-template-columns:1fr;} }
+
+  /* itinerary note (sample / preview) */
+  .itin-note{display:flex;gap:12px;align-items:flex-start;background:color-mix(in srgb, var(--gold) 12%, var(--white));
+    border:1px solid color-mix(in srgb, var(--gold) 45%, white);border-radius:10px;padding:12px 16px;margin:-8px 0 22px;font-size:14px;color:var(--dark);}
+  .itin-note .in-icon{flex:0 0 auto;font-weight:800;}
+  .stop-meta{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12.5px;color:var(--muted);margin:4px 0 6px;font-weight:600;}
+  .stop-desc{font-size:14px;color:#3c4048;margin:0;}
+  /* itinerary photos */
+  #itinBody .stop-photo{flex:0 0 32%;width:32%;min-height:150px;}
+  #itinBody .stop-photo span{color:var(--muted);}
+  @media (max-width:700px){ #itinBody .stop-photo{width:100%;flex-basis:auto;aspect-ratio:16/9;min-height:0;} }
+  .based-on{font-size:12.5px;font-weight:600;margin:-14px 0 18px;}
+
+  /* stays */
+  .stay-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;}
+  .stay-card{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:16px 18px;}
+  .stay-card .st-nights{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--green-dark);}
+  .stay-card h4{font-size:16px;margin:4px 0 2px;}
+  .stay-card .st-where{font-size:13px;color:var(--muted);}
+  .stay-card .st-note{font-size:13px;color:#3c4048;margin-top:8px;}
+
+  /* food */
+  .meal-tiles{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:18px;}
+  .meal-tile{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:14px 22px;min-width:130px;}
+  .meal-tile .mt-num{font-family:'Libre Baskerville',serif;font-weight:700;font-size:28px;color:var(--green-dark);line-height:1;}
+  .meal-tile .mt-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-top:6px;}
+  .food-notes{list-style:none;padding:0;margin:0;max-width:760px;}
+  .food-notes li{padding:8px 0 8px 22px;position:relative;font-size:14.5px;border-bottom:1px solid var(--line);}
+  .food-notes li:before{content:"•";position:absolute;left:4px;color:var(--green-dark);font-weight:800;}
+
+  /* cost */
+  .cost-card{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:28px;box-shadow:0 8px 30px rgba(36,40,48,0.06);}
+  .trav-row{display:flex;align-items:center;gap:14px;margin-bottom:22px;flex-wrap:wrap;}
+  .stepper{display:inline-flex;align-items:center;border:2px solid var(--line);border-radius:24px;overflow:hidden;}
+  .stepper button{background:none;border:none;width:40px;height:38px;font-size:18px;font-weight:700;cursor:pointer;color:var(--dark);}
+  .stepper button:hover{background:var(--paper);}
+  .stepper span{min-width:34px;text-align:center;font-weight:700;}
+  .pay-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px;}
+  .pay-step{background:var(--paper);border-radius:10px;padding:12px 14px;font-size:13px;color:var(--muted);}
+  .pay-step strong{display:block;color:var(--dark);font-size:15px;}
+  .late-note{margin-top:14px;font-size:13.5px;background:var(--sunset-tint);border-radius:10px;padding:10px 14px;color:var(--dark);}
+  @media (max-width:700px){ .pay-steps{grid-template-columns:1fr;} }
+
+  /* terms */
+
+  #rosterCard, #rosterCard h3{color:var(--dark);}
+  .roster-full-placeholder h3{color:var(--dark);}
+  .faq-text ul{margin:8px 0;padding-left:20px;}
+  .faq-policy p{margin:0 0 8px;}
+
+  /* ===================== AUSTRIA: year + session switch ===================== */
+  .hero-cta.dep-switch .hp-field.hp-year{min-width:150px;}
+  .hero-cta.dep-switch .hp-field.hp-sess{min-width:280px;}
+  @media (max-width:640px){ .hero-cta.dep-switch .hp-field.hp-year, .hero-cta.dep-switch .hp-field.hp-sess{min-width:0;} }
+
+  .sess-picker{margin:-14px 0 26px;background:var(--white);border:1.5px solid color-mix(in srgb, var(--gold) 55%, var(--white));border-radius:12px;padding:14px;}
+  .sess-picker .mini-picker{margin:0 0 12px;padding:0;border:none;background:none;}
+  .sess-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .sess-card{position:relative;text-align:left;cursor:pointer;font-family:'Titillium Web',sans-serif;color:var(--dark);
+    background:var(--white);border:2px solid var(--line);border-radius:10px;padding:10px 14px 10px 38px;transition:border-color .15s ease, background .15s ease;}
+  .sess-card:hover{border-color:var(--green);}
+  .sess-card:before{content:"";position:absolute;left:12px;top:13px;width:16px;height:16px;border-radius:4px;border:2px solid var(--line);background:var(--white);}
+  .sess-card.on{border-color:var(--green-dark);background:var(--green-tint);}
+  .sess-card.on:before{background:var(--green-dark);border-color:var(--green-dark);}
+  .sess-card.on:after{content:"";position:absolute;left:17px;top:16px;width:5px;height:9px;border:solid var(--white);border-width:0 2px 2px 0;transform:rotate(45deg);}
+  .sess-card .sc-name{display:block;font-weight:700;font-size:14.5px;}
+  .sess-card .sc-dates{display:block;font-size:13px;color:var(--muted);}
+  .sess-card .sc-status{display:block;font-size:11.5px;font-weight:700;margin-top:2px;color:var(--green-dark);}
+  .sess-card .sc-status.soldout{color:var(--sunset-1);}
+  .sess-card .sc-status.past{color:var(--muted);}
+  .sess-hint{font-size:12.5px;color:var(--muted);margin:10px 0 0;}
+  @media (max-width:640px){ .sess-strip{grid-template-columns:1fr;} }
+
+  /* one block per selected session in the itinerary */
+  .sess-block{border:1px solid var(--line);border-radius:12px;background:var(--white);margin-bottom:14px;}
+  .sess-block > summary{list-style:none;cursor:pointer;padding:14px 18px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;}
+  .sess-block > summary::-webkit-details-marker{display:none;}
+  .sess-block > summary .sb-n{font-family:'Libre Baskerville',serif;font-weight:700;font-size:17px;}
+  .sess-block > summary .sb-d{font-size:13.5px;color:var(--muted);font-weight:600;}
+  .sess-block > summary:after{content:"+";margin-left:auto;font-weight:700;font-size:20px;color:var(--green-dark);line-height:1;}
+  .sess-block[open] > summary:after{content:"–";}
+  .sess-block .timeline{padding:4px 18px 18px;}
+  .stop-meta .free{color:var(--green-dark);}
+  .more-wrap{margin-top:26px;}
+  .more-wrap h4{font-size:15px;margin:0 0 10px;}
+  .chip-list{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px;}
+  .chip-list li{background:var(--white);border:1px solid var(--line);border-radius:20px;padding:6px 13px;font-size:13px;font-weight:600;}
+  .valley-card{display:grid;grid-template-columns:1fr 1.5fr;gap:0;background:var(--white);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:22px;}
+  .valley-card:empty{display:none;}
+  .valley-card .photo-slot{border:none;border-radius:0;min-height:220px;}
+  .valley-card .vc-body{padding:20px 24px;}
+  .valley-card h4{font-size:18px;margin:0 0 8px;}
+  .valley-card p{font-size:14px;color:#3c4048;margin:0 0 8px;}
+  .valley-card p.vc-small{font-size:12.5px;color:var(--muted);margin:0;}
+  @media (max-width:760px){ .valley-card{grid-template-columns:1fr;} .valley-card .photo-slot{min-height:0;aspect-ratio:16/9;} }
+  .room-note{font-size:12.5px;color:var(--muted);margin:-12px 0 16px;}
+  /* where you'll stay */
+  .room-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .room-card{position:relative;background:var(--white);border:1px solid var(--line);border-radius:12px;overflow:hidden;transition:border-color .15s ease, box-shadow .15s ease;}
+  .room-card .photo-slot{aspect-ratio:16/10;border:none;border-radius:0;}
+  .room-card .rc-body{padding:14px 18px 18px;}
+  .room-card h4{font-size:16px;margin:0 0 2px;}
+  .room-card .rc-for{font-size:12.5px;color:var(--muted);margin-bottom:10px;}
+  .room-card ul{margin:0;padding-left:18px;font-size:13.5px;color:#3c4048;}
+  .room-card ul li{margin-bottom:3px;}
+  .room-card.mine{border:2px solid var(--green-dark);box-shadow:0 0 0 3px color-mix(in srgb, var(--green-dark) 15%, transparent);}
+  .room-card .rc-mine{display:none;position:absolute;top:10px;right:10px;z-index:1;font-size:11px;font-weight:700;border-radius:20px;padding:3px 10px;background:var(--green-dark);color:var(--white);}
+  .room-card.mine .rc-mine{display:block;}
+  .amen-wrap{margin-top:26px;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:18px 20px;}
+  .amen-wrap h4{font-size:15px;margin:0 0 10px;}
+  .amen-list{list-style:none;margin:0;padding:0;columns:3;column-gap:24px;font-size:13.5px;}
+  .amen-list li{break-inside:avoid;padding:3px 0 3px 18px;position:relative;}
+  .amen-list li:before{content:"✓";position:absolute;left:0;color:var(--green-dark);font-weight:800;}
+  @media (max-width:860px){ .room-grid{grid-template-columns:1fr;} .amen-list{columns:2;} }
+  @media (max-width:520px){ .amen-list{columns:1;} }
+  /* what you'll eat */
+  .meal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  .meal-card{background:var(--white);border:1px solid var(--line);border-radius:12px;overflow:hidden;}
+  .meal-card .photo-slot{aspect-ratio:16/9;border:none;border-radius:0;}
+  .meal-card .mc-body{padding:14px 18px 18px;}
+  .meal-card h4{font-size:16px;margin:0 0 4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .meal-card .mc-tag{font-family:'Titillium Web',sans-serif;font-size:11px;font-weight:700;border-radius:20px;padding:2px 9px;background:var(--green-tint);color:var(--green-dark);}
+  .meal-card .mc-tag.off{background:var(--paper);color:var(--muted);}
+  .meal-card p{font-size:13.5px;color:#3c4048;margin:0;}
+  .hb-card{margin-top:20px;display:grid;grid-template-columns:1.4fr 1fr;gap:20px;align-items:center;background:var(--white);border:1.5px solid color-mix(in srgb, var(--gold) 55%, var(--white));border-radius:12px;padding:20px 22px;}
+  .hb-card h4{font-size:17px;margin:0 0 6px;}
+  .hb-card p{font-size:14px;margin:0 0 6px;color:#3c4048;}
+  .hb-prices{display:flex;gap:10px;flex-wrap:wrap;}
+  .hb-price{flex:1 1 90px;background:var(--paper);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--muted);}
+  .hb-price strong{display:block;font-size:18px;color:var(--dark);}
+  @media (max-width:860px){ .meal-grid{grid-template-columns:1fr;} .hb-card{grid-template-columns:1fr;} }
+  /* checkbox rows in the sessions dropdown */
+  .cs-opt.cs-check{gap:10px;}
+  .cs-opt .cb{flex:0 0 16px;width:16px;height:16px;border-radius:4px;border:2px solid var(--line);background:var(--white);position:relative;}
+  .cs-opt.cs-check[aria-selected="true"]{font-weight:600;}
+  .cs-opt.cs-check[aria-selected="true"] .cb{background:var(--green-dark);border-color:var(--green-dark);}
+  .cs-opt.cs-check[aria-selected="true"] .cb:after{content:"";position:absolute;left:3.5px;top:0.5px;width:4px;height:8px;border:solid var(--white);border-width:0 2px 2px 0;transform:rotate(45deg);}
+  .cs-hint{list-style:none;font-size:11.5px;color:var(--muted);padding:6px 10px 4px;border-top:1px solid var(--line);margin-top:4px;white-space:normal;}
+
+  /* calculator */
+  .fam-row{display:flex;flex-wrap:wrap;gap:14px 26px;align-items:center;margin-bottom:18px;}
+  .fam-row .fr-item{display:flex;align-items:center;gap:10px;}
+  .room-line{font-size:13.5px;color:var(--muted);margin:-6px 0 18px;}
+  .room-line strong{color:var(--dark);}
+  .addon-row{display:flex;align-items:flex-start;gap:10px;margin:0 0 18px;font-size:14px;cursor:pointer;}
+  .addon-row input{margin-top:4px;accent-color:var(--green-dark);}
+  .addon-row small{display:block;color:var(--muted);font-size:12.5px;}
+  .cost-lines{font-size:13.5px;color:var(--muted);margin:12px 0 0;}
+  .cost-lines div{display:flex;justify-content:space-between;gap:12px;padding:4px 0;border-bottom:1px dashed var(--line);}
+  .cost-lines div:last-child{border-bottom:none;}
+  .past-note{margin-top:14px;font-size:13.5px;background:var(--green-tint);border-radius:10px;padding:10px 14px;color:var(--dark);}
+  .past-note a{color:var(--green-dark);font-weight:700;}
+
+  /* testimonials */
+  .proof-strip-wrap{margin-top:8px;}
+  #community .proof-label{color:var(--gold);}
+  .roster-full-card:empty{display:none;}
+  #bookCta{padding:0;}
+  .photo-strip .photo-slot span{font-size:11px;color:var(--muted);padding:0 10px;text-align:center;}
+  .photo-strip .photo-slot{background:var(--sky-tint);}
+  .rf-sess-row{font-size:13.5px;padding:3px 0;}
+  .rf-sess-row strong{color:var(--dark);}
+  .learn-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .learn-grid > div{background:var(--white);border:1px solid var(--line);border-radius:12px;padding:16px 18px;}
+  .learn-grid h4{font-size:15px;margin:0 0 8px;}
+  .learn-grid ul{margin:0;padding-left:18px;font-size:14px;}
+  @media (max-width:900px){ .learn-grid{grid-template-columns:1fr 1fr;} }
+  @media (max-width:520px){ .learn-grid{grid-template-columns:1fr;} }
+
+  /* ===== Austria family: season tabs + all-year section ===== */
+  .season-tabs{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:0 0 18px;font-size:12.5px;font-weight:700;}
+  .season-tabs .st-label{color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:.1em;font-size:11px;margin-right:4px;}
+  .season-tabs a{color:var(--white);text-decoration:none;padding:4px 12px;border-radius:20px;border:1px solid rgba(255,255,255,0.35);background:rgba(0,0,0,0.18);}
+  .season-tabs a:hover{border-color:var(--white);}
+  .season-tabs a.on{background:var(--white);color:var(--dark);border-color:var(--white);}
+  .season-tabs a .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:1px;}
+  #allYear{padding:56px 0 64px;}
+  .ay-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .ay-card{position:relative;display:block;aspect-ratio:4/4.3;border-radius:14px;overflow:hidden;text-decoration:none;color:#fffdf7;
+    border-top:3px solid var(--sc);box-shadow:0 8px 22px rgba(21,34,48,0.16);transition:transform .15s ease, box-shadow .15s ease;}
+  a.ay-card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(21,34,48,0.26);}
+  .ay-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s ease;}
+  a.ay-card:hover img{transform:scale(1.04);}
+  .ay-card:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg, rgba(10,16,24,0) 28%, rgba(10,16,24,0.55) 55%, rgba(8,12,18,0.95) 100%);}
+  .ay-photo-label{position:absolute;top:14px;left:18px;z-index:1;font-size:11.5px;color:rgba(255,255,255,0.72);}
+  .ay-tag{position:absolute;top:12px;right:14px;z-index:2;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;background:#fffdf7;color:#152230;border-radius:20px;padding:3px 10px;}
+  .ay-body{position:absolute;left:0;right:0;bottom:0;z-index:1;padding:20px 22px;}
+  .ay-date{font-size:12.5px;font-weight:700;color:#e3b654;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+  .ay-title{font-family:'Libre Baskerville',serif;font-weight:700;font-size:20px;line-height:1.28;margin:0 0 8px;color:#fffdf7;}
+  .ay-vibe{font-size:13px;line-height:1.45;color:rgba(255,255,255,0.82);margin:0 0 14px;}
+  .ay-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.22);}
+  .ay-price-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#c7ccd1;}
+  .ay-price{font-family:'Libre Baskerville',serif;font-weight:700;font-size:22px;line-height:1.1;}
+  .ay-price small{font-family:'Titillium Web',sans-serif;font-size:12px;font-weight:600;color:#c7ccd1;}
+  .ay-more{font-weight:700;font-size:14px;color:#fffdf7;white-space:nowrap;padding:8px 14px;border-radius:6px;background:var(--sc);}
+  .ay-card.current .ay-more{background:rgba(255,255,255,0.16);}
+  @media (max-width:980px){ .ay-grid{grid-template-columns:1fr 1fr;} }
+  @media (max-width:640px){ .ay-grid{grid-template-columns:1fr;gap:18px;} .ay-card{aspect-ratio:auto;min-height:400px;} }
+</style>
+</head>
+<body>
+<!-- GLOBAL NAV -->
+<div class="global-nav">
+  <div class="wrap">
+    <a href="japan-korea-cruise-newtheme.html" class="gn-logo">
+      <span class="gn-script">Worldschooling</span><span class="gn-sans">journeys</span>
+    </a>
+    <div class="gn-links">
+      <a href="japan-korea-cruise-newtheme.html" class="gn-link active">Cruises</a>
+      <a href="cruises-admin-dashboard.html" class="gn-link">Admin</a>
+    </div>
+  </div>
+</div>
+
+<div class="concept-note">Austria Summer demo: switch the year, then pick one, two or all three sessions. The day-by-day is the real 2026 itinerary (from Notion); 2027 shows it as “what 2026 looked like.” Photos and roster numbers are samples.</div>
+
+<!-- HERO -->
+<header class="hero">
+  <span class="hero-photo-label">Photo: trip header image</span>
+  <div class="wrap">
+    <nav class="season-tabs" aria-label="Austria retreats by season"><span class="st-label">Austria retreats</span><a href="land-trip-template-austria-summer.html" class="on" aria-current="page"><span class="dot" style="background:#4A8A3C"></span>Summer</a><a href="land-trip-template-austria-fall.html" class=""><span class="dot" style="background:#A63E1E"></span>Fall</a><a href="land-trip-template-austria-winter.html" class=""><span class="dot" style="background:#2C5D8F"></span>Winter</a></nav>
+    <div class="eyebrow" id="tripEyebrow"></div>
+    <h1 id="tripTitle"></h1>
+    <div class="badge-row" id="tripBadges"></div>
+    <div class="hero-cta dep-switch dep-picker">
+      <label class="hp-field hp-year"><span class="hp-label">Year</span><select class="year-select" aria-label="Choose the year"></select></label>
+      <label class="hp-field hp-sess"><span class="hp-label">Sessions</span><select class="sess-select" aria-label="Choose your sessions"></select></label>
+      <a href="#" class="btn btn-primary book-btn">Reserve Your Spot</a>
+    </div>
+  </div>
+  <svg class="mountain-divider" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,60 L0,28 L80,44 L170,16 L260,40 L360,10 L450,34 L540,18 L640,44 L730,14 L830,38 L930,22 L1030,42 L1120,16 L1200,32 L1200,60 Z"></path>
+  </svg>
+</header>
+
+<div class="facts-bar"><div class="wrap facts-grid" id="factsGrid"></div></div>
+
+<nav class="subnav"><div class="wrap subnav-inner subnav-split"><div class="subnav-links" id="subnav"></div><a href="#" class="subnav-dep" data-open-picker><span class="dep-text"></span><span class="chg">Change</span></a></div></nav>
+
+<!-- 1. OVERVIEW -->
+<section class="overview" id="overview" data-q="overview">
+  <div class="wrap">
+    <div class="overview-grid">
+      <div class="overview-media"><span>Trip photo</span></div>
+      <div>
+        <div class="eyebrow">Overview</div>
+        <h2 style="font-size:28px;line-height:1.25;margin-bottom:14px;" id="ovHeading"></h2>
+        <div id="ovStory"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="photo-strip" data-strip="0"></div>
+
+<!-- 2. COMMUNITY -->
+<section class="dark-section night-sky" id="community" data-q="community">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow moon-eyebrow">Community</div>
+      <h2>Who you'll travel with</h2>
+      <p id="leadersText"></p>
+    </div>
+    <div class="value-props" id="pillars"></div>
+    <div class="roster-full-card" id="rosterCard"></div>
+    <div class="proof-strip-wrap" id="stories">
+      <div class="proof-head-row">
+        <div class="proof-label">In their words</div>
+        <div class="proof-arrows">
+          <button type="button" class="proof-arrow-btn" data-dir="-1" aria-label="Previous testimonials">‹</button>
+          <button type="button" class="proof-arrow-btn" data-dir="1" aria-label="Next testimonials">›</button>
+        </div>
+      </div>
+      <div class="proof-strip" id="testiTrack"></div>
+    </div>
+    <div class="fb-join" id="fbJoin"></div>
+  </div>
+</section>
+
+<!-- 4. WHAT YOU'LL DO -->
+<section id="itinerary" data-q="itinerary">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">What You'll Do</div><h2 id="itinHeading">Day by day</h2></div>
+    <div class="sess-picker">
+      <div class="mini-picker"><span class="mp-label">Showing</span><select class="year-select" aria-label="Choose the year"></select></div>
+      <div class="sess-strip"></div>
+      <p class="sess-hint">Tap the sessions you want. They run back to back, so you keep the same room the whole time.</p>
+    </div>
+    <div id="itinNote"></div>
+    <div id="itinBody"></div>
+  </div>
+</section>
+
+<div class="photo-strip" data-strip="1"></div>
+
+<!-- TRIP HIGHLIGHTS -->
+<section class="tint" id="highlightsSec" data-q="highlights">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Trip Highlights</div><h2>The moments families talk about after</h2></div>
+    <div class="hl-grid" id="highlights" style="margin-top:0;"></div>
+    <div class="more-wrap" id="moreWrap"><h4>Also in the valley</h4><ul class="chip-list" id="moreList"></ul></div>
+  </div>
+</section>
+
+<div class="photo-strip" data-strip="2"></div>
+
+<!-- 7. WHAT IT COSTS -->
+<section id="cost" data-q="cost">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">What It Costs</div><h2>Your price</h2><p>Prices are per family, per 14-night session, based on your room. Food isn’t included.</p></div>
+    <div class="sess-picker">
+      <div class="mini-picker"><span class="mp-label">Prices for</span><select class="year-select" aria-label="Choose the year"></select></div>
+      <div class="sess-strip"></div>
+      <p class="sess-hint">Tap the sessions you want. They run back to back, so you keep the same room the whole time.</p>
+    </div>
+    <div class="cost-card">
+      <div class="fam-row">
+        <span class="fr-item"><span class="calc-row-label" style="margin:0;">Adults</span>
+          <span class="stepper"><button type="button" data-step="adults:-1" aria-label="Fewer adults">−</button><span id="adultCount"></span><button type="button" data-step="adults:1" aria-label="More adults">+</button></span></span>
+        <span class="fr-item"><span class="calc-row-label" style="margin:0;">Kids</span>
+          <span class="stepper"><button type="button" data-step="kids:-1" aria-label="Fewer kids">−</button><span id="kidCount"></span><button type="button" data-step="kids:1" aria-label="More kids">+</button></span></span>
+      </div>
+      <div class="room-line" id="roomLine"></div>
+      <div class="room-note">Adults are 15+, kids are 14 and under. These are base rates for a 14-night session: upgraded rooms cost more, and your final quote is personalized once we know your family.</div>
+      <label class="addon-row"><input type="checkbox" id="halfBoard"><span>Add Half-Board (breakfast + dinner every day)<small id="hbNote"></small></span></label>
+      <div class="price-summary">
+        <div class="total">
+          <div class="t-label">Total for your family</div>
+          <div class="t-value" id="costTotal"></div>
+          <div class="t-sub" id="costSub"></div>
+        </div>
+        <a href="#" class="btn btn-primary book-btn">Reserve Your Spot</a>
+      </div>
+      <div class="cost-lines" id="costLines"></div>
+      <div class="pay-steps" id="paySteps"></div>
+      <div class="late-note" id="lateNote" style="display:none;"></div>
+
+      <details class="terms">
+        <summary>Payment Schedule & Cancellation Policy</summary>
+        <div class="terms-body" id="payPolicy"></div>
+      </details>
+
+      <details class="terms">
+        <summary>Terms and Conditions</summary>
+        <div class="terms-body" id="legalBody"></div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- RESERVE (identical to the join section) -->
+<section id="bookCta">
+  <div class="join-split">
+    <div class="photo-slot join-photo"><span style="color:#c7ccd1;padding:0 30px;">Group photo</span></div>
+    <div class="join-content">
+      <h2>Ready to join our group?</h2>
+      <p class="join-text"></p>
+      <a href="#" class="btn btn-primary book-btn">Reserve Your Spot</a>
+    </div>
+  </div>
+</section>
+
+<!-- 8. INCLUDED / NOT INCLUDED -->
+<section id="included" data-q="included">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Know Before You Go</div><h2>What's included</h2></div>
+    <div class="incl-grid">
+      <div class="incl-col"><h4>Included</h4><ul class="incl-list yes" id="inclYes"></ul></div>
+      <div class="incl-col"><h4>Not included</h4><ul class="incl-list no" id="inclNo"></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHERE YOU'LL STAY -->
+<section class="tint" id="stays" data-q="stays">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Where You'll Stay</div><h2 id="staysHeading"></h2><p id="staysIntro"></p></div>
+    <div class="valley-card" id="valleyCard"></div>
+    <div class="room-grid" id="roomGrid"></div>
+    <div class="amen-wrap"><h4>Free for our group at the resort</h4><ul class="amen-list" id="amenList"></ul></div>
+  </div>
+</section>
+
+<div class="photo-strip" data-strip="3"></div>
+
+<!-- WHAT YOU'LL EAT -->
+<section id="food" data-q="food">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">What You'll Eat</div><h2 id="foodHeading"></h2><p id="foodIntro"></p></div>
+    <div class="meal-grid" id="mealGrid"></div>
+    <div class="hb-card" id="hbCard"></div>
+  </div>
+</section>
+
+<section id="join">
+  <div class="join-split">
+    <div class="photo-slot join-photo"><span style="color:#c7ccd1;padding:0 30px;">Group photo</span></div>
+    <div class="join-content">
+      <h2>Ready to join our group?</h2>
+      <p class="join-text" id="joinText"></p>
+      <a href="#" class="btn btn-primary book-btn">Reserve Your Spot</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" data-q="faq">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Questions</div><h2>Frequently Asked Questions</h2></div>
+    <div id="faqBody"></div>
+  </div>
+</section>
+
+<!-- BAD GASTEIN, ALL YEAR (links the Austria pages) -->
+<section id="allYear" data-q="allyear">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Austria, all year</div><h2>Same valley, three very different seasons</h2>
+      <p>Same resort, same hosts, same kind of families. Many of them come back for another season, and some stay for more than one.</p></div>
+    <div class="ay-grid"><div class="ay-card current" style="--sc:#4A8A3C;background:linear-gradient(150deg, #1f3a24 0%, #6a9e4f 100%)"><span class="ay-photo-label">Photo: Summer meadows in Bad Gastein</span><span class="ay-tag">You’re here</span><div class="ay-body"><div class="ay-date">May 30 – Jul 11, 2027 · 3 sessions</div><h3 class="ay-title">Summer Mountain Retreat</h3><p class="ay-vibe">Wildflower meadows, waterfall plunges, mountain-top playgrounds and solstice fires on the peaks.</p><div class="ay-foot"><div><div class="ay-price-label">Starting from</div><div class="ay-price">€3,704 <small>/ family</small></div></div><span class="ay-more">This page</span></div></div></div><a class="ay-card" href="land-trip-template-austria-fall.html" style="--sc:#A63E1E;background:linear-gradient(150deg, #3b2414 0%, #b8642a 100%)"><span class="ay-photo-label">Photo: Golden fall in Bad Gastein</span><div class="ay-body"><div class="ay-date">Sep 5–19, 2027</div><h3 class="ay-title">Fall Mountain Retreat</h3><p class="ay-vibe">Golden larches, the sheep drive festival, harvest markets and crisp hikes that end in warm thermal water.</p><div class="ay-foot"><div><div class="ay-price-label">Starting from</div><div class="ay-price">€3,480 <small>/ family</small></div></div><span class="ay-more">Learn More</span></div></div></a><a class="ay-card" href="land-trip-template-austria-winter.html" style="--sc:#2C5D8F;background:linear-gradient(150deg, #14223a 0%, #4f7fae 100%)"><span class="ay-photo-label">Photo: Snowy Bad Gastein</span><div class="ay-body"><div class="ay-date">Dec 4–18, 2026 & Dec 5–19, 2027</div><h3 class="ay-title">Skiing & Christmas Markets Retreat</h3><p class="ay-vibe">Ski school, the Krampus run, four Christmas markets, husky sledding and snowy evenings in the spa.</p><div class="ay-foot"><div><div class="ay-price-label">Starting from</div><div class="ay-price">€2,700 <small>/ family</small></div></div><span class="ay-more">Learn More</span></div></div></a></div>
+  </div>
+</section>
+
+<div class="brand-stripe"></div>
+<footer>© 2026 Worldschooling Journeys, an Every Avenue Travel company</footer>
+
+<div class="sticky-bar">
+  <div class="sb-price" id="sbPrice"></div>
+  <a href="#" class="btn btn-primary" data-open-picker>Change Sessions</a>
+</div>
+
+<script>
+// =====================================================================
+// LAND TRIP TEMPLATE · trips with sessions (Austria Summer)
+// TRIP = everything that stays the same. SEASONS = the years, each with its sessions.
+// Families pick a year, then one, two or all three back-to-back sessions.
+// =====================================================================
+const TRIP = {
+  title: '14-day Worldschooling Austrian Mountain Summer Retreat',
+  eyebrow: 'Worldschooling Summer Retreat · For Homeschool Families',
+  badges: ['Forests & Waterfalls', 'Thermal Spas', 'Mountain Villages', 'Lifelong Friendships'],
+  destination: 'Bad Gastein, Salzburgerland',
+  minAge: 'All ages, babies welcome',
+  theme: 'alpine',
+  overview: {
+    heading: 'Finding your inner child in nature',
+    story: ['Set among the stunning Austrian mountains, this worldschooling retreat is the perfect place to relax, play, work and learn together.',
+            'Picture your kids running barefoot through the flower fields with other children from all over the world, laughing, messing around, making wildflower bouquets, chatting away with each other. Parents walking behind them talking about worldschooling, digital nomading or the latest destination they loved.',
+            'You’re surrounded by gorgeous snow-capped peaks. The air feels fresh and your heart is full.'],
+    hook: [],
+    more: ['Kneipp barefoot path', 'Rucki Alm petting zoo', 'Gnome hike', 'Waterfall zipline', 'Tandem paragliding', 'High ropes course', 'Archery', 'Mountain biking', 'Solarbad Dorfgastein waterpark', 'Gasteiner Heilstollen healing caves', 'Montan Museum Altböckstein', 'Grand Hotel de l’Europe', 'Pilgrimage Church of Maria', 'Bellevue Alm, 600 years old', 'Mountain huts', 'Folk music & dancing'],
+    highlights: [
+      {t:'Werfen Ice Caves', d:'Open only during the summer months, the world’s largest ice caves offer a fascinating underground experience.'},
+      {t:'Liechtensteinklamm Gorge', d:'Walk through one of the longest and deepest gorges in the Alps, where wooden pathways lead to a stunning waterfall.'},
+      {t:'Thermal spas', d:'Natural thermal pools with alpine views, family pools and slides, and the radon healing caves the Gastein Valley has been famous for since the 1500s.'},
+      {t:'Mountain-top playgrounds', d:'Geisterberg’s 40+ play stations, ziplines and climbing towers, and Rucki Alm’s petting zoo and lake raft.'},
+      {t:'Burg Hohenwerfen', d:'An 11th-century medieval castle perched high above the valley. Stay for the thrilling birds of prey show.'},
+      {t:'Summer solstice', d:'Celebrate the solstice with a spectacular alpine tradition: fires lit on the peaks and ridges at night.'},
+    ],
+  },
+  community: {
+    leaders: 'Spend two weeks with like-minded families who share your passion for worldschooling and travel. Your hosts stay at the resort and join group outings as guides and facilitators, and everyone is in a private WhatsApp group, adults and kids, before and during the retreat.',
+    pillars: [
+      {t:'Worldschooling community', d:'Create lasting friendships and a supportive network while exploring a new country together.'},
+      {t:'Explore the Austrian Alps', d:'The breathtaking mountains of the Austrian countryside and the rich history of Salzburg.'},
+      {t:'Activities for the whole family', d:'Hiking, biking, paragliding, thermal spas. Join every outing or none. Freedom of choice comes first.'},
+    ],
+    testimonials: [
+      {name:'Ashley', quote:'THE. BEST. TIME! If anyone is thinking about signing up next year, DO IT! I could not imagine having a more fun 2 weeks!'},
+      {name:'Mary Beth', quote:'I’m not a crier (when it comes to goodbyes, at least), but that was an epic group hug. It’ll live in my memory forever.'},
+      {name:'Smaranda', quote:'Matthew completely transformed. I could really see his confidence shine by the end, and he was so loved by everyone.'},
+      {name:'Mary', quote:'The idea that I could go on a vacation I didn’t plan myself, and actually enjoy each and every activity chosen for me…'},
+      {name:'Maria', quote:'I really appreciated the amenities and comforts of the hotel, at a truly great value!'},
+      {name:'Pearly', quote:'This has been an epic experience thanks to your utmost care for building not just itineraries but a true community.'},
+      {name:'Jael', quote:'What we had imagined for this trip was far exceeded by the reality.'},
+      {name:'Jazsa', quote:'I might look like the quiet one, but I was having a great time listening to all your jokes, stories, and adventures.'},
+      {name:'Debbie', quote:'I found myself tearing up getting on the van. I’m beyond grateful for how everyone embraced Zachary and supported me too.'},
+    ],
+    facebookGroup: 'https://www.facebook.com/groups/everyavenuetravel',
+  },
+  included: ['Scheduled group activities and daily experiences', 'Retreat leaders who stay at the resort and join outings as guides and facilitators', 'A like-minded group of worldschooling families, with private WhatsApp chats for adults and kids', 'Your apartment with kitchenette for the sessions you book', 'Entry tickets for the main group-planned activities', 'Single-day lift tickets for scheduled group mountain days', 'Group transportation to activities, plus a travel card for free trains and buses in Salzburgerland (including Salzburg to Gastein)', 'Resort amenities: thermal spa, indoor pool, game room, fitness center and bowling alley', 'Extra kids club hours just for our group', 'A private dining room and a dedicated group room for coworking, board games and hanging out', 'Trip support: let us know how we can help make this trip possible for your family'],
+  notIncluded: ['Getting to Austria from home (flights and trains to Salzburg)', 'Food and drinks outside the resort meal plan you choose; lunches are on your own', 'The pig roast dinner at Bellevue Alm (about €39 per adult and €20 per kid 5–14, or €15 and €6 with Half-Board)', 'Optional extras with their own fees, like rafting, the zipline, paragliding, archery and the early-arrival castle tour', 'Extra lift passes beyond the scheduled group mountain days', 'Resort extras like alcoholic drinks, extra meals and the local tourist tax (€4.50 per person per night, ages 15+)', 'Travel insurance (required for all participants)'],
+  // photo strips between sections: 4 photos each (photo: URL or null for a placeholder). An empty list hides that strip.
+  photoStrips: [
+    [{label:'Kids in the flower fields'}, {label:'Group hike'}, {label:'Gastein Waterfall'}, {label:'Families at the lake'}],
+    [{label:'Ice cave entrance'}, {label:'Mountain-top playground'}, {label:'Paragliding'}, {label:'Group photo on the peak'}],
+    [{label:'Liechtensteinklamm Gorge'}, {label:'Thermal spa'}, {label:'Burg Hohenwerfen'}, {label:'Mountain carts'}],
+    [{label:'Resort pool'}, {label:'Breakfast buffet'}, {label:'Sun terrace'}, {label:'Group dinner'}],
+  ],
+  stay: {
+    valley: {
+      title: 'Why the Gastein Valley',
+      text: ['People have been coming to this valley for centuries because they believed it heals. Paracelsus wrote about its springs in the 1500s, and it later became one of Europe’s famous “kur” destinations, where royalty, artists and philosophers stayed for weeks to rest their bodies and nervous systems.',
+             'The thermal water rises warm and mineral-rich from deep underground, with natural radon, alpine air and huge mountains all around. Many people describe deep relaxation, unusually good sleep and a calm, charged feeling while they’re here.'],
+      small: 'Radon therapy is a European spa tradition; some medical bodies remain cautious about it. The healing caves are always optional.',
+    },
+    heading: 'A beautiful resort in Bad Gastein',
+    intro: 'The quaint spa town of Bad Gastein, just south of Salzburg, is home base for the whole retreat. Every apartment has a kitchenette, and the resort comes with its own thermal spa, pools, kids club and a private dining room for our group.',
+    rooms: [
+      {key:'Studio apartment', name:'Studio apartment', fits:'Best for 1 adult + 1 kid', features:['Double Murphy bed', 'Dining table', 'Kitchenette: microwave, stove top, fridge, kettle, coffee maker', 'Shower and bathtub', 'Flat-screen TV']},
+      {key:'1-bedroom apartment', name:'1-bedroom apartment', fits:'Best for families of 3–5', features:['Double bed + double Murphy bed', 'Dining table', 'Kitchenette', 'Shower and bathtub, 2nd toilet', 'Balcony', 'Flat-screen TVs']},
+      {key:'2-bedroom suite', name:'2-bedroom, 2-bath suite', fits:'Best for families of 5–6', features:['2 double beds + double Murphy bed', 'Dining table', 'Kitchenette', 'Shower and bathtub, 2nd toilet', 'Balcony', 'Flat-screen TVs']},
+    ],
+    amenities: ['Thermal spa with saunas, steam room and foot baths', 'Indoor pool, kids’ pool with slide, and hot tub', 'Supervised kids club (ages 3+), extra hours for our group', 'Playground and sunbathing lawn', 'Game room: billiards, table tennis, air hockey, darts, table football', 'Bowling alley (booking required)', 'Fitness center', 'Private dining room for our group', 'Coworking space and group lounge', 'Bathrobe, slippers and towels on arrival', 'Mountain bike and walking pole hire', 'Gastein Card with discounts around the valley', 'Sun terrace and regular live music', 'Free Wi-Fi and parking'],
+  },
+  meals: {
+    heading: 'Breakfast and dinner at the resort, lunch on the mountain',
+    intro: 'Food isn’t included in the base price. Most families add Half-Board so breakfast and dinner are taken care of, and every apartment has a kitchenette for snacks.',
+    items: [
+      {t:'Breakfast', tag:'With Half-Board', d:'Coffee specialties, fresh-baked breads, homemade jams, local comb honey and dairy from the Pongau region. Eggs cooked how you like them, plus a buffet from fruit to pancakes and fresh-squeezed juice.'},
+      {t:'Lunch', tag:'On your own', d:'Usually out on the mountain at a hut or in a village restaurant during outings. We sometimes book group tables to make it easy. A light lunch is also available at the resort.'},
+      {t:'Dinner', tag:'With Half-Board', d:'Fresh soups, starters and a seasonal salad buffet, then fish, meat and vegetarian dishes, part buffet and part made to order, in our private dining room. Special requests and food intolerances can be arranged in advance.'},
+    ],
+    halfBoardText: 'Daily breakfast and dinner at the resort restaurant. We highly recommend it: the food is amazing and much cheaper than eating out.',
+    drinks: 'Optional drinks package: beer, house wine, soft drinks (iced tea, Almdudler, juices), water, coffee and tea.',
+  },
+  // price per family for ONE 14-night session, by family setup (adults 15+, kids 14 and under). Food not included.
+  pricing: {
+    rooms: {'1-1':['Studio apartment',3704], '1-2':['1-bedroom apartment',5580], '1-3':['1-bedroom apartment',5980], '1-4':['2-bedroom suite',9200],
+            '2-1':['1-bedroom apartment',5580], '2-2':['1-bedroom apartment',5980], '2-3':['2-bedroom suite',9200], '2-4':['2-bedroom suite',9600]},
+    halfBoard: {adult:47, kid:25},   // per day; kids 4 and under eat free
+    touristTax: 4.5,                 // per adult (15+) per night, paid at the resort
+  },
+  policy: {
+    currency: '€', deposit: 500, depositUnit: 'per person',
+    nonRefundableDays: 150, finalPaymentDays: 120,
+    refunds: [['More than 120 days before', '100% refundable'], ['91–120 days before', '50% refundable'], ['61–90 days before', '25% refundable'], ['31–60 days before', '10% refundable'], ['30 days or less', 'non-refundable']],
+  },
+  howToBook: 'Pick your year and sessions, then click "Reserve Your Spot." You’ll pay a deposit on our checkout page, and the deposit secures your session dates. After that we email you to ask about your family (how many of you, kids’ ages, add-ons, special requests) and send a personalized quote. You’ll find our contact information at the bottom of this page if you have questions first.',
+  faq: [],   // FAQs live in FAQ_LIST (word for word from the live page)
+};
+
+// Each year has its own sessions. status: 'open' | 'few' | 'soldout' | 'past'
+// roster: sample numbers (shown once ROSTER_MIN_FAMILIES have booked)
+const SEASONS = {
+  2026: { sessions: [
+    {n:1, start:'2026-05-31', end:'2026-06-14', status:'past'},
+    {n:2, start:'2026-06-14', end:'2026-06-28', status:'past'},
+    {n:3, start:'2026-06-28', end:'2026-07-12', status:'past'},
+  ]},
+  2027: { sessions: [
+    {n:1, start:'2027-05-30', end:'2027-06-13', status:'open', roster:{families:5, adults:9, kids:11, kidAges:[2,4,5,6,7,7,9,10,11,12,14]}},
+    {n:2, start:'2027-06-13', end:'2027-06-27', status:'few',  roster:{families:7, adults:13, kids:15, kidAges:[3,4,5,6,6,7,8,8,9,10,11,12,13,15,16]}},
+    {n:3, start:'2027-06-27', end:'2027-07-11', status:'open', roster:{families:2, adults:4, kids:3, kidAges:[6,8,11]}},
+  ]},
+};
+const PRICE_YEAR = {2026: 1.0, 2027: 1.0};   // same base prices both years for now
+
+// ITINERARIES[year][session] = the day-by-day. A year without one shows the most recent earlier year, with a note.
+// 2026: the real day-by-day from the Notion itinerary (14 days per session).
+const ITINERARIES = { 2026: {"1": [{"type": "arrive", "title": "Arrival day & welcome meet-and-greet", "photoLabel": "Welcome dinner", "text": "Arrive in Bad Gastein and settle in. Early arrivals can join an optional tour of Burg Klammstein, a tiny family-run castle where the owners love showing kids their treasures, with a grill-out lunch made just for our group. After dinner, everyone meets for an easygoing welcome get-together."}, {"type": "outing", "title": "Orientation, hotel tour & gnome hike", "photoLabel": "Gnome hike & river plunge", "text": "Orientation and family introductions in the morning, then a tour of the resort (it’s a bit of a maze). In the afternoon, a gnome hike with surprises for the kids ends at a hidden river spot below the waterfall for a chilly plunge. A group favorite."}, {"type": "outing", "title": "Snow Space Alpendorf & Geisterberg", "photoLabel": "Geisterberg mountain playground", "text": "Ride the Alpendorf gondola for huge views, then explore Geisterberg: over 40 play stations along stroller-friendly paths, a castle, a village, water games, climbing towers, swings and slides. Optional waterfall zipline later in the day."}, {"type": "outing", "title": "Liechtensteinklamm Gorge & high ropes", "photoLabel": "Liechtensteinklamm Gorge", "text": "A private bus to one of the longest and deepest gorges in the Alps, with wooden walkways beside roaring waterfalls. Group lunch at a cozy family-run Austrian restaurant, then a high ropes course in the trees."}, {"type": "outing", "title": "Gold ore tour & gold panning", "photoLabel": "Gold panning", "text": "A guided visit to the historic gold ore processing plant in Böckstein to see how miners pulled gold from these mountains, a picnic lunch in the town square, then gold panning. Optional zipline or paragliding in the afternoon."}, {"type": "free", "title": "Free day", "photoLabel": "Resort thermal spa", "text": "No plan on purpose. Kids club, the indoor pool, the thermal spa, a walk into town, or a slow coffee on the sun terrace."}, {"type": "outing", "title": "Zell am See day", "photoLabel": "Zell am See lake", "text": "A day at the lake town of Zell am See. Mountain playgrounds, a panoramic boat tour, and a swimming park with a water slide and diving platforms into the lake. Do it all, or pick and choose."}, {"type": "outing", "title": "Stubnerkogel & suspension bridge", "photoLabel": "Stubnerkogel suspension bridge", "text": "The cable car to the summit of Stubnerkogel at 2,300 meters, then across Austria’s highest suspension bridge, 140 meters long with views over the Hohe Tauern. Lunch at the summit restaurant, and an optional afternoon at the Felsentherme thermal spa."}, {"type": "free", "title": "Free day or family rafting", "photoLabel": "Family rafting", "text": "A free day to slow down, or join an optional family rafting trip on a calm, playful stretch of river near Salzburg (about €50 per person). Wetsuits included."}, {"type": "outing", "title": "Schlossalm & Alpentherme spa", "photoLabel": "Alpentherme Gastein", "text": "A morning gondola up the Schlossalm for playgrounds, obstacle courses and easy hikes, then the afternoon at Alpentherme, one of Europe’s top alpine spas, with family pools, slides and thermal water."}, {"type": "outing", "title": "Ice caves & Hohenwerfen Castle", "photoLabel": "Eisriesenwelt ice caves", "text": "A private bus to Werfen for a guided tour of Eisriesenwelt, the world’s largest ice caves. Lunch in the medieval courtyard of Hohenwerfen Castle, the birds of prey show (a must), and a castle tour with views of the Sound of Music mountains."}, {"type": "outing", "title": "Forest concert, bathing lake & pig roast", "photoLabel": "Pig roast at Bellevue Alm", "text": "An open-air concert in the forest, an afternoon swim at the Gastein bathing lake, then group photos and a traditional Austrian pig roast with a live band and dancing at Bellevue Alm, high above the valley."}, {"type": "outing", "title": "Fulseck mountain & mountain karts", "photoLabel": "Mountain karts", "text": "The gondola up Fulseck, alpine meadows full of grazing cows, a mountain-top lake and playgrounds, then the ride down on three-wheeled mountain karts."}, {"type": "outing", "title": "Farmhouse donuts & Sportgastein", "photoLabel": "Sportgastein valley", "text": "Fresh brick-oven donuts at a little farm with goats, a donkey and giant bunnies, then up to the high alpine Sportgastein valley for a lake hike and lunch at Valeriehaus."}], "2": [{"type": "arrive", "title": "Arrival day & welcome meet-and-greet", "photoLabel": "Welcome dinner", "text": "Arrive in Bad Gastein and settle in. Early arrivals can join an optional tour of Burg Klammstein, a tiny family-run castle where the owners love showing kids their treasures, with a grill-out lunch made just for our group. After dinner, everyone meets for an easygoing welcome get-together."}, {"type": "outing", "title": "Orientation, hotel tour & gnome hike", "photoLabel": "Gnome hike & river plunge", "text": "Orientation and family introductions in the morning, then a tour of the resort (it’s a bit of a maze). In the afternoon, a gnome hike with surprises for the kids ends at a hidden river spot below the waterfall for a chilly plunge. A group favorite."}, {"type": "outing", "title": "Fulseck mountain & mountain karts", "photoLabel": "Mountain karts", "text": "The gondola up Fulseck, alpine meadows full of grazing cows, a mountain-top lake and playgrounds, then the ride down on three-wheeled mountain karts."}, {"type": "outing", "title": "Liechtensteinklamm Gorge & high ropes", "photoLabel": "Liechtensteinklamm Gorge", "text": "A private bus to one of the longest and deepest gorges in the Alps, with wooden walkways beside roaring waterfalls. Group lunch at a cozy family-run Austrian restaurant, then a high ropes course in the trees."}, {"type": "outing", "title": "Farmhouse donuts & gold panning", "photoLabel": "Farmhouse donuts", "text": "A short hike down to a farm for fresh brick-oven donuts with chocolate or jam, a playground, baby goats, a donkey and giant fluffy bunnies. In the afternoon, the gold ore tour in Böckstein and gold panning."}, {"type": "outing", "title": "Zell am See day", "photoLabel": "Zell am See lake", "text": "A day at the lake town of Zell am See. Mountain playgrounds, a panoramic boat tour, and a swimming park with a water slide and diving platforms into the lake. Do it all, or pick and choose."}, {"type": "outing", "title": "Sportgastein & summer solstice fires", "photoLabel": "Solstice bonfires", "text": "A lake hike in the high alpine Sportgastein valley and lunch at Valeriehaus. After dinner, up to Bellevue Alm for the summer solstice: bonfires, music, stories and alpine tradition."}, {"type": "outing", "title": "Stubnerkogel & suspension bridge", "photoLabel": "Stubnerkogel suspension bridge", "text": "The cable car to the summit of Stubnerkogel at 2,300 meters, then across Austria’s highest suspension bridge, 140 meters long with views over the Hohe Tauern. Lunch at the summit restaurant, and an optional afternoon at the Felsentherme thermal spa."}, {"type": "free", "title": "Free day or family rafting", "photoLabel": "Family rafting", "text": "A free day to slow down, or join an optional family rafting trip on a calm, playful stretch of river near Salzburg (about €50 per person). Wetsuits included."}, {"type": "outing", "title": "Snow Space Alpendorf & Geisterberg", "photoLabel": "Geisterberg mountain playground", "text": "Ride the Alpendorf gondola for huge views, then explore Geisterberg: over 40 play stations along stroller-friendly paths, a castle, a village, water games, climbing towers, swings and slides. Optional waterfall zipline later in the day."}, {"type": "outing", "title": "Ice caves & Hohenwerfen Castle", "photoLabel": "Eisriesenwelt ice caves", "text": "A private bus to Werfen for a guided tour of Eisriesenwelt, the world’s largest ice caves. Lunch in the medieval courtyard of Hohenwerfen Castle, the birds of prey show (a must), and a castle tour with views of the Sound of Music mountains."}, {"type": "outing", "title": "Forest concert, bathing lake & pig roast", "photoLabel": "Pig roast at Bellevue Alm", "text": "An open-air concert in the forest, an afternoon swim at the Gastein bathing lake, then group photos and a traditional Austrian pig roast with a live band and dancing at Bellevue Alm, high above the valley."}, {"type": "outing", "title": "Schlossalm & Alpentherme spa", "photoLabel": "Alpentherme Gastein", "text": "A morning gondola up the Schlossalm for playgrounds, obstacle courses and easy hikes, then the afternoon at Alpentherme, one of Europe’s top alpine spas, with family pools, slides and thermal water."}, {"type": "depart", "title": "Last day", "photoLabel": "Archery at the resort", "text": "A slow last day. Optional archery at the resort for anyone who wants one more adventure, and time for goodbyes."}], "3": [{"type": "arrive", "title": "Arrival day & welcome meet-and-greet", "photoLabel": "Welcome dinner", "text": "Arrive in Bad Gastein and settle in. Early arrivals can join an optional tour of Burg Klammstein, a tiny family-run castle where the owners love showing kids their treasures, with a grill-out lunch made just for our group. After dinner, everyone meets for an easygoing welcome get-together."}, {"type": "outing", "title": "Orientation, hotel tour & gnome hike", "photoLabel": "Gnome hike & river plunge", "text": "Orientation and family introductions in the morning, then a tour of the resort (it’s a bit of a maze). In the afternoon, a gnome hike with surprises for the kids ends at a hidden river spot below the waterfall for a chilly plunge. A group favorite."}, {"type": "outing", "title": "Fulseck mountain & mountain karts", "photoLabel": "Mountain karts", "text": "The gondola up Fulseck, alpine meadows full of grazing cows, a mountain-top lake and playgrounds, then the ride down on three-wheeled mountain karts."}, {"type": "outing", "title": "Sportgastein lake hike", "photoLabel": "Sportgastein valley", "text": "A drive up to the high alpine Sportgastein valley for a lake hike (as short or long as you like) and a swim in the mountain lake, then lunch at Valeriehaus. Try the burger and count the waterfalls."}, {"type": "outing", "title": "Farmhouse donuts & gold panning", "photoLabel": "Farmhouse donuts", "text": "A short hike down to a farm for fresh brick-oven donuts with chocolate or jam, a playground, baby goats, a donkey and giant fluffy bunnies. In the afternoon, the gold ore tour in Böckstein and gold panning."}, {"type": "outing", "title": "Liechtensteinklamm Gorge & high ropes", "photoLabel": "Liechtensteinklamm Gorge", "text": "A private bus to one of the longest and deepest gorges in the Alps, with wooden walkways beside roaring waterfalls. Group lunch at a cozy family-run Austrian restaurant, then a high ropes course in the trees."}, {"type": "outing", "title": "Zell am See day", "photoLabel": "Zell am See lake", "text": "A day at the lake town of Zell am See. Mountain playgrounds, a panoramic boat tour, and a swimming park with a water slide and diving platforms into the lake. Do it all, or pick and choose."}, {"type": "outing", "title": "Stubnerkogel & suspension bridge", "photoLabel": "Stubnerkogel suspension bridge", "text": "The cable car to the summit of Stubnerkogel at 2,300 meters, then across Austria’s highest suspension bridge, 140 meters long with views over the Hohe Tauern. Lunch at the summit restaurant, and an optional afternoon at the Felsentherme thermal spa."}, {"type": "free", "title": "Free day or family rafting", "photoLabel": "Family rafting", "text": "A free day to slow down, or join an optional family rafting trip on a calm, playful stretch of river near Salzburg (about €50 per person). Wetsuits included."}, {"type": "outing", "title": "Ice caves & Hohenwerfen Castle", "photoLabel": "Eisriesenwelt ice caves", "text": "A private bus to Werfen for a guided tour of Eisriesenwelt, the world’s largest ice caves. Lunch in the medieval courtyard of Hohenwerfen Castle, the birds of prey show (a must), and a castle tour with views of the Sound of Music mountains."}, {"type": "free", "title": "Free day", "photoLabel": "Resort thermal spa", "text": "No plan on purpose. Kids club, the indoor pool, the thermal spa, a walk into town, or a slow coffee on the sun terrace."}, {"type": "outing", "title": "Forest concert, bathing lake & pig roast", "photoLabel": "Pig roast at Bellevue Alm", "text": "An open-air concert in the forest, an afternoon swim at the Gastein bathing lake, then group photos and a traditional Austrian pig roast with a live band and dancing at Bellevue Alm, high above the valley."}, {"type": "outing", "title": "Schlossalm & Alpentherme spa", "photoLabel": "Alpentherme Gastein", "text": "A morning gondola up the Schlossalm for playgrounds, obstacle courses and easy hikes, then the afternoon at Alpentherme, one of Europe’s top alpine spas, with family pools, slides and thermal water."}, {"type": "depart", "title": "Last day", "photoLabel": "Geisterberg mountain playground", "text": "One more mountain morning at Alpendorf and Geisterberg for anyone who wants it, optional archery at the resort, and time for goodbyes."}]} };
+
+
+// ---------- THEMES ----------
+// ---------- THEMES: every land trip gets its own colors ----------
+// primary = buttons & links · accent = badges, lines, highlights · dark = hero, facts bar, dark sections
+// background/surface = page + cards · highlight = prices, gold details
+const THEMES = {
+  alpine: {   // Austria summer: fresh meadow green, leaf green, sunny gold, forest for the dark bands
+    primary:'#4A8A3C', primaryHover:'#356A2B', accent:'#9CCB66', accentSoft:'#DCEFC4',
+    dark:'#2B5535', darkSoft:'#346441', background:'#F5F9EC', surface:'#FFFFFF',
+    tint:'#E7F2D5', tintLine:'#C5DEA4', highlight:'#F1BF45', highlightInk:'#86600E',
+    muted:'#5A6B52', line:'rgba(43,85,53,0.15)', hero:['#2F5E33','#5F9E48','#C4DF8A'],
+  },
+  desert: {   // Morocco, Egypt & Jordan: terracotta, saffron, sand, desert-night brown
+    primary:'#B4552F', primaryHover:'#7E3518', accent:'#D49A55', accentSoft:'#EBC99A',
+    dark:'#2B1B12', darkSoft:'#3A2618', background:'#F5ECDD', surface:'#FFFAF1',
+    tint:'#EEDCC0', tintLine:'#D9B98A', highlight:'#E3AE4A', highlightInk:'#8C5A14',
+    muted:'#7A6150', line:'rgba(43,27,18,0.16)', hero:['#5A2E17','#B0662F','#E2B26B'],
+  },
+};
+function applyTheme(name){
+  const t = THEMES[name]; if(!t) return;
+  const set = (k, v) => document.documentElement.style.setProperty(k, v);
+  set('--green-dark', t.primary); set('--green-hover', t.primaryHover);
+  set('--green', t.accent); set('--green-soft', t.accentSoft);
+  set('--green-tint', `color-mix(in srgb, ${t.accent} 16%, ${t.surface})`); set('--green-line', `color-mix(in srgb, ${t.accent} 45%, ${t.surface})`);
+  set('--dark', t.dark); set('--dark-soft', t.darkSoft);
+  set('--paper', t.background); set('--white', t.surface);
+  set('--sky-tint', t.tint); set('--sky-line', t.tintLine); set('--blue', t.accent);
+  set('--gold', t.highlight); set('--gold-ink', t.highlightInk);
+  set('--muted', t.muted); set('--line', t.line);
+  set('--hero-a', t.hero[0]); set('--hero-b', t.hero[1]); set('--hero-c', t.hero[2]);
+  const meta = document.querySelector('meta[name="theme-color"]') || Object.assign(document.head.appendChild(document.createElement('meta')), {name:'theme-color'});
+  meta.content = t.dark;
+}
+applyTheme(TRIP.theme);
+
+// ---------- helpers ----------
+const MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MONTH = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const WD = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const D = iso => { const [y,m,d] = iso.split('-').map(Number); return new Date(y, m-1, d); };
+const addDays = (date, n) => { const x = new Date(date); x.setDate(x.getDate() + n); return x; };
+const fmtD = x => `${MONTH[x.getMonth()]} ${x.getDate()}, ${x.getFullYear()}`;
+const short = x => `${MON[x.getMonth()]} ${x.getDate()}`;
+const span = (a, b, yr = true) => { const s = D(a), e = D(b);
+  const t = s.getMonth() === e.getMonth() ? `${MON[s.getMonth()]} ${s.getDate()}–${e.getDate()}` : `${short(s)} – ${short(e)}`;
+  return yr ? `${t}, ${e.getFullYear()}` : t; };
+const money = n => TRIP.policy.currency + Math.round(n).toLocaleString('en-US');
+const today = new Date(); today.setHours(0,0,0,0);
+const STATUS = {open:'Spots open', few:'Few spots left', soldout:'Sold out · waitlist', past:'Completed'};
+const ROSTER_MIN_FAMILIES = 3;
+const NIGHTS_PER_SESSION = 14;
+
+// ---------- selection: a year + a run of back-to-back sessions ----------
+const YEARS = Object.keys(SEASONS).map(Number).sort();
+const yearPast = y => SEASONS[y].sessions.every(s => s.status === 'past');
+const firstOpenYear = YEARS.find(y => !yearPast(y)) || YEARS[YEARS.length - 1];
+let sel = {year: firstOpenYear, from: 1, to: 1};
+let fam = {adults: 2, kids: 2, halfBoard: false};
+const sessionsOf = s => SEASONS[s.year].sessions.filter(x => x.n >= s.from && x.n <= s.to);
+const selStart = () => sessionsOf(sel)[0].start;
+const selEnd = () => { const a = sessionsOf(sel); return a[a.length - 1].end; };
+const selCount = () => sel.to - sel.from + 1;
+const isPast = () => yearPast(sel.year);
+const sessLabel = s => s.from === s.to ? `Session ${s.from}` : (s.to - s.from === 2 ? 'All 3 sessions' : `Sessions ${s.from} + ${s.to}`);
+const comboStatus = s => { const st = sessionsOf(s).map(x => x.status);
+  return st.includes('past') ? 'past' : st.includes('soldout') ? 'soldout' : st.includes('few') ? 'few' : 'open'; };
+const minFamilyPrice = () => Math.min(...Object.values(TRIP.pricing.rooms).map(r => r[1])) * PRICE_YEAR[sel.year];
+
+// ---------- itinerary for the selected sessions ----------
+function itineraryFor(year, n){
+  for(const y of [...YEARS].reverse()){ if(y <= year && ITINERARIES[y] && ITINERARIES[y][n]) return {days: ITINERARIES[y][n], fromYear: y}; }
+  return null;
+}
+
+// ---------- render: things that never change ----------
+function renderStatic(){
+  document.getElementById('tripEyebrow').textContent = TRIP.eyebrow;
+  document.getElementById('tripTitle').textContent = TRIP.title;
+  document.getElementById('tripBadges').innerHTML = TRIP.badges.map(b => `<span class="badge">${b}</span>`).join('');
+  const ov = TRIP.overview;
+  document.getElementById('ovHeading').textContent = ov.heading;
+  document.getElementById('ovStory').innerHTML = ov.story.map(p => `<p class="lede">${p}</p>`).join('') +
+    (ov.hook.length ? `<p class="lede" style="font-style:italic;">${ov.hook.join('<br>')}</p>` : '');
+  document.getElementById('highlights').innerHTML = ov.highlights.map(h =>
+    `<div class="hl-card"><div class="photo-slot"><span>Photo: ${h.t}</span></div><h4>${h.t}</h4><p>${h.d}</p></div>`).join('');
+  const C = TRIP.community;
+  document.getElementById('leadersText').textContent = C.leaders;
+  document.getElementById('pillars').innerHTML = C.pillars.map((p, i) =>
+    `<div class="value-prop"><div class="value-num-wrap"><div class="value-num">${i+1}</div></div><div><h4>${p.t}</h4><p>${p.d}</p></div></div>`).join('');
+  document.getElementById('stories').style.display = C.testimonials.length ? '' : 'none';
+  document.getElementById('testiTrack').innerHTML = C.testimonials.map(t => `<div class="proof-chip">
+      <div class="proof-avatar">No<br>photo</div><div><p>“${t.quote}”</p><div class="who">${t.name}</div></div></div>`).join('');
+  document.getElementById('fbJoin').innerHTML = C.facebookGroup ? `<span>Meet other worldschooling families before you go.</span><a class="btn btn-outline" href="${C.facebookGroup}" target="_blank" rel="noopener">Join our Worldschooling Facebook Group</a>` : '';
+  document.querySelectorAll('.photo-strip[data-strip]').forEach(el => { const ph = (TRIP.photoStrips || [])[+el.dataset.strip] || [];
+    el.style.display = ph.length ? '' : 'none';
+    el.innerHTML = ph.map(x => `<div class="photo-slot">${x.photo ? `<img src="${x.photo}" alt="${x.label}" loading="lazy">` : `<span>Photo: ${x.label}</span>`}</div>`).join(''); });
+  const MORE = TRIP.overview.more || [];
+  document.getElementById('moreWrap').style.display = MORE.length ? '' : 'none';
+  document.getElementById('moreList').innerHTML = MORE.map(m => `<li>${m}</li>`).join('');
+  const ST = TRIP.stay;
+  const V = ST && ST.valley;
+  document.getElementById('valleyCard').innerHTML = V ? `<div class="photo-slot"><span>Photo: Gastein Valley</span></div><div class="vc-body"><h4>${V.title}</h4>${V.text.map(t => `<p>${t}</p>`).join('')}${V.small ? `<p class="vc-small">${V.small}</p>` : ''}</div>` : '';
+  document.getElementById('stays').dataset.empty = ST ? '' : '1';
+  if(ST){
+    document.getElementById('staysHeading').textContent = ST.heading;
+    document.getElementById('staysIntro').textContent = ST.intro;
+    document.getElementById('roomGrid').innerHTML = ST.rooms.map(r => `<div class="room-card" data-room="${r.key}"><span class="rc-mine">Your room</span>
+      <div class="photo-slot"><span>Photo: ${r.name}</span></div><div class="rc-body"><h4>${r.name}</h4><div class="rc-for">${r.fits}</div>
+      <ul>${r.features.map(f => `<li>${f}</li>`).join('')}</ul></div></div>`).join('');
+    document.getElementById('amenList').innerHTML = ST.amenities.map(a => `<li>${a}</li>`).join('');
+  }
+  const ML = TRIP.meals, HB = TRIP.pricing.halfBoard;
+  document.getElementById('food').dataset.empty = ML ? '' : '1';
+  if(ML){
+    document.getElementById('foodHeading').textContent = ML.heading;
+    document.getElementById('foodIntro').textContent = ML.intro;
+    document.getElementById('mealGrid').innerHTML = ML.items.map(m => `<div class="meal-card"><div class="photo-slot"><span>Photo: ${m.t}</span></div>
+      <div class="mc-body"><h4>${m.t}<span class="mc-tag ${m.tag === 'On your own' ? 'off' : ''}">${m.tag}</span></h4><p>${m.d}</p></div></div>`).join('');
+    document.getElementById('hbCard').innerHTML = `<div><h4>Half-Board</h4><p>${ML.halfBoardText}</p><p style="color:var(--muted);font-size:13px;">${ML.drinks}</p></div>
+      <div class="hb-prices"><div class="hb-price">Adults<strong>${money(HB.adult)}</strong>per day</div><div class="hb-price">Kids 5–14<strong>${money(HB.kid)}</strong>per day</div><div class="hb-price">Kids 4 & under<strong>Free</strong>&nbsp;</div></div>`;
+  }
+  document.getElementById('inclYes').innerHTML = TRIP.included.map(i => `<li>${i}</li>`).join('');
+  document.getElementById('inclNo').innerHTML = TRIP.notIncluded.map(i => `<li>${i}</li>`).join('');
+  const FAQ_LIST = [{"q": "How do we book?", "a": "To reserve your spot, click the 'Book Now' button located just below this section. You'll be directed to our checkout page to submit a deposit. This deposit secures your session date.<br><br>After your deposit is received, we'll reach out by email to gather a few details about your family—such as the number of participants, children's ages, and any add-ons or special requests you're considering. This helps us create a fully personalized quote tailored to your family's specific needs.<br><br>The pricing shown in the section above reflects base pricing and is intended to give you a general estimate of what most families invest. Because every family chooses different options and add-ons, the final price may vary and is always customized after we review your details together.<br><br>If you have any questions before booking, you'll find our contact information at the bottom of this page—we're happy to help."}, {"q": "How does the trip pricing work?", "a": "You'll book your own accommodations using our provided links, giving you the flexibility to choose what works best for your family. Pricing is based on a 14-night stay, but your total cost will vary depending on your room type, travel dates, and length of stay. Food is not included, but we do recommend selecting the half board option for ease during your stay. Our trips are designed to be flexible and connection-focused, so you can join group experiences as much or as little as you'd like."}, {"q": "Is there an age limit? Can I bring a baby?", "a": "There is no age limit. The hotel provides the following free of charge upon request ahead of time:<ul><li>Children's bed</li><li>Highchair</li><li>Baby bathtub</li><li>Toilet seat reducer</li><li>Changing pad</li><li>Bottle warmer</li><li>Stool</li><li>Safety equipment for small children (e.g. socket protector etc.)</li><li>Free of charge rental of back baby carriers, baby buggies</li></ul>"}, {"q": "Is there an educational component to this trip?", "a": "Every single travel experience is educational. On this trip we will not be sitting in classrooms, or looking at textbooks. We will be exploring, immersing, learning from doing. We will be sharing all the knowledge about the area that we have collected over the years. We will be encouraging kids and adults to break out of their shell and step a little out of their comfort zone and remember what it's like to be a wild child. This might not be in your local school's curriculum but it will be transformational in another way. We hope that you will leave inspired, full of wonder and with your soul well rested."}, {"q": "Are there planned excursions?", "a": "Yes, every day we will take a group field trip to different attractions in the area. The activities listed on the website is an example of what you might experience. We'll make a plan based on weather and availability for the whole two weeks prior to group's arrival. You do not have to follow this plan and may explore the area on your own or stay and enjoy the resort at your leisure. Whoever wants to join the group for the days' scheduled activity is welcome to do so. Please note that bus fare, train tickets, entry fees to attractions or lift tickets are to be purchased separately, if needed. Many of the group activities will be covered in your booking."}, {"q": "Do you facilitate group communication?", "a": "Yes, all the families will be added to a WhatsApp group to get to know each other before the trip and discuss the itinerary. We will also use WhatsApp to communicate during the trip."}, {"q": "How do I know if we get along with the other families?", "a": "I think that's a question you need to ask yourself. Most families get along really well if they actually participate in the group and are open to new friends.<br><br>During our past trips, introverts have enjoyed sporadic company of other introverts, while their kids were able to be social and extroverts had fun with the whole group. No matter what you will have the perfect experience for you. The more you put into it the more you will get out of it. Be yourself, be authentic, and make time to connect with others. You'll be so happy you did!"}, {"q": "Do I have to join for every activity?", "a": "Our first and foremost personal belief is in freedom of choice. All of the trips we organized lead with that belief. You are NEVER required to do an activity you do not want to do or participate in group's gatherings that you do not want to participate in. We will always encourage you to step out of your comfort zone, but ultimately you know yourself and your family better than anyone else and you will need to be the judge for what aligns with you and your family best."}, {"q": "What are some other expenses I should anticipate?", "a": "Food outside the resort meal plans, transfers, tips, airfare, pre-/post lodging, as well as additional attraction tickets, lift tickets, outside of those stated in the schedule. Any other additional day trip expenses are not included in the price."}, {"q": "What is the food situation?", "a": "The resort will have breakfast and dinner included with the Half-Board option. The rooms do have small kitchenettes if you want to prepare food and snacks. Lunch will most likely be out on the mountain or in another village while exploring the area. Light lunch is available for purchase at the resort if you choose not to go out that day or you can always walk to any of the local restaurants."}, {"q": "What does Half-Board mean?", "a": "Half-Board includes daily breakfast and dinner at the resort restaurant. We highly recommend this option as an add-on. The food is amazing and much cheaper than eating out at other restaurants.<br><br>Pricing starts at €47 per day for adults, €25 per day for children aged 5–14, and is free for children aged 4 and under.<br><br>A Drinks Package is also available, covering beer, house wine, bottled soft drinks (such as iced tea, Almdudler, and juices), water, coffee, and tea—perfect for a fully relaxed dining experience."}, {"q": "What is the cancellation policy?", "a": "__POLICY__"}, {"q": "Can I join for two sessions?", "a": "Yes, you may join for two sessions. If you would like to join both your dates would be __TWO_SESSIONS__."}, {"q": "Can you tell me more about your mission and vision?", "a": "Read this post about our mission and vision: <a href=\"#\">POST</a>"}];   // word for word from the live page
+  document.getElementById('faqBody').innerHTML = FAQ_LIST.map((f, i) =>
+    `<details class="faq-item" ${i === 0 ? 'open' : ''}><summary>${f.q}</summary><div class="faq-a">${f.a === '__POLICY__' ? '<div class="faq-policy"></div>' : '<div class="faq-text">' + f.a.replace('__TWO_SESSIONS__', '<span class=\"faq-two\"></span>') + '</div>'}</div></details>`).join('');
+}
+
+// ---------- render: everything that follows the year + sessions ----------
+function renderSelection(){
+  const S = sessionsOf(sel), past = isPast(), k = selCount();
+  const nights = k * NIGHTS_PER_SESSION;
+  const facts = [['Destination', TRIP.destination], ['Dates', span(selStart(), selEnd())], ['Duration', `${nights} nights · ${k} session${k > 1 ? 's' : ''}`],
+                 ['Ages', TRIP.minAge], ['Price', `From ${money(minFamilyPrice() * k)} <span style="font-weight:600;font-size:12px;color:#9aa4ae;">/ family</span>`]];
+  document.getElementById('factsGrid').innerHTML = facts.map(f =>
+    `<div class="fact"><div class="label">${f[0]}</div><div class="value ${f[0]==='Price'?'price':''}">${f[1]}</div></div>`).join('');
+
+  renderRoster(S, past);
+  renderItinerary(S);
+  renderCost();
+  renderPolicy();
+
+  const label = `Summer ${sel.year} · ${sessLabel(sel)}`;
+  document.querySelectorAll('.subnav-dep .dep-text').forEach(el => el.textContent = label);
+  const joinCopy = past
+    ? `Summer ${sel.year} has wrapped up. Come join us next summer: pick your sessions and the deposit holds your place.`
+    : `Reserve your spot for ${sessLabel(sel)} (${span(selStart(), selEnd())}). The deposit holds your place, and we’ll take care of the rest.`;
+  document.querySelectorAll('.join-text').forEach(el => el.textContent = joinCopy);
+  const st = comboStatus(sel);
+  document.querySelectorAll('.book-btn').forEach(b => b.textContent = past ? `See Summer ${firstOpenYear} Dates` : st === 'soldout' ? 'Join the Waitlist' : 'Reserve Your Spot');
+  syncPickers();
+  hideEmptySections();
+}
+
+function renderRoster(S, past){
+  const rc = document.getElementById('rosterCard');
+  if(past){ rc.innerHTML = ''; return; }
+  const shown = S.filter(s => s.roster && s.roster.families >= ROSTER_MIN_FAMILIES);
+  if(!shown.length){
+    rc.innerHTML = `<div class="roster-full-placeholder"><h3>The Roster Is Just Getting Started</h3>
+      <p>We open the family roster once at least ${ROSTER_MIN_FAMILIES} families have booked a session, so you can see exactly who’s coming, including kid ages. Book now and you’ll be one of the first families there.</p>
+      <a href="#" class="btn btn-primary book-btn">Reserve Your Spot</a></div>`; return;
+  }
+  const ages = shown.flatMap(s => s.roster.kidAges);
+  const BR = [['2–5 yrs',0,5],['6–9 yrs',6,9],['10–13 yrs',10,13],['14–17 yrs',14,17],['18+ yrs',18,99]].map(([l, lo, hi]) => ({l, c: ages.filter(a => a >= lo && a <= hi).length}));
+  const maxB = Math.max(1, ...BR.map(b => b.c));
+  const one = S.length === 1 ? shown[0].roster : null;
+  const left = one
+    ? `<div class="rf-head"><h3>Current Roster</h3><div class="rf-sub">Families already booked for Session ${S[0].n}</div></div>
+       <div class="rf-stats"><div class="rf-stat"><div class="r-num">${one.families}</div><div class="r-label">Families</div></div>
+       <div class="rf-stat"><div class="r-num">${one.adults}</div><div class="r-label">Adults</div></div><div class="rf-stat"><div class="r-num">${one.kids}</div><div class="r-label">Kids</div></div></div>`
+    : `<div class="rf-head"><h3>Current Roster</h3><div class="rf-sub">Families already booked for your sessions</div></div>` +
+      S.map(s => `<div class="rf-sess-row"><strong>Session ${s.n}</strong> · ${s.roster && s.roster.families >= ROSTER_MIN_FAMILIES ? `${s.roster.families} families · ${s.roster.kids} kids` : 'just getting started'}</div>`).join('');
+  rc.innerHTML = `<div class="rf-columns"><div class="rf-col-left">${left}</div>
+    <div class="rf-col-right"><div class="rf-ages-label">Kid Ages Joining</div>${BR.map(b => `<div class="rf-bracket-row"><div class="rf-bracket-name">${b.l}</div>
+      <div class="rf-bracket-track"><div class="rf-bracket-fill" style="width:${Math.round(b.c / maxB * 100)}%"></div></div><div class="rf-bracket-count">${b.c}</div></div>`).join('')}</div></div>`;
+}
+
+function renderItinerary(S){
+  const blocks = S.map(s => ({s, it: itineraryFor(sel.year, s.n)}));
+  const sec = document.getElementById('itinerary');
+  sec.dataset.empty = blocks.some(b => b.it) ? '' : '1';
+  const from = blocks.find(b => b.it && b.it.fromYear !== sel.year);
+  document.getElementById('itinNote').innerHTML = from
+    ? `<div class="itin-note"><span class="in-icon">ⓘ</span><span>This is what our summer ${from.it.fromYear} sessions looked like. The ${sel.year} plan is made closer to the date around weather and availability, so days may shift.</span></div>` : '';
+  document.getElementById('itinBody').innerHTML = blocks.map((b, bi) => {
+    if(!b.it) return '';
+    const start = D(b.s.start), last = b.it.days.length - 1;
+    const days = b.it.days.map((d, i) => {
+      let title = d.title, text = d.text, type = d.type;
+      let change = '';
+      if(i === 0 && bi > 0){ title = 'Changeover day: new families arrive'; type = 'free'; change = '<span>🔁 You stay put, same room</span>'; text = 'Say goodbye to the families heading home and hello to the new ones. No packing for you. After dinner, everyone meets for an easygoing welcome get-together with the new group.'; }
+      if(i === last && bi < blocks.length - 1 && type === 'depart'){ title = 'Last day of Session ' + b.s.n; text = text.replace('time for goodbyes', 'goodbyes to the families heading home. You’re staying on'); }
+      const date = addDays(start, i);
+      const tag = type === 'outing' ? '🚌 Group outing' : type === 'free' ? '<span class="free">☀ Free day</span>' : type === 'arrive' ? '🧳 Arrival day' : '👋 Last day';
+      return `<div class="stop"><div class="stop-card"><div class="stop-card-inner"><div class="photo-slot stop-photo"><span>Photo: ${d.photoLabel}</span></div><div class="stop-content">
+        <div class="stop-day">Day ${i + 1} · ${WD[date.getDay()]}, ${short(date)}</div><div class="stop-title">${title}</div>
+        <div class="stop-meta"><span>${tag}</span>${change}</div><p class="stop-desc">${text}</p></div></div></div></div>`; }).join('');
+    return `<details class="sess-block" ${bi === 0 ? 'open' : ''}><summary><span class="sb-n">Session ${b.s.n}</span><span class="sb-d">${span(b.s.start, b.s.end)} · ${NIGHTS_PER_SESSION} nights</span></summary>
+      <div class="timeline">${days}</div></details>`; }).join('');
+}
+
+function familyRoom(){ return TRIP.pricing.rooms[`${fam.adults}-${fam.kids}`] || null; }
+function renderCost(){
+  const k = selCount(), nights = k * NIGHTS_PER_SESSION, P = TRIP.policy, PR = TRIP.pricing, past = isPast();
+  document.getElementById('adultCount').textContent = fam.adults;
+  document.getElementById('kidCount').textContent = fam.kids;
+  const room = familyRoom();
+  const hb = fam.adults * PR.halfBoard.adult * nights + fam.kids * PR.halfBoard.kid * nights;
+  document.getElementById('hbNote').textContent = `${money(PR.halfBoard.adult)}/day per adult, ${money(PR.halfBoard.kid)}/day per kid 5–14, kids 4 and under free.`;
+  const lines = document.getElementById('costLines'), steps = document.getElementById('paySteps'), ln = document.getElementById('lateNote');
+  if(!room){
+    document.querySelectorAll('.room-card').forEach(c => c.classList.remove('mine'));
+    document.getElementById('roomLine').innerHTML = `<strong>${fam.adults} adult${fam.adults > 1 ? 's' : ''}, ${fam.kids} kid${fam.kids === 1 ? '' : 's'}</strong> · we’ll put together a custom quote for your family (this may mean a bigger suite or two connecting rooms).`;
+    document.getElementById('costTotal').textContent = 'Custom quote';
+    document.getElementById('costSub').textContent = `${sessLabel(sel)} · ${span(selStart(), selEnd())}`;
+    lines.innerHTML = ''; steps.innerHTML = ''; ln.style.display = 'none';
+  } else {
+    const base = room[1] * PRICE_YEAR[sel.year] * k, total = base + (fam.halfBoard ? hb : 0);
+    document.querySelectorAll('.room-card').forEach(c => c.classList.toggle('mine', c.dataset.room === room[0]));
+    document.getElementById('roomLine').innerHTML = `Your room: <strong>${room[0]}</strong> · ${money(room[1] * PRICE_YEAR[sel.year])} per session`;
+    document.getElementById('costTotal').textContent = money(total);
+    document.getElementById('costSub').textContent = `${sessLabel(sel)} · ${nights} nights · ${span(selStart(), selEnd())}`;
+    lines.innerHTML = [[`${room[0]} × ${k} session${k > 1 ? 's' : ''}`, money(base)],
+      ...(fam.halfBoard ? [['Half-Board (estimate)', money(hb)]] : []),
+      ['Tourist tax, paid at the resort', money(fam.adults * PR.touristTax * nights)]].map(([a, b]) => `<div><span>${a}</span><span>${b}</span></div>`).join('');
+    const people = fam.adults + fam.kids, finalPay = addDays(D(selStart()), -P.finalPaymentDays), late = finalPay < today;
+    steps.innerHTML = past ? '' : [
+      ['Today', late ? money(total) : money(P.deposit * people), late ? 'full balance' : `deposit (${people} × ${money(P.deposit)})`],
+      ['By ' + fmtD(finalPay), late ? '—' : money(total - P.deposit * people), late ? 'already passed' : 'remaining balance'],
+      ['Total', money(total), 'estimate for your family'],
+    ].map(([a, v, s]) => `<div class="pay-step">${a}<strong>${v}</strong>${s}</div>`).join('');
+    ln.style.display = (!past && late) ? '' : 'none';
+    ln.textContent = (!past && late) ? `The final payment date (${fmtD(finalPay)}) has passed, so the full balance is due when we send your quote. Spots are confirmed once it’s paid.` : '';
+  }
+  let pn = document.getElementById('pastNote');
+  if(!pn){ pn = document.createElement('div'); pn.id = 'pastNote'; pn.className = 'past-note'; steps.after(pn); }
+  pn.style.display = past ? '' : 'none';
+  pn.innerHTML = past ? `These were the summer ${sel.year} prices. Those sessions have ended. <a href="#" data-year="${firstOpenYear}">See summer ${firstOpenYear} →</a>` : '';
+  document.getElementById('sbPrice').innerHTML = `<span>Summer ${sel.year} · ${sessLabel(sel)}</span>From ${money(minFamilyPrice() * k)} / family`;
+}
+
+function renderPolicy(){
+  const P = TRIP.policy, first = sessionsOf(sel)[0], start = D(first.start);
+  const nonRef = addDays(start, -P.nonRefundableDays), finalPay = addDays(start, -P.finalPaymentDays);
+  const basis = selCount() > 1 ? ` (based on your first session, ${short(start)})` : '';
+  document.getElementById('payPolicy').innerHTML = [
+    ['Deposit', `${money(P.deposit)} ${P.depositUnit}, paid when you book. It secures your session dates.`],
+    ['Deposit becomes non-refundable', `${fmtD(nonRef)}${basis}, ${P.nonRefundableDays} days before your session starts`],
+    ['Final payment due', `${fmtD(finalPay)}${basis}, ${P.finalPaymentDays} days before your session starts`],
+    ['Refunds on the remaining balance', P.refunds.map(r => `${r[0]}: ${r[1]}`).join(' · ')],
+    ['Missed payments', 'If the final payment isn’t received within two weeks of the due date, spots are released and the deposit stays non-refundable.'],
+    ['Booking after the final payment date', 'The full balance is due as soon as we share your quote. The deposit alone doesn’t secure your spots; they’re confirmed once the full payment is received.'],
+    ['Travel insurance', 'Required for all participants. Travel insurance may cover certain unexpected circumstances that prevent you from attending, subject to the terms, conditions, exclusions and limits of the policy you buy. Participants are responsible for getting and keeping their own coverage; if you choose not to, Every Avenue Travel won’t be responsible for losses if you can’t attend. Every Avenue Travel LLC is not the insurer and does not provide insurance advice. Two options many long-term travelers use: <a href="https://jo.my/travelinsurance">SafetyWing</a> and <a href="https://withfaye.pxf.io/aNOqzj">Faye</a>. Every Avenue Travel LLC may receive a referral fee if you buy through these links.'],
+  ].map(([k, v]) => `<p><strong>${k}:</strong> ${v}</p>`).join('') +
+    '<p><a href="https://worldschoolingjourneys.com/cancellation-refund-policy/">View Our Full Cancellations & Refunds Policy</a></p>';
+  document.querySelectorAll('.faq-policy').forEach(el => el.innerHTML = document.getElementById('payPolicy').innerHTML);
+  document.querySelectorAll('.faq-two').forEach(el => { const ss = SEASONS[sel.year].sessions; el.textContent = ss.length > 1 ? span(ss[0].start, ss[1].end) : ''; });
+  document.getElementById('legalBody').innerHTML =
+    '<p><strong>Terms and Conditions:</strong> The full terms that apply when you book this trip with us. <a href="https://worldschoolingjourneys.com/terms-and-conditions/">View Our Terms and Conditions</a></p>' +
+    '<p>Every Avenue Travel, LLC is registered with the State of Florida as a Seller of Travel. Registration No. ST45213. IATA No. 10620400.</p>';
+}
+
+const NAV = [['overview','Overview'],['community','Community'],['itinerary','What You’ll Do'],['highlightsSec','Highlights'],['cost','Cost'],['included','What’s Included'],['stays','Stays'],['food','Food'],['faq','FAQ'],['allYear','Other Seasons']];
+function hideEmptySections(){
+  const empty = { highlightsSec: !TRIP.overview.highlights.length,
+    itinerary: document.getElementById('itinerary').dataset.empty === '1',
+    stays: document.getElementById('stays').dataset.empty === '1', food: document.getElementById('food').dataset.empty === '1', included: !TRIP.included.length && !TRIP.notIncluded.length };
+  NAV.forEach(([id]) => { const s = document.getElementById(id); if(s) s.style.display = empty[id] ? 'none' : ''; });
+  document.getElementById('subnav').innerHTML = NAV.filter(([id]) => !empty[id]).map(([id, l]) => `<a href="#${id}">${l}</a>`).join('');
+}
+
+// ---------- pickers: year dropdowns, session dropdown, session cards (all share `sel`) ----------
+const PICKERS = {
+  year: { opts: () => YEARS.map(y => ({v: String(y), text: `Summer ${y}`, status: yearPast(y) ? 'past' : null})),
+          value: () => String(sel.year), pick: v => setYear(+v) },
+  // sessions: one checkbox per session; ticking keeps them one unbroken run (like back-to-back cruises)
+  sess: { multi: true,
+          opts: () => SEASONS[sel.year].sessions.map(s => ({v: String(s.n), text: `Session ${s.n} · ${span(s.start, s.end, false)}`, status: s.status, checked: s.n >= sel.from && s.n <= sel.to})),
+          label: () => `${sessLabel(sel)} · ${span(selStart(), selEnd(), false)}`,
+          pick: v => toggleSession(+v, true) },
+};
+function setYear(y){ sel.year = y; update(); }
+function setSessions(a, b, keepOpen){ sel.from = a; sel.to = b; update(keepOpen); }
+function update(keepOpen){ if(!keepOpen) closeCS(); renderSelection(); writeUrl(); }
+
+const selects = [...document.querySelectorAll('select.year-select, select.sess-select')];
+selects.forEach(s => s._kind = s.classList.contains('year-select') ? 'year' : 'sess');
+function hostOf(wrap){ return wrap.closest('.hp-field, .mini-picker') || wrap; }
+function closeCS(){ document.querySelectorAll('.cs.open').forEach(w => { w.classList.remove('open'); hostOf(w).classList.remove('cs-host-open'); }); }
+selects.forEach(sel_ => {
+  const wrap = document.createElement('span'); wrap.className = 'cs'; sel_.parentNode.insertBefore(wrap, sel_);
+  const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'cs-btn'; btn.setAttribute('aria-haspopup','listbox');
+  btn.setAttribute('aria-label', sel_.getAttribute('aria-label'));
+  const list = document.createElement('ul'); list.className = 'cs-list'; list.setAttribute('role','listbox');
+  wrap.append(btn, sel_, list); sel_.classList.add('cs-native'); sel_.tabIndex = -1; sel_._cs = {wrap, btn, list};
+  btn.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); const open = !wrap.classList.contains('open'); closeCS();
+    if(open){ wrap.classList.add('open'); hostOf(wrap).classList.add('cs-host-open'); wrap.classList.remove('flip');
+      if(list.getBoundingClientRect().right > window.innerWidth - 8) wrap.classList.add('flip');
+      (list.querySelector('[aria-selected="true"]') || list.firstChild).focus(); } });
+  btn.addEventListener('keydown', e => { if(['ArrowDown','Enter',' '].includes(e.key)){ e.preventDefault(); btn.click(); } });
+  const pickFrom = li => { const P = PICKERS[sel_._kind], v = li.dataset.v; P.pick(v);
+    if(P.multi){ const again = list.querySelector(`[data-v="${v}"]`); if(again) again.focus(); } else btn.focus(); };
+  list.addEventListener('click', e => { e.stopPropagation(); e.preventDefault(); /* no label re-click */ const li = e.target.closest('.cs-opt'); if(li) pickFrom(li); });
+  list.addEventListener('keydown', e => { const items = [...list.children], k = items.indexOf(document.activeElement);
+    if(e.key === 'ArrowDown'){ e.preventDefault(); (items[k+1] || items[0]).focus(); }
+    else if(e.key === 'ArrowUp'){ e.preventDefault(); (items[k-1] || items[items.length-1]).focus(); }
+    else if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); if(items[k]) pickFrom(items[k]); }
+    else if(e.key === 'Escape'){ closeCS(); btn.focus(); } });
+});
+document.querySelectorAll('.hp-field').forEach(f => f.addEventListener('click', e => {
+  if(!e.target.closest('.cs-btn') && !e.target.closest('.cs-list')){ e.preventDefault(); f.querySelector('.cs-btn').click(); } }));
+function syncPickers(){
+  selects.forEach(s => { const P = PICKERS[s._kind], opts = P.opts();
+    const isOn = o => P.multi ? o.checked : o.v === P.value();
+    s.multiple = !!P.multi;
+    s.innerHTML = opts.map(o => `<option value="${o.v}" ${isOn(o) ? 'selected' : ''}>${o.text}</option>`).join('');
+    s._cs.btn.textContent = P.multi ? P.label() : (opts.find(isOn) || opts[0]).text;
+    s._cs.list.setAttribute('aria-multiselectable', P.multi ? 'true' : 'false');
+    s._cs.list.innerHTML = opts.map(o => `<li class="cs-opt ${P.multi ? 'cs-check' : ''}" role="option" tabindex="-1" data-v="${o.v}" aria-selected="${isOn(o)}">${P.multi ? '<span class="cb" aria-hidden="true"></span>' : ''}${o.text}${o.status ? `<span class="o-status ${o.status}">${STATUS[o.status]}</span>` : ''}</li>`).join('')
+      + (P.multi ? '<li class="cs-hint" aria-hidden="true">Sessions run back to back. Same room the whole time.</li>' : ''); });
+  // session cards: tap to add or remove (always one unbroken run)
+  document.querySelectorAll('.sess-strip').forEach(strip => {
+    strip.innerHTML = SEASONS[sel.year].sessions.map(s => { const on = s.n >= sel.from && s.n <= sel.to;
+      return `<button type="button" class="sess-card ${on ? 'on' : ''}" data-n="${s.n}" aria-pressed="${on}">
+        <span class="sc-name">Session ${s.n}</span><span class="sc-dates">${span(s.start, s.end)}</span><span class="sc-status ${s.status}">${STATUS[s.status]}</span></button>`; }).join(''); });
+}
+function toggleSession(n, keepOpen){
+  const on = n >= sel.from && n <= sel.to;
+  if(!on){ setSessions(Math.min(sel.from, n), Math.max(sel.to, n), keepOpen); return; }   // add (fills any gap)
+  if(sel.from === sel.to) return;                                                          // keep at least one
+  if(n === sel.from) setSessions(n + 1, sel.to, keepOpen); else if(n === sel.to) setSessions(sel.from, n - 1, keepOpen);
+  else setSessions(n, n, keepOpen);                                                        // middle of a run → just that one
+}
+document.addEventListener('click', e => {
+  const c = e.target.closest('.sess-card'); if(c){ toggleSession(+c.dataset.n); return; }
+  const y = e.target.closest('[data-year]'); if(y){ e.preventDefault(); setYear(+y.dataset.year); return; }
+  const b = e.target.closest('.book-btn'); if(b && isPast()){ e.preventDefault(); setYear(firstOpenYear); document.querySelector('.hp-field').scrollIntoView({behavior:'smooth', block:'center'}); return; }
+  closeCS();
+});
+document.querySelectorAll('[data-step]').forEach(b => b.addEventListener('click', () => {
+  const [k, d] = b.dataset.step.split(':'); const lim = {adults:[1,12], kids:[0,12]}[k];
+  fam[k] = Math.min(lim[1], Math.max(lim[0], fam[k] + +d)); renderCost(); }));
+document.getElementById('halfBoard').addEventListener('change', e => { fam.halfBoard = e.target.checked; renderCost(); });
+document.querySelectorAll('.proof-arrow-btn').forEach(b => b.addEventListener('click', () => {
+  const t = document.getElementById('testiTrack'), c = t.querySelector('.proof-chip');
+  if(c) t.scrollBy({left: +b.dataset.dir * (c.getBoundingClientRect().width + 14), behavior:'smooth'}); }));
+
+// shareable link: ?year=2027&sessions=1-2
+function writeUrl(){ try{ history.replaceState(null, '', `${location.pathname}?year=${sel.year}&sessions=${sel.from}-${sel.to}${location.hash}`); }catch(e){} }
+try{ const q = new URLSearchParams(location.search);
+  if(SEASONS[q.get('year')]) sel.year = +q.get('year');
+  const m = /^([1-3])-([1-3])$/.exec(q.get('sessions') || ''); if(m && +m[1] <= +m[2]){ sel.from = +m[1]; sel.to = +m[2]; } }catch(e){}
+
+document.addEventListener('click', e => { const a = e.target.closest('a[href^="#"]'); if(!a) return;
+  const id = a.getAttribute('href').slice(1); const t = id && document.getElementById(id); if(t){ e.preventDefault(); t.scrollIntoView({behavior:'smooth', block:'start'}); } });
+document.querySelectorAll('[data-open-picker]').forEach(a => a.addEventListener('click', e => {
+  e.preventDefault(); e.stopPropagation();
+  const host = document.querySelector('.hp-sess'); host.scrollIntoView({behavior:'smooth', block:'center'});
+  setTimeout(() => { if(!host.querySelector('.cs.open')) host.querySelector('.cs-btn').click(); }, 450); }));
+
+renderStatic();
+renderSelection();
+</script>
+</body>
+</html>
