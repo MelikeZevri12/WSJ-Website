@@ -9,7 +9,8 @@ tar -czf "%ARCHIVE%" --exclude=.git --exclude=.github --exclude=admin.html --exc
 if errorlevel 1 goto :fail
 scp "%ARCHIVE%" melike@178.105.202.222:/tmp/wsj-site.tgz
 if errorlevel 1 goto :fail
-ssh melike@178.105.202.222 "mkdir -p ~/apps/website && tar -xzf /tmp/wsj-site.tgz -C ~/apps/website && rm /tmp/wsj-site.tgz && echo Uploaded: && ls ~/apps/website"
+rem Windows tar records folders as read-only - reset them to writable before and after unpacking, and don't copy Windows permissions
+ssh melike@178.105.202.222 "mkdir -p ~/apps/website && chmod -R u+w ~/apps/website && tar --warning=no-unknown-keyword --no-same-permissions --no-overwrite-dir -xzf /tmp/wsj-site.tgz -C ~/apps/website && chmod -R u+w,a+rX ~/apps/website && rm /tmp/wsj-site.tgz && echo Uploaded: && ls ~/apps/website"
 if errorlevel 1 goto :fail
 del "%ARCHIVE%"
 echo.

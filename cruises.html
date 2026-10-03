@@ -307,13 +307,95 @@
   }
   @media (max-width:640px){
     .global-nav .gn-wrap{flex-direction:column;align-items:flex-start;gap:10px;}
-    .filter-bar-inner{flex-direction:column;align-items:stretch;}
-    .filter-bar-controls{flex-direction:column;align-items:stretch;}
-    .filter-range{width:100%;}
+  }
+
+  /* Phones: the filter bar shrinks to one sticky row (Filters button +
+     result count); the controls open as a stacked panel under it. */
+  .filter-mobile-toggle,.filter-mobile-done{display:none;}
+  @media (max-width:760px){
+    .filter-bar{padding:9px 0;}
+    .filter-bar-inner{flex-wrap:wrap;gap:0;}
+    .filter-mobile-toggle{
+      order:1;display:inline-flex;align-items:center;gap:8px;padding:7px 15px;border-radius:20px;
+      border:1.5px solid var(--line);background:var(--white);cursor:pointer;
+      font-family:'Titillium Web',sans-serif;font-weight:700;font-size:13.5px;color:var(--dark);
+    }
+    .filter-mobile-toggle.has-active{border-color:var(--green);background:var(--green-tint);color:var(--green-dark);}
+    .fmt-count{
+      min-width:19px;height:19px;padding:0 5px;border-radius:10px;background:var(--green-dark);
+      color:var(--white);font-size:11px;line-height:19px;text-align:center;
+    }
+    .results-count{order:2;margin-left:auto;font-size:13px;}
+    .filter-bar-controls{
+      order:3;flex:1 1 100%;display:none;flex-direction:column;align-items:stretch;flex-wrap:nowrap;gap:16px;
+      margin-top:10px;padding:16px 2px 6px;border-top:1px solid var(--line);
+      max-height:calc(100vh - 130px);max-height:calc(100dvh - 130px);overflow-y:auto;
+    }
+    .filter-bar.mobile-open .filter-bar-controls{display:flex;}
+    .filter-group{gap:12px;}
+    .filter-label{flex:0 0 70px;font-size:11.5px;}
+    .filter-regions{flex-direction:column;align-items:stretch;}
+    .filter-regions .filter-dropdown-btn{justify-content:space-between;padding:10px 16px;font-size:14px;}
+    .filter-dropdown-panel{position:static;width:auto;max-width:none;margin-top:8px;box-shadow:none;}
+    .pill-btn{padding:7px 14px;font-size:13px;}
+    .dual-range{flex:1 1 auto;width:auto;height:26px;}
+    .dual-range input[type=range], .dual-range-track, .dual-range-fill{top:10px;}
+    .dual-range input[type=range]::-webkit-slider-thumb{width:22px;height:22px;margin-top:-8px;}
+    .dual-range input[type=range]::-moz-range-thumb{width:22px;height:22px;}
+    .lv{flex:0 0 104px;text-align:right;font-size:13.5px;}
+    .filter-sort select{flex:1 1 auto;padding:10px 12px;font-size:14px;}
+    .filter-toggles{flex-wrap:wrap;gap:12px 22px;}
+    .filter-toggle{font-size:14px;}
+    .filter-toggle input{width:19px;height:19px;}
+    .reset-link{align-self:center;font-size:13.5px;}
+    .filter-mobile-done{
+      display:block;width:100%;padding:13px;border:none;border-radius:10px;cursor:pointer;
+      background:var(--green-dark);color:var(--white);
+      font-family:'Titillium Web',sans-serif;font-weight:700;font-size:15px;
+    }
   }
   .filter-dropdown-btn:disabled{opacity:.55;cursor:not-allowed;}
   .dual-range input[type=range]:disabled{cursor:not-allowed;}
   .dual-range-fill.is-inert{background:var(--muted);opacity:.35;}
+
+  /* MOBILE NAVBAR - on phones only the logo + a menu button show; the links
+     open in a drawer that slides in from the left over the page (the page
+     behind is dimmed, not pushed down). The Trips dropdown is listed inline,
+     since there's no hover on touch screens. */
+  .gn-toggle,.gn-backdrop,.gn-drawer-logo{display:none;}
+  @media (max-width:760px){
+    .global-nav > .wrap, .global-nav > .gn-wrap{flex-direction:row;flex-wrap:nowrap;align-items:center;gap:0;}
+    .gn-toggle{
+      display:flex;flex-direction:column;justify-content:center;gap:5px;
+      width:42px;height:42px;padding:10px;margin-left:auto;position:relative;z-index:1002;
+      background:var(--dark-soft);border:1px solid var(--line-on-dark);border-radius:9px;cursor:pointer;
+    }
+    .gn-toggle span{display:block;height:2px;border-radius:2px;background:var(--white);transition:transform .2s ease, opacity .2s ease;}
+    .global-nav.open .gn-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .global-nav.open .gn-toggle span:nth-child(2){opacity:0;}
+    .global-nav.open .gn-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    #gnLinks{
+      position:fixed;top:0;left:0;bottom:0;z-index:1001;width:min(80vw,310px);
+      display:flex;flex-direction:column;flex-wrap:nowrap;gap:0;padding:22px 22px 30px;overflow-y:auto;
+      background:var(--dark-soft);box-shadow:8px 0 30px rgba(0,0,0,.35);
+      transform:translateX(-100%);visibility:hidden;transition:transform .25s ease, visibility 0s linear .25s;
+    }
+    .global-nav.open #gnLinks{transform:none;visibility:visible;transition:transform .25s ease;}
+    .gn-drawer-logo{display:flex;margin-bottom:14px;}
+    .gn-backdrop{
+      display:block;position:fixed;inset:0;z-index:1000;background:rgba(13,22,32,.55);
+      opacity:0;visibility:hidden;transition:opacity .25s ease, visibility 0s linear .25s;
+    }
+    .global-nav.open .gn-backdrop{opacity:1;visibility:visible;transition:opacity .25s ease;}
+    #gnLinks .gn-link{display:block;padding:13px 2px;font-size:16px;border-top:1px solid var(--line-on-dark);}
+    #gnLinks .gn-dropdown{flex-direction:column;align-items:stretch;}
+    #gnLinks .gn-dropdown::after{display:none;}
+    #gnLinks .gn-dropdown-menu{
+      display:flex;position:static;margin:0 0 6px;padding:0 0 0 16px;min-width:0;
+      background:none;border:none;box-shadow:none;
+    }
+    #gnLinks .gn-dropdown-item{padding:9px 2px;font-size:15px;}
+  }
 </style>
 </head>
 <body>
@@ -324,12 +406,14 @@
     <a href="/" class="gn-logo">
       <span class="gn-script">Worldschooling</span><span class="gn-sans">journeys</span>
     </a>
+    <button type="button" class="gn-toggle" id="gnToggle" aria-label="Open menu" aria-expanded="false" aria-controls="gnLinks"><span></span><span></span><span></span></button>
     <div class="gn-links" id="gnLinks">
       <a href="/" class="gn-link">Home</a>
       <div class="gn-dropdown">
         <a href="#" class="gn-link active">Worldschooling Trips</a>
         <div class="gn-dropdown-menu">
           <a href="/cruises.html" class="gn-dropdown-item">Group Cruises</a>
+          <a href="/land-trips.html" class="gn-dropdown-item">Land Trips</a>
         </div>
       </div>
       <a href="#" class="gn-link">About Us</a>
@@ -364,7 +448,11 @@
 <!-- FILTER BAR -->
 <div class="filter-bar" id="filterBar">
   <div class="wrap filter-bar-inner">
-    <div class="filter-bar-controls">
+    <button type="button" class="filter-mobile-toggle" id="filterMobileToggle" aria-expanded="false" aria-controls="filterBarControls">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h7M13 4h1M2 12h1M7 12h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="11" cy="4" r="1.9" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="5" cy="12" r="1.9" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      Filters <span class="fmt-count" id="filterActiveCount" hidden></span>
+    </button>
+    <div class="filter-bar-controls" id="filterBarControls">
     <div class="filter-group filter-regions">
       <button type="button" class="filter-dropdown-btn" id="regionDropdownBtn">
         <span id="regionDropdownLabel">All Regions</span><span class="dd-caret">▾</span>
@@ -412,6 +500,7 @@
       <label class="filter-toggle"><input type="checkbox" id="hideSoldOut"> Hide sold out</label>
     </div>
     <button type="button" class="reset-link" id="resetFiltersBtn">Reset</button>
+    <button type="button" class="filter-mobile-done" id="filterMobileDone">Show results</button>
     </div>
     <div class="results-count" id="resultsCount"><strong>0</strong> cruises</div>
   </div>
@@ -635,6 +724,7 @@
     });
 
     resultsCount.innerHTML = `<strong>${list.length}</strong> cruise${list.length === 1 ? "" : "s"}`;
+    updateMobileFilterButton(list.length);
 
     if(!list.length){
       grid.innerHTML = `<div class="empty-state"><h3>No cruises match those filters</h3><p>Try widening your duration range, or clearing the sold-out filter.</p></div>`;
@@ -730,6 +820,35 @@
     render();
   });
 
+  /* ---- PHONE FILTER PANEL: one "Filters" button opens the controls; it shows
+     how many filters are on, and "Show N cruises" closes the panel ---- */
+  const filterMobileToggle = document.getElementById("filterMobileToggle");
+  function setMobileFiltersOpen(open){
+    filterBar.classList.toggle("mobile-open", open);
+    filterMobileToggle.setAttribute("aria-expanded", open);
+  }
+  function updateMobileFilterButton(shown){
+    const durMin = document.getElementById("durationMin"), durMax = document.getElementById("durationMax");
+    const active = [
+      state.regions.length > 0,
+      state.durationMin > Number(durMin.min) || state.durationMax < Number(durMax.max),
+      !state.priceFull,
+      state.hideSoldOut,
+      state.largeFamiliesOnly,
+    ].filter(Boolean).length;
+    const badge = document.getElementById("filterActiveCount");
+    badge.textContent = active;
+    badge.hidden = active === 0;
+    document.getElementById("filterMobileToggle").classList.toggle("has-active", active > 0);
+    document.getElementById("filterMobileDone").textContent = `Show ${shown} cruise${shown === 1 ? "" : "s"}`;
+  }
+  filterMobileToggle.addEventListener("click", () => setMobileFiltersOpen(!filterBar.classList.contains("mobile-open")));
+  document.getElementById("filterMobileDone").addEventListener("click", () => {
+    setMobileFiltersOpen(false);
+    const top = document.querySelector(".cruise-grid-section").getBoundingClientRect().top + scrollY - filterBar.offsetHeight;
+    if(scrollY > top) window.scrollTo({ top, behavior: "smooth" });
+  });
+
   document.getElementById("resetFiltersBtn").addEventListener("click", () => {
     state.hideSoldOut = false;
     document.getElementById("hideSoldOut").checked = false;
@@ -819,6 +938,7 @@
       updatePrice();
     } else {
       document.getElementById("priceLabel").closest(".filter-group").style.display = "none";
+      state.priceFull = true; // hidden slider never filters
     }
     // Only offer the 5+ filter when at least one cruise has those cabins.
     if (!cruises.some(c => c.largeFamilies)) document.getElementById("largeFamiliesToggle").style.display = "none";
@@ -830,5 +950,31 @@
 })();
 </script>
 
+<script>
+// MOBILE NAVBAR: the phone menu button opens/closes the side drawer; tapping
+// the dimmed page, a link, or Escape closes it. The page can't scroll behind it.
+(function(){
+  const nav = document.querySelector('.global-nav');
+  const btn = document.getElementById('gnToggle');
+  const links = document.getElementById('gnLinks');
+  if(!nav || !btn || !links) return;
+  const logo = nav.querySelector('.gn-logo');
+  if(logo){ const copy = logo.cloneNode(true); copy.classList.add('gn-drawer-logo'); links.prepend(copy); }
+  const backdrop = document.createElement('div');
+  backdrop.className = 'gn-backdrop';
+  nav.appendChild(backdrop);
+  function setOpen(open){
+    nav.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open);
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+  }
+  btn.addEventListener('click', () => setOpen(!nav.classList.contains('open')));
+  backdrop.addEventListener('click', () => setOpen(false));
+  links.addEventListener('click', (e) => { if(e.target.closest('a[href]:not([href="#"])')) setOpen(false); });
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') setOpen(false); });
+  window.addEventListener('resize', () => { if(innerWidth > 760) setOpen(false); });
+})();
+</script>
 </body>
 </html>

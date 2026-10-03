@@ -1039,6 +1039,45 @@
   @media (max-width:700px){ .flight-pair{grid-template-columns:1fr;} }
 
   section[id]{scroll-margin-top:60px;}
+
+  /* MOBILE NAVBAR - on phones only the logo + a menu button show; the links
+     open in a drawer that slides in from the left over the page (the page
+     behind is dimmed, not pushed down). The Trips dropdown is listed inline,
+     since there's no hover on touch screens. */
+  .gn-toggle,.gn-backdrop,.gn-drawer-logo{display:none;}
+  @media (max-width:760px){
+    .global-nav > .wrap, .global-nav > .gn-wrap{flex-direction:row;flex-wrap:nowrap;align-items:center;gap:0;}
+    .gn-toggle{
+      display:flex;flex-direction:column;justify-content:center;gap:5px;
+      width:42px;height:42px;padding:10px;margin-left:auto;position:relative;z-index:1002;
+      background:var(--dark-soft);border:1px solid var(--line-on-dark);border-radius:9px;cursor:pointer;
+    }
+    .gn-toggle span{display:block;height:2px;border-radius:2px;background:var(--white);transition:transform .2s ease, opacity .2s ease;}
+    .global-nav.open .gn-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .global-nav.open .gn-toggle span:nth-child(2){opacity:0;}
+    .global-nav.open .gn-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    #gnLinks{
+      position:fixed;top:0;left:0;bottom:0;z-index:1001;width:min(80vw,310px);
+      display:flex;flex-direction:column;flex-wrap:nowrap;gap:0;padding:22px 22px 30px;overflow-y:auto;
+      background:var(--dark-soft);box-shadow:8px 0 30px rgba(0,0,0,.35);
+      transform:translateX(-100%);visibility:hidden;transition:transform .25s ease, visibility 0s linear .25s;
+    }
+    .global-nav.open #gnLinks{transform:none;visibility:visible;transition:transform .25s ease;}
+    .gn-drawer-logo{display:flex;margin-bottom:14px;}
+    .gn-backdrop{
+      display:block;position:fixed;inset:0;z-index:1000;background:rgba(13,22,32,.55);
+      opacity:0;visibility:hidden;transition:opacity .25s ease, visibility 0s linear .25s;
+    }
+    .global-nav.open .gn-backdrop{opacity:1;visibility:visible;transition:opacity .25s ease;}
+    #gnLinks .gn-link{display:block;padding:13px 2px;font-size:16px;border-top:1px solid var(--line-on-dark);}
+    #gnLinks .gn-dropdown{flex-direction:column;align-items:stretch;}
+    #gnLinks .gn-dropdown::after{display:none;}
+    #gnLinks .gn-dropdown-menu{
+      display:flex;position:static;margin:0 0 6px;padding:0 0 0 16px;min-width:0;
+      background:none;border:none;box-shadow:none;
+    }
+    #gnLinks .gn-dropdown-item{padding:9px 2px;font-size:15px;}
+  }
 </style>
 </head>
 <body>
@@ -1048,12 +1087,14 @@
     <a href="/" class="gn-logo">
       <span class="gn-script">Worldschooling</span><span class="gn-sans">journeys</span>
     </a>
+    <button type="button" class="gn-toggle" id="gnToggle" aria-label="Open menu" aria-expanded="false" aria-controls="gnLinks"><span></span><span></span><span></span></button>
     <div class="gn-links" id="gnLinks">
       <a href="/" class="gn-link">Home</a>
       <div class="gn-dropdown">
         <a href="#" class="gn-link active">Worldschooling Trips</a>
         <div class="gn-dropdown-menu">
           <a href="/cruises.html" class="gn-dropdown-item">Group Cruises</a>
+          <a href="/land-trips.html" class="gn-dropdown-item">Land Trips</a>
         </div>
       </div>
       <a href="#" class="gn-link">About Us</a>
@@ -3333,6 +3374,32 @@ if (localStorage.getItem('cruiseAdminAuthToken')) {
 }
 
 loadJourney();
+</script>
+<script>
+// MOBILE NAVBAR: the phone menu button opens/closes the side drawer; tapping
+// the dimmed page, a link, or Escape closes it. The page can't scroll behind it.
+(function(){
+  const nav = document.querySelector('.global-nav');
+  const btn = document.getElementById('gnToggle');
+  const links = document.getElementById('gnLinks');
+  if(!nav || !btn || !links) return;
+  const logo = nav.querySelector('.gn-logo');
+  if(logo){ const copy = logo.cloneNode(true); copy.classList.add('gn-drawer-logo'); links.prepend(copy); }
+  const backdrop = document.createElement('div');
+  backdrop.className = 'gn-backdrop';
+  nav.appendChild(backdrop);
+  function setOpen(open){
+    nav.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open);
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+  }
+  btn.addEventListener('click', () => setOpen(!nav.classList.contains('open')));
+  backdrop.addEventListener('click', () => setOpen(false));
+  links.addEventListener('click', (e) => { if(e.target.closest('a[href]:not([href="#"])')) setOpen(false); });
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') setOpen(false); });
+  window.addEventListener('resize', () => { if(innerWidth > 760) setOpen(false); });
+})();
 </script>
 </body>
 </html>
