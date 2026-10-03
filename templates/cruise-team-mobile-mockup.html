@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cruise Team – Mobile Layout Reference</title>
+<!--
+  MOBILE LAYOUT REFERENCE for the Cruise Team dashboard.
+  Each <section class="frame"> is one phone screen (390x844).
+  Colors, fonts and CSS variables are copied from the live dashboard stylesheet.
+  Use this as the visual target for a @media (max-width: 640px) layout.
+  Do NOT change the desktop layout. Sample names/data are fictional.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin=""><link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&amp;family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&amp;family=Titillium+Web:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+:root{--green:#A5BD8E;--green-dark:#708F53;--green-hover:#2D3A22;--dark:#152230;--dark-soft:#1e3040;--blue:#2f7f8a;
+--blue-tint:color-mix(in srgb,var(--blue) 22%,white);--blue-line:color-mix(in srgb,var(--blue) 48%,white);
+--green-tint:color-mix(in srgb,var(--green) 14%,white);--green-line:color-mix(in srgb,var(--green) 42%,white);
+--white:#fffdf7;--paper:#f4f1e9;--line:rgba(21,34,48,0.16);--line-on-dark:rgba(255,255,255,0.2);--muted:#6d6552;
+--red:#c14a2f;--red-tint:color-mix(in srgb,var(--red) 12%,var(--white));--red-line:color-mix(in srgb,var(--red) 35%,var(--white));
+--sky-tint:color-mix(in srgb,var(--blue) 16%,var(--white));--sky-line:color-mix(in srgb,var(--blue) 42%,var(--white));
+--gold:#d9a441;--gold-tint:color-mix(in srgb,var(--gold) 18%,var(--white));--gold-line:color-mix(in srgb,var(--gold) 45%,var(--white))}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Titillium Web',sans-serif;color:var(--dark);background:var(--paper);line-height:1.5}
+a{color:inherit;text-decoration:none}a:hover{color:var(--green-dark)}
+h1,h2,h3{font-family:'Libre Baskerville',serif;font-weight:700;margin:0;color:var(--dark)}
+.screen{width:390px;height:844px;position:relative;overflow:hidden;background:var(--paper);display:flex;flex-direction:column;font-family:'Titillium Web',sans-serif;color:var(--dark);line-height:1.5}
+.gnav{background:var(--dark-soft);border-bottom:1px solid var(--line-on-dark);padding:12px 16px;display:flex;align-items:baseline;gap:8px}
+.gn-script{font-family:'Caveat',cursive;font-weight:700;font-size:26px;color:var(--gold);line-height:1}
+.gn-sans{font-weight:600;font-size:14px;color:var(--green);letter-spacing:.02em}
+.subnav{display:flex;border-bottom:1px solid var(--line);background:var(--paper);padding:0 8px}
+.subnav a{flex:1;text-align:center;padding:12px 4px;margin-bottom:-1px;font-weight:700;font-size:15px;color:var(--muted);border-bottom:3px solid transparent}
+.subnav a.active{color:var(--green-dark);border-bottom-color:var(--green-dark)}
+.wrap{padding:18px 16px 0;display:flex;flex-direction:column;gap:12px}
+.hdr{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.hdr h1{font-size:26px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:0 20px;height:44px;border-radius:7px;font-weight:700;font-size:14px;letter-spacing:.01em;border:none;cursor:pointer;font-family:'Titillium Web',sans-serif;white-space:nowrap}
+.btn-primary{background:var(--green-dark);color:var(--white)}
+.btn-outline{background:var(--white);border:1.5px solid var(--line);color:var(--dark)}
+.input{width:100%;height:44px;padding:0 12px;border:1.5px solid var(--line);border-radius:7px;font-family:'Titillium Web',sans-serif;font-size:16px;color:var(--dark);background:var(--white)}
+.toggles{display:flex;gap:8px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 12px;border:1.5px solid var(--line);border-radius:18px;background:var(--white);font-size:13px;font-weight:600;color:var(--dark);white-space:nowrap}
+.pill input{margin:0;width:16px;height:16px;accent-color:#708F53}
+.pill.warn{color:var(--red);border-color:var(--red-line);background:var(--red-tint)}
+.vmt{display:flex;border:1.5px solid var(--line);border-radius:8px;overflow:hidden}
+.vmt button{flex:1;background:var(--white);border:none;height:38px;padding:0 14px;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:13px;color:var(--muted)}
+.vmt button.active{background:var(--green-dark);color:var(--white)}
+.admin-card{background:var(--white);border:1px solid var(--line);border-radius:12px;box-shadow:rgba(36,40,48,.05) 0 2px 12px;outline:rgba(21,34,48,.3) dashed 1.5px;outline-offset:-6px}
+.crow{display:flex;gap:12px;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line)}
+.crow:last-child{border-bottom:none}
+.crow.alt{background:color-mix(in srgb,var(--sky-tint) 38%,white)}
+.dep{font-weight:800;color:var(--green-dark);font-size:14px;letter-spacing:.02em;white-space:nowrap;display:flex;align-items:center}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green-dark);margin-right:8px}
+.dest{font-weight:700;font-size:16px;line-height:1.3}
+.ship{font-family:'Libre Baskerville',serif;font-style:italic;font-size:14px;color:var(--dark-soft)}
+.line-badge{display:inline-block;background:var(--green-tint);border:1px solid var(--green-line);color:var(--green-dark);font-weight:700;font-size:12px;padding:3px 11px;border-radius:20px;white-space:nowrap}
+.fam{display:flex;flex-direction:column;align-items:center;min-width:48px}
+.fam b{font-size:20px;line-height:1.1;font-weight:700}
+.fam span{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:700}
+.k{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--green-dark);font-weight:700}
+.chev{color:var(--muted);flex-shrink:0}
+.paid-check{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--green-tint);border:1px solid var(--green-line);color:var(--green-dark);font-weight:800;font-size:12px}
+.requested-badge,.cancelled-badge,.booked-badge,.attention-badge{display:inline-block;font-weight:700;font-size:11px;padding:3px 10px;border-radius:20px;letter-spacing:.02em;white-space:nowrap;text-transform:uppercase}
+.requested-badge{background:var(--gold-tint);border:1px solid var(--gold-line);color:#8a6414}
+.cancelled-badge{background:var(--red-tint);border:1px solid var(--red-line);color:var(--red)}
+.booked-badge{background:var(--green-tint);border:1px solid var(--green-line);color:var(--green-dark)}
+.attention-badge{background:var(--red-tint);border:1px solid var(--red-line);color:var(--red);text-transform:none}
+.due-flag{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:var(--red-tint);border:1px solid var(--red-line);color:var(--red);font-weight:800;font-size:10.5px;margin-left:6px}
+.mhead{padding:14px 16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;background:var(--white)}
+.mhead h2{font-size:19px}
+.mclose{background:none;border:none;font-size:26px;line-height:1;color:var(--muted);width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-right:-10px}
+.mtabs{display:flex;gap:4px;border-bottom:1px solid var(--line);padding:0 12px;background:var(--white)}
+.mtabs a{padding:11px 10px;margin-bottom:-1px;font-weight:700;font-size:14px;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap}
+.mtabs a.active{color:var(--green-dark);border-bottom-color:var(--green-dark)}
+.tab-badge{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--red);color:var(--white);font-size:10px;font-weight:800;margin-left:5px;vertical-align:middle}
+.mbody{flex:1;overflow:hidden;padding:18px 16px;background:var(--white);display:flex;flex-direction:column;gap:14px}
+.mfoot{position:absolute;left:0;right:0;bottom:0;padding:12px 16px 26px;border-top:1px solid var(--line);background:#fafbf9;display:flex;gap:10px}
+.sec{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--green-dark)}
+.hint{font-size:12.5px;color:var(--muted)}
+.field label{display:block;font-size:12.5px;font-weight:700;color:var(--dark);margin-bottom:6px}
+.add-day{width:100%;background:none;border:1.5px dashed var(--line);color:var(--green-dark);font-weight:700;font-size:14px;height:44px;border-radius:7px;font-family:'Titillium Web',sans-serif}
+.rcard{border:1px solid var(--line);border-radius:9px;background:#fafbf9;padding:12px 14px;display:flex;align-items:center;gap:12px}
+.danger{background:none;border:none;color:var(--red);font-weight:700;font-size:13px;padding:10px 0;font-family:'Titillium Web',sans-serif;text-align:left}
+.switch{position:relative;width:42px;height:24px;border-radius:14px;border:none;background:var(--green-dark);padding:0;flex:0 0 auto}
+.switch span{position:absolute;top:3px;left:21px;width:18px;height:18px;border-radius:50%;background:var(--white);box-shadow:rgba(0,0,0,.25) 0 1px 3px}
+.kcol-tabs{display:flex;gap:6px}
+.kcol-tab{flex-shrink:0;display:flex;align-items:center;gap:6px;height:38px;padding:0 12px;border-radius:9px;background:var(--white);border:1px solid var(--line);border-top:3px solid var(--line);font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.03em;color:var(--dark)}
+.kcount{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:0 7px;font-size:11px;font-weight:700;color:var(--muted)}
+.pcard{background:var(--white);border:1px solid var(--line);border-radius:9px;padding:12px 14px}
+.pkc-name{font-weight:700;font-size:15px}
+.pkc-booking{font-size:12.5px;color:var(--muted)}
+
+/* gallery wrapper (not part of the design) */
+body{background:#e6e2d8;padding:40px 24px}
+.gallery{display:flex;flex-wrap:wrap;gap:48px 40px;justify-content:center}
+.frame .label{font-family:'Titillium Web',sans-serif;font-size:13px;font-weight:700;color:#6d6552;text-transform:uppercase;letter-spacing:.06em;margin:0 0 10px}
+.frame .screen{border-radius:28px;box-shadow:0 12px 40px rgba(21,34,48,.18)}
+</style>
+</head>
+<body>
+<main class="gallery">
+<section class="frame" id="Main">
+<h2 class="label">Cruises</h2>
+<div class="screen">
+<div class="gnav"><span class="gn-script">Worldschooling</span><span class="gn-sans">journeys</span></div><nav class="subnav" aria-label="Main"><a href="#Main" class="active" aria-current="page">Cruises</a><a href="#Bookings">Bookings</a><a href="#Payments">Payments</a></nav>
+<div class="wrap">
+<div class="hdr"><h1>Cruises</h1><a class="btn btn-primary" href="#AddCruise">+ Add Cruise</a></div>
+<label style="position:relative;display:block"><span style="position:absolute;left:12px;top:13px;color:var(--muted)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="M20 20l-4-4"></path></svg></span><input class="input" aria-label="Search" placeholder="Search date, destination, ship, line" style="padding-left:38px"></label>
+<div class="toggles">
+<label class="pill warn"><input type="checkbox">2 missing due dates</label>
+<label class="pill"><input type="checkbox">Show Past</label>
+</div>
+<div class="vmt" role="group" aria-label="Year"><button class="active" aria-pressed="true">All</button><button>2026</button><button>2027</button></div>
+<div class="admin-card" style="margin-top:2px">
+<a class="crow" href="#CruiseDetail">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+<span class="dep"><span class="dot"></span>Nov 14, 2026<span class="due-flag" title="Missing due date">!</span></span>
+<span class="dest">Western Caribbean</span>
+<span class="ship">Icon of the Seas</span>
+<span><span class="line-badge">Royal Caribbean</span></span>
+</div>
+<div class="fam"><b>8</b><span>Families</span></div>
+<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+</a>
+<a class="crow alt" href="#CruiseDetail">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+<span class="dep"><span class="dot"></span>Feb 6, 2027</span>
+<span class="dest">Mexican Riviera</span>
+<span class="ship">Discovery Princess</span>
+<span><span class="line-badge">Princess</span></span>
+</div>
+<div class="fam"><b>11</b><span>Families</span></div>
+<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+</a>
+<a class="crow" href="#CruiseDetail">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+<span class="dep"><span class="dot"></span>Apr 18, 2027</span>
+<span class="dest">Greek Isles &amp; Turkey</span>
+<span class="ship">Celebrity Beyond</span>
+<span><span class="line-badge">Celebrity</span></span>
+</div>
+<div class="fam"><b>6</b><span>Families</span></div>
+<svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</section>
+<section class="frame" id="CruiseDetail">
+<h2 class="label">Cruise · Roster tab</h2>
+<div class="screen" style="background:var(--white)">
+<div class="mhead"><h2>Western Caribbean</h2><a class="mclose" href="#Main" aria-label="Close">×</a></div>
+<nav class="mtabs" aria-label="Cruise sections"><a href="#AddCruise">General</a><a href="#CruiseDetail" class="active" aria-current="page">Roster</a><a href="#Pricing">Pricing</a><a href="#Pricing">Deposit<span class="tab-badge">1</span></a></nav>
+<div class="mbody">
+<div class="sec">Roster</div>
+<label style="position:relative;display:block"><span style="position:absolute;left:12px;top:13px;color:var(--muted)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="M20 20l-4-4"></path></svg></span><input class="input" aria-label="Search" placeholder="Search by name or booking #" style="padding-left:38px"></label>
+<div class="toggles"><label class="pill"><input type="checkbox">Show Cancelled</label><button class="pill" style="color:var(--green-dark);cursor:pointer">Copy Booking Link</button></div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<a class="rcard" href="#BookingSheet">
+<div style="flex:1;min-width:0"><div style="font-weight:700;font-size:15px">Maya Rivera</div>
+<div style="font-size:12.5px;color:var(--muted)">#RC48213 · 4 passengers</div></div><span class="attention-badge">Unpaid</span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></a>
+<a class="rcard" href="#BookingSheet">
+<div style="flex:1;min-width:0"><div style="font-weight:700;font-size:15px">Aurelie Laurent</div>
+<div style="font-size:12.5px;color:var(--muted)">#RC48190 · 5 passengers</div></div><span class="paid-check" aria-label="Paid">✓</span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></a>
+<a class="rcard" href="#BookingSheet">
+<div style="flex:1;min-width:0"><div style="font-weight:700;font-size:15px">Sam Tan</div>
+<div style="font-size:12.5px;color:var(--muted)">#RC48155 · 4 passengers</div></div><span class="paid-check" aria-label="Paid">✓</span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg></a>
+</div>
+<button class="add-day">+ Add to Roster</button>
+<div style="border-top:1px solid var(--line);margin:4px 0"></div>
+<div class="sec">Requests<span class="tab-badge">2</span></div>
+<div class="rcard" style="flex-direction:column;align-items:stretch;gap:4px">
+<div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:15px">Priya Natarajan</b><span class="requested-badge">Requested</span></div>
+<div style="font-size:12.5px;color:var(--muted)">priya@example.com · Submitted Sep 28</div>
+</div>
+</div>
+<div class="mfoot"><button class="btn btn-primary" style="flex:1">Save &amp; Close</button></div>
+</div>
+</section>
+<section class="frame" id="Pricing">
+<h2 class="label">Cruise · Pricing tab</h2>
+<div class="screen" style="background:var(--white)">
+<div class="mhead"><h2>Western Caribbean</h2><a class="mclose" href="#Main" aria-label="Close">×</a></div>
+<nav class="mtabs" aria-label="Cruise sections"><a href="#AddCruise">General</a><a href="#CruiseDetail">Roster</a><a href="#Pricing" class="active" aria-current="page">Pricing</a><a href="#Pricing">Deposit<span class="tab-badge">1</span></a></nav>
+<div class="mbody">
+<div class="sec">Cabin Pricing</div>
+<div class="hint" style="margin-top:-8px">One card per cabin category. Leave a category empty to hide it on the cruise page.</div>
+<div class="rcard" style="flex-direction:column;align-items:stretch;gap:10px;background:var(--white)">
+<div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:15px">Interior</b><button class="danger" style="padding:4px 0">Remove</button></div>
+<div style="display:flex;gap:8px"><div class="field" style="flex:1;min-width:0"><label style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)">2 Guests</label><input class="input" value="[PRICE]" inputmode="numeric" style="padding:0 8px;"></div><div class="field" style="flex:1;min-width:0"><label style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)">3 Guests</label><input class="input" value="[PRICE]" inputmode="numeric" style="padding:0 8px;"></div><div class="field" style="flex:1;min-width:0"><label style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)">4 Guests</label><input class="input" value="[PRICE]" inputmode="numeric" style="padding:0 8px;"></div></div>
+</div>
+<div class="rcard" style="flex-direction:column;align-items:stretch;gap:10px;background:var(--white)">
+<div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:15px">Oceanview</b><button class="danger" style="padding:4px 0">Remove</button></div>
+<div style="display:flex;gap:8px"><div class="field" style="flex:1;min-width:0"><label style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)">2 Guests</label><input class="input" value="[PRICE]" inputmode="numeric" style="padding:0 8px;"></div><div class="field" style="flex:1;min-width:0"><label style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)">3 Guests</label><input class="input" value="[PRICE]" inputmode="numeric" style="padding:0 8px;text-decoration:line-through;color:var(--muted)"></div><div class="field" style="flex:1;min-width:0"><label style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)">4 Guests</label><input class="input" value="[PRICE]" inputmode="numeric" style="padding:0 8px;"></div></div>
+</div>
+<div class="rcard" style="flex-direction:column;align-items:stretch;gap:10px;background:var(--white)">
+<div style="display:flex;justify-content:space-between;align-items:center"><b style="font-size:15px">Balcony</b><button class="danger" style="padding:4px 0">Remove</button></div>
+<div style="display:flex;gap:8px"><div class="field" style="flex:1;min-width:0"><label style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)">2 Guests</label><input class="input" value="[PRICE]" inputmode="numeric" style="padding:0 8px;"></div><div class="field" style="flex:1;min-width:0"><label style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)">3 Guests</label><input class="input" value="[PRICE]" inputmode="numeric" style="padding:0 8px;"></div><div class="field" style="flex:1;min-width:0"><label style="font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)">4 Guests</label><input class="input" value="[PRICE]" inputmode="numeric" style="padding:0 8px;"></div></div>
+</div>
+<button class="add-day">+ Add Cabin Category</button>
+<label class="pill" style="align-self:flex-start"><input type="checkbox">Mark as Sold Out</label>
+</div>
+<div class="mfoot"><button class="btn btn-primary" style="flex:1">Save &amp; Close</button></div>
+</div>
+</section>
+<section class="frame" id="AddCruise">
+<h2 class="label">Add Cruise</h2>
+<div class="screen" style="background:var(--white)">
+<div class="mhead"><h2>Add Cruise</h2><a class="mclose" href="#Main" aria-label="Close">×</a></div>
+<div class="mbody" style="gap:12px">
+<div class="sec">Cruise Source</div>
+<div class="field"><label for="u">Cruise URL (optional)</label>
+<div style="display:flex;gap:8px"><input id="u" class="input" value="https://www.royalcaribbean.com/itin…" style="flex:1;min-width:0"><button class="btn btn-outline" style="padding:0 14px">Parse Cruise</button></div>
+<div class="hint" style="color:var(--green-dark);font-weight:700;margin-top:6px">Parsed 8 days.</div></div>
+<div class="sec" style="margin-top:4px">Cruise Details</div>
+<div class="field"><label>Cruise Line</label><select class="input" aria-label="Cruise Line"><option>Royal Caribbean</option></select></div>
+<div class="field"><label>Ship</label><input class="input" value="Icon of the Seas"></div>
+<div style="display:flex;gap:10px;align-items:flex-end">
+<div class="field" style="flex:1"><label>Cruise ID</label><input class="input" readonly="" value="RCI-ICON-261114" style="background:var(--green-tint)"></div>
+<select aria-label="Cruise Type" style="height:44px;border:1px solid var(--green-line);background:var(--green-tint);color:var(--green-dark);font-family:'Titillium Web',sans-serif;font-weight:800;font-size:11px;letter-spacing:.04em;text-transform:uppercase;padding:0 12px;border-radius:22px"><option>Group Cruise</option></select>
+</div>
+<div class="sec" style="margin-top:4px">Itinerary Stops</div>
+<div class="rcard" style="flex-direction:column;align-items:stretch;gap:8px;background:var(--white)">
+<div style="display:flex;justify-content:space-between;align-items:center"><span class="k">Sat · Nov 14</span><button class="mclose" aria-label="Remove day" style="width:32px;height:28px;font-size:20px;margin:-6px -8px -6px 0">×</button></div>
+<div style="display:flex;gap:8px"><input class="input" aria-label="Port" value="Miami" style="flex:1.3"><input class="input" aria-label="Country" value="United States" style="flex:1"></div>
+<div style="display:flex;gap:8px"><input class="input" aria-label="Arrival" value="" placeholder="Arrival" style="flex:1"><input class="input" aria-label="Departure" value="4:00 PM" placeholder="Departure" style="flex:1"></div>
+</div>
+<div class="rcard" style="flex-direction:column;align-items:stretch;gap:8px;background:var(--white)">
+<div style="display:flex;justify-content:space-between;align-items:center"><span class="k">Mon · Nov 16</span><button class="mclose" aria-label="Remove day" style="width:32px;height:28px;font-size:20px;margin:-6px -8px -6px 0">×</button></div>
+<div style="display:flex;gap:8px"><input class="input" aria-label="Port" value="Roatán" style="flex:1.3"><input class="input" aria-label="Country" value="Honduras" style="flex:1"></div>
+<div style="display:flex;gap:8px"><input class="input" aria-label="Arrival" value="8:00 AM" placeholder="Arrival" style="flex:1"><input class="input" aria-label="Departure" value="5:00 PM" placeholder="Departure" style="flex:1"></div>
+</div>
+</div>
+<div class="mfoot"><button class="btn btn-outline" style="flex:1">Cancel</button><button class="btn btn-primary" style="flex:1.4">Save Cruise</button></div>
+</div>
+</section>
+<section class="frame" id="Bookings">
+<h2 class="label">Bookings</h2>
+<div class="screen">
+<div class="gnav"><span class="gn-script">Worldschooling</span><span class="gn-sans">journeys</span></div><nav class="subnav" aria-label="Main"><a href="#Main">Cruises</a><a href="#Bookings" class="active" aria-current="page">Bookings</a><a href="#Payments">Payments</a></nav>
+<div class="wrap">
+<div class="hdr"><h1>Bookings</h1><button class="btn btn-primary">+ Add Booking</button></div>
+<label style="position:relative;display:block"><span style="position:absolute;left:12px;top:13px;color:var(--muted)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="M20 20l-4-4"></path></svg></span><input class="input" aria-label="Search" placeholder="Search name, booking ID, cruise" style="padding-left:38px"></label>
+<div class="toggles">
+<label class="pill warn"><input type="checkbox">1 missing email</label>
+<label class="pill"><input type="checkbox">Requested Only</label>
+</div>
+<div class="admin-card" style="margin-top:2px">
+<a class="crow" href="#BookingSheet" style="align-items:flex-start">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+<div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span class="dest" style="font-size:15.5px">Maya Rivera</span><span class="booked-badge">Booked</span></div>
+<span style="font-size:12.5px;color:var(--muted)">#RC48213</span>
+<span class="dep" style="font-size:13px;margin-top:4px"><span class="dot"></span>Nov 14, 2026 · Western Caribbean</span>
+<span class="ship" style="font-size:13px">Icon of the Seas</span>
+</div>
+</a>
+<a class="crow alt" href="#BookingSheet" style="align-items:flex-start">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+<div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span class="dest" style="font-size:15.5px">Priya Natarajan</span><span class="requested-badge">Requested</span></div>
+<span style="font-size:12.5px;color:var(--muted)">#— · <span style="color:var(--red);font-weight:700">No email</span></span>
+<span class="dep" style="font-size:13px;margin-top:4px"><span class="dot"></span>Feb 6, 2027 · Mexican Riviera</span>
+<span class="ship" style="font-size:13px">Discovery Princess</span>
+</div>
+</a>
+<a class="crow" href="#BookingSheet" style="align-items:flex-start">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+<div style="display:flex;justify-content:space-between;gap:8px;align-items:center"><span class="dest" style="font-size:15.5px">Jonah Okafor</span><span class="cancelled-badge">Cancelled</span></div>
+<span style="font-size:12.5px;color:var(--muted)">#RC48217</span>
+<span class="dep" style="font-size:13px;margin-top:4px"><span class="dot"></span>Nov 14, 2026 · Western Caribbean</span>
+<span class="ship" style="font-size:13px">Icon of the Seas</span>
+</div>
+</a>
+</div>
+</div>
+</div>
+</section>
+<section class="frame" id="BookingSheet">
+<h2 class="label">Booking Details</h2>
+<div class="screen" style="background:var(--white)">
+<div class="mhead"><h2>Booking Details</h2><a class="mclose" href="#CruiseDetail" aria-label="Close">×</a></div>
+<div class="mbody" style="gap:12px">
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px">
+<span style="font-weight:800;font-size:18px">Maya Rivera</span>
+<select aria-label="Status" style="height:32px;border:1px solid var(--green-line);background:var(--green-tint);color:var(--green-dark);font-family:'Titillium Web',sans-serif;font-weight:800;font-size:11px;letter-spacing:.04em;text-transform:uppercase;padding:0 10px;border-radius:20px"><option>Booked</option><option>Requested</option><option>Cancelled</option></select>
+</div>
+<div style="display:flex;gap:6px;flex-wrap:wrap">
+<span style="background:var(--white);border:1px solid var(--line);border-radius:14px;padding:5px 12px;font-size:12.5px;font-weight:700">RC48213</span>
+<span style="border:1px dashed var(--line);border-radius:14px;padding:5px 12px;font-size:12.5px;font-weight:700;color:var(--muted)">+ Booking ID</span>
+</div>
+<div><span class="k">Cruise</span><div style="font-size:15px;font-weight:600">Western Caribbean · Nov 14, 2026</div></div>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px;font-size:14px">
+<div><span class="k">Email</span>maya@example.com</div>
+<div><span class="k">Phone</span>+1 555 010 2233</div>
+</div>
+<div style="border-top:1px solid var(--line)"></div>
+<div style="display:flex;justify-content:space-between;align-items:flex-end;gap:12px">
+<div class="field" style="flex:1"><label>Payment Due Date</label><input class="input" value="Oct 12, 2026"></div>
+<div style="display:flex;align-items:center;gap:8px;height:44px"><button class="switch" role="switch" aria-checked="true" aria-label="Paid"><span></span></button><b style="font-size:13px">Paid</b></div>
+</div>
+<div style="background:var(--gold-tint);border:1px solid var(--gold-line);border-radius:9px;padding:12px 14px;display:flex;flex-direction:column;gap:8px">
+<div class="sec">Reminders</div>
+<div style="display:flex;align-items:center;gap:10px"><span style="flex:1;font-weight:700;font-size:14px">14-day reminder</span><span style="background:var(--paper);border:1px solid var(--line);color:var(--muted);font-weight:700;font-size:11.5px;padding:4px 11px;border-radius:20px">Not sent</span></div>
+<button class="btn btn-outline" style="height:40px">Preview &amp; Send</button>
+</div>
+<div class="field"><label>Notes</label><textarea class="input" style="height:64px;padding:10px 12px;resize:none">Wants connecting cabins.</textarea></div>
+<div style="display:flex;gap:8px"><button class="btn btn-outline" style="flex:1;padding:0 8px;font-size:13px">Add to Another Cruise</button><button class="btn btn-outline" style="flex:1;padding:0 8px;font-size:13px">Transfer</button></div>
+
+<div style="margin-top:8px;padding-top:12px;border-top:1px solid var(--line)"><button class="danger">Delete this booking</button></div>
+</div>
+<div class="mfoot"><button class="btn btn-primary" style="flex:1">Save &amp; Close</button></div>
+</div>
+</section>
+<section class="frame" id="Payments">
+<h2 class="label">Payments</h2>
+<div class="screen">
+<div class="gnav"><span class="gn-script">Worldschooling</span><span class="gn-sans">journeys</span></div><nav class="subnav" aria-label="Main"><a href="#Main">Cruises</a><a href="#Bookings">Bookings</a><a href="#Payments" class="active" aria-current="page">Payments</a></nav>
+<div class="wrap">
+<div class="hdr"><h1>Payments</h1><label class="pill"><input type="checkbox">View Paid</label></div>
+<div style="font-size:13px;color:var(--muted)"><strong style="color:var(--dark)">7</strong> due in 14 days · <strong style="color:var(--dark)">2</strong> overdue</div>
+<div class="kcol-tabs" style="margin:0 -16px;padding:0 16px;overflow:hidden">
+<button class="kcol-tab" style="border-top-color:var(--red);background:var(--dark);color:var(--white);border-color:var(--dark);border-top-color:var(--red)" aria-pressed="true">Overdue<span class="kcount">2</span></button><button class="kcol-tab" style="border-top-color:var(--gold);">3 Days<span class="kcount">1</span></button><button class="kcol-tab" style="border-top-color:var(--gold-line);">7 Days<span class="kcount">2</span></button><button class="kcol-tab" style="border-top-color:var(--gold-tint);">14 Days<span class="kcount">4</span></button>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div class="pcard"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><span class="pkc-name">Maya Rivera</span><span style="font-size:12.5px;font-weight:700;color:var(--red)">Sep 28</span></div>
+<div class="pkc-booking">#RC48213 · Western Caribbean</div><span class="booked-badge" style="text-transform:none;margin-top:8px">Reminder sent Sep 21</span>
+<div style="display:flex;gap:8px;margin-top:10px"><button class="btn btn-outline" style="flex:1;height:40px">Details</button><button class="btn btn-primary" style="flex:1;height:40px">Send Reminder</button></div></div>
+<div class="pcard"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><span class="pkc-name">Jonah Okafor</span><span style="font-size:12.5px;font-weight:700;color:var(--red)">Sep 25</span></div>
+<div class="pkc-booking">#RC48217 · Western Caribbean</div>
+<div style="display:flex;gap:8px;margin-top:10px"><button class="btn btn-outline" style="flex:1;height:40px">Details</button><button class="btn btn-primary" style="flex:1;height:40px">Send Reminder</button></div></div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</body>
+</html>

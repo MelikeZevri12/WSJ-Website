@@ -1,0 +1,42 @@
+# Uploads the website to cPanel (trips.worldschoolingjourneys.com) on every
+# push to main. Only changed files are sent. The FTP login lives in the
+# repository's Settings -> Secrets and variables -> Actions:
+#   FTP_SERVER    e.g. ftp.worldschoolingjourneys.com
+#   FTP_USERNAME  an FTP account whose home folder is the subdomain's folder
+#   FTP_PASSWORD
+name: Deploy website
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # also allows a manual "Run workflow" from the Actions tab
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Upload to cPanel
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          server-dir: ./
+          # Kept in the repository but not put online: the admin dashboard
+          # (stays on your PC), the local test server, and design mockups
+          exclude: |
+            **/.git*
+            **/.git*/**
+            .github/**
+            admin.html
+            server.js
+            templates/**
+            **/*.log
+            **/desktop.ini

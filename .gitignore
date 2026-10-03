@@ -1,0 +1,5 @@
+# Local-only files
+*.log
+desktop.ini
+node_modules/
+.env

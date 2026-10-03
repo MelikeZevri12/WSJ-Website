@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cruise Listing — Photo Cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#A5BD8E; --green-dark:#708F53; --green-hover:#2D3A22;
+    --dark:#152230; --dark-soft:#1e3040; --blue:#2f7f8a;
+    --white:#fffdf7; --paper:#f4f1e9; --line:rgba(21,34,48,0.16); --muted:#6d6552;
+    --sunset-1:#c14a2f; --sunset-2:#e0893c; --gold:#d9a441;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Titillium Web',sans-serif;color:var(--dark);background:var(--paper);line-height:1.5;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
+  .concept-note{background:var(--dark);border-bottom:1px solid var(--gold);color:var(--gold);font-size:13px;text-align:center;padding:8px 16px;}
+
+  /* Filter bar (static, just for context) */
+  .filters{background:var(--white);border-bottom:1px solid var(--line);border-top:5px solid var(--dark);}
+  .filters .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px;padding:14px 24px;font-size:14px;}
+  .f-pill{border:1.5px solid var(--line);border-radius:22px;padding:7px 16px;font-weight:700;}
+  .f-label{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-right:8px;}
+  .f-count{margin-left:auto;color:var(--muted);} .f-count strong{color:var(--dark);}
+
+  /* ===================== CRUISE CARDS ===================== */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding:32px 0 60px;}
+  .cruise-card{
+    position:relative;display:block;aspect-ratio:4/4.3;border-radius:14px;overflow:hidden;text-decoration:none;color:var(--white);
+    background:linear-gradient(150deg, #1f3a4c 0%, #3f7686 55%, #5b876c 100%);
+    border-top:3px solid var(--green);box-shadow:0 8px 22px rgba(21,34,48,0.16);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .cruise-card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(21,34,48,0.26);}
+  .cruise-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s ease;}
+  .cruise-card:hover img{transform:scale(1.04);}
+  .cruise-card:after{ /* dark fade so white text always reads */
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(21,34,48,0) 28%, rgba(21,34,48,0.55) 55%, rgba(13,22,32,0.95) 100%);
+  }
+  .cc-photo-label{position:absolute;top:14px;left:18px;z-index:1;font-size:11.5px;color:rgba(255,255,255,0.72);}
+  .cc-tag{
+    position:absolute;top:12px;right:14px;z-index:2;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+    background:var(--gold);color:var(--dark);border-radius:20px;padding:3px 10px;
+  }
+  .cc-body{position:absolute;left:0;right:0;bottom:0;z-index:1;padding:20px 22px 20px;}
+  .cc-date{font-size:12.5px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+  .cc-title{font-family:'Libre Baskerville',serif;font-weight:700;font-size:20px;line-height:1.28;margin:0 0 14px;}
+  .cc-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.22);}
+  .cc-price-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#c7ccd1;}
+  .cc-price{font-family:'Libre Baskerville',serif;font-weight:700;font-size:22px;line-height:1.1;}
+  .cc-price small{font-family:'Titillium Web',sans-serif;font-size:12px;font-weight:600;color:#c7ccd1;}
+  .cc-more{font-weight:700;font-size:14px;color:var(--white);white-space:nowrap;padding:8px 14px;border-radius:6px;background:var(--green-dark);transition:background .15s ease;}
+  .cruise-card:hover .cc-more{background:var(--green-hover);}
+
+  /* sold out: same treatment as the sold-out cabin tile and page */
+  .cruise-card.sold-out img, .cruise-card.sold-out{filter:none;}
+  .cruise-card.sold-out{background:linear-gradient(150deg, #3a3f44 0%, #6b6f72 55%, #7c7d78 100%);border-top-color:var(--sunset-1);}
+  .cruise-card.sold-out img{filter:grayscale(1) brightness(.9);}
+  .cruise-card.sold-out .cc-title, .cruise-card.sold-out .cc-date{opacity:.8;}
+  .cc-ribbon{
+    position:absolute;top:22px;right:-44px;z-index:3;transform:rotate(45deg);background:var(--sunset-1);color:var(--white);
+    font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:5px 52px;box-shadow:0 2px 6px rgba(0,0,0,0.3);
+  }
+  .cruise-card.sold-out .cc-more{background:rgba(255,255,255,0.16);}
+  .cc-soldout-note{font-size:13px;font-weight:700;color:#f0b9a9;text-transform:uppercase;letter-spacing:.05em;}
+
+  @media (max-width:980px){ .grid{grid-template-columns:1fr 1fr;} }
+  @media (max-width:640px){
+    .grid{grid-template-columns:1fr;gap:18px;}
+    .cruise-card{aspect-ratio:auto;min-height:380px;}
+    .filters .wrap{gap:10px 16px;}
+  }
+</style>
+</head>
+<body>
+<div class="concept-note">Card redesign mockup. Filter bar is static; photos are placeholders. Cards 4–6 show the sold-out and back-to-back journey states.</div>
+
+<div class="filters">
+  <div class="wrap">
+    <span class="f-pill">All Regions ▾</span>
+    <span><span class="f-label">Duration</span>7–30 nights</span>
+    <span><span class="f-label">Sort</span>Date: Soonest First</span>
+    <span>☐ Hide sold out</span>
+    <span class="f-count"><strong>19</strong> cruises</span>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="grid" id="grid"></div>
+</main>
+
+<script>
+// photo: the cruise's header image URL (null = placeholder). status: 'open' | 'soldout'. tag: optional (e.g. back-to-back journeys).
+const CRUISES = [
+  {dates:'Oct 24–31, 2026', title:'8-day Worldschooling Mediterranean Ravenna to Barcelona Cruise', price:2371, photoLabel:'Ravenna → Barcelona', url:'#'},
+  {dates:'Nov 19 – Dec 7, 2026', title:'19-day Worldschooling Caribbean & Mexico Fort Lauderdale to Buenos Aires Cruise', price:4944, photoLabel:'Fort Lauderdale → Buenos Aires', url:'#'},
+  {dates:'Dec 3–19, 2026', title:'17-day Worldschooling Caribbean & Mexico Los Angeles to Fort Lauderdale Cruise', price:2350, photoLabel:'Los Angeles → Fort Lauderdale', url:'#'},
+  {dates:'Mar 29 – Apr 8, 2027', title:'Cherry Blossoms: Japan & Korea Cruise', price:5554, photoLabel:'Tokyo roundtrip', url:'#', status:'soldout'},
+  {dates:'Sep 14 – Nov 10, 2027', title:'Asia Extravaganza: Tokyo to Auckland', price:19460, photoLabel:'Tokyo → Auckland', url:'#', tag:'4 cruises · back to back'},
+  {dates:'Oct 31 – Nov 7, 2027', title:'8-day Worldschooling Mediterranean Greece, Italy & Spain Cruise', price:2550, photoLabel:'Athens → Barcelona', url:'#'},
+];
+const fmt = n => '$' + n.toLocaleString('en-US');
+document.getElementById('grid').innerHTML = CRUISES.map(c => {
+  const soldOut = c.status === 'soldout';
+  return `<a class="cruise-card ${soldOut ? 'sold-out' : ''}" href="${c.url}">
+    ${c.photo ? `<img src="${c.photo}" alt="${c.photoLabel}">` : `<span class="cc-photo-label">Photo: ${c.photoLabel}</span>`}
+    ${soldOut ? '<span class="cc-ribbon">Sold Out</span>' : (c.tag ? `<span class="cc-tag">${c.tag}</span>` : '')}
+    <div class="cc-body">
+      <div class="cc-date">${c.dates}</div>
+      <h3 class="cc-title">${c.title}</h3>
+      <div class="cc-foot">
+        ${soldOut
+          ? `<div class="cc-soldout-note">No cabins left</div><span class="cc-more">See Details</span>`
+          : `<div><div class="cc-price-label">Starting from</div><div class="cc-price">${fmt(c.price)} <small>/ family</small></div></div><span class="cc-more">Learn More</span>`}
+      </div>
+    </div>
+  </a>`;
+}).join('');
+</script>
+</body>
+</html>

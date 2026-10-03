@@ -1,0 +1,3701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cruise — Worldschooling Journeys</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* brand green — --green-dark is the requested hex #708F53, used for solid
+       buttons and active states. --green is a lighter tint of that same hue, used
+       for borders/tints/subtle accents and the wordmark; --green-hover is darker
+       still, for :hover on those solid elements. */
+    --green:#A5BD8E;
+    --green-dark:#708F53;
+    --green-hover:#2D3A22;
+    /* pulled straight from the badge's own gradient: night-sky navy at the top,
+       teal-blue sea, warm sunset orange and brick-red, gold script, cream patch backing */
+    --dark:#152230;
+    --dark-soft:#1e3040;
+    --blue:#2f7f8a;
+    --blue-tint:color-mix(in srgb, var(--blue) 22%, white);
+    --blue-line:color-mix(in srgb, var(--blue) 48%, white);
+    --green-tint:color-mix(in srgb, var(--green) 14%, white);
+    --sky-tint:color-mix(in srgb, var(--blue) 16%, var(--white));
+    --sky-line:color-mix(in srgb, var(--blue) 42%, var(--white));
+    --green-line:color-mix(in srgb, var(--green) 42%, white);
+    --green-soft:color-mix(in srgb, var(--green) 55%, white);
+    --white:#fffdf7;
+    --paper:#f4f1e9;
+    --line:rgba(21,34,48,0.16);
+    --line-on-dark:rgba(255,255,255,0.2);
+    --muted:#6d6552;
+    --sunset-1:#c14a2f;
+    --sunset-2:#e0893c;
+    --sunset-tint:color-mix(in srgb, var(--sunset-1) 12%, var(--white));
+    --gold:#d9a441;
+    --star:rgba(255,255,255,0.85);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Titillium Web', sans-serif;
+    color:var(--dark);
+    background:var(--paper);
+    line-height:1.6;
+  }
+  .brand-stripe{
+    height:5px;width:100%;
+    background:linear-gradient(90deg, var(--blue) 0%, var(--sunset-2) 55%, var(--sunset-1) 100%);
+  }
+
+  /* GLOBAL NAV — shared across the Cruises page and the Admin dashboard */
+  .global-nav{background:var(--dark-soft);border-bottom:1px solid var(--line-on-dark);}
+  .global-nav .wrap{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;gap:16px;flex-wrap:wrap;}
+  .gn-logo{display:flex;align-items:baseline;gap:8px;text-decoration:none;}
+  .gn-logo .gn-script{font-family:'Caveat',cursive;font-weight:700;font-size:26px;color:var(--gold);line-height:1;}
+  .gn-logo .gn-sans{font-family:'Titillium Web',sans-serif;font-weight:600;font-size:14px;color:var(--green);letter-spacing:.02em;}
+  .gn-links{display:flex;gap:8px 26px;flex-wrap:wrap;}
+  .gn-link{
+    padding:4px 0;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:14px;
+    text-decoration:none;color:#c7ccd1;
+    transition:color .15s ease;
+  }
+  .gn-link:hover{color:var(--white);}
+  .gn-link.active{color:var(--green);}
+
+  /* display:flex + align-items:center so the wrapped <a> lines up with its
+     plain <a> siblings - without this, the div (stretched to the row's
+     full height as a flex item) leaves its inline <a> child sitting at the
+     top of that box instead of centered like the others. */
+  .gn-dropdown{position:relative;display:flex;align-items:center;}
+  .gn-dropdown-menu{
+    position:absolute;top:100%;left:0;margin-top:14px;
+    background:var(--dark-soft);border:1px solid var(--line-on-dark);border-radius:8px;
+    min-width:200px;padding:6px;display:none;flex-direction:column;
+    box-shadow:0 12px 30px rgba(0,0,0,0.35);z-index:20;
+  }
+  /* The margin-top gap above would otherwise break :hover the instant the
+     cursor leaves the link - this pseudo-element bridges it so the menu
+     stays open on the way down to it. */
+  .gn-dropdown::after{content:'';position:absolute;top:100%;left:0;right:0;height:14px;}
+  .gn-dropdown:hover .gn-dropdown-menu{display:flex;}
+  .gn-dropdown-item{
+    padding:9px 12px;font-family:'Titillium Web',sans-serif;font-weight:600;font-size:13.5px;
+    color:#c7ccd1;text-decoration:none;border-radius:5px;white-space:nowrap;
+  }
+  .gn-dropdown-item:hover{background:rgba(255,255,255,0.08);color:var(--white);}
+
+  /* RETRO PATCH: stitched-edge treatment, like an embroidered badge border */
+  .pricing-card, .cabin-tile, .proof-chip, .roster-full-card, .flight-card, .amenity-group{
+    outline:1.5px dashed rgba(21,34,48,0.3);
+    outline-offset:-6px;
+  }
+  section.dark-section .roster-full-card, section.dark-section .proof-chip{
+    outline-color:rgba(21,34,48,0.22);
+  }
+  h1,h2,h3,h4{
+    font-family:'Libre Baskerville', serif;
+    font-weight:700;
+    margin:0 0 .4em 0;
+    color:var(--dark);
+  }
+  a{color:inherit;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+  .concept-note{
+    background:var(--dark);
+    border-bottom:1px solid var(--gold);
+    color:var(--gold);
+    font-size:13px;
+    text-align:center;
+    padding:8px 16px;
+    font-family:'Titillium Web',sans-serif;
+  }
+
+  /* HERO */
+  .hero{
+    position:relative;
+    background-color:var(--dark);
+    background-image: linear-gradient(180deg, rgba(21,34,48,0.6) 0%, rgba(13,22,32,0.84) 100%);
+    background-position:center 30%;
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-blend-mode:multiply;
+    color:var(--white);
+    padding:56px 0 40px;
+  }
+  .mountain-divider{
+    position:absolute;left:0;right:0;bottom:-1px;width:100%;height:34px;display:block;line-height:0;
+  }
+  .mountain-divider path{fill:var(--dark);}
+  .mountain-divider.flip path{fill:var(--paper);}
+  .eyebrow{
+    font-family:'Titillium Web',sans-serif;
+    font-weight:800;
+    color:var(--green-dark);
+    text-transform:uppercase;
+    letter-spacing:.13em;
+    font-size:12px;
+    margin-bottom:10px;
+  }
+  .hero .eyebrow{color:var(--gold);}
+  .hero h1{
+    color:var(--white);
+    font-size:clamp(30px,4.2vw,46px);
+    line-height:1.15;
+    max-width:720px;
+  }
+  .badge-row{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 22px;}
+  .badge{
+    background:rgba(90,158,83,0.16);
+    border:1px solid rgba(90,158,83,0.4);
+    color:var(--green-soft);
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:13.5px;
+    font-weight:600;
+  }
+  .hero p.lede{max-width:640px;color:#d9dbe0;font-size:16px;}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-top:34px;}
+
+  /* SOLD OUT STATE */
+  /* Hero greyed out like a sold-out cabin tile: photo goes grayscale, accents go neutral, corner ribbon on top */
+  .hero.is-soldout{overflow:hidden;}
+  .hero.is-soldout::before{
+    content:"";position:absolute;inset:0;z-index:0;
+    background:inherit;background-blend-mode:multiply, normal;
+    filter:grayscale(1) brightness(.9);
+  }
+  .hero.is-soldout > .wrap, .hero.is-soldout > .mountain-divider{position:relative;z-index:1;}
+  .hero.is-soldout > .mountain-divider{position:absolute;}
+  .hero.is-soldout .eyebrow{color:#b9bec4;}
+  .hero.is-soldout h1{color:rgba(255,253,247,.78);}
+  .hero.is-soldout .badge{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.28);color:#c3c8cd;}
+  .hero-ribbon{
+    position:absolute;top:44px;right:-70px;z-index:2;transform:rotate(45deg);
+    background:var(--sunset-1);color:var(--white);font-family:'Titillium Web',sans-serif;
+    font-size:17px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+    padding:9px 84px;box-shadow:0 2px 8px rgba(0,0,0,0.35);
+  }
+  @media (max-width:600px){
+    .hero-ribbon{top:22px;right:-52px;font-size:12.5px;padding:6px 58px;}
+  }
+  .rf-pairing{margin:-4px 0 14px;font-size:13.5px;font-weight:600;color:var(--green-dark);}
+  .soldout-pill{
+    display:inline-block;background:var(--sunset-1);color:var(--white);border-radius:20px;
+    padding:2px 12px;font-size:13.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  }
+  .sticky-bar .sb-price.sb-soldout{color:var(--sunset-1);text-transform:uppercase;letter-spacing:.04em;}
+
+  /* SET SAIL STATE (a cruise whose departure date has passed) - same
+     grayscale/ribbon treatment as Sold Out above, just gold instead of red. */
+  .hero.is-sailed{overflow:hidden;}
+  .hero.is-sailed::before{
+    content:"";position:absolute;inset:0;z-index:0;
+    background:inherit;background-blend-mode:multiply, normal;
+    filter:grayscale(1) brightness(.9);
+  }
+  .hero.is-sailed > .wrap, .hero.is-sailed > .mountain-divider{position:relative;z-index:1;}
+  .hero.is-sailed > .mountain-divider{position:absolute;}
+  .hero.is-sailed .eyebrow{color:#b9bec4;}
+  .hero.is-sailed h1{color:rgba(255,253,247,.78);}
+  .hero.is-sailed .badge{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.28);color:#c3c8cd;}
+  .hero-ribbon.ribbon-gold{background:var(--gold);color:var(--dark);}
+  .sailed-pill{
+    display:inline-block;background:var(--gold);color:var(--dark);border-radius:20px;
+    padding:2px 12px;font-size:13.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  }
+  .sticky-bar .sb-price.sb-sailed{color:#a8791f;text-transform:uppercase;letter-spacing:.04em;}
+
+  /* OTHER DEPARTURES CAROUSEL (replaces Pricing when a cruise is sold out or has set sail) */
+  .dep-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px;}
+  .dep-tabs{display:flex;flex-wrap:wrap;gap:10px;}
+  .dep-tab{
+    padding:9px 20px;border-radius:24px;border:1.5px solid var(--sky-line);background:var(--white);
+    font-family:'Titillium Web',sans-serif;font-weight:700;font-size:14px;color:var(--dark);cursor:pointer;
+    transition:background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .dep-tab:hover{border-color:var(--dark);}
+  .dep-tab.active{background:var(--dark);border-color:var(--dark);color:var(--white);}
+  .dep-right{display:flex;align-items:center;gap:18px;}
+  .dep-all{font-weight:700;font-size:14.5px;color:var(--green-dark);text-decoration:none;white-space:nowrap;}
+  .dep-all:hover{color:var(--green-hover);}
+  .dep-note{font-size:13px;color:var(--muted);margin:-8px 0 16px;}
+  .dep-track{
+    display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;
+    padding:4px 2px 10px;-ms-overflow-style:none;scrollbar-width:none;
+  }
+  .dep-track::-webkit-scrollbar{display:none;}
+  .dep-card{
+    position:relative;flex:0 0 calc((100% - 36px) / 3);aspect-ratio:4/3.1;scroll-snap-align:start;
+    border-radius:14px;overflow:hidden;text-decoration:none;color:var(--white);
+    background:linear-gradient(150deg, #1f3a4c 0%, #3f7686 55%, #5b876c 100%);
+    border-top:3px solid var(--green);box-shadow:0 8px 22px rgba(21,34,48,0.16);
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .dep-card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(21,34,48,0.24);}
+  .dep-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .dep-card:after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(21,34,48,0) 30%, rgba(21,34,48,0.55) 60%, rgba(16,26,36,0.94) 100%);
+  }
+  .dep-photo-label{position:absolute;top:14px;left:18px;z-index:1;font-size:11.5px;color:rgba(255,255,255,0.75);}
+  .dep-body{position:absolute;left:0;right:0;bottom:0;z-index:1;padding:18px 20px 18px;}
+  .dep-date{font-size:12.5px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;}
+  .dep-title{font-family:'Libre Baskerville',serif;font-weight:700;font-size:19px;line-height:1.25;margin-bottom:6px;}
+  .dep-meta{font-size:12.5px;color:#c7ccd1;}
+  .dep-meta strong{color:var(--white);}
+  .dep-empty{font-size:14px;color:var(--muted);padding:20px 0;}
+  @media (min-width:761px) and (max-width:1000px){ .dep-card{flex:0 0 calc((100% - 18px) / 2);} }
+  @media (max-width:760px){ .dep-card{flex:0 0 84%;} .dep-right{width:100%;justify-content:space-between;} }
+  .btn{
+    display:inline-block;
+    padding:13px 26px;
+    border-radius:6px;
+    font-weight:700;
+    font-size:14.5px;
+    text-decoration:none;
+    letter-spacing:.02em;
+    cursor:pointer;
+    border:2px solid transparent;
+    transition:transform .12s ease, opacity .12s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{background:var(--green-dark);color:var(--white);}
+  .btn-primary:hover{background:var(--green-hover);}
+  .btn-outline{background:transparent;border-color:rgba(255,255,255,.5);color:var(--white);}
+  .btn-outline:hover{border-color:var(--white);}
+
+  /* OVERVIEW (picture + description) */
+  .overview{background:var(--paper);border-bottom:1px solid var(--line);}
+  .overview-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:48px;align-items:stretch;}
+  .overview-media{
+    width:100%;height:100%;border-radius:10px;overflow:hidden;
+    background:var(--sky-tint);border:1px solid var(--sky-line);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .overview-media span{
+    font-size:13px;color:var(--muted);font-weight:600;text-align:center;padding:0 24px;
+  }
+  .overview-media img{width:100%;height:100%;object-fit:cover;display:block;}
+  .overview h1{color:var(--dark);font-size:28px;line-height:1.25;margin-bottom:14px;}
+  .overview p.lede{color:#4a4e55;font-size:15.5px;margin:0 0 14px;}
+  .overview .hero-cta{margin-top:22px;}
+  /* Description is split into one <p> per double line-break (see loadCruise) -
+     margin-bottom is what actually separates the paragraphs visually. */
+  #overviewDescription p{color:#4a4e55;font-size:15.5px;margin:0 0 18px;}
+  #overviewDescription p:last-child{margin-bottom:0;}
+
+  /* AT-A-GLANCE BAR */
+  .facts-bar{
+    background:var(--dark-soft);
+  }
+  .facts-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:0;
+    padding:18px 0;
+  }
+  .fact{padding:0 18px;border-left:1px solid var(--line-on-dark);min-width:0;}
+  .fact:first-child{border-left:none;}
+  .fact .label{font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:#9aa4ae;font-weight:700;}
+  .fact .value{font-size:15.5px;font-weight:700;margin-top:3px;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .fact .value.price{color:var(--gold);}
+
+  /* STICKY SUBNAV */
+  .subnav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(253,250,242,0.94);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .subnav-inner{display:flex;gap:4px;overflow-x:auto;padding:0;justify-content:center;}
+  /* Centering only holds up while every link fits on one line - once they
+     overflow into horizontal scroll on narrow screens, centering would hide
+     the first link off-screen with no visual cue to scroll left. */
+  @media (max-width:760px){
+    .subnav-inner{justify-content:flex-start;}
+  }
+  .subnav a{
+    white-space:nowrap;
+    padding:14px 16px;
+    font-size:14px;
+    font-weight:600;
+    color:var(--muted);
+    text-decoration:none;
+    border-bottom:3px solid transparent;
+  }
+  .subnav a:hover, .subnav a.active{color:var(--dark);border-bottom-color:var(--green);}
+
+  section{padding:56px 0;}
+  section.tint{background:var(--sky-tint);}
+  section.dark-section{background:var(--dark);color:var(--white);position:relative;overflow:hidden;}
+  section.dark-section h2, section.dark-section h3, section.dark-section h4{color:var(--white);}
+  section.dark-section .section-head p{color:#c7ccd1;}
+  section.dark-section .section-head .eyebrow{color:var(--gold);}
+  section.dark-section .value-prop p{color:#c3c9d0;}
+
+  /* NIGHT SKY: scattered stars + moon accent for community section */
+  section.night-sky{
+    background-image:
+      radial-gradient(1.6px 1.6px at 6% 18%, var(--star), transparent 60%),
+      radial-gradient(1.3px 1.3px at 14% 62%, var(--star), transparent 60%),
+      radial-gradient(1.8px 1.8px at 24% 30%, var(--star), transparent 60%),
+      radial-gradient(1.2px 1.2px at 33% 78%, var(--star), transparent 60%),
+      radial-gradient(1.6px 1.6px at 46% 12%, var(--star), transparent 60%),
+      radial-gradient(1.3px 1.3px at 58% 55%, var(--star), transparent 60%),
+      radial-gradient(1.8px 1.8px at 68% 22%, var(--star), transparent 60%),
+      radial-gradient(1.2px 1.2px at 77% 70%, var(--star), transparent 60%),
+      radial-gradient(1.6px 1.6px at 88% 16%, var(--star), transparent 60%),
+      radial-gradient(1.4px 1.4px at 94% 60%, var(--star), transparent 60%),
+      radial-gradient(1.3px 1.3px at 40% 90%, var(--star), transparent 60%),
+      radial-gradient(1.5px 1.5px at 82% 88%, var(--star), transparent 60%);
+    background-repeat:no-repeat;
+  }
+  .moon-eyebrow:before{content:"☾  ";color:var(--gold);}
+  .section-head{max-width:640px;margin-bottom:32px;}
+  .section-head h2{font-size:clamp(24px,3vw,32px);}
+  .section-head p{color:var(--muted);font-size:15.5px;}
+  .section-head.center{max-width:640px;margin-left:auto;margin-right:auto;text-align:center;}
+
+  /* WHY BOOK WITH US: compact value props + proof strip */
+  .value-props{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:4px 0 28px;}
+  .value-prop{display:flex;gap:13px;align-items:flex-start;}
+  .value-num-wrap{
+    flex:0 0 38px;width:38px;height:38px;background:var(--gold);
+    clip-path:polygon(50% 0%, 100% 100%, 0% 100%);
+    display:flex;align-items:flex-end;justify-content:center;padding-bottom:2px;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,0.35));
+  }
+  .value-num{
+    width:32px;height:32px;background:linear-gradient(160deg, var(--sunset-2), var(--sunset-1));color:var(--white);
+    display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px;
+    font-weight:700;font-family:'Libre Baskerville',serif;font-size:13px;
+    clip-path:polygon(50% 0%, 100% 100%, 0% 100%);
+  }
+  .value-prop h4{font-size:14.5px;margin:0 0 3px;}
+  .value-prop p{font-size:13px;color:var(--muted);margin:0;line-height:1.45;}
+
+  /* ROSTER */
+  .roster-full-card{
+    background:var(--white);border:1px solid var(--green-line);border-radius:14px;
+    padding:20px 24px;margin-bottom:22px;
+  }
+  #rosterCardFull h3{color:var(--dark);}
+  .rf-columns{display:grid;grid-template-columns:1fr 1.35fr;gap:0;align-items:start;}
+  .rf-col-left{padding-right:26px;border-right:1px dashed var(--line);}
+  .rf-col-right{padding-left:26px;}
+  .rf-head{margin-bottom:12px;}
+  .rf-head h3{font-family:'Libre Baskerville',serif;font-size:16px;margin:0 0 2px;}
+  .rf-sub{font-size:12px;color:var(--muted);}
+  .rf-stats{display:flex;gap:22px;flex-wrap:wrap;}
+  .rf-stat .r-num{font-family:'Libre Baskerville',serif;font-size:23px;font-weight:700;color:var(--green-dark);line-height:1;}
+  .rf-stat .r-label{font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.04em;}
+  .rf-ages-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:10px;}
+  .rf-bracket-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+  .rf-bracket-row:last-child{margin-bottom:0;}
+  .rf-bracket-name{flex:0 0 66px;font-size:12px;color:var(--dark);font-weight:600;white-space:nowrap;}
+  .rf-bracket-track{flex:1;height:6px;background:var(--green-tint);border-radius:5px;overflow:hidden;}
+  .rf-bracket-fill{height:100%;background:var(--green);border-radius:5px;}
+  .rf-bracket-count{flex:0 0 20px;text-align:right;font-size:11.5px;color:var(--muted);font-weight:600;}
+  .roster-full-placeholder h3{font-family:'Libre Baskerville',serif;font-size:16px;margin:0 0 6px;}
+  .roster-full-placeholder p{font-size:13px;color:var(--muted);line-height:1.55;margin:0 0 14px;max-width:520px;}
+  .roster-full-placeholder .btn{font-size:13px;padding:9px 18px;}
+  @media (max-width:760px){
+    .rf-columns{grid-template-columns:1fr;}
+    .rf-col-left{padding-right:0;border-right:none;border-bottom:1px dashed var(--line);padding-bottom:16px;margin-bottom:16px;}
+    .rf-col-right{padding-left:0;}
+    .rf-stats{gap:22px;}
+    .rf-bracket-name{flex-basis:60px;}
+  }
+
+  .proof-strip-wrap{border-top:1px solid var(--green-line);padding-top:20px;}
+  section.dark-section .proof-strip-wrap{border-top-color:var(--line-on-dark);}
+  section.dark-section .proof-label{color:var(--star);}
+  .proof-head-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .proof-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:0;}
+  .proof-arrows{display:flex;gap:8px;}
+  .proof-arrow-btn{
+    width:30px;height:30px;border-radius:50%;border:1px solid var(--green-line);background:var(--white);
+    color:var(--green-dark);font-size:17px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    transition:background .15s;
+  }
+  .proof-arrow-btn:hover{background:var(--green-tint);}
+  .proof-strip{
+    display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;
+    padding-bottom:4px;-ms-overflow-style:none;scrollbar-width:none;
+  }
+  .proof-strip::-webkit-scrollbar{display:none;}
+  .proof-chip{
+    flex:0 0 calc((100% - 28px) / 3);scroll-snap-align:start;display:flex;gap:11px;align-items:flex-start;
+    background:var(--white);border:1px solid var(--green-line);border-radius:10px;padding:13px 15px;
+  }
+  .proof-avatar{
+    flex:0 0 34px;width:34px;height:34px;border-radius:50%;overflow:hidden;
+    background:linear-gradient(135deg, var(--dark), var(--dark-soft));color:var(--green-soft);
+    display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.02em;text-align:center;line-height:1.1;
+    box-shadow:0 0 0 2px var(--gold);
+  }
+  .proof-avatar img{width:100%;height:100%;object-fit:cover;}
+  .proof-chip p{font-size:12px;color:var(--dark);margin:0 0 4px;line-height:1.4;}
+  .proof-chip .who{font-size:11px;color:var(--green-dark);font-weight:700;text-transform:uppercase;letter-spacing:.03em;}
+  @media (max-width:760px){
+    .value-props{grid-template-columns:1fr;gap:18px;}
+    .proof-chip{flex:0 0 82%;}
+  }
+  @media (min-width:761px) and (max-width:1000px){
+    .proof-chip{flex:0 0 calc((100% - 14px) / 2);}
+  }
+
+  /* PHOTO SLOTS — placeholders ready to swap for real images */
+  .photo-slot{
+    background:var(--sky-tint);border:1px dashed var(--sky-line);color:var(--muted);
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    font-size:10.5px;font-weight:600;line-height:1.3;overflow:hidden;padding:4px;
+  }
+  .photo-slot img{width:100%;height:100%;object-fit:cover;display:block;}
+  .photo-slot.has-image{padding:0;border-style:solid;}
+
+  /* Full-bleed photo strips used as transitions between sections */
+  .photo-strip{display:grid;grid-template-columns:repeat(4,1fr);width:100%;background:var(--white);}
+  .photo-strip .photo-slot{
+    aspect-ratio:1/1;border-radius:0;border:none;padding:0;background:var(--white);
+    border-right:1px solid var(--white);
+  }
+  .photo-strip .photo-slot:last-child{border-right:none;}
+  @media (max-width:600px){.photo-strip{grid-template-columns:repeat(2,1fr);}}
+
+  .cabin-photo{aspect-ratio:16/10;margin:-16px -16px 12px;border-radius:10px 10px 0 0;font-size:10px;}
+
+  /* ITINERARY + EXCURSIONS TIMELINE */
+  .timeline{position:relative;padding-left:28px;}
+  .timeline:before{
+    content:"";position:absolute;left:6px;top:6px;bottom:6px;width:2px;background:var(--line);
+  }
+  .stop{position:relative;margin-bottom:14px;}
+  .stop:before{
+    content:"";position:absolute;left:-28px;top:6px;width:14px;height:14px;border-radius:50%;
+    background:var(--white);border:3px solid var(--green);
+  }
+  .stop.sea:before{border-color:var(--blue);}
+  .stop-card{
+    background:var(--white);border:1px solid var(--line);border-radius:10px;overflow:hidden;
+  }
+  .stop.sea .stop-card{background:var(--blue-tint);border-color:var(--blue-line);}
+  .stop-card-inner{display:flex;align-items:stretch;}
+  /* position:relative + an absolutely-positioned img means .stop-photo's own
+     natural size never depends on the image's intrinsic dimensions - the
+     row's height is driven purely by .stop-content (day/title/excursion
+     accordion), and align-items:stretch then stretches .stop-photo to match
+     that height exactly, growing/shrinking live as the accordion opens and
+     closes. object-fit:cover crops the image to whatever that height is. */
+  .stop-photo{flex:0 0 35%;width:35%;border-radius:0;border:none;font-size:11px;position:relative;}
+  /* .photo-slot.has-image sets border-style:solid at higher specificity than
+     .stop-photo's own border:none, which resets border-color to currentcolor
+     - the combination silently re-enables a dark border. Override it back off
+     at matching specificity so a real stop photo never grows one. */
+  .stop-photo.has-image{border-style:none;}
+  .stop-photo img{position:absolute;inset:0;}
+  .stop-content{flex:1;min-width:0;padding:14px 18px;}
+  .stop-top{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;}
+  .stop-day{font-size:12.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
+  .stop-title{font-family:'Libre Baskerville',serif;font-size:18px;font-weight:700;margin:2px 0 2px;}
+  .stop-times{font-size:13px;color:var(--muted);}
+  .excursion-toggle{
+    margin-top:10px;
+    background:none;border:none;color:var(--green-dark);font-weight:700;font-size:13px;
+    cursor:pointer;padding:0;display:inline-flex;align-items:center;gap:6px;font-family:'Titillium Web',sans-serif;
+  }
+  .excursion-toggle .chev{transition:transform .15s ease;}
+  .excursion-toggle.open .chev{transform:rotate(180deg);}
+  .excursion-body{
+    display:none;margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);
+    font-size:13.5px;color:#3c4048;
+  }
+  .excursion-body.open{display:block;}
+  .excursion-body .ex-name{font-weight:700;display:block;margin-bottom:4px;color:var(--dark);}
+  @media (max-width:560px){
+    .stop-card-inner{flex-direction:column;}
+    .stop-photo{flex:0 0 auto;width:100%;height:auto;aspect-ratio:16/8;}
+  }
+
+  /* PRICING CALCULATOR */
+  .pricing-card{
+    background:var(--white);border:1px solid var(--line);border-radius:16px;
+    padding:32px;box-shadow:0 8px 30px rgba(36,40,48,0.06);
+  }
+  .calc-row-label{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:10px;}
+  .guest-select{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;}
+  .pill-btn{
+    padding:10px 20px;border-radius:24px;border:2px solid var(--line);background:var(--white);
+    font-family:'Titillium Web',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;color:var(--dark);
+  }
+  .pill-btn.active{border-color:var(--green-dark);background:var(--green-dark);color:var(--white);}
+  .cabin-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:28px;}
+  /* 1-2 cabin types (e.g. a Large Family Cabin on its own at 5 guests):
+     wider cards, centered, instead of one stretched or one tiny card. */
+  .cabin-grid.few{display:flex;flex-wrap:wrap;justify-content:center;}
+  /* each card is a third of the row (the width of a card in a normal row of 3), centered */
+  .cabin-grid.few .cabin-tile{flex:0 0 calc((100% - 28px) / 3);min-width:200px;}
+  @media (max-width:640px){ .cabin-grid.few .cabin-tile{flex-basis:100%;} }
+  .cabin-tile{
+    border:2px solid var(--line);border-radius:12px;padding:16px;cursor:pointer;background:var(--white);
+    transition:border-color .12s ease, box-shadow .12s ease;
+  }
+  .cabin-tile:hover{border-color:#c9dcc7;}
+  .cabin-tile.active{border-color:var(--green);box-shadow:0 0 0 3px rgba(90,158,83,0.15);}
+  .cabin-tile .cname{font-family:'Libre Baskerville',serif;font-weight:700;font-size:16.5px;margin-bottom:4px;}
+  .cabin-tile .cprice{font-size:18px;font-weight:700;color:var(--green-dark);}
+  .cabin-tile .cprice small{font-size:11.5px;color:var(--muted);font-weight:600;}
+
+  .cabin-tile.sold-out{position:relative;cursor:not-allowed;border-color:var(--line);overflow:hidden;}
+  .cabin-tile.sold-out .photo-slot{filter:grayscale(1);opacity:.55;}
+  .cabin-tile.sold-out .cname{opacity:.5;}
+  .cabin-tile.sold-out:hover{border-color:var(--line);}
+  .cabin-tile .cprice-soldout{font-size:13.5px;font-weight:700;color:var(--sunset-1);text-transform:uppercase;letter-spacing:.03em;}
+  .sold-out-ribbon{
+    position:absolute;top:14px;right:-34px;z-index:2;transform:rotate(45deg);
+    background:var(--sunset-1);color:var(--white);font-size:11px;font-weight:700;text-transform:uppercase;
+    letter-spacing:.06em;padding:4px 40px;box-shadow:0 1px 3px rgba(0,0,0,0.25);
+  }
+  /* "Not Available" is longer than "Sold Out" - sit further down the corner so it fits */
+  .sold-out-ribbon.long{top:26px;right:-40px;font-size:10px;letter-spacing:.04em;padding:4px 36px;}
+  .price-summary{
+    display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between;
+    background:var(--sky-tint);border-radius:12px;padding:22px 26px;
+  }
+  .price-summary .total .t-label{font-size:12.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;}
+  .price-summary .total .t-value{font-family:'Libre Baskerville',serif;font-size:34px;font-weight:700;color:var(--dark);}
+  .price-summary .total .t-sub{font-size:13px;color:var(--muted);}
+  .price-meta{display:flex;gap:26px;flex-wrap:wrap;font-size:13.5px;color:var(--muted);}
+  .price-meta strong{color:var(--dark);}
+  .contact-quote{
+    display:none;text-align:center;padding:30px 10px;
+  }
+  .contact-quote.show{display:block;}
+  .contact-quote p{color:var(--muted);max-width:420px;margin:0 auto 16px;}
+  .fine-print{margin-top:18px;font-size:12.5px;color:var(--muted);}
+  details.terms{margin-top:18px;border-top:1px solid var(--line);padding-top:14px;}
+  details.terms summary{cursor:pointer;font-weight:700;font-size:13.5px;color:var(--green-dark);}
+  details.terms .terms-body{font-size:13px;color:var(--muted);margin-top:10px;}
+  .terms-body h5{font-size:13.5px;font-weight:700;color:var(--dark);margin:18px 0 6px;}
+  .terms-body h5:first-child{margin-top:0;}
+  .terms-body p{margin:0 0 10px;}
+  .terms-body p:last-child{margin-bottom:0;}
+  .terms-body ol{margin:8px 0 12px;padding-left:20px;}
+  .terms-body li{margin-bottom:8px;}
+  .terms-body a{color:var(--green-dark);text-decoration:underline;}
+
+  .terms-body strong{color:var(--dark);}
+  .terms-body .tli-link{color:var(--green-dark);font-weight:700;text-decoration:none;}
+  .terms-body .tli-link:hover{text-decoration:underline;}
+
+  /* INCLUDED */
+  .incl-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+  .incl-col h4{font-size:15px;}
+  .incl-list{list-style:none;margin:0;padding:0;}
+  .incl-list li{padding:7px 0 7px 26px;position:relative;font-size:14.5px;border-bottom:1px solid var(--line);}
+  .incl-list.yes li:before{content:"✓";position:absolute;left:0;color:var(--green);font-weight:700;}
+  .incl-list.no li:before{content:"–";position:absolute;left:2px;color:var(--sunset-1);font-weight:700;}
+
+  /* FLIGHTS */
+  .flight-airport-callout{
+    display:flex;align-items:center;gap:14px;background:var(--sky-tint);border:1px solid var(--sky-line);
+    border-radius:12px;padding:16px 20px;margin-bottom:26px;
+  }
+  .flight-airport-callout .plane-badge{
+    width:40px;height:40px;border-radius:50%;background:var(--dark);color:var(--blue);
+    display:flex;align-items:center;justify-content:center;font-size:17px;flex:0 0 40px;
+  }
+  .flight-airport-callout .airport-name{font-family:'Libre Baskerville',serif;font-weight:700;font-size:16px;}
+  .flight-airport-callout .airport-sub{font-size:13px;color:var(--muted);}
+
+  .flight-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:14px;}
+  .flight-card{border:1px solid var(--line);border-radius:12px;padding:16px 18px;background:var(--white);}
+  .flight-card .city{font-family:'Libre Baskerville',serif;font-weight:700;font-size:15.5px;}
+  .flight-card .route{font-size:12px;color:var(--muted);margin:2px 0 10px;}
+  .flight-card .price{font-size:19px;font-weight:700;color:var(--dark);}
+  .flight-card .price small{font-size:11px;color:var(--muted);font-weight:600;display:block;margin-top:2px;}
+  .flight-note{font-size:12.5px;color:var(--muted);margin-bottom:26px;}
+
+  .flight-cta{
+    display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;
+    background:var(--dark);border-radius:14px;padding:22px 26px;color:var(--white);
+  }
+  .flight-cta h4{color:var(--white);font-size:16px;margin:0 0 4px;}
+  .flight-cta p{color:#c7ccd1;font-size:13px;margin:0;max-width:420px;}
+
+  /* AMENITIES ACCORDION */
+  .amenity-groups{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;}
+  .amenity-group{border:1px solid var(--line);border-radius:10px;background:var(--white);padding:16px 18px;}
+  .amenity-group h4{font-size:14.5px;color:var(--green-dark);margin-bottom:8px;}
+  .amenity-group ul{margin:0;padding-left:18px;font-size:13.5px;color:#3c4048;}
+  .amenity-group li{margin-bottom:4px;}
+
+  /* FAQ */
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-item summary{
+    padding:16px 0;cursor:pointer;font-family:'Libre Baskerville',serif;font-weight:700;font-size:16px;
+    list-style:none;display:flex;justify-content:space-between;align-items:center;
+  }
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary:after{content:"+";font-size:20px;color:var(--green-dark);font-weight:400;}
+  .faq-item[open] summary:after{content:"–";}
+  .faq-item .faq-a{padding:0 0 18px;color:#3c4048;font-size:14.5px;max-width:760px;}
+  .faq-item .faq-a p{margin:0 0 12px;}
+  .faq-item .faq-a p:last-child{margin-bottom:0;}
+  .faq-item .faq-a a{color:var(--green-dark);font-weight:600;}
+  .faq-category-label{
+    font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--green-dark);
+    margin:34px 0 4px;
+  }
+  .faq-category-label:first-child{margin-top:0;}
+
+  /* CTA — split photo + content */
+  #join, #joinMid{padding:0;}
+  .join-split{display:grid;grid-template-columns:auto 1fr;height:283px;overflow:hidden;}
+  .join-photo{height:100%;border-radius:0;border:none;font-size:13px;padding:0;background:var(--dark);display:flex;}
+  .join-photo img{height:100%;width:auto;display:block;object-fit:contain;}
+  .join-content{
+    background-color:var(--dark);
+    background-image:
+      radial-gradient(1.6px 1.6px at 8% 22%, var(--star), transparent 60%),
+      radial-gradient(1.3px 1.3px at 18% 68%, var(--star), transparent 60%),
+      radial-gradient(1.8px 1.8px at 30% 15%, var(--star), transparent 60%),
+      radial-gradient(1.2px 1.2px at 44% 80%, var(--star), transparent 60%),
+      radial-gradient(1.6px 1.6px at 58% 30%, var(--star), transparent 60%),
+      radial-gradient(1.3px 1.3px at 70% 65%, var(--star), transparent 60%),
+      radial-gradient(1.8px 1.8px at 82% 20%, var(--star), transparent 60%),
+      radial-gradient(1.4px 1.4px at 92% 75%, var(--star), transparent 60%);
+    background-repeat:no-repeat;
+    display:flex;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;padding:20px 36px;height:100%;box-sizing:border-box;overflow:hidden;
+  }
+  .join-content h2{margin-bottom:8px;font-size:22px;color:var(--white);}
+  .join-content p{color:#c3c9d0;max-width:400px;margin:0 0 14px;font-size:13.5px;}
+  .join-content .btn{padding:10px 22px;font-size:13.5px;}
+  @media (max-width:760px){
+    .join-split{grid-template-columns:1fr;height:auto;}
+    .join-photo{height:200px;width:100%;}
+    .join-photo img{width:100%;height:100%;object-fit:cover;}
+    .join-content{padding:24px 24px;height:auto;}
+  }
+
+  /* BOOKING FORM MODAL — compact, one or two questions per step */
+  .modal-overlay{
+    display:none;position:fixed;inset:0;z-index:200;background:rgba(18,28,38,0.68);
+    padding:24px;overflow-y:auto;align-items:flex-start;justify-content:center;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal-inner{width:100%;max-width:440px;margin:auto;position:relative;}
+  .modal-close{
+    position:absolute;top:14px;right:14px;background:none;border:none;font-size:22px;line-height:1;
+    color:var(--muted);cursor:pointer;padding:4px;z-index:2;
+  }
+  .modal-close:hover{color:var(--dark);}
+  .booking-form-wrap{
+    position:relative;width:100%;background:var(--white);border-radius:14px;
+    padding:26px 26px 22px;box-shadow:0 20px 50px rgba(0,0,0,0.35);color:var(--dark);
+  }
+  .form-demo-flag{
+    display:inline-block;background:var(--green-tint);border:1px solid var(--green-line);color:var(--green-dark);
+    font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;margin-bottom:12px;
+  }
+  .booking-intro h3{font-size:17px;margin:0 0 4px;}
+  .booking-intro p{color:var(--muted);font-size:12.5px;margin:0 0 18px;line-height:1.45;}
+
+  .form-progress-bar{height:4px;background:var(--line);border-radius:4px;overflow:hidden;}
+  .form-progress-fill{height:100%;width:12.5%;background:var(--green);border-radius:4px;transition:width .25s ease;}
+  .form-progress-text{font-size:11px;color:var(--muted);font-weight:600;margin:7px 0 20px;}
+
+  .field{margin-bottom:14px;}
+  .field label{display:block;font-size:13.5px;font-weight:700;color:var(--dark);margin-bottom:6px;}
+  .field input[type=text], .field input[type=email], .field input[type=tel], .field input[type=date],
+  .field select, .field textarea{
+    width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:7px;
+    font-family:'Titillium Web',sans-serif;font-size:13.5px;color:var(--dark);background:var(--white);
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{outline:2px solid var(--green);outline-offset:1px;}
+  .field textarea{resize:vertical;}
+  .field-hint{font-size:12.5px;color:var(--muted);margin-bottom:12px;}
+
+  .radio-row{display:flex;flex-direction:column;gap:7px;}
+  .radio-opt{display:flex;align-items:flex-start;gap:7px;font-size:13.5px;color:var(--dark);font-weight:400;cursor:pointer;}
+  .radio-opt input{margin-top:3px;}
+
+  .passenger-block{border:1px solid var(--line);border-radius:9px;padding:12px 14px;margin-bottom:10px;}
+  .passenger-block-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .passenger-block-head h5{margin:0;font-size:13px;font-family:'Libre Baskerville',serif;}
+  .remove-passenger{background:none;border:none;color:var(--sunset-1);font-size:11.5px;font-weight:700;cursor:pointer;padding:0;}
+  .passenger-field-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;}
+  .add-passenger-btn{
+    background:none;border:1.5px dashed var(--line);color:var(--green-dark);font-weight:700;font-size:13px;
+    width:100%;padding:9px;border-radius:7px;cursor:pointer;font-family:'Titillium Web',sans-serif;
+  }
+  .add-passenger-btn:hover{border-color:var(--green);}
+  .quote-tally{font-size:12.5px;font-weight:700;padding:8px 12px;border-radius:7px;margin-bottom:12px;background:var(--green-tint);color:var(--green-dark);}
+  .quote-tally.mismatch{background:var(--sunset-tint);color:var(--sunset-1);}
+  .quote-error{font-size:12px;color:var(--sunset-1);font-weight:600;margin-top:8px;display:none;}
+  .quote-error.show{display:block;}
+
+  .form-nav{display:flex;justify-content:space-between;align-items:center;margin-top:18px;}
+  .back-link{background:none;border:none;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;padding:8px 2px;}
+  .back-link:hover{color:var(--dark);}
+  .btn-sm{padding:9px 20px;font-size:13px;}
+
+  .review-box{margin-top:16px;border:1px solid var(--sky-line);border-radius:9px;padding:14px 16px;background:var(--sky-tint);}
+  .review-box h4{font-size:13px;margin-bottom:8px;}
+  .review-row{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;padding:4px 0;border-bottom:1px solid var(--line);}
+  .review-row:last-child{border-bottom:none;}
+  .review-row .k{color:var(--muted);}
+  .review-row .v{color:var(--dark);font-weight:600;text-align:right;}
+
+  .form-success{position:relative;width:100%;background:var(--white);border-radius:14px;padding:34px 26px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.35);}
+  .form-success h3{font-size:17px;}
+  .form-success p{color:var(--muted);font-size:13px;max-width:360px;margin:0 auto 16px;}
+
+  @media (max-width:520px){
+    .booking-form-wrap, .form-success{padding-left:18px;padding-right:18px;}
+  }
+
+  /* STICKY MOBILE BAR */
+  .sticky-bar{
+    position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--white);
+    border-top:1px solid var(--line);box-shadow:0 -4px 16px rgba(0,0,0,0.08);
+    display:none;align-items:center;justify-content:space-between;padding:12px 18px;
+  }
+  .sticky-bar .sb-price{font-family:'Libre Baskerville',serif;font-weight:700;font-size:16px;}
+  .sticky-bar .sb-price span{display:block;font-size:11px;color:var(--muted);font-family:'Titillium Web',sans-serif;font-weight:600;}
+
+  footer{background:var(--dark);padding:30px 0;text-align:center;font-size:13px;color:var(--green-soft);}
+  footer::before{content:"✦";display:block;color:var(--gold);font-size:14px;margin-bottom:8px;}
+
+  @media (max-width:860px){
+    .facts-grid{grid-template-columns:repeat(2,1fr);row-gap:16px;}
+    .fact:nth-child(3){border-left:none;}
+    .incl-grid{grid-template-columns:1fr;}
+    .sticky-bar{display:flex;}
+    body{padding-bottom:70px;}
+    .overview-grid{grid-template-columns:1fr;}
+    .overview-media{height:auto;aspect-ratio:16/10;}
+    .carousel-wrap{padding:0 40px;}
+  }
+
+  /* ADD-ON LEG (see templates/page-template-addon.html) - every [data-addon]
+     element is removed by JS when this cruise has no add-on. */
+  #addon{scroll-margin-top:64px;}
+  /* .addon-hero-toggle / .addon-toggle set their own display, which would
+     otherwise beat the hidden attribute and show them on every cruise. */
+  [data-addon][hidden]{display:none !important;}
+  .addon-hero-toggle{
+    display:inline-flex;align-items:center;gap:9px;cursor:pointer;font-family:'Titillium Web',sans-serif;
+    background:rgba(217,164,65,0.16);border:1px solid rgba(217,164,65,0.6);color:var(--gold);
+    transition:background .15s ease, color .15s ease;
+  }
+  .addon-hero-toggle:hover{background:rgba(217,164,65,0.28);}
+  .addon-hero-toggle .mini-switch{
+    position:relative;flex:0 0 28px;width:28px;height:16px;border-radius:8px;background:rgba(255,255,255,0.25);
+    transition:background .15s ease;
+  }
+  .addon-hero-toggle .mini-switch:after{
+    content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:var(--white);
+    transition:transform .15s ease;
+  }
+  .addon-hero-toggle[aria-checked="true"]{background:var(--gold);border-color:var(--gold);color:var(--dark);}
+  .addon-hero-toggle[aria-checked="true"] .mini-switch{background:var(--dark);}
+  .addon-hero-toggle[aria-checked="true"] .mini-switch:after{transform:translateX(12px);background:var(--gold);}
+  .addon-hero-toggle:focus-visible{outline:2px solid var(--white);outline-offset:2px;}
+  .badge.addon-changed{border-color:var(--gold);color:var(--gold);background:rgba(217,164,65,0.12);}
+  .fact .value.addon-changed{color:var(--gold);}
+  .fact .label .addon-tag{color:var(--gold);}
+
+  /* Choice between pairings - a cruise in several 2-cruise Back to Backs
+     (e.g. a Transatlantic with either an 8-day or a 15-day Mediterranean). */
+  .addon-options{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin:0 0 14px;}
+  .addon-options[hidden]{display:none;}
+  .addon-options .ao-label{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#94681a;margin-right:2px;}
+  .addon-opt{
+    display:inline-flex;flex-direction:column;align-items:flex-start;gap:1px;padding:7px 14px;border-radius:10px;cursor:pointer;
+    border:1.5px solid color-mix(in srgb, var(--gold) 55%, white);background:var(--white);color:var(--dark);
+    font-family:'Titillium Web',sans-serif;font-size:13.5px;font-weight:700;line-height:1.25;text-align:left;
+    transition:background .15s ease, border-color .15s ease;
+  }
+  .addon-opt small{font-size:11.5px;font-weight:600;color:var(--muted);}
+  .addon-opt:hover{border-color:var(--gold);}
+  .addon-opt.active{background:var(--gold);border-color:var(--gold);}
+  .addon-opt.active small{color:var(--dark);}
+  #addonOptionsPricing{margin:-6px 0 12px;}
+  .addon-alt{
+    font-size:13.5px;color:#3c4048;margin:-4px 0 14px;padding:9px 13px;border-radius:8px;max-width:680px;
+    background:color-mix(in srgb, var(--gold) 9%, var(--white));
+  }
+  .addon-alt[hidden]{display:none;}
+  .addon-alt + .addon-alt{margin-top:-8px;}
+  .addon-alt a{color:var(--green-dark);font-weight:700;white-space:nowrap;}
+  .addon-block{position:relative;padding-left:28px;margin-top:4px;}
+  .addon-block:before{
+    content:"";position:absolute;left:6px;top:-18px;height:44px;border-left:2px dashed var(--gold);
+  }
+  /* Sails BEFORE this cruise: the card sits above the itinerary instead,
+     its dashed connector running down into Day 1. */
+  .addon-block.addon-before{margin:0 0 14px;}
+  .addon-block.addon-before:before{top:auto;bottom:-14px;height:calc(100% - 24px);}
+  .addon-card{
+    position:relative;background:var(--white);border:1.5px solid color-mix(in srgb, var(--gold) 60%, white);
+    border-radius:12px;padding:20px 22px;box-shadow:0 6px 22px rgba(148,104,26,0.10);
+    outline:1.5px dashed color-mix(in srgb, var(--gold) 45%, transparent);outline-offset:-6px;
+  }
+  .addon-card:before{
+    content:"";position:absolute;left:-28px;top:24px;width:14px;height:14px;border-radius:50%;
+    background:var(--gold);border:3px solid var(--white);box-shadow:0 0 0 2px var(--gold);
+  }
+  .addon-eyebrow{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:#94681a;margin-bottom:4px;}
+  .addon-title{font-family:'Libre Baskerville',serif;font-weight:700;font-size:20px;line-height:1.3;margin:0 0 4px;}
+  .addon-meta{font-size:13px;color:var(--muted);font-weight:600;margin-bottom:10px;}
+  .addon-desc{font-size:14.5px;color:#3c4048;margin:0 0 14px;max-width:680px;}
+  .addon-actions{display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;}
+  .addon-actions .excursion-toggle{margin-top:0;color:#94681a;}
+  .addon-actions a{font-weight:700;font-size:13px;color:var(--green-dark);text-decoration:none;}
+  .addon-actions a:hover{text-decoration:underline;}
+  .addon-itin{display:none;margin-top:18px;}
+  .addon-itin.open{display:block;}
+  .timeline.addon:before{background:none;border-left:2px dashed var(--gold);width:0;}
+  .timeline.addon .stop:before{border-color:var(--gold);}
+
+  .addon-toggle{
+    display:flex;align-items:center;gap:14px;margin:-6px 0 22px;padding:14px 18px;cursor:pointer;
+    border:2px dashed color-mix(in srgb, var(--gold) 55%, white);border-radius:12px;
+    background:color-mix(in srgb, var(--gold) 7%, var(--white));
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .addon-toggle:hover{border-color:var(--gold);}
+  .addon-toggle.on{border-style:solid;border-color:var(--gold);background:color-mix(in srgb, var(--gold) 15%, var(--white));}
+  .addon-toggle.unavailable{cursor:not-allowed;opacity:.6;}
+  .addon-toggle input{position:absolute;opacity:0;pointer-events:none;}
+  .addon-switch{
+    flex:0 0 42px;width:42px;height:24px;border-radius:12px;background:#cfc9bb;position:relative;transition:background .15s ease;
+  }
+  .addon-switch:after{
+    content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--white);
+    box-shadow:0 1px 3px rgba(0,0,0,0.25);transition:transform .15s ease;
+  }
+  .addon-toggle.on .addon-switch{background:var(--gold);}
+  .addon-toggle.on .addon-switch:after{transform:translateX(18px);}
+  .addon-toggle-text{flex:1;min-width:0;}
+  .addon-toggle-text strong{display:block;font-size:14.5px;color:var(--dark);}
+  .addon-toggle-text > span{font-size:12.5px;color:var(--muted);}
+  .addon-toggle-price{font-family:'Libre Baskerville',serif;font-weight:700;font-size:17px;color:#94681a;white-space:nowrap;}
+  @media (max-width:560px){
+    .addon-toggle{flex-wrap:wrap;}
+    .addon-toggle-price{width:100%;padding-left:56px;}
+  }
+
+  /* JOURNEY BANNER (see templates/page-template-leg.html) - after the first
+     photo strip, only when this cruise is part of a 3+ cruise journey */
+  .journey-banner{position:relative;color:var(--dark);padding:52px 0 56px;background:var(--paper);border-bottom:1px solid var(--line);}
+  .journey-banner[hidden]{display:none;}
+  .journey-banner h2{color:var(--dark);font-size:clamp(26px,3.4vw,36px);line-height:1.2;margin:0 0 6px;}
+  .jb-stats{font-size:14.5px;font-weight:600;color:var(--muted);margin-bottom:12px;}
+  .jb-desc{max-width:640px;color:#4a4e55;font-size:15.5px;margin:0 0 26px;}
+  .jb-legs{display:flex;align-items:stretch;gap:0;margin:0 0 28px;}
+  .jb-leg{
+    position:relative;flex:1 1 0;min-width:0;padding:14px 16px;border-radius:10px;text-decoration:none;color:var(--dark);
+    background:var(--white);border:1px solid var(--line);box-shadow:0 2px 10px rgba(21,34,48,0.05);
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  a.jb-leg:hover{border-color:var(--gold);box-shadow:0 6px 16px rgba(21,34,48,0.10);}
+  .jb-leg.current{border:2px solid var(--gold);background:color-mix(in srgb, var(--gold) 9%, var(--white));}
+  .jb-leg-num{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#94681a;}
+  .jb-leg-name{font-family:'Libre Baskerville',serif;font-weight:700;font-size:15.5px;line-height:1.3;margin:3px 0 2px;}
+  .jb-leg-meta{font-size:12.5px;color:var(--muted);}
+  .jb-here{
+    display:inline-block;margin-top:8px;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;
+    background:var(--gold);color:var(--dark);border-radius:12px;padding:2px 9px;
+  }
+  .jb-join{flex:0 0 28px;align-self:center;height:2px;background:var(--gold);position:relative;}
+  .jb-join:after{content:"";position:absolute;right:-1px;top:-4px;border-left:6px solid var(--gold);border-top:5px solid transparent;border-bottom:5px solid transparent;}
+  .jb-cta{display:flex;flex-wrap:wrap;align-items:center;gap:16px;}
+  .jb-cta .jb-price{font-size:14px;color:var(--muted);}
+  .jb-cta .jb-price strong{color:var(--dark);font-size:17px;}
+  @media (max-width:760px){
+    .jb-legs{flex-direction:column;}
+    .jb-join{flex:0 0 18px;width:2px;height:18px;align-self:flex-start;margin-left:22px;}
+    .jb-join:after{right:-4px;top:auto;bottom:-1px;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid var(--gold);border-bottom:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- GLOBAL NAV -->
+<div class="global-nav">
+  <div class="wrap">
+    <a href="/" class="gn-logo">
+      <span class="gn-script">Worldschooling</span><span class="gn-sans">journeys</span>
+    </a>
+    <div class="gn-links" id="gnLinks">
+      <a href="/" class="gn-link">Home</a>
+      <div class="gn-dropdown">
+        <a href="#" class="gn-link active">Worldschooling Trips</a>
+        <div class="gn-dropdown-menu">
+          <a href="/cruises.html" class="gn-dropdown-item">Group Cruises</a>
+        </div>
+      </div>
+      <a href="#" class="gn-link">About Us</a>
+      <a href="#" class="gn-link">Stay Updated</a>
+      <a href="#" class="gn-link">Contact</a>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="hero" id="heroSection">
+  <div class="hero-ribbon" id="heroRibbon" hidden>Sold Out</div>
+  <div class="wrap">
+    <div class="eyebrow">Worldschooling Group Cruise · For Homeschool Families</div>
+    <h1 id="heroTitle"></h1>
+    <div class="badge-row">
+      <span class="badge" id="badgeNights"></span>
+      <span class="badge" id="badgePorts"></span>
+      <span class="badge" id="badgeDaysAtSea"></span>
+      <span class="badge" id="badgeCountries"></span>
+      <button type="button" class="badge addon-hero-toggle" id="addonHeroToggle" role="switch" aria-checked="false" data-addon hidden>
+        <span class="mini-switch" aria-hidden="true"></span><span id="addonHeroToggleLabel"></span>
+      </button>
+    </div>
+    <div class="hero-cta">
+      <a href="#pricing" class="btn btn-primary" id="heroPricingLink">See Cabin Pricing</a>
+      <a href="#" class="btn btn-outline open-booking-btn" id="heroReserveLink">Reserve Your Spot</a>
+    </div>
+  </div>
+  <svg class="mountain-divider" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,60 L0,28 L80,44 L170,16 L260,40 L360,10 L450,34 L540,18 L640,44 L730,14 L830,38 L930,22 L1030,42 L1120,16 L1200,32 L1200,60 Z"></path>
+  </svg>
+</header>
+
+<!-- AT A GLANCE -->
+<div class="facts-bar">
+  <div class="wrap facts-grid">
+    <div class="fact"><div class="label">Destination</div><div class="value" id="factDestination"></div></div>
+    <div class="fact"><div class="label">Ship</div><div class="value" id="factShip"></div></div>
+    <div class="fact"><div class="label">Dates</div><div class="value" id="factDates"></div></div>
+    <div class="fact"><div class="label">Min. Age</div><div class="value" id="factMinAge"></div></div>
+    <div class="fact" id="factStartingAtWrap"><div class="label" id="factStartingAtLabel">Starting At</div><div class="value price" id="factStartingAt"></div></div>
+  </div>
+</div>
+
+<!-- SUBNAV -->
+<nav class="subnav">
+  <div class="wrap subnav-inner">
+    <a href="#overview">Overview</a>
+    <a href="#community">Community</a>
+    <a href="#itinerary">Itinerary & Excursions</a>
+    <a href="#addon" id="addonSubnavLink" data-addon hidden>Add-On</a>
+    <a href="#pricing" id="subnavPricingLink">Pricing</a>
+    <a href="#flights" id="flightsSubnavLink">Flights</a>
+    <a href="#included" id="includedSubnavLink">What's Included</a>
+    <a href="#amenities" id="amenitiesSubnavLink">Cabins & Amenities</a>
+    <a href="#faq">FAQ</a>
+    <a href="#" class="open-booking-btn" id="subnavReserveLink">Reserve</a>
+  </div>
+</nav>
+
+<!-- OVERVIEW (picture + description) -->
+<section class="overview" id="overview">
+  <div class="wrap overview-grid">
+    <div class="overview-media" id="overviewMedia"><span>Group photo goes here — swap in real trip photography</span></div>
+    <div>
+      <div class="eyebrow">Worldschooling Group Cruise for Homeschool Families</div>
+      <h1 id="overviewSubtitle"></h1>
+      <div id="overviewDescription"></div>
+      <div class="hero-cta">
+        <a href="#pricing" class="btn btn-primary" id="overviewPricingLink">See Cabin Pricing →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO STRIP TRANSITION -->
+<div class="photo-strip">
+  <div class="photo-slot" data-photo="strip-a-1"><img src="/images/group-photo-1.jpg" alt="Group of worldschooling families on deck"></div>
+  <div class="photo-slot" data-photo="strip-a-2"><img src="/images/group-photo-2.jpg" alt="Group of worldschooling families on deck"></div>
+  <div class="photo-slot" data-photo="strip-a-3"><img src="/images/group-photo-3.jpg" alt="Group of worldschooling families visiting the bridge"></div>
+  <div class="photo-slot" data-photo="strip-a-4"><img src="/images/group-photo-4.jpg" alt="Group of worldschooling families at sunset on deck"></div>
+</div>
+
+<!-- JOURNEY BANNER (only when this cruise is part of a 3+ cruise journey - see renderJourneyBanner) -->
+<section class="journey-banner" id="journeyBanner" hidden>
+  <div class="wrap">
+    <div class="eyebrow">Extend your trip · Back-to-back journey</div>
+    <h2 id="jbName"></h2>
+    <div class="jb-stats" id="jbStats"></div>
+    <p class="jb-desc" id="jbDesc"></p>
+    <div class="jb-legs" id="jbLegs"></div>
+    <div class="jb-cta">
+      <a class="btn btn-primary" id="jbLink" href="#">See the Full Journey →</a>
+      <span class="jb-price" id="jbPrice"></span>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT IS A WORLDSCHOOLING CRUISE (community + proof, compact) -->
+<section class="dark-section night-sky" id="community">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow moon-eyebrow">The Short Version</div>
+      <h2>What Is a Worldschooling Community Cruise?</h2>
+    </div>
+    <div class="value-props">
+      <div class="value-prop">
+        <div class="value-num-wrap"><div class="value-num">1</div></div>
+        <div><h4>Travel with built-in friends</h4><p>A community that shares your values. Kids and adults become instant friends, no effort required.</p></div>
+      </div>
+      <div class="value-prop">
+        <div class="value-num-wrap"><div class="value-num">2</div></div>
+        <div><h4>Daily activities, together</h4><p>The ship handles the structure and meals; we create the space for families to connect around it.</p></div>
+      </div>
+      <div class="value-prop">
+        <div class="value-num-wrap"><div class="value-num">3</div></div>
+        <div><h4>The millennial experience</h4><p>Like having a whole neighborhood of worldschooling families around you, wherever you go.</p></div>
+      </div>
+    </div>
+
+    <div class="roster-full-card" id="rosterCardFull" hidden><!-- populated by JS --></div>
+
+    <div class="proof-strip-wrap" id="stories">
+      <div class="proof-head-row">
+        <div class="proof-label">In their words</div>
+        <div class="proof-arrows">
+          <button type="button" class="proof-arrow-btn" id="proofPrevBtn" aria-label="Previous testimonials">‹</button>
+          <button type="button" class="proof-arrow-btn" id="proofNextBtn" aria-label="Next testimonials">›</button>
+        </div>
+      </div>
+      <div class="proof-strip" id="testiTrack"><!-- populated by JS --></div>
+    </div>
+  </div>
+  <svg class="mountain-divider" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,60 L0,30 L90,46 L180,18 L270,42 L370,12 L460,36 L560,20 L660,46 L750,16 L850,40 L950,24 L1050,44 L1130,18 L1200,34 L1200,60 Z"></path>
+  </svg>
+</section>
+
+<!-- ITINERARY + EXCURSIONS (combined) -->
+<section id="itinerary">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Day by Day</div>
+      <h2>Itinerary & Port Excursions</h2>
+      <p>Every stop, at a glance. Group excursion details for each port are coming soon.</p>
+    </div>
+
+    <div class="timeline" id="timeline"><!-- populated by JS --></div>
+
+    <!-- ADD-ON LEG (continues the timeline) -->
+    <div class="addon-block" id="addon" data-addon hidden>
+      <div class="addon-card">
+        <div class="addon-eyebrow">Optional Add-On · Same Ship</div>
+        <h3 class="addon-title">Keep Sailing: <span id="addonName"></span></h3>
+        <div class="addon-meta" id="addonMeta"></div>
+        <div class="addon-options" id="addonOptionsCard" hidden></div>
+        <p class="addon-desc" id="addonDesc"></p>
+        <div id="addonAlts"><!-- other versions of this cruise - see renderAddOnAlternatives() --></div>
+        <div class="addon-actions">
+          <button type="button" class="excursion-toggle" id="addonItinToggle"><span class="chev">▾</span> See the add-on itinerary</button>
+          <a href="#pricing" id="addonToPricing">Add it to your price →</a>
+          <a href="#" id="addonOwnPageLink" hidden>See its own cruise page →</a>
+        </div>
+        <div class="addon-itin" id="addonItin">
+          <div class="timeline addon" id="addonTimeline"><!-- populated by JS --></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHOTO STRIP TRANSITION -->
+<div class="photo-strip">
+  <div class="photo-slot" data-photo="strip-b-1"><img src="/images/group-photo-5.jpg" alt="Worldschooling families on the dock at the cruise port"></div>
+  <div class="photo-slot" data-photo="strip-b-2"><img src="/images/group-photo-6.jpg" alt="Worldschooling families at a waterfall on an excursion"></div>
+  <div class="photo-slot" data-photo="strip-b-3"><img src="/images/group-photo-7.jpg" alt="Worldschooling families in front of Mt. Fuji"></div>
+  <div class="photo-slot" data-photo="strip-b-4"><img src="/images/group-photo-8.jpg" alt="Worldschooling families in front of Palma Cathedral"></div>
+</div>
+
+<!-- PRICING -->
+<section class="tint" id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow" id="pricingEyebrow">Cabin Pricing</div>
+      <h2 id="pricingHeading">See Your Price</h2>
+      <p id="pricingSubhead">Choose your party size and cabin type. First two passengers are always charged as adults; port taxes and fees are included, gratuities are not.</p>
+    </div>
+
+    <div class="pricing-card" id="pricingCardWrap">
+      <div class="calc-row-label">How many guests?</div>
+      <div class="guest-select" id="guestSelect">
+        <button class="pill-btn active" data-guests="2">2 Guests</button>
+        <button class="pill-btn" data-guests="3">3 Guests</button>
+        <button class="pill-btn" data-guests="4">4 Guests</button>
+        <button class="pill-btn" data-guests="quote" id="guestQuoteBtn">5+ Guests</button>
+      </div>
+
+      <div id="cabinArea">
+        <div class="calc-row-label">Choose a cabin type</div>
+        <div class="cabin-grid" id="cabinGrid"><!-- populated by JS --></div>
+
+        <div class="addon-options" id="addonOptionsPricing" hidden></div>
+        <label class="addon-toggle" id="addonToggle" data-addon hidden>
+          <input type="checkbox" id="addonToggleInput">
+          <span class="addon-switch" aria-hidden="true"></span>
+          <span class="addon-toggle-text">
+            <strong>Add <span id="addonToggleName"></span></strong>
+            <span id="addonToggleSub"></span>
+          </span>
+          <span class="addon-toggle-price" id="addonTogglePrice"></span>
+        </label>
+
+        <div class="price-summary">
+          <div class="total">
+            <div class="t-label">Total for your family</div>
+            <div class="t-value" id="totalPrice">$5,554</div>
+            <div class="t-sub" id="perPerson">≈ $2,777 per person</div>
+          </div>
+          <div class="price-meta" id="priceMeta"><!-- populated by renderPriceMeta() --></div>
+          <a href="#" class="btn btn-primary open-booking-btn" id="reserveBtn">Reserve This Cabin</a>
+        </div>
+      </div>
+
+      <div class="contact-quote" id="contactQuote">
+        <h3>Traveling with <span class="quote-min-guests">5</span> or more?</h3>
+        <p>Larger families usually need a second connecting cabin. Send us your party size and we'll get you an accurate quote fast.</p>
+        <a href="#" class="btn btn-primary open-quote-btn">Get a Custom Quote</a>
+      </div>
+
+      <details class="terms">
+        <summary>Terms and Conditions</summary>
+        <div class="terms-body">
+          <p><strong>Terms and Conditions:</strong> The full terms that apply when you book this trip with us. <a class="tli-link" href="https://worldschoolingjourneys.com/terms-and-conditions/">View Our Terms and Conditions</a></p>
+          <p><strong>Payment Schedule & Refund Policy:</strong> Set by the cruise line, not by us. Please refer to their posted policy for payment schedules and refunds. <a class="tli-link" id="cruiseLinePolicyLink" href="#" hidden>View The Cruise Line's Payment & Refund Policy</a></p>
+        </div>
+      </details>
+
+      <details class="terms">
+        <summary>Pricing Variation</summary>
+        <div class="terms-body">
+          <p>Please note that all prices listed for the cruise are subject to change from a day to day basis until you book. We do not set the prices of the cabins. The cruise line sets all pricing and promotions which are subject to change without notice.</p>
+          <p>The final cost may vary based on several factors, including but not limited to:</p>
+          <ol>
+            <li><strong>Seasonal Variations:</strong> Prices may fluctuate depending on the time of year, with peak seasons typically costing more due to higher demand.</li>
+            <li><strong>Availability:</strong> Availability of accommodations in different cabin categories can lead to different prices.</li>
+            <li><strong>Exchange Rates:</strong> Fluctuations in currency exchange rates can impact the overall cost of the trip, especially for international travel.</li>
+            <li><strong>Taxes and Fees:</strong> Government-imposed taxes, service charges, and other mandatory fees can alter the total price.</li>
+            <li><strong>Special Promotions:</strong> Prices may be subject to discounts or surcharges based on promotional offers or changes in package deals.</li>
+            <li><strong>Service Upgrades:</strong> Optional upgrades or changes in service levels will affect pricing. As well as onboard purchases or excursions purchased additionally through the cruise line. This includes purchases you make on your cruise line app.</li>
+            <li><strong>Transportation:</strong> All flights and travel to and from the cruise are the responsibility of the traveler and are not included in the cruise fare unless otherwise stated on your booking.</li>
+            <li><strong>Travel Insurance:</strong> This is recommended and will result in an increased trip cost. You're welcome to purchase coverage through a third-party provider, two of our recommended options are ideal for long-term travelers: <a href="https://jo.my/travelinsurance">SafetyWing</a> or <a href="https://withfaye.pxf.io/aNOqzj">Faye</a>. Alternatively, you may also purchase trip insurance through the cruise line directly. Please let us know if you are interested in purchasing the trip insurance directly with the cruise line.</li>
+          </ol>
+          <p>Please confirm the latest pricing details with us before finalizing your booking. We strive to provide the most accurate and up-to-date information, but prices are ultimately subject to change based on the above factors and other unforeseen circumstances and the discretion of the cruise line.</p>
+          <p>The exact price will be determined during the booking process once the cabin category has been selected. Prices are valid as of publishing date and may be different at the time of booking.</p>
+          <p>This is a disclaimer from Every Avenue Travel and does not replace the cruise line provider's disclaimer.</p>
+          <p>Please be sure to read all disclaimers and policies issued by the cruise line you are traveling with.</p>
+        </div>
+      </details>
+    </div>
+
+    <!-- OTHER DEPARTURES (replaces the pricing card above when this cruise is sold out - see applySoldOutState) -->
+    <div id="departuresWrap" hidden>
+      <div class="dep-controls">
+        <div class="dep-tabs" id="depTabs">
+          <button type="button" class="dep-tab active" data-view="region">Same region</button>
+          <button type="button" class="dep-tab" data-view="price">Similar price</button>
+          <button type="button" class="dep-tab" data-view="soonest">Sailing soonest</button>
+        </div>
+        <div class="dep-right">
+          <div class="proof-arrows">
+            <button type="button" class="proof-arrow-btn" id="depPrevBtn" aria-label="Previous cruises">‹</button>
+            <button type="button" class="proof-arrow-btn" id="depNextBtn" aria-label="More cruises">›</button>
+          </div>
+          <a href="/cruises.html" class="dep-all">See All Cruises →</a>
+        </div>
+      </div>
+      <p class="dep-note" id="depNote"></p>
+      <div class="dep-track" id="depTrack"><!-- populated by renderDepartures() --></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA (repeated between Pricing and Flights) -->
+<section id="joinMid">
+  <div class="join-split">
+    <div class="photo-slot join-photo" data-photo="cta-ship"><img src="/images/cta-ship.webp" alt="The ship at night"></div>
+    <div class="join-content">
+      <h2 id="joinMidHeading">Ready to join our group?</h2>
+      <p id="joinMidSubhead">Fill out the intake form and we'll follow up with your final price and next steps within 1 day.</p>
+      <a href="#" class="btn btn-primary open-booking-btn" id="joinMidLink">Reserve Your Spot</a>
+    </div>
+  </div>
+</section>
+
+<!-- FLIGHTS -->
+<section id="flights">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Getting There</div>
+      <h2>Flights Cost Less Than You'd Think</h2>
+      <p>Flights are the #1 worry we hear from families before booking and usually the smallest line item once you look at real numbers. Here's what flights into the nearest airport typically run from a few major hubs.</p>
+    </div>
+
+    <div class="flight-airport-callout">
+      <div class="plane-badge">✈</div>
+      <div>
+        <div class="airport-name" id="flightAirportName"></div>
+        <div class="airport-sub" id="flightAirportSub"></div>
+      </div>
+    </div>
+
+    <div class="flight-grid" id="flightGrid"><!-- populated by JS --></div>
+    <p class="flight-note">Fares shown are illustrative examples of typical one-way economy pricing, not a live quote. Actual prices vary with season, airline, and how far ahead you book.</p>
+
+    <div class="flight-cta">
+      <div>
+        <h4>Need help finding flights?</h4>
+        <p>As a courtesy for families sailing with us, our team helps you track down affordable flight options free of charge.</p>
+      </div>
+      <a href="#" class="btn btn-primary open-flights-btn">Ask Us About Flights</a>
+    </div>
+  </div>
+</section>
+
+<!-- INCLUDED -->
+<section id="included">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Know Before You Go</div>
+      <h2>What's Included</h2>
+    </div>
+    <div class="incl-grid">
+      <div class="incl-col">
+        <h4>Included in your fare</h4>
+        <ul class="incl-list yes">
+          <li>Cruise fare, port fees & taxes</li>
+          <li>All onboard meals, water, tea, coffee</li>
+          <li>Entertainment, pools, gym, shows</li>
+          <li>Organized group dinners</li>
+          <li>Pre-trip kid & adult group chats</li>
+          <li>Access to private group excursions*</li>
+          <li>Pre-cruise guide + group meeting</li>
+        </ul>
+      </div>
+      <div class="incl-col">
+        <h4>Not included</h4>
+        <ul class="incl-list no">
+          <li>Spa access or treatments</li>
+          <li>Drinks other than water, tea, coffee</li>
+          <li>Excursions (booked separately)*</li>
+          <li>Casino games</li>
+          <li>Room service</li>
+          <li>Gratuities ($16–25/person/day)</li>
+          <li>Wi-Fi</li>
+        </ul>
+      </div>
+    </div>
+    <p class="fine-print">*Group excursions are organized at cost — separate from cruise fare, and always optional.</p>
+  </div>
+</section>
+
+<!-- CABINS & AMENITIES -->
+<section class="tint" id="amenities">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Onboard</div>
+      <h2>Cabins & Ship Amenities</h2>
+      <p>The <span id="amenitiesShipName"></span>, at a glance.</p>
+    </div>
+    <div class="amenity-groups" id="amenityGroups"><!-- populated by renderAmenities() --></div>
+  </div>
+</section>
+
+<!-- CTA (repeated above FAQ) -->
+<section id="join">
+  <div class="join-split">
+    <div class="photo-slot join-photo" data-photo="cta-ship"><img src="/images/cta-ship.webp" alt="The ship at night"></div>
+    <div class="join-content">
+      <h2 id="joinHeading">Ready to join our group?</h2>
+      <p id="joinSubhead">Fill out the intake form and we'll follow up with your final price and next steps within 1 day.</p>
+      <a href="#" class="btn btn-primary open-booking-btn" id="joinLink">Reserve Your Spot</a>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Questions</div>
+      <h2>Frequently Asked Questions</h2>
+    </div>
+    <div>
+      <div class="faq-category-label" id="faqBookingCategory">Booking & Pricing</div>
+      <details class="faq-item" open id="faqBookingItem">
+        <summary id="faqBookingQuestion">How do we book?</summary>
+        <div class="faq-a" id="faqBookingAnswer">
+          <p>To join this cruise, you will be booking through our travel agency, Fora Travel. Use <a href="https://worldschoolingjourneys.com/trips/october-transpacific-japan-cruise/#reserve">the booking form</a> at the bottom of the page to start a booking inquiry. You can contact us through <a href="https://wa.me/message/6C5D7L3I726ND1">WhatsApp</a>, <a href="https://www.messenger.com/login.php?next=https%3A%2F%2Fwww.messenger.com%2Ft%2F1472067489710819">Facebook Messenger</a>, or <a href="mailto:booking@everyavenue.com">Email</a> to ask questions. You can find our contact information at the bottom of this page. Use the form at the bottom of the page to get us all the information we need to get you the most current, accurate pricing and book you into the worldschooling group. Once we have everything we need to book, we will send you a link to a secure credit card vault to add the payment info. You can also call us with the card info. We book directly through the cruise line's back end, as a travel agent, so the prices are always the same as on the cruise line's website plus the additional travel agent perks we can usually get for you.</p>
+          <p>Read more from others who booked with us about the process: <a href="https://www.facebook.com/groups/everyavenuetravel/permalink/2924539861029405/">POST</a></p>
+        </div>
+      </details>
+      <details class="faq-item" id="faqAddOnItem" data-addon hidden>
+        <summary><span id="faqAddOnQuestion"></span></summary>
+        <div class="faq-a">
+          <p id="faqAddOnHow"></p>
+          <p id="faqAddOnMore">Already booked the main cruise? You can still add it, just <a href="mailto:booking@everyavenue.com">reach out</a>. Whether you keep the same cabin between the two sailings depends on availability, and we'll try to arrange it when we book. See the <a href="#addon">add-on itinerary</a>.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Do you charge extra to organize these cruises?</summary>
+        <div class="faq-a">
+          <p>No. We're compensated by the cruise line directly, so your cabin price is exactly what you'd pay booking on your own, with the added value of the group and everything we organize around it.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Can I join you if I book on my own?</summary>
+        <div class="faq-a">
+          <p>No, only families who booked through us are considered part of the worldschooling group. If you want to sail on your own, you are welcome to book yourself. If you want to be a part of the worldschooling cruise group, you need to contact us to book. We spend countless hours putting these group trips together and promoting them to make sure that you have a great group of families to travel with. We do not charge anything for that service, apart from the commission the cruise lines pay us naturally.</p>
+          <p>Additionally, all the families who book into the group are connected in a WhatsApp group early on to get to know each other and make other plans before and after the cruise.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>What are some of the extra expenses I should anticipate?</summary>
+        <div class="faq-a">
+          <p>Generally speaking, most families on a budget can get by without spending much more than the cruise fare. Additional expenses would be for optional things like wifi, alcohol, the casino, spa treatments, and excursions.</p>
+          <p>Gratuities are automatically added to your onboard ship balance and, on most ships, run $16 to $25 per person per day, but can be removed or adjusted by visiting the guest services desk on the last day of the sailing in favor of tipping in cash directly to the staff.</p>
+        </div>
+      </details>
+
+      <div class="faq-category-label">Group Life & Community</div>
+      <details class="faq-item">
+        <summary>What group activities will be organized?</summary>
+        <div class="faq-a">
+          <p>With the cruise ship's scheduled activities and programming, plus having other families join in the fun, sailings tend to be pretty busy, as the kids and adults tend to enjoy the company of like-minded friends over organized activities. We have found that families appreciate having group time and alone time, and adding more activities to what is already scheduled by the ship creates too much stress.</p>
+          <p>For that reason, we limit scheduled group activities to a meet and greet on the first day and then a group dinner that same evening to get to know each other better. That tends to be enough to get everyone acquainted. The kids become instant friends and the adults usually break out into slightly smaller groups of people they resonate with and spend more time with. Depending on the dynamic and personalities, some groups do a lot of things together, others spend more time in smaller groups and occasionally meet all together for parties or dinners.</p>
+          <p>We usually try to request the engineer and ship manager to come and give a talk to the kids, however that's subject to the ship's approval.</p>
+          <p>There will be a way to communicate with the whole group on the ship, so you can always request company for any activities. All cabins will be linked for dining reservations so it is easy to eat together or separately depending on each family's wishes on a daily basis.</p>
+          <p>During our past cruises, introverts have enjoyed sporadic company of other introverts, while their kids were able to be social and extroverts had fun with the whole group. No matter what, you will have the experience that's right for you.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Do you facilitate group communication?</summary>
+        <div class="faq-a">
+          <p>Yes. On all cruise lines and ships, there's an ability to communicate through the ship's app. Your designated organizer will create a group with everyone's stateroom numbers, so the group can text. Prior to the cruise, there's a WhatsApp group where all communication takes place, as well as a shared document with the details each family chose to share about themselves, and tips for the cruise.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>How do I know if we'll get along with the other families?</summary>
+        <div class="faq-a">
+          <p>That's a question you need to ask yourself. Most families get along really well if they actually participate in the group and are open to new friends.</p>
+          <p>During our past cruises, introverts have enjoyed sporadic company of other introverts, while their kids were able to be social and extroverts had fun with the whole group. No matter what, you'll have the experience that's right for you. The more you put into it, the more you'll get out of it. Be yourself, be authentic, and make time to connect with others. You'll be so happy you did!</p>
+          <p>Find out what others said who sailed with our groups: <a href="https://www.facebook.com/share/p/14g8LrCj46/?mibextid=wwXIfr">POST</a></p>
+        </div>
+      </details>
+
+      <div class="faq-category-label">Education & Family Fit</div>
+      <details class="faq-item">
+        <summary>Is this cruise suitable for homeschooling families?</summary>
+        <div class="faq-a">
+          <p>Absolutely. Our programs are designed specifically for homeschoolers, worldschoolers, and unschoolers. Whether you searched for a "homeschool cruise" or "worldschooling cruise," you'll find that our trips are built for educational, family-centered travel.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Is there an educational component to this cruise?</summary>
+        <div class="faq-a">
+          <p>Worldschooling cruises are deeply educational in their nature. There are multiple public, cruise-ship-organized talks during each sailing on how the ships and operations work that kids and adults can attend. The social experience of spending time with a group of diverse kids from different families in our group is often more educational and valuable than school itself. Some cruise lines offer additional enrichment opportunities throughout the cruise with talks on different topics. There are trivia and game shows daily that can be used as an educational component. We usually try to request the engineer and ship manager to come and give a talk to the kids, however that's subject to the ship's approval. Children as young as 10 can have the kind of freedom on the ship that they can't find anywhere else, and that, in itself, becomes an incredibly learning and growing experience for many families.</p>
+          <p>Aside from what was mentioned, there is no additional scheduled educational programming to worldschooling cruises, because the cruise experience is extremely scheduled out and busy with activities in itself. Having other families join in the fun makes it even busier, as the kids and adults tend to enjoy the company of like-minded friends. Most families find that they decide to forego school altogether and just let the kids enjoy the freedom and the friendships. We have also found that families appreciate having group time and alone time, and adding more activities to what is already scheduled by the ship creates too much stress.</p>
+        </div>
+      </details>
+
+      <div class="faq-category-label">Excursions</div>
+      <details class="faq-item">
+        <summary>Are there group excursions for the worldschooling group?</summary>
+        <div class="faq-a">
+          <p>We do organize group excursions on many of our worldschooling cruises. This is an additional cost to the cruise fare, however we do negotiate very good pricing through the tour operators to keep costs as low as possible. In most cases, it will be much cheaper than booking excursions on your own. You will pay Every Avenue Travel directly for the excursions we organize. We will send out a list of the excursions we will be organizing via the WhatsApp chat for that specific cruise with all of the details you need.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>How do you select group excursions, and how much do they cost?</summary>
+        <div class="faq-a">
+          <p>Generally our goal is to always make these excursions as affordable as possible. We organize these trips the way we would do it for our own family, looking for the biggest deal and the most epic experience and trying to balance the two. We spend quite a bit of time searching for and reaching out to local tour operators, negotiating with them on rates, and figuring out the best tour itineraries.</p>
+          <p>One of the biggest goals we have as a company is to always work with locals, so that our money goes to people who live there rather than to a call center or corporation. What we try to do is outline some experiences that cannot be done anywhere else. If a destination has something very unique to it, we will do it, as long as it's in a reasonable price range for that experience.</p>
+          <p>For example: Hobbiton in Tauranga, the glow worm caves in New Zealand, snorkeling the Barrier Reef in Honduras, or interacting with sloths. Usually the walking tours in European ports, at 2 to 3 hours, tend to be the cheapest option, around $30 to $50 per person.</p>
+          <p>The more intensive excursions run about $80 to $100 per person, like all day tours or something unique. Once in a while there will be one that is $150 per person, but they are usually really special.</p>
+          <p>You are always welcome to join or skip any of the group excursions, based on your family's goals or budget.</p>
+        </div>
+      </details>
+
+      <div class="faq-category-label">Life at Sea</div>
+      <details class="faq-item">
+        <summary>I don't think I can handle that many days at sea.</summary>
+        <div class="faq-a">
+          <p>Sea days are the fun days. If you are new to cruising, you might not know yet just how much fun sea days are. Port days are great for exploring new places, but they can be exhausting and don't really allow any time to explore all the fun features and activities the ship offers. Consecutive sea days give you more of a routine and plenty of time to enjoy your worldschooling group, connect with others, join in the ship's activities, and explore the floating "city." The longest I have ever had was 11 consecutive days at sea with the worldschooling group, and it was one of the most fun experiences I have ever had.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary>Will I get sea sick?</summary>
+        <div class="faq-a">
+          <p>Most ships are so large that sea sickness is not an issue, even for those who experience car sickness or small boat sickness. They have very strong stabilizers, and the crew does their best to avoid bad weather. In our experience, two-week ocean crossings usually have about two rocky days that don't impact most people. We do recommend bringing some sea sickness pills and patches just in case, but they're rarely needed.</p>
+        </div>
+      </details>
+
+      <div class="faq-category-label">About Us</div>
+      <details class="faq-item">
+        <summary>Can you tell me more about your mission and vision?</summary>
+        <div class="faq-a">
+          <p>Read this post about our mission and vision: <a href="https://www.facebook.com/groups/everyavenuetravel/permalink/2836753246474734/">POST</a></p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING FORM MODAL -->
+<div class="modal-overlay" id="bookingModalOverlay">
+  <div class="modal-inner">
+    <div class="booking-form-wrap" id="booking-form">
+      <button type="button" class="modal-close" id="modalCloseBtn" aria-label="Close">×</button>
+      <div class="booking-intro">
+        <h3>So happy you decided to join us!</h3>
+        <p>A few quick questions and we'll follow up with current pricing within 24–48 hours.</p>
+      </div>
+
+      <div class="form-progress-bar"><div class="form-progress-fill" id="progressFill"></div></div>
+      <div class="form-progress-text" id="progressText">Step 1 of 8</div>
+
+      <form id="bookingForm" novalidate>
+        <div class="form-step" data-step="1">
+          <div class="field"><label for="fullName">Your Full Name</label><input required type="text" id="fullName" name="fullName" placeholder="Jane Smith"></div>
+          <div class="field"><label for="email">Email Address</label><input required type="email" id="email" name="email" placeholder="you@email.com"></div>
+        </div>
+
+        <div class="form-step" data-step="2" style="display:none;">
+          <div class="field"><label for="phone">Phone Number</label><input type="tel" id="phone" name="phone" placeholder="+1 555 555 5555"></div>
+          <div class="field"><label for="contactMethod">Best way to reach you?</label>
+            <select id="contactMethod" name="contactMethod"><option value="">Select</option><option>Text</option><option>Call</option><option>Email</option><option>WhatsApp</option></select>
+          </div>
+        </div>
+
+        <div class="form-step" data-step="3" style="display:none;">
+          <div class="field"><label for="dob">Your DOB</label><input type="date" id="dob" name="dob"></div>
+          <div class="field"><label for="gender">Your Gender</label>
+            <select id="gender" name="gender"><option value="">Select</option><option>Female</option><option>Male</option><option>Non-binary</option><option>Prefer not to say</option><option>Other</option></select>
+          </div>
+        </div>
+
+        <div class="form-step" data-step="4" style="display:none;">
+          <div class="field"><label for="citizenship">Your Citizenship</label><input type="text" id="citizenship" name="citizenship" placeholder="e.g. United States"></div>
+        </div>
+
+        <div class="form-step" data-step="5" style="display:none;">
+          <div class="field">
+            <label>Have you booked a trip through us before?</label>
+            <div class="radio-row">
+              <label class="radio-opt"><input type="radio" name="bookedBefore" value="yes"> Yes, before</label>
+              <label class="radio-opt"><input type="radio" name="bookedBefore" value="no" checked> No, first time</label>
+            </div>
+          </div>
+          <div class="field"><label for="hearAboutUs">How did you hear about us?</label>
+            <select id="hearAboutUs" name="hearAboutUs">
+              <option value="">Select</option>
+              <option>Instagram</option><option>Facebook</option><option>TikTok</option><option>Google Search</option>
+              <option>Family/Friend Referral</option><option>Previous Customer</option><option>WhatsApp</option>
+              <option>Email Newsletter</option><option>Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-step" data-step="6" style="display:none;">
+          <div class="field">
+            <label>Which cabin would you like to book?</label>
+            <div class="field-hint">Select all that you'd like pricing on.</div>
+            <div class="radio-row">
+              <label class="radio-opt"><input type="checkbox" name="cabinChoice" value="Interior"> Interior</label>
+              <label class="radio-opt"><input type="checkbox" name="cabinChoice" value="Balcony"> Balcony</label>
+              <label class="radio-opt"><input type="checkbox" name="cabinChoice" value="Oceanview"> Oceanview</label>
+              <label class="radio-opt"><input type="checkbox" name="cabinChoice" value="Suite"> Suite</label>
+              <span id="largeCabinChoices"><!-- this cruise's Large Family Cabins - see setupLargeCabins() --></span>
+            </div>
+          </div>
+          <div class="field" id="addonChoiceField" data-addon hidden>
+            <label id="addonChoiceLabel">Staying on for the add-on?</label>
+            <label class="radio-opt"><input type="checkbox" name="addonChoice" id="addonChoice" value="yes"> Yes, include <span id="addonChoiceName"></span> (<span id="addonChoiceDates"></span>)</label>
+          </div>
+        </div>
+
+        <div class="form-step" data-step="7" style="display:none;">
+          <div class="field-hint">Traveling with others? You're Passenger 1 — add anyone else joining your cabin.</div>
+          <div id="passengerBlocks"></div>
+          <button type="button" class="add-passenger-btn" id="addPassengerBtn">+ Add a passenger</button>
+        </div>
+
+        <div class="form-step" data-step="8" style="display:none;">
+          <div class="field"><label for="comments">Questions or comments?</label><textarea id="comments" name="comments" rows="3" placeholder="Optional"></textarea></div>
+          <div class="review-box" id="reviewBox"></div>
+        </div>
+
+        <div class="form-nav">
+          <button type="button" class="back-link" id="prevStepBtn">← Back</button>
+          <button type="button" class="btn btn-primary btn-sm" id="nextStepBtn">Next</button>
+          <button type="submit" class="btn btn-primary btn-sm" id="submitBtn" style="display:none;">Send Inquiry</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="form-success" id="formSuccess" style="display:none;">
+      <button type="button" class="modal-close" id="modalCloseBtn2" aria-label="Close">×</button>
+      <h3>Thanks — your inquiry is in!</h3>
+      <p>We've got your details and will follow up with current pricing within 24–48 hours.</p>
+      <button type="button" class="back-link" id="resetFormBtn">Start over</button>
+    </div>
+  </div>
+</div>
+
+<!-- WAITLIST MODAL (sold-out cruises only - see applySoldOutState/openWaitlistModal) -->
+<div class="modal-overlay" id="waitlistModalOverlay">
+  <div class="modal-inner">
+    <div class="booking-form-wrap" id="waitlist-form-wrap">
+      <button type="button" class="modal-close" id="waitlistCloseBtn" aria-label="Close">×</button>
+      <div class="booking-intro">
+        <h3>Join the waitlist</h3>
+        <p>If a cabin opens up on this cruise, you'll hear from us first. No payment, no commitment.</p>
+      </div>
+
+      <form id="waitlistForm" novalidate>
+        <div class="field"><label for="wlName">Your Full Name</label><input required type="text" id="wlName" name="wlName" placeholder="Jane Smith"></div>
+        <div class="field"><label for="wlEmail">Email Address</label><input required type="email" id="wlEmail" name="wlEmail" placeholder="you@email.com"></div>
+        <div class="field"><label for="wlGuests">How many in your family?</label><input required type="number" id="wlGuests" name="wlGuests" min="1" step="1" placeholder="e.g. 4"></div>
+        <div class="field">
+          <label class="radio-opt"><input type="checkbox" id="wlSimilar" name="wlSimilar" checked> Also tell me about similar cruises</label>
+        </div>
+
+        <div class="form-nav" style="justify-content:flex-end;">
+          <button type="submit" class="btn btn-primary btn-sm" id="waitlistSubmitBtn">Add Me to the Waitlist</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="form-success" id="waitlistSuccess" style="display:none;">
+      <button type="button" class="modal-close" id="waitlistCloseBtn2" aria-label="Close">×</button>
+      <h3>You're on the list!</h3>
+      <p>If a cabin opens up on this cruise, we'll reach out with the details.</p>
+      <button type="button" class="back-link" id="waitlistResetBtn">Start over</button>
+    </div>
+  </div>
+</div>
+
+<!-- CUSTOM GROUP QUOTE MODAL (5+ guests) -->
+<div class="modal-overlay" id="quoteModalOverlay">
+  <div class="modal-inner">
+    <div class="booking-form-wrap" id="quote-form-wrap">
+      <button type="button" class="modal-close" id="quoteModalCloseBtn" aria-label="Close">×</button>
+      <div class="form-demo-flag">Prototype form — nothing is sent</div>
+      <div class="booking-intro">
+        <h3>Let's get your group a custom quote</h3>
+        <p>Traveling with <span class="quote-min-guests">5</span> or more usually means splitting across cabins. Tell us how you'd like to divide up, and we'll follow up with pricing within 24–48 hours.</p>
+      </div>
+
+      <div class="form-progress-bar"><div class="form-progress-fill" id="quoteProgressFill"></div></div>
+      <div class="form-progress-text" id="quoteProgressText">Step 1 of 4</div>
+
+      <form id="quoteForm" novalidate>
+        <div class="quote-step" data-step="1">
+          <div class="field"><label for="quoteEmail">Email Address</label><input required type="email" id="quoteEmail" name="quoteEmail" placeholder="you@email.com"></div>
+        </div>
+
+        <div class="quote-step" data-step="2" style="display:none;">
+          <div class="field">
+            <label for="quoteTotalGuests">Total Number of Guests</label>
+            <input required type="number" id="quoteTotalGuests" name="quoteTotalGuests" min="5" step="1" placeholder="e.g. 6">
+          </div>
+          <div class="field-hint">This custom quote path is for parties of <span class="quote-min-guests">5</span> or more.</div>
+        </div>
+
+        <div class="quote-step" data-step="3" style="display:none;">
+          <div class="field-hint">Split your group across cabins however works best — for example, 6 guests could be one cabin of 4 and one of 2, or two cabins of 3.</div>
+          <div class="field-hint"><strong>Each cabin needs to be booked under one adult (18+)</strong> as the primary guest — you can't book a cabin specifically for kids. Your group can sort out who actually stays where once you're booked.</div>
+          <div class="quote-tally" id="quoteTally"></div>
+          <div id="quoteCabinBlocks"></div>
+          <button type="button" class="add-passenger-btn" id="addCabinBtn">+ Add another cabin</button>
+          <div class="quote-error" id="quoteError">The guests assigned across cabins need to add up to your total party size before moving on.</div>
+        </div>
+
+        <div class="quote-step" data-step="4" style="display:none;">
+          <div class="field"><label for="quoteComments">Anything else we should know?</label><textarea id="quoteComments" name="quoteComments" rows="3" placeholder="Optional"></textarea></div>
+          <div class="review-box" id="quoteReviewBox"></div>
+        </div>
+
+        <div class="form-nav">
+          <button type="button" class="back-link" id="quotePrevStepBtn">← Back</button>
+          <button type="button" class="btn btn-primary btn-sm" id="quoteNextStepBtn">Next</button>
+          <button type="submit" class="btn btn-primary btn-sm" id="quoteSubmitBtn" style="display:none;">Send Inquiry</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="form-success" id="quoteFormSuccess" style="display:none;">
+      <button type="button" class="modal-close" id="quoteModalCloseBtn2" aria-label="Close">×</button>
+      <h3>This is a prototype — nothing was sent</h3>
+      <p>In the live version, this is where we'd confirm your group quote request landed and follow up with pricing within 24–48 hours.</p>
+      <button type="button" class="back-link" id="quoteResetFormBtn">Start over</button>
+    </div>
+  </div>
+</div>
+
+<!-- FLIGHT HELP MODAL -->
+<div class="modal-overlay" id="flightsModalOverlay">
+  <div class="modal-inner">
+    <div class="booking-form-wrap" id="flights-form-wrap">
+      <button type="button" class="modal-close" id="flightsModalCloseBtn" aria-label="Close">×</button>
+      <div class="form-demo-flag">Prototype form — nothing is sent</div>
+      <div class="booking-intro">
+        <h3>Let's find you a good flight</h3>
+        <p>Tell us where you're flying from and we'll track down affordable options into Haneda — free of charge, no obligation.</p>
+      </div>
+
+      <div class="form-progress-bar"><div class="form-progress-fill" id="flightsProgressFill"></div></div>
+      <div class="form-progress-text" id="flightsProgressText">Step 1 of 3</div>
+
+      <form id="flightsForm" novalidate>
+        <div class="flights-step" data-step="1">
+          <div class="field"><label for="flightsEmail">Email Address</label><input required type="email" id="flightsEmail" name="flightsEmail" placeholder="you@email.com"></div>
+          <div class="field"><label for="flightsDepartureCity">Departure City or Airport</label><input required type="text" id="flightsDepartureCity" name="flightsDepartureCity" placeholder="e.g. Denver, CO or DEN"></div>
+        </div>
+
+        <div class="flights-step" data-step="2" style="display:none;">
+          <div class="field"><label for="flightsTravelers">Number of Travelers</label><input required type="number" id="flightsTravelers" name="flightsTravelers" min="1" step="1" placeholder="e.g. 4"></div>
+          <div class="field">
+            <label>Are your travel dates flexible?</label>
+            <div class="radio-row">
+              <label class="radio-opt"><input type="radio" name="flightsFlexible" value="yes" checked> Yes, within a few days either way</label>
+              <label class="radio-opt"><input type="radio" name="flightsFlexible" value="no"> No, we need the cruise dates exactly</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="flights-step" data-step="3" style="display:none;">
+          <div class="field"><label for="flightsComments">Anything else that would help us search?</label><textarea id="flightsComments" name="flightsComments" rows="3" placeholder="Optional — preferred airline, budget range, layover preferences, etc."></textarea></div>
+          <div class="review-box" id="flightsReviewBox"></div>
+        </div>
+
+        <div class="form-nav">
+          <button type="button" class="back-link" id="flightsPrevStepBtn">← Back</button>
+          <button type="button" class="btn btn-primary btn-sm" id="flightsNextStepBtn">Next</button>
+          <button type="submit" class="btn btn-primary btn-sm" id="flightsSubmitBtn" style="display:none;">Send Request</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="form-success" id="flightsFormSuccess" style="display:none;">
+      <button type="button" class="modal-close" id="flightsModalCloseBtn2" aria-label="Close">×</button>
+      <h3>This is a prototype — nothing was sent</h3>
+      <p>In the live version, this is where we'd confirm your flight search request landed and follow up with options within a few days.</p>
+      <button type="button" class="back-link" id="flightsResetFormBtn">Start over</button>
+    </div>
+  </div>
+</div>
+
+<div class="brand-stripe"></div>
+<footer>© 2026 Worldschooling Journeys, an Every Avenue Travel company</footer>
+
+<!-- STICKY MOBILE BAR -->
+<div class="sticky-bar" id="stickyBar">
+  <div class="sb-price"><span>From</span>$5,554 total</div>
+  <a href="#pricing" class="btn btn-primary" id="stickyBarLink">View Pricing</a>
+</div>
+
+<script>
+const API = 'https://api.worldschoolingjourneys.com';
+const PORT_GENERIC_IMAGE = '/images/port-generic.webp'; // itinerary fallback when a port has no picture
+
+// Once logged into the admin tool (admin.html stores its JWT under this
+// same key - see AUTH_TOKEN_KEY there), show a nav shortcut back to it
+// instead of making them retype the secret combo every visit. Just a
+// convenience - admin.html's own login gate is still the real boundary,
+// so a stale/expired token here just bounces them back to that login.
+if (localStorage.getItem('cruiseAdminAuthToken')) {
+  const adminLink = document.createElement('a');
+  adminLink.href = '/admin.html';
+  adminLink.className = 'gn-link';
+  adminLink.textContent = 'Admin';
+  document.getElementById('gnLinks').prepend(adminLink);
+}
+
+function escapeHtml(value){
+  const div = document.createElement('div');
+  div.textContent = value ?? '';
+  return div.innerHTML;
+}
+
+function formatDateShort(iso){
+  if(!iso) return '';
+  const dt = new Date(`${iso.slice(0,10)}T00:00:00Z`);
+  return dt.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric', timeZone:'UTC'});
+}
+
+function formatTime12h(hhmm){
+  if(!hhmm) return null;
+  const [h, m] = hhmm.split(':').map(Number);
+  const period = h >= 12 ? 'pm' : 'am';
+  const hour12 = ((h + 11) % 12) + 1;
+  return `${hour12}:${String(m).padStart(2,'0')}${period}`;
+}
+
+// ---------- ITINERARY (real cruise.stops - no excursion data yet, see project notes) ----------
+const timelineEl = document.getElementById('timeline');
+
+// targetEl/idPrefix default to the main itinerary so every existing call
+// site is unaffected - only the add-on's own mini-timeline passes these,
+// so its excursion-toggle ids ("addon-ex-0") never collide with the main
+// timeline's ("ex-0") when both render on the same page.
+function renderTimeline(stops, targetEl = timelineEl, idPrefix = 'ex'){
+  targetEl.innerHTML = stops.map((s, i) => {
+    const sea = !s.port;
+    const arrive = formatTime12h(s.arrivalTime);
+    const depart = formatTime12h(s.departureTime);
+    const times = sea ? "Sea Day — no port stop" :
+      [arrive ? `Arrive ${arrive}` : null, depart ? `Depart ${depart}` : null].filter(Boolean).join(' · ');
+    // Ports without their own picture get the generic at-sea one (sea days stay blank)
+    const heroImageUrl = s.libraryPort?.heroImageUrl;
+    const photoEl = s.port
+      ? `<div class="photo-slot stop-photo has-image"><img src="${heroImageUrl ? API + heroImageUrl : PORT_GENERIC_IMAGE}" alt="${escapeHtml(s.port)}"></div>`
+      : '';
+    // One excursion, picked at random - re-rolled on every page load, not a
+    // fixed "the" excursion for this port. Only ever pulled from this
+    // stop's own matched Port, never fabricated when the list is empty.
+    const excursions = s.libraryPort?.excursions ?? [];
+    const excursion = excursions.length ? excursions[Math.floor(Math.random() * excursions.length)] : null;
+    const exBlock = excursion ? `
+      <button class="excursion-toggle" data-i="${i}">
+        <span class="chev">▾</span> View group excursion for this port
+      </button>
+      <div class="excursion-body" id="${idPrefix}-${i}">
+        <span class="ex-name">${escapeHtml(excursion.title)}</span>
+        ${escapeHtml(excursion.description)}
+      </div>` : '';
+    return `
+      <div class="stop ${sea ? 'sea' : ''}">
+        <div class="stop-card">
+          <div class="stop-card-inner">
+            ${photoEl}
+            <div class="stop-content">
+              <div class="stop-top">
+                <div>
+                  <div class="stop-day">Day ${s.dayOffset + 1} · ${formatDateShort(s.date)}</div>
+                  <div class="stop-title">${sea ? 'At Sea' : escapeHtml(s.port)}</div>
+                </div>
+              </div>
+              <div class="stop-times">${times}</div>
+              ${exBlock}
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+
+  targetEl.querySelectorAll('.excursion-toggle').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const body = document.getElementById(`${idPrefix}-${btn.dataset.i}`);
+      body.classList.toggle('open');
+      btn.classList.toggle('open');
+    });
+  });
+}
+
+// Splits stored text on line breaks into one <p> per paragraph - single
+// Enter and blank-line (double Enter) breaks both count, so however an
+// admin actually types paragraphs in the textarea, a bare textContent
+// assignment would otherwise render it as one dense block regardless, so
+// paragraphs need their own elements to get real spacing between them (see
+// #overviewDescription p in the <style> block above).
+function renderParagraphs(containerId, text){
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  const paragraphs = (text || '').split('\n').map((p) => p.trim()).filter(Boolean);
+  for (const paragraph of paragraphs) {
+    const p = document.createElement('p');
+    p.textContent = paragraph;
+    container.appendChild(p);
+  }
+}
+
+const HERO_GRADIENT = "linear-gradient(180deg, rgba(21,34,48,0.6) 0%, rgba(13,22,32,0.84) 100%)";
+
+// ---------- OVERVIEW GROUP PHOTO ----------
+// Static files under /images/group/ (not admin-managed content, so no
+// backend involvement) - matched by keyword against the cruise's own text
+// rather than requiring an exact/curated mapping per cruise. Specific
+// places are checked before broader regions, so a Barcelona-heavy
+// itinerary gets the Barcelona photo instead of a generic Mediterranean
+// one even though both keywords would technically match.
+const GROUP_IMAGE_KEYWORDS = [
+  { keyword: 'barcelona', file: 'barcelona.JPG' },
+  { keyword: 'japan', file: 'japan.jpg' },
+  { keyword: 'mexico', file: 'mexico.jpg' },
+  { keyword: 'greece', file: 'greece.jpg' },
+  { keyword: 'iceland', file: 'iceland.jpg' },
+  { keyword: 'alaska', file: 'alaska.JPG' },
+  { keyword: 'caribbean', file: 'caribbean.JPG' },
+  { keyword: 'mediterranean', file: 'mediterranean.jpg' },
+  { keyword: 'baltic', file: 'baltic.avif' },
+];
+// Re-picked every page load, same "always random" philosophy as the
+// itinerary excursion dropdown - never a fixed/cached fallback.
+const GENERIC_GROUP_IMAGES = ['generic.JPG', 'generic2.jpg', 'generic3.jpg'];
+
+function pickGroupImageFile(cruise) {
+  const texts = [cruise.destination, cruise.title, cruise.itinerary?.name]
+    .concat(cruise.stops.map((s) => s.port))
+    .concat(cruise.stops.map((s) => s.country))
+    .filter(Boolean)
+    .map((t) => t.toLowerCase());
+
+  const match = GROUP_IMAGE_KEYWORDS.find(({ keyword }) => texts.some((t) => t.includes(keyword)));
+  if (match) return match.file;
+  return GENERIC_GROUP_IMAGES[Math.floor(Math.random() * GENERIC_GROUP_IMAGES.length)];
+}
+
+function renderGroupImage(cruise) {
+  const file = pickGroupImageFile(cruise);
+  document.getElementById('overviewMedia').innerHTML = `<img src="/images/group/${file}" alt="${escapeHtml(cruise.title || 'Group trip photo')}">`;
+}
+
+// ---------- LOAD THIS CRUISE (slug = businessId, from the URL path) ----------
+let currentCruiseId = null; // set once loadCruise() resolves - the Reserve Your Spot form submits against this
+let isSoldOut = false; // set once loadCruise() resolves - every open-booking-btn checks this to decide Reserve vs Waitlist
+let isSetSail = false; // set once loadCruise() resolves - true once the departure date has passed; takes priority over isSoldOut (see applySetSailState)
+
+// ---------- ADD-ON LEG (see templates/page-template-addon.html) ----------
+// An add-on-only cruise (Cruise.addOnForCruiseId set) never gets its own
+// standalone page - loadCruise() below redirects straight to its main
+// cruise's page instead of rendering. currentAddOn is the one sailing THIS
+// cruise advertises (cruise.addOns[0], if any); only one is ever shown,
+// same limitation as the template this is built from.
+let currentAddOn = null;
+let addonOn = false; // shared by the hero toggle and the pricing toggle
+let addOnIsBackToBack = false; // currentAddOn is the other leg of a Back to Back, not an add-on - changes price wording only
+let mainHeroStats = null; // {nights, daysAtSea, countries, ports} - base numbers before any add-on
+let addOnCabinCategoryMap = new Map(); // category name -> {prices:{2,3,4,..}, soldOut:{...}} for currentAddOn
+// Every sailing this page can be paired with - more than one when this
+// cruise is in several 2-cruise Back to Backs (e.g. a Transatlantic paired
+// with either an 8-day or a 15-day Mediterranean). [{cruise, opts}], the
+// selected one is addOnOptionIndex; currentAddOn is always its cruise.
+let addOnOptions = [];
+let addOnOptionIndex = 0;
+let addOnMainCruise = null;
+let addOnWired = false; // setupAddOn's event listeners are added once, however many times it runs
+let currentAddOnLabel = ''; // "Barcelona → Rome (Apr 11 – 18, 2027)" - recorded on the booking request
+
+function addOnPriceFor(categoryName, guestCount){
+  const cat = addOnCabinCategoryMap.get(categoryName);
+  if (!cat || cat.soldOut[guestCount]) return null;
+  return cat.prices[guestCount] ?? null;
+}
+
+// Cheapest 2-guest price across bookable categories, with or without the
+// add-on - same "starting at" logic computeStartingAtPrice already uses,
+// except with the add-on on, only categories the add-on also offers count.
+function startingAtPrice(withAddon){
+  const prices = cruiseCabinCategories
+    .filter((c) => !c.soldOut[2] && c.prices[2] != null)
+    .filter((c) => !withAddon || addOnPriceFor(c.name, 2) != null)
+    .map((c) => c.prices[2] + (withAddon ? addOnPriceFor(c.name, 2) : 0));
+  return prices.length ? Math.min(...prices) : null;
+}
+
+// Each port counts once, however many times the ship calls there - a
+// roundtrip's start/end port, a repeat visit mid-cruise, or the port where
+// the add-on picks up from the main cruise. Sea days have no port.
+function uniquePortKeys(stops){
+  return new Set(stops.filter((s) => s.port).map((s) => s.port.trim().toLowerCase()));
+}
+
+// A stop's country: the Port Library's (admin-corrected) value, else the
+// stop's own parsed one. Never guessed from the port name - "Tenerife,
+// Canary Islands" would count the Canary Islands as its own country. A
+// stop with neither just doesn't count. Accents/case ignored so "Curaçao"
+// and "Curacao" are the same country.
+function stopCountryKey(s){
+  const raw = s.libraryPort?.country || s.country || '';
+  return raw.normalize('NFD').replace(/\p{Diacritic}/gu, '').trim().toLowerCase();
+}
+
+// Only the add-on's countries the main cruise doesn't already visit - e.g.
+// Perth → Sydney adds nothing to a cruise that already ends in Australia.
+function newAddOnCountryCount(){
+  const mainCountries = new Set(mainHeroStats.stops.filter((s) => s.port).map(stopCountryKey));
+  const addOnCountries = new Set(currentAddOn.stops.filter((s) => s.port).map(stopCountryKey).filter(Boolean));
+  return [...addOnCountries].filter((c) => !mainCountries.has(c)).length;
+}
+
+// Hero badges + Starting At fact, with the add-on's own numbers folded in
+// while the hero/pricing switch is on (gold edge on whatever changed). Also
+// the one place these badges are filled in for a cruise with no add-on.
+function renderHeroStats(){
+  if (!mainHeroStats) return;
+  const on = addonOn && !!currentAddOn;
+  const plus = (base, extra) => (base == null ? null : base + (on ? (extra ?? 0) : 0));
+  const stats = [
+    ['badgeNights', plus(mainHeroStats.nights, currentAddOn?.nights), 'Nights', mainHeroStats.nights],
+    ['badgePorts', on ? uniquePortKeys([...mainHeroStats.stops, ...currentAddOn.stops]).size : mainHeroStats.ports, 'Ports', mainHeroStats.ports],
+    ['badgeDaysAtSea', plus(mainHeroStats.daysAtSea, currentAddOn?.daysAtSea), 'Days at Sea', mainHeroStats.daysAtSea],
+    ['badgeCountries', plus(mainHeroStats.countries, on ? newAddOnCountryCount() : 0), 'Countries', mainHeroStats.countries],
+  ];
+  for (const [id, value, label, base] of stats) {
+    const el = document.getElementById(id);
+    el.textContent = value != null ? `${value} ${label}` : '';
+    el.classList.toggle('addon-changed', on && value !== base);
+  }
+  const price = startingAtPrice(on);
+  const startingAtEl = document.getElementById('factStartingAt');
+  // Per person: the cheapest 2-guest total (with the add-on, if on) split between its 2 guests.
+  startingAtEl.textContent = price != null ? `${fmt(Math.round(price / 2))} / person` : '';
+  startingAtEl.classList.toggle('addon-changed', on);
+  document.getElementById('factStartingAtLabel').innerHTML = on ? `<span class="addon-tag">${addOnIsBackToBack ? 'Both Cruises' : 'With Add-On'}</span>` : 'Starting At';
+  if (currentAddOn) document.getElementById('addonHeroToggle').setAttribute('aria-checked', on ? 'true' : 'false');
+  document.querySelectorAll('[data-hero-opt]').forEach((btn) => {
+    btn.setAttribute('aria-checked', on && Number(btn.dataset.heroOpt) === addOnOptionIndex ? 'true' : 'false');
+  });
+  renderFactsBar(on);
+}
+
+// ---- At-a-glance facts bar with the add-on switched on ----
+// Destination strings are always "X → Y" or "X Roundtrip" (see the
+// backend's destination.util.ts) - split into [start, end].
+function splitDestination(destination){
+  if (!destination) return null;
+  const roundtrip = destination.match(/^(.*) Roundtrip$/);
+  if (roundtrip) return [roundtrip[1].trim(), roundtrip[1].trim()];
+  const parts = destination.split(' → ');
+  return parts.length === 2 ? [parts[0].trim(), parts[1].trim()] : null;
+}
+
+// Start of whichever sails first, end of whichever sails second, in the
+// same "X → Y" / "X Roundtrip" format - e.g. Singapore → Perth + Perth →
+// Sydney = Singapore → Sydney.
+function combinedDestination(first, second){
+  const a = splitDestination(first.destination);
+  const b = splitDestination(second.destination);
+  if (!a || !b) return null;
+  const [start, end] = [a[0], b[1]];
+  return start.toLowerCase() === end.toLowerCase() ? `${start} Roundtrip` : `${start} → ${end}`;
+}
+
+// First sailing's departure to the second sailing's last day.
+function combinedSailDates(first, second){
+  if (second.nights == null) return null;
+  const endIso = isoDatePlusDays(second.departureDate, second.nights);
+  const start = new Date(`${first.departureDate.slice(0, 10)}T00:00:00Z`);
+  const spanNights = Math.round((new Date(`${endIso}T00:00:00Z`) - start) / 86400000);
+  return formatSailingRange(first.departureDate, spanNights);
+}
+
+// Only ever "6 months old" / "1 year old" (see minimum-age.util.ts) - the
+// stricter of the two applies to anyone sailing both.
+function minimumAgeInMonths(text){
+  const m = /(\d+)\s*(month|year)/i.exec(text || '');
+  return m ? Number(m[1]) * (m[2].toLowerCase() === 'year' ? 12 : 1) : null;
+}
+function stricterMinimumAge(a, b){
+  if (minimumAgeInMonths(b) == null) return a;
+  if (minimumAgeInMonths(a) == null) return b;
+  return minimumAgeInMonths(b) > minimumAgeInMonths(a) ? b : a;
+}
+
+// ---------- JOURNEY BANNER (see templates/page-template-leg.html) ----------
+// Only for a cruise that's one of 3+ cruises in a Back to Back journey (a
+// 2-cruise Back to Back uses the add-on treatment above instead). Links to
+// the journey's own page, /journeys/{slug}.
+function journeyShortRange(startIso, nights){
+  const md = (iso) => new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+  const start = startIso.slice(0, 10);
+  if (nights == null) return md(start);
+  const end = isoDatePlusDays(start, nights);
+  return start.slice(5, 7) === end.slice(5, 7)
+    ? `${md(start)}–${Number(end.slice(8, 10))}`
+    : `${md(start)} – ${md(end)}`;
+}
+
+// Cheapest 2-guest total for sailing every cruise in the journey: a cabin
+// category only counts if every cruise offers it (not sold out) for 2.
+function wholeJourneyFromPrice(legs){
+  const categories = new Set(legs.flatMap((l) => (l.cabinPrices ?? []).map((p) => p.category)));
+  let best = null;
+  for (const category of categories) {
+    let total = 0;
+    for (const leg of legs) {
+      const row = (leg.cabinPrices ?? []).find((p) => p.category === category && p.guests === 2 && !p.soldOut && p.price != null);
+      if (!row) { total = null; break; }
+      total += row.price;
+    }
+    if (total != null && (best == null || total < best)) best = total;
+  }
+  return best;
+}
+
+function renderJourneyBanner(cruise){
+  const group = cruise.backToBack;
+  const legs = group?.cruises ?? [];
+  const banner = document.getElementById('journeyBanner');
+  if (legs.length < 3 || !group.slug) { banner.hidden = true; return; }
+
+  const first = legs[0];
+  const last = legs[legs.length - 1];
+  const route = combinedDestination(first, last)?.replace(' → ', ' to ');
+  const totalNights = last.nights != null
+    ? Math.round((new Date(`${isoDatePlusDays(last.departureDate, last.nights)}T00:00:00Z`) - new Date(`${first.departureDate.slice(0, 10)}T00:00:00Z`)) / 86400000)
+    : null;
+
+  document.getElementById('jbName').textContent = group.title || 'Back-to-Back Journey';
+  document.getElementById('jbStats').textContent = [
+    `${legs.length} cruises back to back`,
+    totalNights != null ? `${totalNights} nights` : null,
+    route,
+  ].filter(Boolean).join(' · ');
+  const desc = document.getElementById('jbDesc');
+  desc.textContent = group.shortDescription || '';
+  desc.hidden = !group.shortDescription;
+
+  document.getElementById('jbLegs').innerHTML = legs.map((leg, i) => {
+    const current = leg.id === cruise.id;
+    const inner = `<div class="jb-leg-num">Cruise ${i + 1}</div>
+      <div class="jb-leg-name">${escapeHtml(leg.segmentName || leg.destination || '')}</div>
+      <div class="jb-leg-meta">${journeyShortRange(leg.departureDate, leg.nights)}${leg.nights != null ? ` · ${leg.nights} nights` : ''}</div>
+      ${current ? '<span class="jb-here">You\'re here</span>' : ''}`;
+    // Add-ons and Individual cruises have no page of their own to link to.
+    const linkable = !current && !leg.isAddOn && !leg.isIndividual;
+    const card = linkable
+      ? `<a class="jb-leg" href="/cruises/${encodeURIComponent(leg.businessId)}">${inner}</a>`
+      : `<div class="jb-leg ${current ? 'current' : ''}">${inner}</div>`;
+    return (i ? '<span class="jb-join" aria-hidden="true"></span>' : '') + card;
+  }).join('');
+
+  document.getElementById('jbLink').href = `/journeys/${encodeURIComponent(group.slug)}`;
+  const price = wholeJourneyFromPrice(legs);
+  document.getElementById('jbPrice').innerHTML = price != null ? `Whole journey from <strong>${fmt(price)}</strong> per family` : '';
+  banner.hidden = false;
+}
+
+function renderFactsBar(on){
+  const main = mainHeroStats.cruise;
+  const base = {
+    factDestination: main.destination || '',
+    factShip: main.ship.name,
+    factDates: main.sailDates || '',
+    factMinAge: main.minimumAge || '',
+  };
+  const values = { ...base };
+  if (on) {
+    const addOnFirst = currentAddOn.departureDate.slice(0, 10) < main.departureDate.slice(0, 10);
+    const [first, second] = addOnFirst ? [currentAddOn, main] : [main, currentAddOn];
+    values.factDestination = combinedDestination(first, second) ?? base.factDestination;
+    if (currentAddOn.ship?.name && currentAddOn.ship.name !== main.ship.name) {
+      values.factShip = `${first.ship.name} + ${second.ship.name}`;
+    }
+    values.factDates = combinedSailDates(first, second) ?? base.factDates;
+    values.factMinAge = stricterMinimumAge(base.factMinAge, currentAddOn.minimumAge);
+  }
+  for (const [id, value] of Object.entries(values)) {
+    const el = document.getElementById(id);
+    el.textContent = value;
+    el.classList.toggle('addon-changed', on && value !== base[id]);
+  }
+}
+
+function isoDatePlusDays(iso, days){
+  const d = new Date(`${iso.slice(0, 10)}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
+}
+
+// "Apr 8–14, 2027" / "Apr 28 – May 5, 2027" / "Dec 28, 2026 – Jan 4, 2027"
+function formatSailingRange(startIso, nights){
+  const start = new Date(`${startIso.slice(0, 10)}T00:00:00Z`);
+  const md = (d) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+  if (nights == null) return `${md(start)}, ${start.getUTCFullYear()}`;
+  const end = new Date(`${isoDatePlusDays(startIso, nights)}T00:00:00Z`);
+  if (start.getUTCFullYear() !== end.getUTCFullYear()) return `${md(start)}, ${start.getUTCFullYear()} – ${md(end)}, ${end.getUTCFullYear()}`;
+  // Same rule as the backend's sail-dates.util.ts: spaces around the dash
+  // only when the month repeats ("Nov 7–21" vs "Oct 31 – Nov 21").
+  if (start.getUTCMonth() === end.getUTCMonth()) return `${md(start)}–${end.getUTCDate()}, ${end.getUTCFullYear()}`;
+  return `${md(start)} – ${md(end)}, ${end.getUTCFullYear()}`;
+}
+
+// Fills in and reveals every [data-addon] element. The template assumes the
+// add-on follows on the same ship the day this cruise ends - wording here
+// only claims that when the dates/ship actually line up, and flips to
+// "before" phrasing for an add-on that sails ahead of this cruise.
+//
+// Also used for a 2-leg Back to Back (opts.backToBack): the other leg is
+// advertised with the exact same template, but it's a cruise sold on its
+// own, so the wording says so, it links to its own page, and its blurb
+// comes from the Back to Back's Marketing tab (opts.title/description) when
+// one's been written, else from the leg's own content.
+function setupAddOn(addOn, cruise, opts = {}){
+  const b2b = !!opts.backToBack;
+  addOnIsBackToBack = b2b;
+  currentAddOn = addOn;
+  addOnCabinCategoryMap = new Map(buildCabinCategories({ cabinPrices: addOn.cabinPrices, cruiseLine: {} }).map((c) => [c.name, c]));
+
+  const after = addOn.departureDate.slice(0, 10) > cruise.departureDate.slice(0, 10);
+  const sameShip = addOn.ship?.name === cruise.ship.name;
+  const connects = after
+    ? cruise.nights != null && isoDatePlusDays(cruise.departureDate, cruise.nights) === addOn.departureDate.slice(0, 10)
+    : addOn.nights != null && isoDatePlusDays(addOn.departureDate, addOn.nights) === cruise.departureDate.slice(0, 10);
+  const name = opts.title || addOn.destination || (addOn.title || 'Add-On').replace(/\s*Add On$/i, '');
+  const dates = formatSailingRange(addOn.departureDate, addOn.nights);
+  // A leg's own description is written for its own page and can run several
+  // paragraphs - only its opening one fits this card.
+  const description = opts.description
+    || (b2b ? (addOn.description || '').split('\n').map((p) => p.trim()).find(Boolean) : addOn.description)
+    || '';
+
+  document.getElementById('addonHeroToggleLabel').textContent = b2b ? `+ ${name}` : `+ ${name} Add-On`;
+  document.getElementById('addonSubnavLink').textContent = b2b ? 'Back to Back' : 'Add-On';
+  document.querySelector('#addon .addon-eyebrow').textContent = `${b2b ? 'Sail Back to Back' : 'Optional Add-On'}${sameShip ? ' · Same Ship' : ''}`;
+  document.querySelector('#addon .addon-title').firstChild.textContent = after ? 'Keep Sailing: ' : 'Start Early: ';
+  const addonBlock = document.getElementById('addon');
+  addonBlock.classList.toggle('addon-before', !after);
+  if (after) timelineEl.after(addonBlock); else timelineEl.before(addonBlock);
+  currentAddOnLabel = `${name} (${dates})`;
+  document.getElementById('addonName').textContent = name;
+  document.getElementById('addonMeta').textContent = [
+    dates,
+    addOn.nights != null ? `${addOn.nights} more nights` : null,
+    addOn.ship?.name,
+    connects ? (after ? 'departs the day we arrive' : 'arrives the day we depart') : null,
+  ].filter(Boolean).join(' · ');
+  document.getElementById('addonDesc').textContent = description;
+  renderAddOnAlternatives(addOn, cruise, b2b);
+  renderTimeline(addOn.stops, document.getElementById('addonTimeline'), 'addon-ex');
+
+  const ownPageLink = document.getElementById('addonOwnPageLink');
+  ownPageLink.hidden = !b2b || !!addOn.isAddOn;
+  if (b2b) ownPageLink.href = `/cruises/${encodeURIComponent(addOn.businessId)}`;
+
+  document.getElementById('addonToggleName').textContent = name;
+  document.getElementById('addonToggleSub').textContent = [
+    addOn.nights != null ? `+${addOn.nights} nights` : null,
+    dates,
+    sameShip && connects ? (after ? 'same ship, straight from this cruise' : 'same ship, straight into this cruise') : null,
+  ].filter(Boolean).join(' · ');
+
+  const bookHowTail = b2b
+    ? 'Each one can be booked on its own, or you can book both together through us and stay with the group the whole way.'
+    : "You book it together with this cruise through us, and it's only offered as an add-on, not on its own.";
+  document.getElementById('faqAddOnQuestion').textContent = b2b
+    ? `Can we sail this cruise and ${name} back to back?`
+    : `How does the ${name} add-on work?`;
+  document.getElementById('faqAddOnHow').textContent = sameShip && connects
+    ? (after
+      ? `${b2b ? 'Yes. ' : ''}It's a second sailing on the same ship that leaves the day this cruise ends, so you just stay on board while the group keeps going. ${bookHowTail}`
+      : `${b2b ? 'Yes. ' : ''}It's an earlier sailing on the same ship that arrives the day this cruise leaves, so you're already on board when the rest of the group joins. ${bookHowTail}`)
+    : `${b2b ? 'Yes. ' : ''}It's ${after ? 'a second sailing right after' : 'an earlier sailing right before'} this cruise${sameShip ? ', on the same ship' : ''}. ${bookHowTail}`;
+  if (b2b) {
+    document.getElementById('faqAddOnMore').innerHTML = `Already booked this cruise? You can still add the other one, just <a href="mailto:booking@everyavenue.com">reach out</a>. Whether you keep the same cabin between the two sailings depends on availability, and we'll try to arrange it when we book. See its <a href="#addon">itinerary</a> or its <a href="/cruises/${encodeURIComponent(addOn.businessId)}">own cruise page</a>.`;
+  }
+
+  document.getElementById('addonChoiceLabel').textContent = b2b ? 'Sailing both back to back?' : 'Staying on for the add-on?';
+  document.getElementById('addonChoiceName').textContent = name;
+  document.getElementById('addonChoiceDates').textContent = dates;
+
+  document.querySelectorAll('[data-addon]').forEach((el) => { el.hidden = false; });
+  if (addOnOptions.length > 1) document.getElementById('addonHeroToggle').hidden = true;
+
+  const itinToggle = document.getElementById('addonItinToggle');
+  const itinLabel = (open) => (addOnIsBackToBack ? ` ${open ? 'Hide' : 'See'} its itinerary` : ` ${open ? 'Hide' : 'See'} the add-on itinerary`);
+  itinToggle.lastChild.textContent = itinLabel(document.getElementById('addonItin').classList.contains('open'));
+
+  // Listeners only once - setupAddOn runs again whenever another pairing is picked.
+  if (addOnWired) return;
+  addOnWired = true;
+  itinToggle.addEventListener('click', () => {
+    const open = document.getElementById('addonItin').classList.toggle('open');
+    itinToggle.classList.toggle('open', open);
+    itinToggle.lastChild.textContent = itinLabel(open);
+  });
+  document.getElementById('addonToggleInput').addEventListener('change', (e) => {
+    if (addOnPriceFor(selectedCabin, guests) == null) { e.target.checked = false; return; }
+    setAddonOn(e.target.checked);
+  });
+  document.getElementById('addonHeroToggle').addEventListener('click', () => setAddonOn(!addonOn));
+  document.getElementById('addonToPricing').addEventListener('click', () => {
+    if (addOnPriceFor(selectedCabin, guests) != null) setAddonOn(true);
+  });
+
+  // Arrived via an add-on's own old URL (see the redirect in loadCruise) -
+  // the browser tried to jump to #addon before it was revealed.
+  if (location.hash === '#addon') document.getElementById('addon').scrollIntoView();
+}
+
+// Other versions of THIS cruise: cruises paired with the same back-to-back
+// cruise as this one (e.g. the 8-day Athens → Barcelona and the 15-day Rome →
+// Barcelona both connect to the Nov 7 Transatlantic). Worked out from the
+// other cruise's own pairings, already loaded with it - nothing to set up.
+// One line each, only for versions still open and with a public page.
+function renderAddOnAlternatives(addOn, cruise, b2b){
+  const wrap = document.getElementById('addonAlts');
+  wrap.innerHTML = '';
+  if (!b2b) return;
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const seen = new Set([cruise.id, addOn.id]);
+  const alts = (addOn.backToBacks ?? [])
+    .filter((g) => g.cruises.length === 2)
+    .map((g) => g.cruises.find((c) => c.id !== addOn.id))
+    .filter((c) => {
+      if (!c || seen.has(c.id)) return false;
+      seen.add(c.id);
+      return !c.isAddOn && !c.isIndividual && !c.soldOut && c.departureDate.slice(0, 10) >= todayStr;
+    });
+  wrap.innerHTML = alts.map((alt) => {
+    const days = alt.nights != null ? `${alt.nights + 1}-day` : 'another';
+    const shorter = alt.nights != null && cruise.nights != null && alt.nights < cruise.nights;
+    const sameRegion = alt.region && alt.region === cruise.region;
+    const lead = shorter ? 'Short on time?' : `Want more time${sameRegion ? ` in the ${alt.region}` : ' on board'}?`;
+    const connects = addOn.destination ? `the same ${addOn.destination} cruise` : 'the same cruise';
+    return `<p class="addon-alt"><strong>${escapeHtml(lead)}</strong> There's also ${days === 'another' ? 'another' : `${/^(8|11|18|8\d)-/.test(days) ? 'an' : 'a'} ${days}`} version, ${escapeHtml(alt.destination || '')} (${escapeHtml(formatSailingRange(alt.departureDate, alt.nights))}), that connects to ${escapeHtml(connects)}. <a href="/cruises/${encodeURIComponent(alt.businessId)}">See the ${days === 'another' ? 'other' : days} cruise →</a></p>`;
+  }).join('');
+}
+
+// "8-day Barcelona → Rome" + its dates - the label for one pairing option.
+function addOnOptionLabel(option){
+  const c = option.cruise;
+  const days = c.nights != null ? `${c.nights + 1}-day ` : '';
+  return { name: `${days}${option.opts.title || c.destination || ''}`, dates: formatSailingRange(c.departureDate, c.nights) };
+}
+
+// With several pairings the hero gets one switch per pairing in place of
+// the single one. Only one can be on: turning one on picks that pairing
+// (same as the "Pair it with" buttons) and switches the other off; turning
+// the one that's on off removes the pairing from the price.
+function renderHeroOptionSwitches(){
+  document.querySelectorAll('[data-hero-opt]').forEach((el) => el.remove());
+  const single = document.getElementById('addonHeroToggle');
+  if (addOnOptions.length < 2) return;
+  single.hidden = true;
+  let anchor = single;
+  addOnOptions.forEach((o, i) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'badge addon-hero-toggle';
+    btn.setAttribute('role', 'switch');
+    btn.dataset.heroOpt = String(i);
+    btn.innerHTML = `<span class="mini-switch" aria-hidden="true"></span><span>+ ${escapeHtml(addOnOptionLabel(o).name)}</span>`;
+    btn.addEventListener('click', () => {
+      if (addonOn && i === addOnOptionIndex) { setAddonOn(false); return; }
+      selectAddOnOption(i);
+      setAddonOn(true);
+    });
+    anchor.after(btn);
+    anchor = btn;
+  });
+  renderHeroStats();
+}
+
+function renderAddOnOptions(){
+  renderHeroOptionSwitches();
+  const show = addOnOptions.length > 1;
+  for (const id of ['addonOptionsCard', 'addonOptionsPricing']) {
+    const el = document.getElementById(id);
+    el.hidden = !show;
+    if (!show) { el.innerHTML = ''; continue; }
+    el.innerHTML = '<span class="ao-label">Pair it with:</span>' + addOnOptions.map((o, i) => {
+      const { name, dates } = addOnOptionLabel(o);
+      return `<button type="button" class="addon-opt${i === addOnOptionIndex ? ' active' : ''}" data-addon-opt="${i}" aria-pressed="${i === addOnOptionIndex}">${escapeHtml(name)}<small>${escapeHtml(dates)}</small></button>`;
+    }).join('');
+    el.querySelectorAll('[data-addon-opt]').forEach((btn) => {
+      btn.addEventListener('click', (e) => { e.preventDefault(); selectAddOnOption(Number(btn.dataset.addonOpt)); });
+    });
+  }
+}
+
+// Switches every add-on element (hero switch, add-on card + itinerary,
+// pricing switch, facts, booking form) to another pairing. If the add-on
+// was on but the new one doesn't offer the selected cabin, it's turned off
+// rather than left showing a price that can't be booked.
+function selectAddOnOption(index){
+  if (index === addOnOptionIndex || !addOnOptions[index]) return;
+  addOnOptionIndex = index;
+  const o = addOnOptions[index];
+  setupAddOn(o.cruise, addOnMainCruise, o.opts);
+  renderAddOnOptions();
+  if (addonOn && addOnPriceFor(selectedCabin, guests) == null) setAddonOn(false);
+  else updateSummary();
+}
+
+// Turning the add-on on anywhere also pre-ticks it in the booking form, so
+// the request that comes in matches the price the family was looking at.
+function setAddonOn(on){
+  addonOn = on;
+  document.getElementById('addonChoice').checked = on;
+  updateSummary();
+}
+
+async function loadCruise(){
+  const slug = decodeURIComponent(location.pathname.split('/').filter(Boolean).pop() || '');
+  const heroEl = document.querySelector('.hero');
+  try {
+    const res = await fetch(`${API}/cruises/by-business-id/${encodeURIComponent(slug)}`);
+    if(!res.ok) throw new Error('not found');
+    const cruise = await res.json();
+
+    // An add-on is never sold on its own, so it has no page of its own -
+    // send anyone who lands here (old link, search result) to where it IS
+    // sold: its main cruise's add-on section, the journey it connects, or
+    // the other cruise of a 2-cruise Back to Back.
+    if (cruise.isAddOn || cruise.addOnForCruise) {
+      const legs = cruise.backToBack?.cruises ?? [];
+      const otherLeg = legs.length === 2 ? legs.find((c) => c.id !== cruise.id) : null;
+      if (cruise.addOnForCruise?.businessId) location.replace(`/cruises/${encodeURIComponent(cruise.addOnForCruise.businessId)}#addon`);
+      else if (legs.length >= 3 && cruise.backToBack.slug) location.replace(`/journeys/${encodeURIComponent(cruise.backToBack.slug)}`);
+      else if (otherLeg) location.replace(`/cruises/${encodeURIComponent(otherLeg.businessId)}#addon`);
+      else location.replace('/cruises.html');
+      return;
+    }
+    // Individual cruises are sold outside the group, internal only - no
+    // public page, and no main cruise to forward to either.
+    if (cruise.isIndividual) {
+      location.replace('/cruises.html');
+      return;
+    }
+
+    currentCruiseId = cruise.id;
+    isSoldOut = !!cruise.soldOut; // set synchronously before renderRoster's own async fetch resolves
+    // Same "already sailed" threshold the dashboards use for Show Past
+    // Cruises - a cruise departing today still counts as upcoming, not sailed.
+    isSetSail = cruise.departureDate.slice(0, 10) < new Date().toISOString().slice(0, 10);
+    renderRoster(cruise.id, cruise); // fire-and-forget - a secondary widget, shouldn't block the rest of the page
+
+    document.title = cruise.title ? `${cruise.title} — Worldschooling Journeys` : 'Cruise — Worldschooling Journeys';
+    document.getElementById('heroTitle').textContent = cruise.title || '';
+    mainHeroStats = {
+      nights: cruise.nights,
+      ports: uniquePortKeys(cruise.stops).size,
+      stops: cruise.stops,
+      daysAtSea: cruise.daysAtSea,
+      countries: cruise.countriesCount,
+      cruise, // facts bar (destination/ship/dates/min. age) base values - see renderFactsBar
+    };
+
+    document.getElementById('factDestination').textContent = cruise.destination || '';
+    document.getElementById('factShip').textContent = cruise.ship.name;
+    document.getElementById('factDates').textContent = cruise.sailDates || '';
+    document.getElementById('factMinAge').textContent = cruise.minimumAge || '';
+
+    document.getElementById('overviewSubtitle').textContent = cruise.subtitle || cruise.title || '';
+    renderParagraphs('overviewDescription', cruise.description);
+    renderGroupImage(cruise);
+
+    document.getElementById('amenitiesShipName').textContent = cruise.ship.name;
+    renderAmenities(cruise.ship);
+
+    // Missing image -> just the dark gradient (CSS default); real image ->
+    // the same gradient layered over the real photo, matching the original
+    // mockup's two-layer treatment.
+    if (cruise.heroImageUrl) {
+      heroEl.style.backgroundImage = `${HERO_GRADIENT}, url('${API}${cruise.heroImageUrl}')`;
+      heroEl.style.backgroundBlendMode = 'multiply, normal';
+    }
+
+    renderTimeline(cruise.stops);
+    renderFlights(cruise.departurePort);
+
+    cruiseCabinCategories = buildCabinCategories(cruise);
+    setupLargeCabins(cruise);
+    selectedCabin = cruiseCabinCategories.find((c) => isCabinBookable(c, guests))?.name ?? cruiseCabinCategories[0]?.name ?? null;
+    // A sold-out or already-sailed cruise swaps pricing for Other Departures
+    // (see applySoldOutState/applySetSailState) - nothing left to add an
+    // add-on onto, so its [data-addon] elements just stay hidden.
+    // What this page advertises alongside itself, if anything: its add-on,
+    // or else the other leg of a 2-leg Back to Back (3+ legs get their own
+    // template later). cruise.addOns/backToBack only carry a summary, so the
+    // full itinerary + prices come from that cruise's own detail endpoint.
+    // Never let a bad or missing one take the whole page down with it.
+    // A cruise can be in several 2-cruise Back to Backs - each one's other
+    // cruise is an option, and the page lets families pick (see
+    // renderAddOnOptions). An add-on of its own takes the place of all of them.
+    const addOnSummary = cruise.addOns?.[0];
+    const groups = cruise.backToBacks ?? (cruise.backToBack ? [cruise.backToBack] : []);
+    const candidates = addOnSummary
+      ? [{ summary: addOnSummary, opts: {} }]
+      : groups.filter((g) => g.cruises.length === 2)
+        .map((g) => g.cruises.find((c) => c.id !== cruise.id))
+        .filter(Boolean)
+        .map((leg) => ({ summary: leg, opts: { backToBack: true, title: leg.addOnTitle, description: leg.addOnDescription } }));
+    // Nothing to add once that other sailing has sold out or already sailed.
+    const todayStr = new Date().toISOString().slice(0, 10);
+    addOnOptions = [];
+    if (candidates.length && !isSoldOut && !isSetSail) {
+      const fulls = await Promise.all(candidates.map(async (cand) => {
+        try {
+          const companionRes = await fetch(`${API}/cruises/by-business-id/${encodeURIComponent(cand.summary.businessId)}`);
+          return companionRes.ok ? await companionRes.json() : null;
+        } catch (e) {
+          return null;
+        }
+      }));
+      addOnOptions = candidates
+        .map((cand, i) => ({ cruise: fulls[i], opts: cand.opts }))
+        // A Back to Back leg that's an Individual cruise has no public page to advertise.
+        .filter((o) => o.cruise && !(o.opts.backToBack && o.cruise.isIndividual)
+          && Array.isArray(o.cruise.stops) && Array.isArray(o.cruise.cabinPrices)
+          && !o.cruise.soldOut && o.cruise.departureDate.slice(0, 10) >= todayStr)
+        // Shortest first - "8-day" before "15-day".
+        .sort((a, b) => (a.cruise.nights ?? 0) - (b.cruise.nights ?? 0));
+    }
+    if (addOnOptions.length) {
+      try {
+        addOnMainCruise = cruise;
+        addOnOptionIndex = 0;
+        setupAddOn(addOnOptions[0].cruise, cruise, addOnOptions[0].opts);
+        renderAddOnOptions();
+      } catch (e) {
+        console.error('Add-on section hidden - it failed to build:', e);
+        currentAddOn = null;
+        addonOn = false;
+        addOnOptions = [];
+        document.querySelectorAll('[data-addon], #addonOwnPageLink, .addon-options').forEach((el) => { el.hidden = true; });
+      }
+    }
+    renderCabins();
+    updateSummary();
+    renderHeroStats();
+    renderPriceMeta(cruise);
+    if (!isSetSail) {
+      try { renderJourneyBanner(cruise); } catch (e) { document.getElementById('journeyBanner').hidden = true; }
+    }
+
+    const policyUrl = cruise.cruiseLine.cancellationPolicyUrl;
+    if (policyUrl) {
+      cruiseLinePolicyLink.href = policyUrl;
+      cruiseLinePolicyLink.hidden = false;
+    } else {
+      cruiseLinePolicyLink.hidden = true;
+    }
+
+    // Set Sail takes priority - a departed cruise gets that treatment even
+    // if it also happens to still be flagged soldOut in the data.
+    if (isSetSail) applySetSailState(cruise);
+    else applySoldOutState(cruise); // no-op unless cruise.soldOut - see its own comment
+  } catch (e) {
+    document.getElementById('heroTitle').textContent = 'Cruise not found';
+    document.getElementById('overviewSubtitle').textContent = '';
+    renderParagraphs('overviewDescription', "We couldn't find this cruise. It may have been removed or the link may be incorrect.");
+    timelineEl.innerHTML = '';
+    flightsSection.hidden = true;
+    flightsSubnavLink.hidden = true;
+    cruiseLinePolicyLink.hidden = true;
+    amenitiesSection.hidden = true;
+    amenitiesSubnavLink.hidden = true;
+    document.getElementById('factStartingAt').textContent = '';
+    document.getElementById('priceMeta').innerHTML = '';
+  }
+}
+
+loadCruise();
+
+const cruiseLinePolicyLink = document.getElementById('cruiseLinePolicyLink');
+
+// ---------- AMENITIES (real per-ship data - see project notes) ----------
+// Same 5 fixed categories the admin's Ship amenity editor uses (a <select>
+// there, not free text), rendered in this fixed order - a ship with only
+// some categories filled in just shows those, never an empty group.
+const AMENITY_CATEGORIES = ['Family & Kids', 'Fitness & Recreation', 'Entertainment', 'Dining & Relaxation', 'Services'];
+const amenitiesSection = document.getElementById('amenities');
+const amenitiesSubnavLink = document.getElementById('amenitiesSubnavLink');
+const amenityGroupsEl = document.getElementById('amenityGroups');
+
+function renderAmenities(ship){
+  const amenities = ship?.amenities ?? [];
+  if (!amenities.length) {
+    amenitiesSection.hidden = true;
+    amenitiesSubnavLink.hidden = true;
+    return;
+  }
+  amenitiesSection.hidden = false;
+  amenitiesSubnavLink.hidden = false;
+
+  amenityGroupsEl.innerHTML = AMENITY_CATEGORIES.map((category) => {
+    const items = amenities.filter((a) => a.category === category);
+    if (!items.length) return '';
+    return `
+      <div class="amenity-group">
+        <h4>${escapeHtml(category)}</h4>
+        <ul>${items.map((a) => `<li>${escapeHtml(a.name)}</li>`).join('')}</ul>
+      </div>`;
+  }).join('');
+}
+
+// ---------- PRICING CALCULATOR ----------
+// Placeholder manual pricing ahead of the pricing bot integration (see
+// project notes) - cruise.cabinPrices is a flat [{category, guests, price,
+// soldOut}] list; regrouped here into one entry per category with a
+// {2,3,4} price map, same shape the admin's pricing grid edits.
+let cruiseCabinCategories = [];
+let guests = 2;
+let selectedCabin = null; // category name, set once real data loads
+
+// soldOut is per (category, guests), not per category - a cabin type
+// routinely sells out for one party size (e.g. Interior for 2 guests)
+// while staying bookable for others, matching the admin's per-cell
+// checkboxes (see index.html's renderCabinPricing).
+function buildCabinCategories(cruise) {
+  const imageByName = new Map((cruise.cruiseLine.cabinCategories ?? []).map((c) => [c.name, c.imageUrl]));
+  const byName = new Map();
+  for (const row of cruise.cabinPrices ?? []) {
+    if (!byName.has(row.category)) byName.set(row.category, { name: row.category, prices: {}, soldOut: {} });
+    const entry = byName.get(row.category);
+    entry.prices[row.guests] = row.price;
+    entry.soldOut[row.guests] = row.soldOut;
+  }
+  // The API returns rows in whatever order the database has them - always
+  // show the standard three first, in this order, then any custom category
+  // (e.g. Mini Suite) after them, keeping their relative order.
+  const standard = ['Interior', 'Ocean View', 'Balcony'];
+  const rank = (name) => { const i = standard.indexOf(name); return i === -1 ? standard.length : i; };
+  return [...byName.values()]
+    .sort((a, b) => rank(a.name) - rank(b.name))
+    .map((c) => ({ ...c, imageUrl: imageByName.get(c.name) ?? null }));
+}
+
+// "Starting At" fact badge - cheapest 2-guest price across every category
+// that isn't sold out specifically for 2 guests, since that's the
+// smallest party size the calculator supports and therefore always the
+// lowest total.
+function computeStartingAtPrice(categories) {
+  const prices = categories.filter((c) => !c.soldOut[2] && c.prices[2] != null).map((c) => c.prices[2]);
+  return prices.length ? `${fmt(Math.round(Math.min(...prices) / 2))} / person` : '';
+}
+
+// Deposit/final-payment terms (see project notes) - each half renders only
+// if its own data is set, so a cruise with just one of the two still shows
+// something useful instead of an empty block.
+function renderPriceMeta(cruise) {
+  const bits = [];
+  if (cruise.depositAmount != null) {
+    const unitLabel = cruise.depositUnit === 'room' ? 'per room' : cruise.depositUnit === 'group' ? 'per group' : 'per person';
+    const refundLabel = cruise.depositRefundable ? 'refundable' : 'non-refundable';
+    bits.push(`<div><strong>${fmt(cruise.depositAmount)}</strong> ${unitLabel}<br>${refundLabel} deposit</div>`);
+  }
+  if (cruise.finalPaymentDate) {
+    bits.push(`<div><strong>${formatDateShort(cruise.finalPaymentDate)}</strong><br>final payment date</div>`);
+  }
+  document.getElementById('priceMeta').innerHTML = bits.join('');
+}
+
+const cabinGrid = document.getElementById('cabinGrid');
+const totalPriceEl = document.getElementById('totalPrice');
+const perPersonEl = document.getElementById('perPerson');
+const cabinArea = document.getElementById('cabinArea');
+const contactQuote = document.getElementById('contactQuote');
+const stickyBar = document.getElementById('stickyBar');
+const sbPrice = stickyBar.querySelector('.sb-price');
+
+function fmt(n){ return '$' + n.toLocaleString('en-US'); }
+
+// A cabin with no price that isn't sold out is "Not available" for that party
+// size (e.g. no 3-guest Ocean View on this ship) - drawn like a sold-out tile.
+function isCabinBookable(c, g){ return !c.soldOut[g] && c.prices[g] != null; }
+
+function renderCabins(){
+  if (!cruiseCabinCategories.length) {
+    cabinGrid.innerHTML = '<p style="color:var(--muted);font-size:14px;grid-column:1/-1;">Pricing information coming soon for this cruise.</p>';
+    return;
+  }
+  cabinGrid.classList.toggle('few', cabinsForGuests(guests).length < 3);
+  cabinGrid.innerHTML = cabinsForGuests(guests).map(c => {
+    const price = c.prices[guests];
+    const isSoldOut = !!c.soldOut[guests];
+    const blocked = !isCabinBookable(c, guests);
+    const active = (c.name === selectedCabin && !blocked) ? 'active' : '';
+    const photoEl = c.imageUrl
+      ? `<div class="photo-slot cabin-photo has-image"><img src="${API}${c.imageUrl}" alt="${escapeHtml(c.name)} cabin"></div>`
+      : `<div class="photo-slot cabin-photo"><span>${escapeHtml(c.name)} photo</span></div>`;
+    return `
+      <div class="cabin-tile ${active} ${blocked ? 'sold-out' : ''}" data-cabin="${escapeHtml(c.name)}">
+        ${blocked ? `<div class="sold-out-ribbon${isSoldOut ? '' : ' long'}">${isSoldOut ? 'Sold Out' : 'Not Available'}</div>` : ''}
+        ${photoEl}
+        <div class="cname">${escapeHtml(c.name)}</div>
+        ${isSoldOut
+          ? `<div class="cprice cprice-soldout">No cabins left</div>`
+          : price != null ? `<div class="cprice">${fmt(price)} <small>/ family</small></div>` : `<div class="cprice cprice-soldout">Not available</div>`}
+      </div>`;
+  }).join('');
+
+  cabinGrid.querySelectorAll('.cabin-tile').forEach(tile => {
+    if(tile.classList.contains('sold-out')) return;
+    tile.addEventListener('click', () => {
+      selectedCabin = tile.dataset.cabin;
+      renderCabins();
+      updateSummary();
+    });
+  });
+}
+
+function updateSummary(){
+  const cat = cruiseCabinCategories.find((c) => c.name === selectedCabin);
+  const base = cat?.prices[guests];
+  // The add-on only counts when it's switched on AND offers this same cabin
+  // category for this party size - otherwise its toggle greys out.
+  const extra = currentAddOn ? addOnPriceFor(selectedCabin, guests) : null;
+  const includeAddon = addonOn && extra != null;
+  if (currentAddOn) {
+    const toggle = document.getElementById('addonToggle');
+    toggle.classList.toggle('unavailable', extra == null);
+    toggle.classList.toggle('on', includeAddon);
+    document.getElementById('addonToggleInput').checked = includeAddon;
+    const addOnHasAnyPrice = [...addOnCabinCategoryMap.values()].some((c) => Object.values(c.prices).some((p) => p != null));
+    document.getElementById('addonTogglePrice').textContent = extra != null ? `+${fmt(extra)}`
+      : addOnHasAnyPrice ? 'Not available in this cabin' : 'Price coming soon';
+    renderHeroStats();
+  }
+
+  if (cat?.soldOut[guests]) {
+    totalPriceEl.textContent = '—';
+    perPersonEl.textContent = 'Sold out for this party size';
+    sbPrice.innerHTML = '';
+    return;
+  }
+  if (base == null) {
+    totalPriceEl.textContent = '—';
+    perPersonEl.textContent = 'Not available for this party size';
+    sbPrice.innerHTML = '';
+    return;
+  }
+  const total = base + (includeAddon ? extra : 0);
+  const pp = Math.round(total / guests);
+  totalPriceEl.textContent = fmt(total);
+  perPersonEl.textContent = includeAddon
+    ? (addOnIsBackToBack
+      ? `${fmt(base)} + ${fmt(extra)} for both cruises · ≈ ${fmt(pp)} per person`
+      : `${fmt(base)} cruise + ${fmt(extra)} add-on · ≈ ${fmt(pp)} per person`)
+    : `≈ ${fmt(pp)} per person`;
+  sbPrice.innerHTML = `<span>${includeAddon ? (addOnIsBackToBack ? 'Both cruises' : 'With add-on') : 'From'}</span>${fmt(total)} total`;
+}
+
+// Large Family Cabins (5-6 guests) - only on cruises that price them (set
+// up in the dashboards' Pricing tab). Such a cruise gets a button per
+// party size it actually prices (5 Guests, 6 Guests) ahead of the custom
+// quote button, which then reads "6+" or "7+". Every other cruise keeps
+// 2 / 3 / 4 / 5+ Guests exactly as before.
+let largeGuestSizes = [];
+function setupLargeCabins(cruise){
+  largeGuestSizes = [5, 6].filter((g) => (cruise.cabinPrices ?? []).some((r) => r.guests === g && (r.price != null || r.soldOut)));
+  const quoteBtn = document.getElementById('guestQuoteBtn');
+  document.querySelectorAll('#guestSelect [data-large-size]').forEach((b) => b.remove());
+  for (const g of largeGuestSizes) {
+    const btn = document.createElement('button');
+    btn.className = 'pill-btn';
+    btn.dataset.guests = String(g);
+    btn.dataset.largeSize = '';
+    btn.textContent = `${g} Guests`;
+    quoteBtn.before(btn);
+  }
+  const quoteFrom = (largeGuestSizes.length ? Math.max(...largeGuestSizes) : 4) + 1;
+  quoteBtn.textContent = `${quoteFrom}+ Guests`;
+  // Same number everywhere the custom quote mentions it.
+  document.querySelectorAll('.quote-min-guests').forEach((el) => { el.textContent = String(quoteFrom); });
+  document.getElementById('quoteTotalGuests').min = String(quoteFrom);
+  // Booking form: let them ask for these cabins by name.
+  const names = [...new Set((cruise.cabinPrices ?? []).filter((r) => r.guests >= 5).map((r) => r.category))];
+  document.getElementById('largeCabinChoices').innerHTML = names.map((n) =>
+    `<label class="radio-opt"><input type="checkbox" name="cabinChoice" value="${escapeHtml(n)}"> ${escapeHtml(n)}</label>`).join('');
+}
+
+// Which cabin types show for a party size: for 2-4 guests, the ones priced
+// for 2-4 (so a Large Family Cabin doesn't sit there as "Not available");
+// for 5-6 guests, only the ones entered for that exact size.
+function cabinsForGuests(g){
+  return cruiseCabinCategories.filter((c) => (g >= 5
+    ? (g in c.prices) || c.soldOut[g]
+    : [2, 3, 4].some((n) => (n in c.prices) || c.soldOut[n])));
+}
+
+document.getElementById('guestSelect').addEventListener('click', (e) => {
+  const btn = e.target.closest('.pill-btn');
+  if(!btn) return;
+  document.querySelectorAll('#guestSelect .pill-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const g = parseInt(btn.dataset.guests, 10);
+
+  if(btn.dataset.guests === 'quote'){
+    cabinArea.style.display = 'none';
+    contactQuote.classList.add('show');
+    return;
+  }
+  cabinArea.style.display = 'block';
+  contactQuote.classList.remove('show');
+  guests = g;
+  // The selected category may be sold out for this new party size while
+  // staying available for others - switch to whichever is bookable rather
+  // than leaving a sold-out tile "selected" with nothing to show.
+  const shown = cabinsForGuests(guests);
+  const current = shown.find((c) => c.name === selectedCabin);
+  if (!current || !isCabinBookable(current, guests)) {
+    selectedCabin = shown.find((c) => isCabinBookable(c, guests))?.name ?? shown[0]?.name ?? selectedCabin;
+  }
+  renderCabins();
+  updateSummary();
+});
+
+renderCabins();
+updateSummary();
+
+// ---------- PROOF STRIP (short testimonials) ----------
+const testimonials = [
+  {name:"Cheryl", quote:"Any concerns we had were quickly gone after the lively discussions in the cruise WhatsApp group."},
+  {name:"Christina", quote:"Approx 40 other home ed kids come together to spend 2 weeks playing, exploring, and making memories."},
+  {name:"Barry", quote:"Our kids have made lifelong friends, as have we — a group of people who just get you and your kids."},
+  {name:"Christine", quote:"It was my family's favorite vacation ever. We all made lifelong friends we still visit today."},
+  {name:"Wren", quote:"You find other parents who just get the whole homeschool, worldschool, unschooling vibe."},
+];
+
+const testiTrack = document.getElementById('testiTrack');
+testiTrack.innerHTML = testimonials.map(t => `
+  <div class="proof-chip">
+    <div class="proof-avatar" data-photo="testimonial-${t.name.toLowerCase()}">No<br>photo</div>
+    <div>
+      <p>"${t.quote}"</p>
+      <div class="who">${t.name}</div>
+    </div>
+  </div>`).join('');
+
+const proofPrevBtn = document.getElementById('proofPrevBtn');
+const proofNextBtn = document.getElementById('proofNextBtn');
+function proofScrollStep(){
+  const chip = testiTrack.querySelector('.proof-chip');
+  if(!chip) return 0;
+  const style = getComputedStyle(testiTrack);
+  const gap = parseFloat(style.columnGap || style.gap || '14') || 14;
+  return chip.getBoundingClientRect().width + gap;
+}
+proofPrevBtn.addEventListener('click', () => {
+  if (typeof testiTrack.scrollBy === 'function') testiTrack.scrollBy({ left: -proofScrollStep(), behavior: 'smooth' });
+});
+proofNextBtn.addEventListener('click', () => {
+  if (typeof testiTrack.scrollBy === 'function') testiTrack.scrollBy({ left: proofScrollStep(), behavior: 'smooth' });
+});
+
+// ---------- CURRENT ROSTER (dynamic - built from real Booked requests) ----------
+// The card is hidden entirely until at least ROSTER_MIN_FAMILIES families
+// have booked (a roster of 1-2 families looks sparse, not reassuring) -
+// no in-between placeholder state, just missing vs. the real numbers.
+const ROSTER_MIN_FAMILIES = 3;
+const rosterCardFull = document.getElementById('rosterCardFull');
+
+// "4 of these families are sailing back to back with Barcelona → Fort
+// Lauderdale (Nov 7–21, 2027)" - one line per 2-cruise pairing this cruise
+// is in, from that pairing's public counts (GET /back-to-backs/:id/
+// roster-stats: families on both cruises). Nothing if none, or unavailable.
+async function rosterPairingLines(cruise){
+  const pairings = (cruise?.backToBacks ?? []).filter((g) => g.cruises.length === 2);
+  const lines = await Promise.all(pairings.map(async (g) => {
+    const other = g.cruises.find((c) => c.id !== cruise.id);
+    if (!other || other.isIndividual) return '';
+    try {
+      const res = await fetch(`${API}/back-to-backs/${g.id}/roster-stats`);
+      if (!res.ok) return '';
+      const n = (await res.json()).onEveryCruise;
+      if (!n) return '';
+      const sailed = isSetSail;
+      return `<div class="rf-pairing">${n} of these famil${n === 1 ? 'y' : 'ies'} ${sailed ? 'sailed' : (n === 1 ? 'is sailing' : 'are sailing')} back to back with ${escapeHtml(other.destination || 'the next cruise')} (${escapeHtml(formatSailingRange(other.departureDate, other.nights))})</div>`;
+    } catch (e) { return ''; }
+  }));
+  return lines.join('');
+}
+
+async function renderRoster(cruiseId, cruise){
+  let roster = { families: 0, adults: 0, kids: 0, ageBrackets: [] };
+  try {
+    // Aggregate-only endpoint (see backend BookingRequestController.
+    // getRosterStats) - never the raw booking list, which carries real
+    // names/emails/phones/DOBs that have no business reaching a public page.
+    const res = await fetch(`${API}/cruises/${cruiseId}/booking-requests/roster-stats`);
+    if(res.ok) roster = await res.json();
+  } catch(e) {
+    // roster stays at the zero-state above
+  }
+
+  if(roster.families < ROSTER_MIN_FAMILIES){
+    rosterCardFull.hidden = true;
+    rosterCardFull.innerHTML = '';
+    return;
+  }
+  rosterCardFull.hidden = false;
+  const pairingLines = await rosterPairingLines(cruise);
+
+  const maxBracket = Math.max(...roster.ageBrackets.map(b => b.count), 1);
+  rosterCardFull.innerHTML = `
+    <div class="rf-columns">
+      <div class="rf-col-left">
+        <div class="rf-head">
+          <h3>${isSetSail ? 'Final Roster' : 'Current Roster'}</h3>
+          <div class="rf-sub">${isSetSail ? 'Families who sailed with us on this cruise' : isSoldOut ? 'Families sailing with us on this cruise' : 'Families already booked for this sailing'}</div>
+        </div>
+        ${pairingLines}
+        <div class="rf-stats">
+          <div class="rf-stat"><div class="r-num">${roster.families}</div><div class="r-label">Families</div></div>
+          <div class="rf-stat"><div class="r-num">${roster.adults}</div><div class="r-label">Adults</div></div>
+          <div class="rf-stat"><div class="r-num">${roster.kids}</div><div class="r-label">Kids</div></div>
+        </div>
+      </div>
+      <div class="rf-col-right">
+        <div class="rf-ages-label">Kid Ages Aboard</div>
+        ${roster.ageBrackets.map(b => `
+          <div class="rf-bracket-row">
+            <div class="rf-bracket-name">${b.label}</div>
+            <div class="rf-bracket-track"><div class="rf-bracket-fill" style="width:${Math.round(b.count/maxBracket*100)}%"></div></div>
+            <div class="rf-bracket-count">${b.count}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+// ---------- FLIGHTS (real Port Library data - see project notes) ----------
+const flightsSection = document.getElementById('flights');
+const flightsSubnavLink = document.getElementById('flightsSubnavLink');
+
+// The whole section is only meaningful once the embarkation port has both
+// an airport name AND at least one fare filled in - a port with only one
+// of those set isn't ready to show yet, so hide the section entirely
+// rather than render something half-empty.
+function renderFlights(departurePort){
+  const fares = departurePort?.flightFares ?? [];
+  if (!departurePort?.nearestAirportName || !fares.length) {
+    flightsSection.hidden = true;
+    flightsSubnavLink.hidden = true;
+    return;
+  }
+  flightsSection.hidden = false;
+  flightsSubnavLink.hidden = false;
+
+  const airportLabel = departurePort.nearestAirportCode
+    ? `${departurePort.nearestAirportName} (${departurePort.nearestAirportCode})`
+    : departurePort.nearestAirportName;
+  document.getElementById('flightAirportName').textContent = airportLabel;
+  document.getElementById('flightAirportSub').textContent = departurePort.nearestAirportNote || '';
+
+  document.getElementById('flightGrid').innerHTML = fares.map((f) => `
+    <div class="flight-card">
+      <div class="city">${escapeHtml(f.departureCity)}</div>
+      <div class="route">${escapeHtml(f.departureCode)}${departurePort.nearestAirportCode ? ` → ${escapeHtml(departurePort.nearestAirportCode)}` : ''}</div>
+      <div class="price">$${f.price.toLocaleString()}<small>one way per person, economy</small></div>
+    </div>`).join('');
+}
+
+// ---------- MULTISTEP BOOKING FORM (submits to backend on step 8) ----------
+const bookingForm = document.getElementById('bookingForm');
+const bookingFormWrap = document.getElementById('booking-form');
+const totalSteps = document.querySelectorAll('.form-step').length;
+let currentStep = 1;
+let passengers = []; // Passenger 2, 3, ... each {name, dob, gender, citizenship}
+
+function showStep(n){
+  currentStep = n;
+  document.querySelectorAll('.form-step').forEach(el => {
+    el.style.display = (parseInt(el.dataset.step, 10) === n) ? '' : 'none';
+  });
+  document.getElementById('prevStepBtn').style.visibility = n === 1 ? 'hidden' : 'visible';
+  document.getElementById('nextStepBtn').style.display = n < totalSteps ? 'inline-block' : 'none';
+  document.getElementById('submitBtn').style.display = n === totalSteps ? 'inline-block' : 'none';
+  document.getElementById('progressFill').style.width = Math.round((n / totalSteps) * 100) + '%';
+  document.getElementById('progressText').textContent = `Step ${n} of ${totalSteps}`;
+  if(n === totalSteps) renderReview();
+}
+
+document.getElementById('nextStepBtn').addEventListener('click', () => {
+  if(!bookingForm.reportValidity()) return;
+  if(currentStep < totalSteps) showStep(currentStep + 1);
+});
+document.getElementById('prevStepBtn').addEventListener('click', () => {
+  if(currentStep > 1) showStep(currentStep - 1);
+});
+bookingForm.addEventListener('keydown', (e) => {
+  if(e.key === 'Enter' && e.target.tagName !== 'TEXTAREA'){
+    e.preventDefault();
+  }
+});
+
+function renderPassengers(){
+  const wrap = document.getElementById('passengerBlocks');
+  wrap.innerHTML = passengers.map((p, i) => `
+    <div class="passenger-block">
+      <div class="passenger-block-head">
+        <h5>Passenger ${i + 2}</h5>
+        <button type="button" class="remove-passenger" data-remove="${i}">Remove</button>
+      </div>
+      <div class="passenger-field-grid">
+        <div class="field"><label>Full Name</label><input type="text" data-field="name" data-idx="${i}" value="${p.name || ''}"></div>
+        <div class="field"><label>DOB</label><input type="date" data-field="dob" data-idx="${i}" value="${p.dob || ''}"></div>
+        <div class="field"><label>Gender</label>
+          <select data-field="gender" data-idx="${i}">
+            <option value="">Select</option>
+            ${['Female','Male','Non-binary','Prefer not to say','Other'].map(g => `<option ${p.gender === g ? 'selected' : ''}>${g}</option>`).join('')}
+          </select>
+        </div>
+        <div class="field"><label>Citizenship</label><input type="text" data-field="citizenship" data-idx="${i}" value="${p.citizenship || ''}"></div>
+      </div>
+    </div>`).join('');
+
+  wrap.querySelectorAll('input, select').forEach(el => {
+    el.addEventListener('input', (e) => {
+      const idx = parseInt(e.target.dataset.idx, 10);
+      passengers[idx][e.target.dataset.field] = e.target.value;
+    });
+  });
+  wrap.querySelectorAll('[data-remove]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      passengers.splice(parseInt(e.target.dataset.remove, 10), 1);
+      renderPassengers();
+    });
+  });
+}
+
+document.getElementById('addPassengerBtn').addEventListener('click', () => {
+  if(passengers.length >= 11) return;
+  passengers.push({name:'', dob:'', gender:'', citizenship:''});
+  renderPassengers();
+});
+
+function fieldValue(name){
+  const el = bookingForm.elements[name];
+  if(!el) return '';
+  if(el.length && el[0]){
+    if(el[0].type === 'radio'){
+      for(const r of el){ if(r.checked) return r.value; }
+      return '';
+    }
+    if(el[0].type === 'checkbox'){
+      return Array.from(el).filter(c => c.checked).map(c => c.value).join(', ');
+    }
+  }
+  return el.value || '';
+}
+
+function renderReview(){
+  const rows = [
+    ['Full name', fieldValue('fullName')],
+    ['Email', fieldValue('email')],
+    ['Phone', fieldValue('phone')],
+    ['Cabin', fieldValue('cabinChoice')],
+    ['Total passengers', String(passengers.length + 1)],
+    ['Booked with us before', fieldValue('bookedBefore') === 'yes' ? 'Yes' : 'No'],
+    ...(currentAddOn ? [['Including add-on', document.getElementById('addonChoice').checked ? 'Yes' : 'No']] : []),
+  ];
+  document.getElementById('reviewBox').innerHTML = `
+    <h4>Quick review before sending</h4>
+    ${rows.map(([k, v]) => `<div class="review-row"><span class="k">${k}</span><span class="v">${v || '—'}</span></div>`).join('')}
+  `;
+}
+
+
+// One linked request per cruise (see the backend's
+// BookingRequestGroupController) - the family shows up on every cruise's
+// Requests list, linked together in the Cruise Team dashboard. If that
+// endpoint isn't available, falls back to one plain request per cruise
+// rather than losing the submission.
+async function submitBookingGroup(cruiseIds, payload){
+  try {
+    const res = await fetch(`${API}/booking-requests/group`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...payload, cruiseIds }),
+    });
+    if (res.ok) return;
+  } catch (e) { /* fall through to one request per cruise */ }
+  await Promise.all(cruiseIds.map((id) => fetch(`${API}/cruises/${id}/booking-requests`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })));
+}
+
+bookingForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (currentCruiseId) {
+    try {
+      const addOnChosen = !!currentAddOn && document.getElementById('addonChoice').checked;
+      const payload = {
+        fullName: fieldValue('fullName'),
+        email: fieldValue('email'),
+        phone: fieldValue('phone'),
+        contactMethod: fieldValue('contactMethod'),
+        dob: fieldValue('dob'),
+        gender: fieldValue('gender'),
+        citizenship: fieldValue('citizenship'),
+        bookedBefore: fieldValue('bookedBefore') === 'yes',
+        hearAboutUs: fieldValue('hearAboutUs'),
+        cabinChoice: fieldValue('cabinChoice'),
+        comments: fieldValue('comments'),
+        passengers,
+      };
+      if (addOnChosen && addOnIsBackToBack) {
+        // Back to back: a linked request on BOTH cruises, in sailing order,
+        // each noting the pairing they chose.
+        const ids = [currentCruiseId, currentAddOn.id];
+        if (currentAddOn.departureDate < addOnMainCruise.departureDate) ids.reverse();
+        const note = `Back to back: ${addOnMainCruise.destination || 'this cruise'} (${formatSailingRange(addOnMainCruise.departureDate, addOnMainCruise.nights)}) + ${currentAddOnLabel}`;
+        await submitBookingGroup(ids, { ...payload, comments: [payload.comments, note].filter(Boolean).join('\n\n') });
+      } else {
+        await fetch(`${API}/cruises/${currentCruiseId}/booking-requests`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...payload, addOnRequested: addOnChosen }),
+        });
+      }
+    } catch (err) {
+      // Still show the success screen either way - a family that just
+      // filled out an 8-step form shouldn't be told to redo it over a
+      // network blip; worst case we follow up manually if it never landed.
+    }
+  }
+  bookingFormWrap.style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+});
+
+document.getElementById('resetFormBtn').addEventListener('click', () => {
+  bookingForm.reset();
+  passengers = [];
+  renderPassengers();
+  bookingFormWrap.style.display = '';
+  document.getElementById('formSuccess').style.display = 'none';
+  showStep(1);
+});
+
+renderPassengers();
+showStep(1);
+
+// ---------- BOOKING MODAL open/close ----------
+const bookingModalOverlay = document.getElementById('bookingModalOverlay');
+
+function openBookingModal(){
+  bookingModalOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeBookingModal(){
+  bookingModalOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function bindOpenBookingButtons(root){
+  root.querySelectorAll('.open-booking-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Once sold out, there's nothing left to reserve - every one of these
+      // buttons becomes a waitlist signup instead (see applySoldOutState).
+      if (isSoldOut) openWaitlistModal();
+      else openBookingModal();
+    });
+  });
+}
+bindOpenBookingButtons(document);
+
+document.getElementById('modalCloseBtn').addEventListener('click', closeBookingModal);
+document.getElementById('modalCloseBtn2').addEventListener('click', closeBookingModal);
+
+bookingModalOverlay.addEventListener('click', (e) => {
+  if(e.target === bookingModalOverlay) closeBookingModal();
+});
+
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape' && bookingModalOverlay.classList.contains('open')) closeBookingModal();
+});
+
+// ---------- WAITLIST MODAL (sold-out cruises only) ----------
+const waitlistModalOverlay = document.getElementById('waitlistModalOverlay');
+const waitlistForm = document.getElementById('waitlistForm');
+const waitlistFormWrap = document.getElementById('waitlist-form-wrap');
+const waitlistSuccess = document.getElementById('waitlistSuccess');
+
+function openWaitlistModal(){
+  waitlistModalOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeWaitlistModal(){
+  waitlistModalOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('waitlistCloseBtn').addEventListener('click', closeWaitlistModal);
+document.getElementById('waitlistCloseBtn2').addEventListener('click', closeWaitlistModal);
+waitlistModalOverlay.addEventListener('click', (e) => {
+  if(e.target === waitlistModalOverlay) closeWaitlistModal();
+});
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape' && waitlistModalOverlay.classList.contains('open')) closeWaitlistModal();
+});
+
+waitlistForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if(!waitlistForm.reportValidity()) return;
+
+  if (currentCruiseId) {
+    try {
+      const guests = document.getElementById('wlGuests').value;
+      const wantsSimilar = document.getElementById('wlSimilar').checked;
+      await fetch(`${API}/cruises/${currentCruiseId}/booking-requests`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fullName: document.getElementById('wlName').value,
+          email: document.getElementById('wlEmail').value,
+          comments: `Waitlist signup - party of ${guests}.${wantsSimilar ? ' Also wants to hear about similar cruises.' : ''}`,
+        }),
+      });
+    } catch (err) {
+      // Same reasoning as the main booking form - show success regardless,
+      // worst case we follow up manually if it never landed.
+    }
+  }
+  waitlistFormWrap.style.display = 'none';
+  waitlistSuccess.style.display = 'block';
+});
+
+document.getElementById('waitlistResetBtn').addEventListener('click', () => {
+  waitlistForm.reset();
+  waitlistFormWrap.style.display = '';
+  waitlistSuccess.style.display = 'none';
+});
+
+// ---------- OTHER DEPARTURES CAROUSEL (replaces Pricing when sold out) ----------
+const PRICE_RANGE = 0.30; // "Similar price" = starting price within ±30% of this cruise
+
+// Same bar cruises.html's browse page uses to decide a cruise is ready to
+// show publicly - a draft cruise with no destination/dates/nights set has
+// no business appearing as a suggested "other departure" either - and,
+// same as there, Add On and Individual cruises are internal only.
+function isPublishableCruise(cruise){
+  if (cruise.isAddOn || cruise.addOnForCruiseId || cruise.isIndividual) return false;
+  return Boolean(cruise.destination && cruise.sailDates && cruise.nights != null);
+}
+
+function fmtDepMoney(n){ return '$' + n.toLocaleString('en-US'); }
+
+function fmtDepRange(isoStart, nights){
+  const start = new Date(`${isoStart.slice(0,10)}T00:00:00Z`);
+  const end = new Date(start.getTime() + (nights || 0) * 24 * 60 * 60 * 1000);
+  const fmt = (d) => d.toLocaleDateString('en-US', { month:'short', day:'numeric', timeZone:'UTC' });
+  const year = end.getUTCFullYear();
+  return `${fmt(start)} – ${fmt(end)}, ${year}`;
+}
+
+// Cheapest 2-guest price across every non-sold-out category, per person
+// (split between the 2 guests) - same basis as this page's own "Starting
+// At" fact.
+function depStartingPrice(cruise){
+  const prices = (cruise.cabinPrices ?? [])
+    .filter((row) => row.guests === 2 && !row.soldOut && row.price != null)
+    .map((row) => row.price);
+  return prices.length ? Math.round(Math.min(...prices) / 2) : null;
+}
+
+let depViews = null;
+let depTrackEl = null;
+
+function renderDepartures(view){
+  const v = depViews[view];
+  document.getElementById('depNote').textContent = v.note;
+  depTrackEl.scrollLeft = 0;
+  depTrackEl.innerHTML = v.list.length ? v.list.map((c) => `
+    <a class="dep-card" href="/cruises/${c.businessId}">
+      ${c.heroImageUrl ? `<img src="${API}${c.heroImageUrl}" alt="${escapeHtml(c.title || c.destination)}">` : `<span class="dep-photo-label">Photo: ${escapeHtml(c.ship.name)}</span>`}
+      <div class="dep-body">
+        <div class="dep-date">${fmtDepRange(c.departureDate, c.nights)}</div>
+        <div class="dep-title">${escapeHtml(c.title || c.destination)}</div>
+        <div class="dep-meta">${escapeHtml(c.region || c.destination || '')}${c.fromPrice != null ? ` · From <strong>${fmtDepMoney(c.fromPrice)}</strong> / person` : ''}</div>
+      </div>
+    </a>`).join('') : '<div class="dep-empty">Nothing in this group right now. Try another tab or see all cruises.</div>';
+}
+
+async function loadDepartures(cruise){
+  let others = [];
+  try {
+    const res = await fetch(`${API}/cruises`);
+    if(res.ok) others = await res.json();
+  } catch(e) {
+    return;
+  }
+
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const thisPrice = depStartingPrice(cruise);
+  const upcoming = others
+    .filter((c) => c.id !== cruise.id && isPublishableCruise(c) && c.departureDate.slice(0, 10) >= todayStr)
+    .map((c) => ({ ...c, fromPrice: depStartingPrice(c) }))
+    .sort((a, b) => new Date(a.departureDate) - new Date(b.departureDate));
+
+  depViews = {
+    region: {
+      list: cruise.region ? upcoming.filter((c) => c.region === cruise.region) : [],
+      note: cruise.region ? `Other cruises in ${cruise.region}` : 'This cruise has no region set yet.',
+    },
+    price: {
+      list: thisPrice != null
+        ? upcoming.filter((c) => c.fromPrice != null && Math.abs(c.fromPrice - thisPrice) <= thisPrice * PRICE_RANGE)
+            .sort((a, b) => Math.abs(a.fromPrice - thisPrice) - Math.abs(b.fromPrice - thisPrice))
+        : [],
+      note: thisPrice != null ? `Starting at a similar price to this one (${fmtDepMoney(thisPrice)} per person), closest first` : 'This cruise has no pricing set yet.',
+    },
+    soonest: {
+      list: upcoming,
+      note: 'Next departures still open, earliest first',
+    },
+  };
+
+  depTrackEl = document.getElementById('depTrack');
+  const depTabsEl = document.getElementById('depTabs');
+  let firstView = null;
+  depTabsEl.querySelectorAll('.dep-tab').forEach((tab) => {
+    tab.style.display = '';
+    tab.classList.remove('active');
+    if(!depViews[tab.dataset.view].list.length){ tab.style.display = 'none'; return; }
+    if(!firstView) firstView = tab.dataset.view;
+    tab.addEventListener('click', () => {
+      depTabsEl.querySelectorAll('.dep-tab').forEach((t) => t.classList.remove('active'));
+      tab.classList.add('active');
+      renderDepartures(tab.dataset.view);
+    });
+  });
+
+  if(!firstView){
+    document.getElementById('depTabs').style.display = 'none';
+    document.getElementById('depTrack').innerHTML = '<div class="dep-empty">No other departures open right now. Check back soon or see all cruises.</div>';
+    document.getElementById('depNote').textContent = '';
+    return;
+  }
+  depTabsEl.querySelector(`[data-view="${firstView}"]`).classList.add('active');
+  renderDepartures(firstView);
+
+  const depScrollStep = () => {
+    const card = depTrackEl.querySelector('.dep-card');
+    return card ? card.getBoundingClientRect().width + 18 : 0;
+  };
+  document.getElementById('depPrevBtn').addEventListener('click', () => depTrackEl.scrollBy({ left: -depScrollStep(), behavior: 'smooth' }));
+  document.getElementById('depNextBtn').addEventListener('click', () => depTrackEl.scrollBy({ left: depScrollStep(), behavior: 'smooth' }));
+}
+
+// ---------- SOLD OUT STATE (applies the sold-out page design - see templates/page-template-sold-out.html) ----------
+function applySoldOutState(cruise){
+  if(!cruise.soldOut) return;
+
+  document.getElementById('heroSection').classList.add('is-soldout');
+  document.getElementById('heroRibbon').hidden = false;
+  document.getElementById('heroPricingLink').textContent = 'See Other Departures';
+  document.getElementById('heroReserveLink').textContent = 'Join the Waitlist';
+
+  document.getElementById('factStartingAtLabel').textContent = 'Status';
+  document.getElementById('factStartingAt').classList.remove('price');
+  document.getElementById('factStartingAt').innerHTML = '<span class="soldout-pill">Sold Out</span>';
+
+  document.getElementById('subnavPricingLink').textContent = 'Other Departures';
+  document.getElementById('subnavReserveLink').textContent = 'Waitlist';
+
+  document.getElementById('overviewPricingLink').textContent = 'See Other Departures →';
+
+  document.getElementById('pricingEyebrow').textContent = 'Other Departures';
+  document.getElementById('pricingHeading').textContent = "This one's full. The next one isn't.";
+  document.getElementById('pricingSubhead').textContent = "Same community, same way of traveling, a different stretch of the world. Here's what's still open.";
+  document.getElementById('pricingCardWrap').hidden = true;
+  document.getElementById('departuresWrap').hidden = false;
+  loadDepartures(cruise);
+
+  document.getElementById('joinMidHeading').textContent = 'Still dreaming about this one?';
+  document.getElementById('joinMidSubhead').textContent = "Cabins sometimes come back from cancellations or when the cruise line releases more. Get on the waitlist and you'll be the first families we call.";
+  document.getElementById('joinMidLink').textContent = 'Join the Waitlist';
+
+  // Redundant with joinMid's waitlist CTA right above it - see
+  // templates/page-template-sold-out.html, which drops this second CTA
+  // entirely rather than relabeling it.
+  document.getElementById('join').hidden = true;
+
+  // Neither is relevant once there's nothing left to book - same reasoning
+  // as hiding Flights below.
+  document.getElementById('included').hidden = true;
+  document.getElementById('includedSubnavLink').hidden = true;
+  amenitiesSection.hidden = true;
+  amenitiesSubnavLink.hidden = true;
+
+  document.getElementById('stickyBarLink').textContent = 'Other Departures';
+  sbPrice.classList.add('sb-soldout');
+  sbPrice.innerHTML = '<span>This sailing is</span>Sold Out';
+
+  document.getElementById('faqBookingCategory').textContent = 'Waitlist & Booking';
+  document.getElementById('faqBookingQuestion').textContent = 'This cruise is sold out. Is there any way to still get on?';
+  document.getElementById('faqBookingAnswer').innerHTML = `
+    <p>Sometimes, yes. Families cancel, plans change, and every so often the cruise line releases more cabins. When that happens, we reach out to the families on the waitlist first. Joining costs nothing and doesn't commit you to anything.</p>
+    <p>If you'd rather not wait, take a look at the <a href="#pricing">other departures</a>. Plenty of our families found their group on a different sailing.</p>
+  `;
+
+  // Nothing left to fly to yet - see templates/page-template-sold-out.html,
+  // which drops the whole Flights section for the same reason.
+  flightsSection.hidden = true;
+  flightsSubnavLink.hidden = true;
+}
+
+// ---------- SET SAIL STATE (applies once a cruise's departure date has
+// passed - see templates/page-template-set-sail.html). No booking, no
+// waitlist - there's nothing left to reserve or get notified about for a
+// sailing that already happened, so every CTA just points at Other
+// Departures instead, and the two waitlist/booking CTA sections are hidden
+// outright rather than relabeled. ----------
+function applySetSailState(cruise){
+  document.getElementById('heroSection').classList.add('is-sailed');
+  const heroRibbon = document.getElementById('heroRibbon');
+  heroRibbon.textContent = 'Set Sail';
+  heroRibbon.classList.add('ribbon-gold');
+  heroRibbon.hidden = false;
+  document.getElementById('heroPricingLink').textContent = 'See Other Departures';
+  document.getElementById('heroReserveLink').hidden = true; // no second hero button - see the template
+
+  document.getElementById('factStartingAtLabel').textContent = 'Status';
+  document.getElementById('factStartingAt').classList.remove('price');
+  document.getElementById('factStartingAt').innerHTML = '<span class="sailed-pill">Set Sail</span>';
+
+  document.getElementById('subnavPricingLink').textContent = 'Other Departures';
+  document.getElementById('subnavReserveLink').hidden = true; // no Reserve/Waitlist link in the subnav either
+
+  document.getElementById('overviewPricingLink').textContent = 'See Other Departures →';
+
+  document.getElementById('pricingEyebrow').textContent = 'Other Departures';
+  document.getElementById('pricingHeading').textContent = "This one has set sail. The next one's waiting.";
+  document.getElementById('pricingSubhead').textContent = "Same community, same way of traveling, a different stretch of the world. Here's what's still open.";
+  document.getElementById('pricingCardWrap').hidden = true;
+  document.getElementById('departuresWrap').hidden = false;
+  loadDepartures(cruise);
+
+  // Neither CTA section exists in the Set Sail template at all - unlike
+  // Sold Out, there's no waitlist to plug, so both go rather than one
+  // being relabeled.
+  document.getElementById('joinMid').hidden = true;
+  document.getElementById('join').hidden = true;
+
+  document.getElementById('included').hidden = true;
+  document.getElementById('includedSubnavLink').hidden = true;
+  amenitiesSection.hidden = true;
+  amenitiesSubnavLink.hidden = true;
+
+  document.getElementById('stickyBarLink').textContent = 'Other Departures';
+  sbPrice.classList.add('sb-sailed');
+  sbPrice.innerHTML = '<span>This cruise has</span>Set Sail';
+
+  // No "how do we book" question makes sense once it's over - the whole
+  // category goes, rather than being reworded like Sold Out's.
+  document.getElementById('faqBookingCategory').hidden = true;
+  document.getElementById('faqBookingItem').hidden = true;
+
+  flightsSection.hidden = true;
+  flightsSubnavLink.hidden = true;
+}
+
+// ---------- CUSTOM GROUP QUOTE FORM (5+ guests) ----------
+const quoteForm = document.getElementById('quoteForm');
+const quoteFormWrap = document.getElementById('quote-form-wrap');
+const quoteTotalSteps = document.querySelectorAll('.quote-step').length;
+let quoteCurrentStep = 1;
+let quoteCabins = []; // {guests, category}
+
+function showQuoteStep(n){
+  quoteCurrentStep = n;
+  document.querySelectorAll('.quote-step').forEach(el => {
+    el.style.display = (parseInt(el.dataset.step, 10) === n) ? '' : 'none';
+  });
+  document.getElementById('quotePrevStepBtn').style.visibility = n === 1 ? 'hidden' : 'visible';
+  document.getElementById('quoteNextStepBtn').style.display = n < quoteTotalSteps ? 'inline-block' : 'none';
+  document.getElementById('quoteSubmitBtn').style.display = n === quoteTotalSteps ? 'inline-block' : 'none';
+  document.getElementById('quoteProgressFill').style.width = Math.round((n / quoteTotalSteps) * 100) + '%';
+  document.getElementById('quoteProgressText').textContent = `Step ${n} of ${quoteTotalSteps}`;
+  document.getElementById('quoteError').classList.remove('show');
+
+  if(n === 3 && quoteCabins.length === 0){
+    const startingGuests = parseInt(document.getElementById('quoteTotalGuests').value, 10) || 5;
+    quoteCabins.push({guests: startingGuests, category: ''});
+    renderQuoteCabins();
+  }
+  if(n === quoteTotalSteps) renderQuoteReview();
+}
+
+function quoteAssignedTotal(){
+  return quoteCabins.reduce((sum, c) => sum + (parseInt(c.guests, 10) || 0), 0);
+}
+
+function updateQuoteTally(){
+  const target = parseInt(document.getElementById('quoteTotalGuests').value, 10) || 0;
+  const assigned = quoteAssignedTotal();
+  const tallyEl = document.getElementById('quoteTally');
+  tallyEl.textContent = `${assigned} of ${target} guests assigned across ${quoteCabins.length} cabin${quoteCabins.length === 1 ? '' : 's'}`;
+  tallyEl.classList.toggle('mismatch', assigned !== target);
+}
+
+function renderQuoteCabins(){
+  const wrap = document.getElementById('quoteCabinBlocks');
+  wrap.innerHTML = quoteCabins.map((c, i) => `
+    <div class="passenger-block">
+      <div class="passenger-block-head">
+        <h5>Cabin ${i + 1}</h5>
+        ${quoteCabins.length > 1 ? `<button type="button" class="remove-passenger" data-remove="${i}">Remove</button>` : ''}
+      </div>
+      <div class="passenger-field-grid">
+        <div class="field"><label>Guests in this Cabin</label><input required type="number" min="1" data-field="guests" data-idx="${i}" value="${c.guests || ''}"></div>
+        <div class="field"><label>Cabin Category</label>
+          <select required data-field="category" data-idx="${i}">
+            <option value="">Select</option>
+            ${['Interior','Oceanview','Balcony','Suite'].map(cat => `<option ${c.category === cat ? 'selected' : ''}>${cat}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+    </div>`).join('');
+
+  wrap.querySelectorAll('input, select').forEach(el => {
+    el.addEventListener('input', (e) => {
+      const idx = parseInt(e.target.dataset.idx, 10);
+      quoteCabins[idx][e.target.dataset.field] = e.target.value;
+      updateQuoteTally();
+    });
+  });
+  wrap.querySelectorAll('[data-remove]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      quoteCabins.splice(parseInt(e.target.dataset.remove, 10), 1);
+      renderQuoteCabins();
+      updateQuoteTally();
+    });
+  });
+  updateQuoteTally();
+}
+
+document.getElementById('addCabinBtn').addEventListener('click', () => {
+  if(quoteCabins.length >= 6) return;
+  quoteCabins.push({guests: '', category: ''});
+  renderQuoteCabins();
+});
+
+document.getElementById('quoteTotalGuests').addEventListener('input', updateQuoteTally);
+
+function quoteStepFieldsValid(n){
+  const stepEl = document.querySelector(`.quote-step[data-step="${n}"]`);
+  let valid = true;
+  stepEl.querySelectorAll('input, select, textarea').forEach(f => {
+    if(!f.reportValidity()) valid = false;
+  });
+  return valid;
+}
+
+document.getElementById('quoteNextStepBtn').addEventListener('click', () => {
+  if(!quoteStepFieldsValid(quoteCurrentStep)) return;
+  if(quoteCurrentStep === 3 && quoteAssignedTotal() !== (parseInt(document.getElementById('quoteTotalGuests').value, 10) || 0)){
+    document.getElementById('quoteError').classList.add('show');
+    return;
+  }
+  if(quoteCurrentStep < quoteTotalSteps) showQuoteStep(quoteCurrentStep + 1);
+});
+document.getElementById('quotePrevStepBtn').addEventListener('click', () => {
+  if(quoteCurrentStep > 1) showQuoteStep(quoteCurrentStep - 1);
+});
+quoteForm.addEventListener('keydown', (e) => {
+  if(e.key === 'Enter' && e.target.tagName !== 'TEXTAREA'){
+    e.preventDefault();
+  }
+});
+
+function renderQuoteReview(){
+  const cabinSummary = quoteCabins.map((c, i) => `Cabin ${i + 1}: ${c.guests || '—'} guests, ${c.category || 'no category selected'}`).join(' · ');
+  const rows = [
+    ['Email', document.getElementById('quoteEmail').value],
+    ['Total guests', document.getElementById('quoteTotalGuests').value],
+    ['Cabins', cabinSummary],
+  ];
+  document.getElementById('quoteReviewBox').innerHTML = `
+    <h4>Quick review before sending</h4>
+    ${rows.map(([k, v]) => `<div class="review-row"><span class="k">${k}</span><span class="v">${v || '—'}</span></div>`).join('')}
+  `;
+}
+
+quoteForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  quoteFormWrap.style.display = 'none';
+  document.getElementById('quoteFormSuccess').style.display = 'block';
+});
+
+document.getElementById('quoteResetFormBtn').addEventListener('click', () => {
+  quoteForm.reset();
+  quoteCabins = [];
+  quoteFormWrap.style.display = '';
+  document.getElementById('quoteFormSuccess').style.display = 'none';
+  showQuoteStep(1);
+});
+
+showQuoteStep(1);
+
+// ---------- CUSTOM GROUP QUOTE MODAL open/close ----------
+const quoteModalOverlay = document.getElementById('quoteModalOverlay');
+
+function openQuoteModal(){
+  quoteModalOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeQuoteModal(){
+  quoteModalOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.querySelectorAll('.open-quote-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    openQuoteModal();
+  });
+});
+
+document.getElementById('quoteModalCloseBtn').addEventListener('click', closeQuoteModal);
+document.getElementById('quoteModalCloseBtn2').addEventListener('click', closeQuoteModal);
+
+quoteModalOverlay.addEventListener('click', (e) => {
+  if(e.target === quoteModalOverlay) closeQuoteModal();
+});
+
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape' && quoteModalOverlay.classList.contains('open')) closeQuoteModal();
+});
+
+// ---------- FLIGHT HELP FORM ----------
+const flightsForm = document.getElementById('flightsForm');
+const flightsFormWrap = document.getElementById('flights-form-wrap');
+const flightsTotalSteps = document.querySelectorAll('.flights-step').length;
+let flightsCurrentStep = 1;
+
+function showFlightsStep(n){
+  flightsCurrentStep = n;
+  document.querySelectorAll('.flights-step').forEach(el => {
+    el.style.display = (parseInt(el.dataset.step, 10) === n) ? '' : 'none';
+  });
+  document.getElementById('flightsPrevStepBtn').style.visibility = n === 1 ? 'hidden' : 'visible';
+  document.getElementById('flightsNextStepBtn').style.display = n < flightsTotalSteps ? 'inline-block' : 'none';
+  document.getElementById('flightsSubmitBtn').style.display = n === flightsTotalSteps ? 'inline-block' : 'none';
+  document.getElementById('flightsProgressFill').style.width = Math.round((n / flightsTotalSteps) * 100) + '%';
+  document.getElementById('flightsProgressText').textContent = `Step ${n} of ${flightsTotalSteps}`;
+  if(n === flightsTotalSteps) renderFlightsReview();
+}
+
+function flightsStepFieldsValid(n){
+  const stepEl = document.querySelector(`.flights-step[data-step="${n}"]`);
+  let valid = true;
+  stepEl.querySelectorAll('input, select, textarea').forEach(f => {
+    if(!f.reportValidity()) valid = false;
+  });
+  return valid;
+}
+
+document.getElementById('flightsNextStepBtn').addEventListener('click', () => {
+  if(!flightsStepFieldsValid(flightsCurrentStep)) return;
+  if(flightsCurrentStep < flightsTotalSteps) showFlightsStep(flightsCurrentStep + 1);
+});
+document.getElementById('flightsPrevStepBtn').addEventListener('click', () => {
+  if(flightsCurrentStep > 1) showFlightsStep(flightsCurrentStep - 1);
+});
+flightsForm.addEventListener('keydown', (e) => {
+  if(e.key === 'Enter' && e.target.tagName !== 'TEXTAREA'){
+    e.preventDefault();
+  }
+});
+
+function flightsFieldValue(name){
+  const el = flightsForm.elements[name];
+  if(!el) return '';
+  if(el.length && el[0]){
+    if(el[0].type === 'radio'){
+      for(const r of el){ if(r.checked) return r.value; }
+      return '';
+    }
+  }
+  return el.value || '';
+}
+
+function renderFlightsReview(){
+  const rows = [
+    ['Email', flightsFieldValue('flightsEmail')],
+    ['Departure city/airport', flightsFieldValue('flightsDepartureCity')],
+    ['Travelers', flightsFieldValue('flightsTravelers')],
+    ['Flexible dates', flightsFieldValue('flightsFlexible') === 'yes' ? 'Yes' : 'No'],
+  ];
+  document.getElementById('flightsReviewBox').innerHTML = `
+    <h4>Quick review before sending</h4>
+    ${rows.map(([k, v]) => `<div class="review-row"><span class="k">${k}</span><span class="v">${v || '—'}</span></div>`).join('')}
+  `;
+}
+
+flightsForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  flightsFormWrap.style.display = 'none';
+  document.getElementById('flightsFormSuccess').style.display = 'block';
+});
+
+document.getElementById('flightsResetFormBtn').addEventListener('click', () => {
+  flightsForm.reset();
+  flightsFormWrap.style.display = '';
+  document.getElementById('flightsFormSuccess').style.display = 'none';
+  showFlightsStep(1);
+});
+
+showFlightsStep(1);
+
+// ---------- FLIGHT HELP MODAL open/close ----------
+const flightsModalOverlay = document.getElementById('flightsModalOverlay');
+
+function openFlightsModal(){
+  flightsModalOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeFlightsModal(){
+  flightsModalOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.querySelectorAll('.open-flights-btn').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    openFlightsModal();
+  });
+});
+
+document.getElementById('flightsModalCloseBtn').addEventListener('click', closeFlightsModal);
+document.getElementById('flightsModalCloseBtn2').addEventListener('click', closeFlightsModal);
+
+flightsModalOverlay.addEventListener('click', (e) => {
+  if(e.target === flightsModalOverlay) closeFlightsModal();
+});
+
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape' && flightsModalOverlay.classList.contains('open')) closeFlightsModal();
+});
+
+// ---------- SUBNAV ACTIVE STATE ----------
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.subnav a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(sec => {
+    const rect = sec.getBoundingClientRect();
+    if(rect.top <= 120 && rect.bottom >= 120) current = sec.id;
+  });
+  navLinks.forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#'+current);
+  });
+});
+
+// Facts bar values cut off with "..." when too long - hovering shows the
+// whole value. Kept in sync as they change (segment picker, add-on switch).
+(function(){
+  const values = document.querySelectorAll('.facts-bar .fact .value');
+  const sync = (el) => { el.title = el.textContent.trim(); };
+  values.forEach((el) => {
+    sync(el);
+    new MutationObserver(() => sync(el)).observe(el, { childList: true, characterData: true, subtree: true });
+  });
+})();
+</script>
+</body>
+</html>

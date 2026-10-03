@@ -1,0 +1,39 @@
+# Same page routes as server.js (which only runs locally) - cPanel serves
+# plain files, so the "one template per page type" addresses are rewritten here.
+DirectoryIndex home.html
+Options -MultiViews -Indexes
+
+RewriteEngine On
+RewriteBase /
+
+# /cruises/RC-19SEP2026-MIA-MIA -> the cruise page template (reads the id from the address)
+RewriteRule ^cruises/[^/]+/?$ cruise-detail.html [L]
+
+# /journeys/BB-PC-06JAN2027-FOR-LOS -> the back-to-back journey template
+RewriteRule ^journeys/[^/]+/?$ journey.html [L]
+
+# /RC-19SEP2026-MIA-MIA (shareable booking-form link) -> booking form, only for
+# addresses with no file extension that aren't a real file or folder, so a
+# missing image or typo'd .css still gives a normal "not found"
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^[^./]+/?$ booking-form.html [L]
+
+<IfModule mod_mime.c>
+  AddType image/webp .webp
+  AddType image/avif .avif
+</IfModule>
+
+# Pages always re-checked so updates show straight away; images cached for a week
+<IfModule mod_headers.c>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  <FilesMatch "\.(webp|avif|jpe?g|png|gif|svg|ico)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript image/svg+xml
+</IfModule>

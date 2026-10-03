@@ -1,0 +1,66 @@
+const http = require('node:http');
+const fs = require('node:fs');
+const path = require('node:path');
+
+const PORT = 5173;
+const ROOT = __dirname;
+
+const CONTENT_TYPES = {
+  '.html': 'text/html',
+  '.js': 'text/javascript',
+  '.css': 'text/css',
+  '.jpg': 'image/jpeg',
+  '.jpeg': 'image/jpeg',
+  '.png': 'image/png',
+  '.webp': 'image/webp',
+  '.svg': 'image/svg+xml',
+  '.gif': 'image/gif',
+  '.avif': 'image/avif',
+};
+
+const server = http.createServer((req, res) => {
+  const urlPath = req.url.split('?')[0];
+  // /cruises/[slug] is a single reusable template (cruise-detail.html), not a
+  // real file per cruise - the slug is read client-side from location.pathname.
+  const isCruiseDetailRoute = urlPath.startsWith('/cruises/');
+  // /journeys/[slug] - same idea, one template (journey.html) for every
+  // 3+ cruise back-to-back journey.
+  const isJourneyRoute = urlPath.startsWith('/journeys/');
+  const filePath = urlPath === '/' ? '/home.html'
+    : isCruiseDetailRoute ? '/cruise-detail.html'
+    : isJourneyRoute ? '/journey.html'
+    : urlPath;
+  const resolved = path.join(ROOT, filePath);
+
+  fs.readFile(resolved, (err, data) => {
+    if (err) {
+      // No literal file at this path (and it's not the /cruises/ route) -
+      // treat it as a shareable cruise booking-form link, e.g.
+      // /RC-19SEP2026-MIA-MIA (the businessId, read client-side from
+      // location.pathname by booking-form.html itself). Only for
+      // extension-less paths, so a genuinely missing asset (a typo'd .png,
+      // a missing .css) still 404s normally instead of silently rendering
+      // the booking form.
+      if (!isCruiseDetailRoute && !path.extname(urlPath)) {
+        fs.readFile(path.join(ROOT, 'booking-form.html'), (err2, data2) => {
+          if (err2) {
+            res.writeHead(404);
+            res.end('Not found');
+            return;
+          }
+          res.writeHead(200, { 'Content-Type': 'text/html' });
+          res.end(data2);
+        });
+        return;
+      }
+      res.writeHead(404);
+      res.end('Not found');
+      return;
+    }
+    const contentType = CONTENT_TYPES[path.extname(resolved).toLowerCase()] || 'application/octet-stream';
+    res.writeHead(200, { 'Content-Type': contentType });
+    res.end(data);
+  });
+});
+
+server.listen(PORT, () => console.log(`Frontend serving on http://localhost:${PORT}`));

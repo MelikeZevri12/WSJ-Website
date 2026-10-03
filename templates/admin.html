@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cruises — Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* brand green — --green-dark is the requested hex #708F53, used for solid
+       buttons and active states. --green is a lighter tint of that same hue, used
+       for borders/tints/subtle accents and the wordmark; --green-hover is darker
+       still, for :hover on those solid elements. */
+    --green:#A5BD8E;
+    --green-dark:#708F53;
+    --green-hover:#2D3A22;
+    /* pulled from the Worldschooling Journeys logo, same palette as the Cruises page */
+    --dark:#152230;
+    --dark-soft:#1e3040;
+    --blue:#2f7f8a;
+    --blue-tint:color-mix(in srgb, var(--blue) 22%, white);
+    --blue-line:color-mix(in srgb, var(--blue) 48%, white);
+    --green-tint:color-mix(in srgb, var(--green) 14%, white);
+    --green-line:color-mix(in srgb, var(--green) 42%, white);
+    --green-soft:color-mix(in srgb, var(--green) 55%, white);
+    --white:#fffdf7;
+    --paper:#f4f1e9;
+    --line:rgba(21,34,48,0.16);
+    --line-on-dark:rgba(255,255,255,0.2);
+    --muted:#6d6552;
+    --sunset-1:#c14a2f;
+    --sunset-2:#e0893c;
+    --sunset-tint:color-mix(in srgb, var(--sunset-1) 12%, var(--white));
+    --gold:#d9a441;
+    --sky-tint:color-mix(in srgb, var(--blue) 16%, var(--white));
+    --sky-line:color-mix(in srgb, var(--blue) 42%, var(--white));
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Titillium Web', sans-serif;
+    color:var(--dark);
+    background:var(--paper);
+    line-height:1.5;
+  }
+  h1,h2,h3,h4{
+    font-family:'Libre Baskerville', serif;
+    font-weight:700;
+    margin:0 0 .4em 0;
+    color:var(--dark);
+  }
+  a{color:inherit;}
+  button{font-family:inherit;}
+
+  .concept-note{
+    background:var(--dark);
+    border-bottom:1px solid var(--gold);
+    color:var(--gold);
+    text-align:center;font-size:12.5px;
+    padding:9px 16px;letter-spacing:.02em;
+    font-family:'Titillium Web',sans-serif;
+  }
+
+  /* GLOBAL NAV — shared across the Cruises page and the Admin dashboard */
+  .global-nav{background:var(--dark-soft);border-bottom:1px solid var(--line-on-dark);}
+  .global-nav .gn-wrap{
+    max-width:1180px;margin:0 auto;padding:12px 24px;
+    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
+  }
+  .gn-logo{display:flex;align-items:baseline;gap:8px;text-decoration:none;}
+  .gn-logo .gn-script{font-family:'Caveat',cursive;font-weight:700;font-size:26px;color:var(--gold);line-height:1;}
+  .gn-logo .gn-sans{font-family:'Titillium Web',sans-serif;font-weight:600;font-size:14px;color:var(--green);letter-spacing:.02em;}
+  .gn-links{display:flex;gap:26px;}
+  .gn-link{
+    padding:4px 0;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:14px;
+    text-decoration:none;color:#c7ccd1;
+    transition:color .15s ease;
+  }
+  .gn-link:hover{color:var(--white);}
+  .gn-link.active{color:var(--green);}
+
+  /* PAGE */
+  .admin-wrap{max-width:1180px;margin:0 auto;padding:38px 24px 80px;}
+  .admin-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:24px;flex-wrap:wrap;gap:14px;}
+  .admin-header h1{font-size:30px;margin:0;}
+  .admin-header p{color:var(--muted);font-size:14px;margin:6px 0 0;}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:6px;
+    padding:11px 22px;border-radius:7px;font-weight:700;font-size:14px;
+    text-decoration:none;letter-spacing:.01em;border:none;cursor:pointer;
+    font-family:'Titillium Web',sans-serif;
+  }
+  .btn-primary{background:var(--green-dark);color:var(--white);}
+  .btn-primary:hover{background:var(--green-hover);}
+  .btn-outline{background:var(--white);border:1.5px solid var(--line);color:var(--dark);}
+  .btn-outline:hover{border-color:var(--green);color:var(--green-dark);}
+  .btn-sm{padding:7px 14px;font-size:12.5px;border-radius:6px;}
+  .btn-text-danger{background:none;border:none;color:var(--sunset-1);font-weight:700;font-size:12.5px;cursor:pointer;padding:7px 4px;}
+  .btn-text-danger:hover{text-decoration:underline;}
+  .btn:disabled{opacity:.5;cursor:not-allowed;}
+
+  /* CARD + TABLE */
+  .admin-card{background:var(--white);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(36,40,48,0.05);outline:1.5px dashed rgba(21,34,48,0.3);outline-offset:-6px;}
+  table.cruise-table{width:100%;border-collapse:collapse;}
+  .cruise-table thead th{
+    background:var(--sky-tint);color:var(--dark);text-align:left;font-size:11.5px;
+    text-transform:uppercase;letter-spacing:.05em;padding:13px 18px;border-bottom:1px solid var(--sky-line);font-weight:700;
+  }
+  .cruise-table td{padding:17px 18px;border-bottom:1px solid var(--line);border-left:3px solid transparent;font-size:14px;color:var(--dark);vertical-align:middle;}
+  .cruise-table tbody tr:last-child td{border-bottom:none;}
+  .cruise-table tbody tr:nth-child(even) td{background:color-mix(in srgb, var(--sky-tint) 38%, white);}
+  .cruise-table tbody tr:hover td{background:#fafbf9;}
+  .cruise-table tbody tr:hover td:first-child{border-left-color:var(--green-dark);}
+  .cruise-id-cell{font-weight:800;color:var(--green-dark);font-size:14.5px;letter-spacing:.02em;white-space:nowrap;}
+  .cruise-id-cell .dep-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green-dark);margin-right:9px;vertical-align:middle;}
+  .dest-cell{font-weight:700;color:var(--dark);font-size:14.5px;}
+  .ship-cell{font-family:'Libre Baskerville',serif;font-style:italic;font-size:15px;color:var(--dark-soft);}
+  .line-badge{display:inline-block;background:var(--green-tint);border:1px solid var(--green-line);color:var(--green-dark);font-weight:700;font-size:12.5px;padding:6px 14px;border-radius:20px;letter-spacing:.02em;white-space:nowrap;}
+  .row-actions{display:flex;gap:8px;white-space:nowrap;}
+  .empty-state{padding:56px 24px;text-align:center;color:var(--muted);}
+  .empty-state h3{color:var(--dark);font-size:17px;margin-bottom:6px;}
+  .empty-state p{font-size:13.5px;margin:0 0 18px;}
+
+  /* MODAL SHELL */
+  .modal-overlay{
+    position:fixed;inset:0;background:rgba(36,40,48,0.6);display:none;
+    align-items:flex-start;justify-content:center;z-index:100;padding:34px 16px;overflow-y:auto;
+  }
+  .modal-overlay.open{display:flex;}
+  .admin-modal-inner{
+    width:100%;max-width:840px;background:var(--white);border-radius:14px;
+    box-shadow:0 24px 60px rgba(0,0,0,.35);display:flex;flex-direction:column;max-height:calc(100vh - 68px);
+    outline:1.5px dashed rgba(21,34,48,0.3);outline-offset:-6px;
+  }
+  .admin-modal-head{
+    padding:22px 28px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;flex:0 0 auto;
+  }
+  .admin-modal-head h2{font-size:20px;margin:0;}
+  .admin-modal-head .modal-close{
+    background:none;border:none;font-size:22px;line-height:1;color:var(--muted);cursor:pointer;padding:4px 8px;
+  }
+  .admin-modal-head .modal-close:hover{color:var(--dark);}
+  .admin-modal-body{padding:26px 28px;overflow-y:auto;flex:1 1 auto;}
+  .admin-modal-foot{
+    padding:16px 28px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;
+    background:#fafbf9;flex:0 0 auto;gap:12px;flex-wrap:wrap;
+  }
+  .admin-modal-foot .foot-note{font-size:11.5px;color:var(--muted);}
+  .admin-modal-foot .foot-actions{display:flex;gap:10px;margin-left:auto;}
+
+  /* FORM ELEMENTS */
+  .admin-section-label{
+    font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--green-dark);
+    margin:26px 0 12px;
+  }
+  .admin-section-label:first-child{margin-top:0;}
+  .admin-field{margin-bottom:16px;}
+  .admin-field label{display:block;font-size:12.5px;font-weight:700;color:var(--dark);margin-bottom:6px;}
+  .admin-field input[type="text"],
+  .admin-field input[type="url"],
+  .admin-field input[type="number"],
+  .admin-field select{
+    width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:7px;
+    font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--dark);background:var(--white);
+  }
+  .admin-field input:focus,.admin-field select:focus{
+    outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(90,158,83,.15);
+  }
+  .admin-hint{font-size:12px;color:var(--muted);margin-top:6px;}
+  .admin-hint.success{color:var(--green-dark);font-weight:700;}
+  .admin-hint.error{color:var(--sunset-1);font-weight:700;}
+  .admin-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .admin-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;}
+
+  .url-parse-row{display:flex;gap:10px;align-items:flex-start;}
+  .url-parse-row input{flex:1;}
+  .url-parse-row .btn{flex:0 0 auto;white-space:nowrap;}
+
+  /* ITINERARY EDIT TABLE */
+  .itin-table-wrap{border:1px solid var(--line);border-radius:9px;overflow:hidden;}
+  table.itin-edit-table{width:100%;border-collapse:collapse;}
+  .itin-edit-table thead th{
+    background:var(--sky-tint);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;
+    color:var(--dark);padding:9px 10px;text-align:left;border-bottom:1px solid var(--sky-line);font-weight:700;
+  }
+  .itin-edit-table td{padding:7px 8px;border-bottom:1px solid var(--line);}
+  .itin-edit-table tbody tr:last-child td{border-bottom:none;}
+  .itin-edit-table input{
+    width:100%;border:1px solid var(--line);border-radius:5px;padding:7px 8px;
+    font-size:12.5px;font-family:'Titillium Web',sans-serif;color:var(--dark);
+  }
+  .itin-edit-table input:focus{outline:none;border-color:var(--green);}
+  .itin-edit-table .sea-row td{background:var(--blue-tint);}
+  .itin-edit-table input::placeholder{color:#aeb2a9;}
+  .add-day-btn{
+    margin-top:10px;width:100%;
+    background:none;border:1.5px dashed var(--line);color:var(--green-dark);font-weight:700;font-size:13px;
+    padding:9px;border-radius:7px;cursor:pointer;font-family:'Titillium Web',sans-serif;
+  }
+  .add-day-btn:hover{border-color:var(--green);}
+
+  .enrich-row{
+    margin:18px 0 4px;padding:14px 16px;background:var(--sky-tint);border:1px solid var(--sky-line);
+    border-radius:9px;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;
+  }
+  .enrich-row p{margin:0;font-size:13px;color:var(--dark);max-width:440px;}
+  .enrich-row .btn{flex:0 0 auto;}
+
+  @media (max-width:640px){
+    .admin-grid-2,.admin-grid-3{grid-template-columns:1fr;}
+    .global-nav .gn-wrap{flex-direction:column;align-items:flex-start;gap:10px;}
+    .admin-modal-body,.admin-modal-head,.admin-modal-foot{padding-left:18px;padding-right:18px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- GLOBAL NAV -->
+<div class="global-nav">
+  <div class="gn-wrap">
+    <a href="japan-korea-cruise-newtheme.html" class="gn-logo">
+      <span class="gn-script">Worldschooling</span><span class="gn-sans">journeys</span>
+    </a>
+    <div class="gn-links">
+      <a href="japan-korea-cruise-newtheme.html" class="gn-link">Cruises</a>
+      <a href="cruises-admin-dashboard.html" class="gn-link active">Admin</a>
+    </div>
+  </div>
+</div>
+
+<div class="concept-note">Redesign concept for review — visual design only, layered onto your existing admin flow. Not connected to real cruise data.</div>
+
+<div class="admin-wrap">
+  <div class="admin-header">
+    <div>
+      <h1>Cruises</h1>
+      <p>Add and manage cruise records — each one generates a trip page like the ones your families see.</p>
+    </div>
+    <button type="button" class="btn btn-primary" id="addCruiseBtn">+ Add Cruise</button>
+  </div>
+
+  <div class="admin-card">
+    <table class="cruise-table" id="cruiseTable">
+      <thead>
+        <tr>
+          <th>Departure</th>
+          <th>Destination</th>
+          <th>Ship</th>
+          <th>Cruise Line</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="cruiseTableBody"><!-- populated by JS --></tbody>
+    </table>
+    <div class="empty-state" id="emptyState" style="display:none;">
+      <h3>No cruises yet</h3>
+      <p>Add your first cruise to generate its trip page.</p>
+      <button type="button" class="btn btn-primary" id="emptyAddBtn">+ Add Cruise</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD / EDIT CRUISE MODAL -->
+<div class="modal-overlay" id="cruiseModalOverlay">
+  <div class="admin-modal-inner">
+    <div class="admin-modal-head">
+      <h2 id="cruiseModalTitle">Add Cruise</h2>
+      <button type="button" class="modal-close" id="cruiseModalCloseBtn" aria-label="Close">×</button>
+    </div>
+
+    <div class="admin-modal-body">
+      <form id="cruiseForm" novalidate>
+        <div class="admin-section-label">Cruise Source</div>
+        <div class="admin-field">
+          <label for="cruiseUrl">Cruise URL (optional)</label>
+          <div class="url-parse-row">
+            <input type="url" id="cruiseUrl" name="cruiseUrl" placeholder="https://www.royalcaribbean.com/itinerary/...">
+            <button type="button" class="btn btn-outline btn-sm" id="parseCruiseBtn">Parse Cruise</button>
+          </div>
+          <div class="admin-hint" id="parseHint"></div>
+        </div>
+
+        <div class="admin-section-label">Cruise Details</div>
+        <div class="admin-grid-2">
+          <div class="admin-field">
+            <label for="cruiseLine">Cruise Line</label>
+            <select id="cruiseLine" name="cruiseLine">
+              <option value="">Select a cruise line</option>
+              <option>Royal Caribbean</option>
+              <option>Princess Cruises</option>
+              <option>Norwegian Cruise Line</option>
+              <option>Disney Cruise Line</option>
+              <option>Carnival Cruise Line</option>
+              <option>Celebrity Cruises</option>
+              <option>MSC Cruises</option>
+              <option>Holland America Line</option>
+            </select>
+          </div>
+          <div class="admin-field">
+            <label for="shipName">Ship</label>
+            <input type="text" id="shipName" name="shipName" placeholder="e.g. Icon of the Seas">
+            <div class="admin-hint" id="shipHint"></div>
+          </div>
+        </div>
+
+        <div class="admin-field">
+          <label for="cruiseId">Cruise ID</label>
+          <input type="text" id="cruiseId" name="cruiseId" placeholder="e.g. RC-19SEP2026-MIA-MIA-01">
+          <div class="admin-hint">Auto-suggested from cruise line, ship, and first sail date — edit freely.</div>
+        </div>
+
+        <div class="admin-section-label">Itinerary Stops</div>
+        <div class="itin-table-wrap">
+          <table class="itin-edit-table">
+            <thead>
+              <tr>
+                <th style="width:15%;">Date</th>
+                <th style="width:26%;">Port</th>
+                <th style="width:22%;">Country</th>
+                <th style="width:15%;">Arrival</th>
+                <th style="width:15%;">Departure</th>
+                <th style="width:7%;"></th>
+              </tr>
+            </thead>
+            <tbody id="itinStopsBody"><!-- populated by JS --></tbody>
+          </table>
+        </div>
+        <button type="button" class="add-day-btn" id="addDayBtn">+ Add Day</button>
+
+        <div class="enrich-row">
+          <p><strong>Enrich Cruise</strong> fills in destination, dates, and trip facts from the itinerary above — review before saving.</p>
+          <button type="button" class="btn btn-outline btn-sm" id="enrichBtn">Enrich Cruise</button>
+        </div>
+        <div class="admin-hint success" id="enrichHint"></div>
+
+        <div class="admin-section-label">Trip Facts</div>
+        <div class="admin-field">
+          <label for="destination">Destination</label>
+          <input type="text" id="destination" name="destination" placeholder="e.g. Miami, Roundtrip">
+        </div>
+        <div class="admin-grid-3">
+          <div class="admin-field">
+            <label for="sailDates">Sail Dates</label>
+            <input type="text" id="sailDates" name="sailDates" placeholder="e.g. Sep 19 – Sep 26, 2026">
+          </div>
+          <div class="admin-field">
+            <label for="nights">Nights</label>
+            <input type="number" id="nights" name="nights" min="1" placeholder="e.g. 7">
+          </div>
+          <div class="admin-field">
+            <label for="daysAtSea">Days at Sea</label>
+            <input type="number" id="daysAtSea" name="daysAtSea" min="0" placeholder="e.g. 2">
+          </div>
+        </div>
+        <div class="admin-field">
+          <label for="minAge">Minimum Age</label>
+          <select id="minAge" name="minAge">
+            <option value="">Select</option>
+            <option>None</option>
+            <option>6 months old</option>
+            <option>1 year old</option>
+            <option>2 years old</option>
+            <option>3 years old</option>
+          </select>
+        </div>
+      </form>
+    </div>
+
+    <div class="admin-modal-foot">
+      <div class="foot-note">Prototype — Save updates this list only, nothing is stored permanently.</div>
+      <div class="foot-actions">
+        <button type="button" class="btn btn-outline" id="cancelCruiseBtn">Cancel</button>
+        <button type="button" class="btn btn-primary" id="saveCruiseBtn">Save Cruise</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---------- SAMPLE DATA ----------
+const knownShips = ['icon of the seas', 'sapphire princess', 'wonder of the seas', 'disney wish', 'norwegian prima'];
+
+let cruises = [
+  {
+    id: 'RC-19SEP2026-MIA-MIA-01',
+    line: 'Royal Caribbean',
+    ship: 'Icon of the Seas',
+    stops: [
+      {date:'2026-09-19', port:'Miami, Florida', country:'USA', arrive:'', depart:'16:00'},
+      {date:'2026-09-20', port:'', country:'', arrive:'', depart:''},
+      {date:'2026-09-21', port:'Philipsburg, St. Maarten', country:'St. Maarten', arrive:'08:00', depart:'17:00'},
+      {date:'2026-09-22', port:'', country:'', arrive:'', depart:''},
+      {date:'2026-09-23', port:'Charlotte Amalie, St. Thomas', country:'U.S. Virgin Islands', arrive:'08:00', depart:'17:00'},
+      {date:'2026-09-24', port:'', country:'', arrive:'', depart:''},
+      {date:'2026-09-25', port:'Perfect Day CocoCay', country:'Bahamas', arrive:'07:00', depart:'17:00'},
+      {date:'2026-09-26', port:'Miami, Florida', country:'USA', arrive:'06:30', depart:''},
+    ],
+    destination: 'Miami, Roundtrip',
+    sailDates: 'Sep 19 – Sep 26, 2026',
+    nights: 7,
+    daysAtSea: 3,
+    minAge: '6 months old',
+  },
+];
+
+let editingCruiseId = null; // null = adding new
+let stopsDraft = [];
+
+// ---------- TABLE RENDER ----------
+function renderCruiseTable(){
+  const body = document.getElementById('cruiseTableBody');
+  const emptyState = document.getElementById('emptyState');
+  const table = document.getElementById('cruiseTable');
+
+  if(cruises.length === 0){
+    body.innerHTML = '';
+    table.style.display = 'none';
+    emptyState.style.display = 'block';
+    return;
+  }
+  table.style.display = '';
+  emptyState.style.display = 'none';
+
+  body.innerHTML = cruises.map(c => {
+    return `
+      <tr>
+        <td class="cruise-id-cell"><span class="dep-dot"></span>${formatDateShort(c.stops && c.stops[0] ? c.stops[0].date : '')}</td>
+        <td class="dest-cell">${c.destination || '—'}</td>
+        <td class="ship-cell">${c.ship || '—'}</td>
+        <td>${c.line ? `<span class="line-badge">${c.line}</span>` : '—'}</td>
+        <td>
+          <div class="row-actions">
+            <button type="button" class="btn btn-outline btn-sm" data-edit="${c.id}">Edit</button>
+            <button type="button" class="btn-text-danger" data-delete="${c.id}">Delete</button>
+          </div>
+        </td>
+      </tr>`;
+  }).join('');
+
+  body.querySelectorAll('[data-edit]').forEach(btn => {
+    btn.addEventListener('click', () => openCruiseModal('edit', btn.dataset.edit));
+  });
+  body.querySelectorAll('[data-delete]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if(confirm('Delete this cruise? This removes it from the list.')){
+        cruises = cruises.filter(c => c.id !== btn.dataset.delete);
+        renderCruiseTable();
+      }
+    });
+  });
+}
+
+// ---------- ITINERARY EDIT TABLE ----------
+function addDaysToDate(dateStr, days){
+  if(!dateStr) return '';
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  dt.setUTCDate(dt.getUTCDate() + days);
+  const yy = dt.getUTCFullYear();
+  const mm = String(dt.getUTCMonth() + 1).padStart(2, '0');
+  const dd = String(dt.getUTCDate()).padStart(2, '0');
+  return `${yy}-${mm}-${dd}`;
+}
+
+function renderStopsDraft(){
+  const body = document.getElementById('itinStopsBody');
+  body.innerHTML = stopsDraft.map((s, i) => `
+    <tr class="${!s.port ? 'sea-row' : ''}">
+      <td><input type="date" data-field="date" data-idx="${i}" value="${s.date || ''}"></td>
+      <td><input type="text" data-field="port" data-idx="${i}" value="${s.port || ''}" placeholder="Port (blank = sea day)"></td>
+      <td><input type="text" data-field="country" data-idx="${i}" value="${s.country || ''}" placeholder="Country"></td>
+      <td><input type="time" data-field="arrive" data-idx="${i}" value="${s.arrive || ''}"></td>
+      <td><input type="time" data-field="depart" data-idx="${i}" value="${s.depart || ''}"></td>
+      <td><button type="button" class="btn-text-danger" data-remove-stop="${i}" ${stopsDraft.length <= 1 ? 'disabled' : ''}>Remove</button></td>
+    </tr>`).join('');
+
+  body.querySelectorAll('input').forEach(el => {
+    el.addEventListener('input', (e) => {
+      const idx = parseInt(e.target.dataset.idx, 10);
+      stopsDraft[idx][e.target.dataset.field] = e.target.value;
+      if(e.target.dataset.field === 'port'){
+        e.target.closest('tr').classList.toggle('sea-row', !e.target.value);
+      }
+    });
+  });
+  body.querySelectorAll('[data-remove-stop]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      stopsDraft.splice(parseInt(e.target.dataset.removeStop, 10), 1);
+      renderStopsDraft();
+    });
+  });
+}
+
+document.getElementById('addDayBtn').addEventListener('click', () => {
+  const last = stopsDraft[stopsDraft.length - 1];
+  const nextDate = last ? addDaysToDate(last.date, 1) : '';
+  stopsDraft.push({date: nextDate, port:'', country:'', arrive:'', depart:''});
+  renderStopsDraft();
+});
+
+// ---------- SHIP HINT ----------
+document.getElementById('shipName').addEventListener('input', (e) => {
+  const hint = document.getElementById('shipHint');
+  const val = e.target.value.trim().toLowerCase();
+  if(!val){ hint.textContent = ''; hint.className = 'admin-hint'; return; }
+  if(knownShips.includes(val)){
+    hint.textContent = 'existing record';
+    hint.className = 'admin-hint success';
+  } else {
+    hint.textContent = 'new ship — will be added as a new record';
+    hint.className = 'admin-hint';
+  }
+});
+
+// ---------- PARSE CRUISE (mock) ----------
+document.getElementById('parseCruiseBtn').addEventListener('click', () => {
+  const url = document.getElementById('cruiseUrl').value.trim();
+  const hint = document.getElementById('parseHint');
+  if(!url){
+    hint.textContent = 'Enter a cruise URL above, or fill in the fields manually below.';
+    hint.className = 'admin-hint error';
+    return;
+  }
+  hint.textContent = 'Parsing…';
+  hint.className = 'admin-hint';
+  setTimeout(() => {
+    // Prototype: simulates a successful parse using the sample itinerary.
+    document.getElementById('cruiseLine').value = 'Royal Caribbean';
+    document.getElementById('shipName').value = 'Icon of the Seas';
+    document.getElementById('shipName').dispatchEvent(new Event('input'));
+    document.getElementById('cruiseId').value = 'RC-19SEP2026-MIA-MIA-01';
+    stopsDraft = JSON.parse(JSON.stringify(cruises[0].stops));
+    renderStopsDraft();
+    hint.textContent = 'Parsed successfully.';
+    hint.className = 'admin-hint success';
+  }, 500);
+});
+
+// ---------- ENRICH CRUISE (mock) ----------
+document.getElementById('enrichBtn').addEventListener('click', () => {
+  const enrichHint = document.getElementById('enrichHint');
+  const validStops = stopsDraft.filter(s => s.date);
+  if(validStops.length < 2){
+    enrichHint.textContent = 'Add at least a start and end date before enriching.';
+    enrichHint.className = 'admin-hint error';
+    return;
+  }
+  const first = validStops[0];
+  const last = validStops[validStops.length - 1];
+  const nights = Math.round((new Date(last.date) - new Date(first.date)) / 86400000);
+  const seaDays = stopsDraft.filter(s => s.date && !s.port).length;
+  const countries = [...new Set(stopsDraft.map(s => s.country).filter(Boolean))];
+
+  document.getElementById('destination').value = first.port ? `${first.port}, Roundtrip` : 'Roundtrip';
+  document.getElementById('sailDates').value = `${formatDateShort(first.date)} – ${formatDateShort(last.date)}`;
+  document.getElementById('nights').value = nights;
+  document.getElementById('daysAtSea').value = seaDays;
+  if(!document.getElementById('minAge').value){
+    document.getElementById('minAge').value = '6 months old';
+  }
+
+  enrichHint.textContent = `Filled in trip facts from ${countries.length} countr${countries.length === 1 ? 'y' : 'ies'} across ${stopsDraft.length} days. Review before saving.`;
+  enrichHint.className = 'admin-hint success';
+});
+
+function formatDateShort(dateStr){
+  if(!dateStr) return '';
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  return dt.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric', timeZone:'UTC'});
+}
+
+// ---------- MODAL OPEN / CLOSE ----------
+const cruiseModalOverlay = document.getElementById('cruiseModalOverlay');
+const cruiseForm = document.getElementById('cruiseForm');
+
+function openCruiseModal(mode, cruiseId){
+  editingCruiseId = mode === 'edit' ? cruiseId : null;
+  document.getElementById('cruiseModalTitle').textContent = mode === 'edit' ? 'Edit Cruise' : 'Add Cruise';
+  document.getElementById('parseHint').textContent = '';
+  document.getElementById('enrichHint').textContent = '';
+  cruiseForm.reset();
+
+  if(mode === 'edit'){
+    const c = cruises.find(x => x.id === cruiseId);
+    document.getElementById('cruiseLine').value = c.line || '';
+    document.getElementById('shipName').value = c.ship || '';
+    document.getElementById('shipName').dispatchEvent(new Event('input'));
+    document.getElementById('cruiseId').value = c.id || '';
+    document.getElementById('destination').value = c.destination || '';
+    document.getElementById('sailDates').value = c.sailDates || '';
+    document.getElementById('nights').value = c.nights || '';
+    document.getElementById('daysAtSea').value = c.daysAtSea || '';
+    document.getElementById('minAge').value = c.minAge || '';
+    stopsDraft = JSON.parse(JSON.stringify(c.stops));
+  } else {
+    stopsDraft = [{date:'', port:'', country:'', arrive:'', depart:''}];
+  }
+  renderStopsDraft();
+
+  cruiseModalOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCruiseModal(){
+  cruiseModalOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('addCruiseBtn').addEventListener('click', () => openCruiseModal('add'));
+document.getElementById('emptyAddBtn').addEventListener('click', () => openCruiseModal('add'));
+document.getElementById('cruiseModalCloseBtn').addEventListener('click', closeCruiseModal);
+document.getElementById('cancelCruiseBtn').addEventListener('click', closeCruiseModal);
+cruiseModalOverlay.addEventListener('click', (e) => {
+  if(e.target === cruiseModalOverlay) closeCruiseModal();
+});
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape' && cruiseModalOverlay.classList.contains('open')) closeCruiseModal();
+});
+
+// ---------- SAVE CRUISE ----------
+document.getElementById('saveCruiseBtn').addEventListener('click', () => {
+  const line = document.getElementById('cruiseLine').value;
+  const ship = document.getElementById('shipName').value.trim();
+  const id = document.getElementById('cruiseId').value.trim();
+
+  if(!line || !ship || !id){
+    alert('Cruise Line, Ship, and Cruise ID are required.');
+    return;
+  }
+
+  const record = {
+    id,
+    line,
+    ship,
+    stops: stopsDraft.filter(s => s.date || s.port),
+    destination: document.getElementById('destination').value.trim(),
+    sailDates: document.getElementById('sailDates').value.trim(),
+    nights: document.getElementById('nights').value,
+    daysAtSea: document.getElementById('daysAtSea').value,
+    minAge: document.getElementById('minAge').value,
+  };
+
+  if(editingCruiseId){
+    const idx = cruises.findIndex(c => c.id === editingCruiseId);
+    cruises[idx] = record;
+  } else {
+    cruises.push(record);
+  }
+
+  renderCruiseTable();
+  closeCruiseModal();
+});
+
+renderCruiseTable();
+</script>
+</body>
+</html>
