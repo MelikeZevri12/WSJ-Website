@@ -1678,10 +1678,10 @@ function renderPolicy(){
     ['Booking after the final payment date', 'The full balance is due as soon as we share your quote. The deposit alone doesn’t secure your spots; they’re confirmed once the full payment is received.'],
     ['Travel insurance', 'Required for all participants. Travel insurance may cover certain unexpected circumstances that prevent you from attending, subject to the terms, conditions, exclusions and limits of the policy you buy. Participants are responsible for getting and keeping their own coverage; if you choose not to, Every Avenue Travel won’t be responsible for losses if you can’t attend. Every Avenue Travel LLC is not the insurer and does not provide insurance advice. Two options many long-term travelers use: <a href="https://jo.my/travelinsurance">SafetyWing</a> and <a href="https://withfaye.pxf.io/aNOqzj">Faye</a>. Every Avenue Travel LLC may receive a referral fee if you buy through these links.'],
   ].map(([k, v]) => `<p><strong>${k}:</strong> ${v}</p>`).join('') +
-    '<p><a href="https://worldschoolingjourneys.com/cancellation-refund-policy/">View Our Full Cancellations & Refunds Policy</a></p>';
+    '<p><a href="/cancellation-policy.html">View Our Full Cancellations & Refunds Policy</a></p>';
   document.querySelectorAll('.faq-policy').forEach(el => el.innerHTML = document.getElementById('payPolicy').innerHTML);
   document.getElementById('legalBody').innerHTML =
-    '<p><strong>Terms and Conditions:</strong> The full terms that apply when you book this trip with us. <a href="https://worldschoolingjourneys.com/terms-and-conditions/">View Our Terms and Conditions</a></p>' +
+    '<p><strong>Terms and Conditions:</strong> The full terms that apply when you book this trip with us. <a href="/terms-and-conditions.html">View Our Terms and Conditions</a></p>' +
     '<p>Every Avenue Travel, LLC is registered with the State of Florida as a Seller of Travel. Registration No. ST45213. IATA No. 10620400.</p>';
 }
 
