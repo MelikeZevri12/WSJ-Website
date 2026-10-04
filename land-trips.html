@@ -311,6 +311,7 @@
 
   /* Phones: the filter bar shrinks to one sticky row (Filters button +
      result count); the controls open as a stacked panel under it. */
+  .year-pills{display:flex;gap:6px;flex-wrap:wrap;}
   .filter-mobile-toggle,.filter-mobile-done{display:none;}
   @media (max-width:760px){
     .filter-bar{padding:9px 0;}
@@ -465,6 +466,10 @@
         </div>
       </div>
     </div>
+    <div class="filter-group filter-years" id="yearFilter">
+      <div class="filter-label">Year</div>
+      <div class="year-pills" id="yearPills"><!-- built by init() from the years with departures --></div>
+    </div>
     <div class="filter-group filter-range">
       <div class="filter-label">Duration</div>
       <div class="dual-range">
@@ -552,24 +557,56 @@
     largeFamiliesOnly: false,
     priceMin: 0, priceMax: 0, priceFull: true, // per-person starting price range; priceFull = slider untouched
     sort: "date",
-    regions: [] // empty = no filter, every region shows
+    regions: [], // empty = no filter, every region shows
+    year: null // null = any year
   };
 
 
-  // The land trips (static for now - no backend). Dates and prices are the
-  // next departure as shown on each trip's own page.
+  // The land trips (static for now - no backend). For each year with an
+  // available departure: the dates, price and tag the card shows when that
+  // year is picked (the earliest upcoming year shows by default).
+  // param: how the trip page takes a preselected year in its link.
   const LAND_TRIPS = [
-    { href: "/land-trips/morocco.html", title: "12-day Worldschooling Morocco Family Journey", dates: "Nov 1–12, 2026", sortDate: "2026-11-01", nights: 11, departures: 1, regions: ["Africa"], priceText: "$2,200 <small>/ person</small>", photoLabel: "Morocco", heroImageUrl: "/images/land-trips/morocco.webp", soldOut: false, startingPrice: null },
-    { href: "/land-trips/austria-winter.html", title: "14-day Worldschooling Austrian Skiing & Christmas Markets Retreat", dates: "Dec 4–18, 2026", sortDate: "2026-12-04", nights: 14, departures: 2, regions: ["Europe"], priceText: "€2,700 <small>/ family</small>", photoLabel: "Austrian Alps in winter", heroImageUrl: "/images/land-trips/austria-winter.webp", soldOut: false, startingPrice: null, tag: "Few spots left" },
-    { href: "/land-trips/egypt-jordan.html", title: "15-day Worldschooling Egypt & Jordan Adventure", dates: "Jan 25 – Feb 8, 2027", sortDate: "2027-01-25", nights: 14, departures: 1, regions: ["Africa", "Middle East"], priceText: "$2,999 <small>/ person</small>", photoLabel: "Egypt & Jordan", heroImageUrl: "/images/land-trips/egypt-jordan.webp", soldOut: false, startingPrice: null },
-    { href: "/land-trips/austria-summer.html", title: "14-day Worldschooling Austrian Mountain Summer Retreat", dates: "May 30 – Jul 11, 2027 · 3 sessions", sortDate: "2027-05-30", nights: 14, departures: 3, regions: ["Europe"], priceText: "€3,704 <small>/ family</small>", photoLabel: "Austrian Alps in summer", heroImageUrl: "/images/land-trips/austria-summer.webp", soldOut: false, startingPrice: null },
-    { href: "/land-trips/austria-fall.html", title: "14-day Worldschooling Austrian Fall Mountain Retreat", dates: "Sep 5–19, 2027", sortDate: "2027-09-05", nights: 14, departures: 1, regions: ["Europe"], priceText: "€3,480 <small>/ family</small>", photoLabel: "Austrian Alps in fall", heroImageUrl: "/images/land-trips/austria-fall.webp", soldOut: false, startingPrice: null },
-    { href: "/land-trips/dude-ranch.html", title: "7-day Worldschooling Horseback Riding Dude Ranch Experience", dates: "Sep 5–11, 2027", sortDate: "2027-09-05", nights: 6, departures: 2, regions: ["North America"], priceText: "$3,200 <small>/ person</small>", photoLabel: "VeeBar Guest Ranch", heroImageUrl: "/images/land-trips/dude-ranch.webp", soldOut: false, startingPrice: null },
-    { href: "/land-trips/new-zealand.html", title: "19-day Worldschooling New Zealand Roadtrip", dates: "Oct 16 – Nov 3, 2026", sortDate: "2026-10-16", nights: 18, departures: 2, regions: ["Oceania"], priceText: "$4,717 <small>/ person</small>", photoLabel: "New Zealand", heroImageUrl: "/images/land-trips/new-zealand.webp", soldOut: false, startingPrice: null },
-    { href: "/land-trips/galapagos.html", title: "8-day Worldschooling Galápagos Island Hopping Tour", dates: "Aug 8–15, 2027", sortDate: "2027-08-08", nights: 7, departures: 1, regions: ["South America"], priceText: "$3,735 <small>/ person</small>", photoLabel: "Galápagos", heroImageUrl: "/images/land-trips/galapagos.webp", soldOut: false, startingPrice: null },
-    { href: "/land-trips/xcaret.html", title: "8-day Worldschooling Xcaret Family Adventure", dates: "November 2027", sortDate: "2027-11-01", nights: 7, departures: 1, regions: ["North America"], priceText: null, photoLabel: "Xcaret, Mexico", tag: "Waitlist open", heroImageUrl: "/images/land-trips/xcaret.webp", soldOut: false, startingPrice: null },
-    { href: "/land-trips/austria-wellness.html", title: "21-day Worldschooling Austria Health & Wellness Retreat", dates: "May 4–25, 2027", sortDate: "2027-05-04", nights: 21, departures: 1, regions: ["Europe"], priceText: "€3,604 <small>/ family</small>", photoLabel: "Bad Gastein wellness", heroImageUrl: "/images/land-trips/austria-wellness.webp", soldOut: false, startingPrice: null },
+    { slug: "new-zealand", param: "departure", title: "19-day Worldschooling New Zealand Roadtrip", nights: 18, regions: ["Oceania"], photo: "/images/land-trips/new-zealand.webp", photoLabel: "New Zealand", years: {
+      2026: { dates: "Oct 16 – Nov 3, 2026", sortDate: "2026-10-16", price: "$4,717 <small>/ person</small>", departures: 1 },
+      2027: { dates: "Oct 19 – Nov 6, 2027", sortDate: "2027-10-19", price: "$4,997 <small>/ person</small>", departures: 1 } } },
+    { slug: "morocco", param: "departure", title: "12-day Worldschooling Morocco Family Journey", nights: 11, regions: ["Africa"], photo: "/images/land-trips/morocco.webp", photoLabel: "Morocco", years: {
+      2026: { dates: "Nov 1–12, 2026", sortDate: "2026-11-01", price: "$2,200 <small>/ person</small>", tag: "Few spots left", departures: 1 },
+      2027: { dates: "Mar 19–30 & Nov 1–12, 2027", sortDate: "2027-03-19", price: "$2,300 <small>/ person</small>", departures: 2 } } },
+    { slug: "austria-winter", param: "year", title: "14-day Worldschooling Austrian Skiing & Christmas Markets Retreat", nights: 14, regions: ["Europe"], photo: "/images/land-trips/austria-winter.webp", photoLabel: "Austrian Alps in winter", years: {
+      2026: { dates: "Dec 4–18, 2026", sortDate: "2026-12-04", price: "€2,700 <small>/ family</small>", tag: "Few spots left", departures: 1 },
+      2027: { dates: "Dec 5–19, 2027", sortDate: "2027-12-05", price: "€3,010 <small>/ family</small>", departures: 1 } } },
+    { slug: "egypt-jordan", param: "departure", title: "15-day Worldschooling Egypt & Jordan Adventure", nights: 14, regions: ["Africa", "Middle East"], photo: "/images/land-trips/egypt-jordan.webp", photoLabel: "Egypt & Jordan", years: {
+      2027: { dates: "Jan 25 – Feb 8, 2027", sortDate: "2027-01-25", price: "$2,999 <small>/ person</small>", departures: 1 } } },
+    { slug: "austria-wellness", param: "year", title: "21-day Worldschooling Austria Health & Wellness Retreat", nights: 21, regions: ["Europe"], photo: "/images/land-trips/austria-wellness.webp", photoLabel: "Bad Gastein wellness", years: {
+      2027: { dates: "May 4–25, 2027", sortDate: "2027-05-04", price: "€3,604 <small>/ family</small>", departures: 1 } } },
+    { slug: "austria-summer", param: "year", title: "14-day Worldschooling Austrian Mountain Summer Retreat", nights: 14, regions: ["Europe"], photo: "/images/land-trips/austria-summer.webp", photoLabel: "Austrian Alps in summer", years: {
+      2027: { dates: "May 30 – Jul 11, 2027 · 3 sessions", sortDate: "2027-05-30", price: "€3,704 <small>/ family</small>", departures: 3 } } },
+    { slug: "galapagos", param: "departure", title: "8-day Worldschooling Galápagos Island Hopping Tour", nights: 7, regions: ["South America"], photo: "/images/land-trips/galapagos.webp", photoLabel: "Galápagos", years: {
+      2027: { dates: "Aug 8–15, 2027", sortDate: "2027-08-08", price: "$3,735 <small>/ person</small>", departures: 1 } } },
+    { slug: "austria-fall", param: "year", title: "14-day Worldschooling Austrian Fall Mountain Retreat", nights: 14, regions: ["Europe"], photo: "/images/land-trips/austria-fall.webp", photoLabel: "Austrian Alps in fall", years: {
+      2027: { dates: "Sep 5–19, 2027", sortDate: "2027-09-05", price: "€3,480 <small>/ family</small>", departures: 1 } } },
+    { slug: "dude-ranch", param: "year", title: "7-day Worldschooling Horseback Riding Dude Ranch Experience", nights: 6, regions: ["North America"], photo: "/images/land-trips/dude-ranch.webp", photoLabel: "VeeBar Guest Ranch", years: {
+      2027: { dates: "Sep 5–11, 2027", sortDate: "2027-09-05", price: "$3,200 <small>/ person</small>", departures: 1 },
+      2028: { dates: "September 2028", sortDate: "2028-09-03", price: null, tag: "Waitlist open", departures: 1 } } },
+    { slug: "xcaret", param: "departure", title: "8-day Worldschooling Xcaret Family Adventure", nights: 7, regions: ["North America"], photo: "/images/land-trips/xcaret.webp", photoLabel: "Xcaret, Mexico", years: {
+      2027: { dates: "November 2027", sortDate: "2027-11-01", price: null, tag: "Waitlist open", departures: 1 } } },
   ];
+  // A trip's card for one year (or its earliest upcoming year when year is null).
+  // Departures that have already started drop off on their own.
+  function tripView(t, year){
+    const upcoming = Object.keys(t.years).filter(k => t.years[k].sortDate >= todayStr).sort();
+    const key = year ? String(year) : upcoming[0];
+    if(!key || !upcoming.includes(key)) return null;
+    const v = t.years[key];
+    return {
+      href: `/land-trips/${t.slug}.html` + (year ? `?${t.param}=${year}` : ""),
+      title: t.title, dates: v.dates, sortDate: v.sortDate, nights: t.nights, regions: t.regions,
+      departures: year ? v.departures : upcoming.reduce((n, k) => n + t.years[k].departures, 0),
+      priceText: v.price, tag: v.tag || null, heroImageUrl: t.photo, photoLabel: t.photoLabel,
+      soldOut: false, startingPrice: null, largeFamilies: false,
+    };
+  }
   let cruises = []; // card-shaped models, built from real Cruise records after fetch (see init())
 
   function escapeHtml(value){
@@ -711,7 +748,8 @@
   }
 
   function render(){
-    let list = cruises.filter(c => {
+    // a picked year swaps in that year's cards (dates, price, link with the year)
+    let list = (state.year ? LAND_TRIPS.map(t => tripView(t, state.year)).filter(Boolean) : cruises).filter(c => {
       if(c.nights < state.durationMin || c.nights > state.durationMax) return false;
       if(state.hideSoldOut && c.soldOut) return false;
       if(state.largeFamiliesOnly && !c.largeFamilies) return false;
@@ -833,6 +871,10 @@
     render();
   });
 
+  function updateYearPills(){
+    document.querySelectorAll("#yearPills [data-year]").forEach(b => b.classList.toggle("active", b.dataset.year === state.year));
+  }
+
   /* ---- PHONE FILTER PANEL: one "Filters" button opens the controls; it shows
      how many filters are on, and "Show N cruises" closes the panel ---- */
   const filterMobileToggle = document.getElementById("filterMobileToggle");
@@ -848,6 +890,7 @@
       !state.priceFull,
       state.hideSoldOut,
       state.largeFamiliesOnly,
+      state.year != null,
     ].filter(Boolean).length;
     const badge = document.getElementById("filterActiveCount");
     badge.textContent = active;
@@ -873,15 +916,18 @@
     priceMinEl.value = priceMinEl.min;
     priceMaxEl.value = priceMaxEl.max;
     updatePrice();
+    if (document.getElementById("priceLabel").closest(".filter-group").style.display === "none") state.priceFull = true; // hidden slider never filters
     state.largeFamiliesOnly = false;
     document.getElementById("largeFamiliesOnly").checked = false;
+    state.year = null;
+    updateYearPills();
     state.regions = [];
     updateRegionDropdownUI();
     render();
   });
 
   async function init(){
-    cruises = LAND_TRIPS.filter(t => t.sortDate >= todayStr);
+    cruises = LAND_TRIPS.map(t => tripView(t, null)).filter(Boolean);
 
     factDepartures.textContent = String(cruises.reduce((n, c) => n + c.departures, 0));
     const earliest = cruises.map(c => c.sortDate).sort()[0];
@@ -904,6 +950,17 @@
     } else {
       document.querySelector(".filter-regions").style.display = "none";
     }
+
+    // Year pills: only years that have an upcoming departure on some trip
+    const yearsAvailable = [...new Set(LAND_TRIPS.flatMap(t => Object.keys(t.years).filter(k => t.years[k].sortDate >= todayStr)))].sort();
+    const yearPills = document.getElementById("yearPills");
+    yearPills.innerHTML = yearsAvailable.map(y => `<button type="button" class="pill-btn" data-year="${y}">${y}</button>`).join("");
+    yearPills.querySelectorAll("[data-year]").forEach(btn => btn.addEventListener("click", () => {
+      state.year = state.year === btn.dataset.year ? null : btn.dataset.year; // click again for any year
+      updateYearPills();
+      render();
+    }));
+    if (yearsAvailable.length < 2) document.getElementById("yearFilter").style.display = "none";
 
     const nightsValues = cruises.map(c => c.nights);
     const minNights = Math.min(...nightsValues);

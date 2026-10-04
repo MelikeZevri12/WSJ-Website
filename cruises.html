@@ -860,6 +860,7 @@
     priceMinEl.value = priceMinEl.min;
     priceMaxEl.value = priceMaxEl.max;
     updatePrice();
+    if (document.getElementById("priceLabel").closest(".filter-group").style.display === "none") state.priceFull = true; // hidden slider never filters
     state.largeFamiliesOnly = false;
     document.getElementById("largeFamiliesOnly").checked = false;
     state.regions = [];
