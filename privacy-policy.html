@@ -1,0 +1,2057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — Worldschooling Journeys</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#A5BD8E;
+    --green-dark:#708F53;
+    --green-hover:#2D3A22;
+    --dark:#152230;
+    --dark-soft:#1e3040;
+    --blue:#2f7f8a;
+    --blue-tint:color-mix(in srgb, var(--blue) 22%, white);
+    --blue-line:color-mix(in srgb, var(--blue) 48%, white);
+    --green-tint:color-mix(in srgb, var(--green) 14%, white);
+    --sky-tint:color-mix(in srgb, var(--blue) 16%, var(--white));
+    --sky-line:color-mix(in srgb, var(--blue) 42%, var(--white));
+    --green-line:color-mix(in srgb, var(--green) 42%, white);
+    --green-soft:color-mix(in srgb, var(--green) 55%, white);
+    --white:#fffdf7;
+    --paper:#f4f1e9;
+    --line:rgba(21,34,48,0.16);
+    --line-on-dark:rgba(255,255,255,0.2);
+    --muted:#6d6552;
+    --sunset-1:#c14a2f;
+    --sunset-2:#e0893c;
+    --sunset-tint:color-mix(in srgb, var(--sunset-1) 12%, var(--white));
+    --gold:#d9a441;
+    --star:rgba(255,255,255,0.85);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:'Titillium Web', sans-serif;color:var(--dark);background:var(--paper);line-height:1.6;}
+  a{color:inherit;}
+  button{font-family:inherit;}
+  h1,h2,h3,h4{font-family:'Libre Baskerville', serif;font-weight:700;margin:0 0 .4em 0;color:var(--dark);}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+  .brand-stripe{height:5px;width:100%;background:linear-gradient(90deg, var(--blue) 0%, var(--sunset-2) 55%, var(--sunset-1) 100%);}
+
+  /* GLOBAL NAV */
+  .global-nav{background:var(--dark-soft);border-bottom:1px solid var(--line-on-dark);}
+  .global-nav .gn-wrap{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 24px;gap:16px;flex-wrap:wrap;}
+  .gn-logo{display:flex;align-items:baseline;gap:8px;text-decoration:none;}
+  .gn-logo .gn-script{font-family:'Caveat',cursive;font-weight:700;font-size:26px;color:var(--gold);line-height:1;}
+  .gn-logo .gn-sans{font-family:'Titillium Web',sans-serif;font-weight:600;font-size:14px;color:var(--green);letter-spacing:.02em;}
+  .gn-links{display:flex;gap:26px;}
+  .gn-link{padding:4px 0;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:14px;text-decoration:none;color:#c7ccd1;transition:color .15s ease;}
+  .gn-link:hover{color:var(--white);}
+  .gn-link.active{color:var(--green);}
+
+  .concept-note{background:var(--dark);border-bottom:1px solid var(--gold);color:var(--gold);font-size:13px;text-align:center;padding:8px 16px;font-family:'Titillium Web',sans-serif;}
+
+  .cruise-card, .story-media, .spotlight-card{outline:1.5px dashed rgba(21,34,48,0.3);outline-offset:-6px;}
+
+  /* HERO */
+.hero{
+    position:relative;
+    background-color:var(--dark);
+    background-image:
+      linear-gradient(180deg, rgba(21,34,48,0.6) 0%, rgba(13,22,32,0.84) 100%),
+      none;
+    background-position:center 60%;
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-blend-mode:multiply, normal;
+    color:var(--white);
+    padding:56px 0 40px;
+  }
+  .hero .wrap{position:relative;}
+  .eyebrow{font-family:'Titillium Web',sans-serif;font-weight:800;color:var(--green-dark);text-transform:uppercase;letter-spacing:.13em;font-size:12px;margin-bottom:10px;}
+  .hero .eyebrow{color:var(--gold);}
+  .hero h1{color:var(--white);font-size:clamp(30px,4.2vw,46px);line-height:1.15;max-width:720px;}
+  .hero p.lede{max-width:640px;color:#d9dbe0;font-size:16px;margin-top:14px;}
+  .hero .hero-cta{margin-top:26px;display:flex;gap:14px;flex-wrap:wrap;}
+
+  .btn{display:inline-block;padding:13px 26px;border-radius:6px;font-weight:700;font-size:14.5px;text-decoration:none;letter-spacing:.02em;cursor:pointer;border:2px solid transparent;transition:transform .12s ease, opacity .12s ease;}
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{background:var(--green-dark);color:var(--white);}
+  .btn-primary:hover{background:var(--green-hover);}
+  .btn-outline{background:var(--white);border-color:var(--green);color:var(--green-dark);}
+  .btn-outline:hover{background:var(--green-tint);border-color:var(--green-dark);}
+  .btn-outline-hero{background:transparent;border-color:rgba(255,255,255,.5);color:var(--white);}
+  .btn-outline-hero:hover{border-color:var(--white);}
+  .btn-sm{padding:8px 16px;font-size:12.5px;}
+  .proof-more-btn{margin-left:6px;}
+
+  /* HERO "AS FEATURED IN" LINE — small credibility line inside the hero itself */
+  .hero-featured{margin-top:28px;font-size:12.5px;color:#aeb6bd;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .hero-featured .hf-label{text-transform:uppercase;letter-spacing:.1em;font-weight:800;font-size:10.5px;color:#8b95a0;}
+  .hero-featured .hf-names{font-family:'Libre Baskerville',serif;font-style:italic;font-size:14px;color:var(--green-soft);}
+
+  /* MOUNTAIN DIVIDER — jagged silhouette that turns the hard edge under the hero
+     into a shaped transition, same technique used on the trip detail page */
+  .mountain-divider{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:34px;display:block;line-height:0;}
+  .mountain-divider path{fill:var(--dark);}
+
+  section{padding:68px 0;}
+  section.alt{background:var(--white);}
+  .section-head{max-width:680px;margin-bottom:32px;}
+  .section-head h2{font-size:clamp(24px,3vw,32px);}
+  .section-head p{color:var(--muted);font-size:15.5px;}
+  .section-head.center{max-width:680px;margin-left:auto;margin-right:auto;text-align:center;}
+
+  /* STORY */
+  .story-grid{display:grid;grid-template-columns:0.85fr 1.15fr;gap:48px;align-items:stretch;}
+  .story-media{width:100%;height:100%;min-height:340px;border-radius:10px;overflow:hidden;background:var(--sky-tint);border:1px solid var(--sky-line);display:flex;align-items:center;justify-content:center;}
+  .story-media span{font-size:13px;color:var(--muted);font-weight:600;text-align:center;padding:0 24px;}
+  .story-media.has-photo{border:none;}
+  .story-media img{width:100%;height:100%;object-fit:cover;object-position:center 78%;display:block;}
+  .story-heading{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+  .story-icon{width:44px;height:44px;border-radius:50%;background:var(--green-tint);border:1px solid var(--green-line);color:var(--green-dark);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .story-icon svg{width:22px;height:22px;}
+  .story-heading h2{margin:0;font-size:clamp(22px,2.8vw,28px);}
+  .story-copy p{color:#3c4048;font-size:15.5px;margin:0 0 14px;}
+  .story-copy p:last-child{margin-bottom:0;}
+  .story-copy p.story-intro{font-style:italic;color:var(--green-dark);font-size:16.5px;}
+  .story-copy .story-accent{color:var(--green-dark);}
+
+  /* QUOTE BAND */
+  .quote-band{background:var(--dark);color:var(--white);text-align:center;padding:14px 0 36px;}
+  .quote-band .mark{color:var(--gold);font-size:15px;margin-bottom:10px;}
+  .quote-band blockquote{font-family:'Libre Baskerville',serif;font-style:italic;font-size:clamp(16px,1.8vw,19px);line-height:1.4;max-width:640px;margin:0 auto;color:var(--white);}
+  .quote-band .attribution{margin-top:10px;font-size:11px;color:var(--green-soft);text-transform:uppercase;letter-spacing:.1em;font-weight:700;}
+
+  /* FACEBOOK COMMUNITY BANNER — community photo collage as background,
+     dark gradient overlay on top so white text stays readable at any point
+     in the image. Capped at 200px tall, same footprint as the old strip. */
+  .fb-banner{
+    position:relative;text-align:center;padding:20px 0;max-height:200px;
+    display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--white);
+    background-image:
+      linear-gradient(180deg, rgba(13,22,32,0.72) 0%, rgba(13,22,32,0.82) 55%, rgba(13,22,32,0.92) 100%),
+      none;
+    background-size:cover;background-position:center;
+  }
+  .fb-banner-inner{max-width:620px;margin:0 auto;position:relative;z-index:1;}
+  .fb-icon{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.38);color:var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 6px;}
+  .fb-icon svg{width:15px;height:15px;}
+  .fb-banner .eyebrow{margin-bottom:4px;font-size:11px;color:var(--gold);}
+  .fb-banner h2{font-size:clamp(18px,2vw,22px);margin:0 0 12px;color:var(--white);text-shadow:0 2px 14px rgba(0,0,0,0.35);}
+
+  /* TRIP TYPE STRIP — Land Trips and Cruises are separate sections again,
+     told apart by background color (paper vs. sky-tint) rather than merged
+     into one. Both use the same explanation shape: eyebrow, heading, one
+     short intro line, a row of tags. Accent colors (teal for cruises,
+     terracotta for land trips) live only in the eyebrow text. The year
+     filter buttons sit on the right, in the same row as "See All". */
+  .trip-strip{padding:64px 0;}
+  .trip-strip.trip-strip-top{padding-bottom:24px;}
+  .trip-strip.trip-strip-bottom{padding-top:24px;}
+  .trip-strip.tone-sky{background:var(--paper);}
+  .trip-block-head{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;margin-bottom:40px;flex-wrap:wrap;}
+  .trip-block-copy{max-width:640px;}
+  .trip-block-copy h2{font-size:clamp(21px,2.4vw,26px);margin:0 0 10px;}
+  .trip-block-intro{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 14px;}
+  .trip-tags{display:flex;gap:10px;flex-wrap:wrap;}
+  .trip-tag{display:inline-flex;align-items:center;padding:6px 14px;border-radius:999px;border:1px solid var(--sky-line);background:var(--white);font-size:12.5px;font-weight:700;color:var(--dark);}
+  .trip-strip .eyebrow{margin-bottom:8px;}
+  .trip-block-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:flex-end;}
+  .trip-filter-row{display:flex;gap:8px;}
+  .trip-filter-btn{font-family:'Titillium Web',sans-serif;font-size:12px;font-weight:700;letter-spacing:.03em;padding:6px 16px;border-radius:999px;border:1.5px solid var(--sky-line);background:transparent;color:var(--dark);cursor:pointer;transition:background .15s,color .15s,border-color .15s;}
+  .trip-filter-btn:hover{border-color:var(--blue);}
+  .trip-filter-btn.active{background:var(--dark);color:var(--white);border-color:var(--dark);}
+  .trip-empty-note{font-size:14px;color:var(--muted);padding:10px 0 0;margin:0;}
+  .eyebrow.tone-terracotta{color:var(--sunset-1);}
+  .eyebrow.tone-teal{color:var(--blue);}
+
+  /* SPOTLIGHT STRIP — compact trip promo, repeats between sections instead of one big carousel.
+     Vertical cards, same photo-on-top / body-below shape as the cruises listing page's cruise-card.
+     Same white background as the Story section right after it, so the two read as one continuous
+     zone coming out of the dark hero/facts-bar instead of a cream-to-white seam. */
+  .spotlight-strip{padding:44px 0 42px;background:var(--white);}
+  .spotlight-strip + section.alt{padding-top:43px;}
+  .spotlight-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:10px;}
+  .spotlight-head .eyebrow{margin-bottom:2px;}
+  .spotlight-head h3{font-size:19px;margin:0;}
+  .spotlight-see-all{font-size:13px;font-weight:700;color:var(--green-dark);text-decoration:none;white-space:nowrap;}
+  .spotlight-see-all:hover{text-decoration:underline;}
+  .spotlight-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  .spotlight-card{
+    display:flex;flex-direction:column;background:var(--white);border-radius:12px;
+    border:1px solid var(--line);border-top:3px solid transparent;overflow:hidden;
+    text-decoration:none;color:inherit;box-shadow:0 1px 3px rgba(21,34,48,0.05);
+    transition:border-top-color .15s ease, transform .12s ease, box-shadow .12s ease;
+  }
+  .spotlight-card:hover{border-top-color:var(--green-dark);transform:translateY(-3px);box-shadow:0 10px 24px rgba(21,34,48,0.12);}
+  .spotlight-photo{
+    width:100%;aspect-ratio:16/10;background:var(--sky-tint);border-bottom:1px solid var(--sky-line);
+    display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted);
+    text-align:center;padding:6px;
+  }
+  .spotlight-body{padding:14px 16px 16px;}
+  .spotlight-dates{font-size:10.5px;font-weight:700;color:var(--green-dark);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;}
+  .spotlight-title{font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;line-height:1.35;color:var(--dark);}
+
+  /* --- COMPARISON: OPTION 1 — photo-overlay editorial card --- */
+  .spotlight-card.style-photo{
+    position:relative;aspect-ratio:4/3;border-radius:14px;overflow:hidden;outline:none;
+    background:linear-gradient(135deg, var(--dark-soft) 0%, var(--blue) 55%, var(--green-dark) 100%);
+    text-decoration:none;color:var(--white);box-shadow:0 4px 14px rgba(21,34,48,0.15);
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .spotlight-card.style-photo:hover{transform:translateY(-4px);box-shadow:0 16px 32px rgba(21,34,48,0.28);}
+  .spotlight-card.style-photo .sp-caption{position:absolute;top:12px;left:14px;font-size:9px;color:rgba(255,255,255,0.55);letter-spacing:.03em;}
+  .spotlight-card.style-photo .sp-price{
+    position:absolute;top:12px;right:12px;background:rgba(21,34,48,0.55);backdrop-filter:blur(3px);
+    color:var(--white);font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:20px;
+    border:1px solid rgba(255,255,255,0.25);
+  }
+  .spotlight-card.style-photo .sp-price b{color:var(--gold);font-family:'Libre Baskerville',serif;font-size:13px;}
+  .spotlight-card.style-photo .sp-overlay{position:absolute;left:0;right:0;bottom:0;padding:20px 18px 18px;background:linear-gradient(180deg, rgba(21,34,48,0) 0%, rgba(13,22,32,0.88) 68%);}
+  .spotlight-card.style-photo .spotlight-dates{color:var(--gold);margin-bottom:7px;font-size:11.5px;}
+  .spotlight-card.style-photo .spotlight-title{color:var(--white);font-size:19px;line-height:1.25;}
+  .spotlight-card.style-photo.has-photo{
+    background-image: linear-gradient(180deg, rgba(21,34,48,0.05) 0%, rgba(13,22,32,0.15) 60%), none;
+    background-size:cover;background-position:center 42%;background-repeat:no-repeat;
+  }
+
+
+  /* MERGED COMMUNITY + FRIENDS + TESTIMONIALS */
+  /* COMMUNITY SECTION — same dark night-sky + numbered-triangle + proof-strip
+     language used on the individual cruise pages' "Community" tab */
+  section.night-sky{
+    background-image:
+      radial-gradient(1.6px 1.6px at 6% 18%, var(--star), transparent 60%),
+      radial-gradient(1.3px 1.3px at 14% 62%, var(--star), transparent 60%),
+      radial-gradient(1.8px 1.8px at 24% 30%, var(--star), transparent 60%),
+      radial-gradient(1.2px 1.2px at 33% 78%, var(--star), transparent 60%),
+      radial-gradient(1.6px 1.6px at 46% 12%, var(--star), transparent 60%),
+      radial-gradient(1.3px 1.3px at 58% 55%, var(--star), transparent 60%),
+      radial-gradient(1.8px 1.8px at 68% 22%, var(--star), transparent 60%),
+      radial-gradient(1.2px 1.2px at 77% 70%, var(--star), transparent 60%),
+      radial-gradient(1.6px 1.6px at 88% 16%, var(--star), transparent 60%),
+      radial-gradient(1.4px 1.4px at 94% 60%, var(--star), transparent 60%),
+      radial-gradient(1.3px 1.3px at 40% 90%, var(--star), transparent 60%),
+      radial-gradient(1.5px 1.5px at 82% 88%, var(--star), transparent 60%);
+    background-repeat:no-repeat;
+  }
+  .moon-eyebrow:before{content:"\263E  ";color:var(--gold);}
+  section.dark-section{background:var(--dark);color:var(--white);position:relative;overflow:hidden;}
+  section.dark-section.night-sky{padding-bottom:20px;}
+  section.dark-section h2, section.dark-section h3, section.dark-section h4{color:var(--white);}
+  section.dark-section .section-head p{color:#c7ccd1;}
+  section.dark-section .section-head .eyebrow{color:var(--gold);}
+
+  .community-props{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:4px 0 32px;}
+  .community-prop{display:flex;gap:13px;align-items:flex-start;}
+  .community-num-wrap{
+    flex:0 0 38px;width:38px;height:38px;background:var(--gold);
+    clip-path:polygon(50% 0%, 100% 100%, 0% 100%);
+    display:flex;align-items:flex-end;justify-content:center;padding-bottom:2px;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,0.35));
+  }
+  .community-num{
+    width:32px;height:32px;background:linear-gradient(160deg, var(--sunset-2), var(--sunset-1));color:var(--white);
+    display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px;
+    font-weight:700;font-family:'Libre Baskerville',serif;font-size:13px;
+    clip-path:polygon(50% 0%, 100% 100%, 0% 100%);
+  }
+  .community-prop h4{font-size:14.5px;margin:0 0 3px;color:var(--white);}
+  .community-prop p{font-size:13px;color:#c3c9d0;margin:0;line-height:1.45;}
+
+  .proof-strip-wrap{border-top:1px solid var(--line-on-dark);padding-top:24px;margin-top:8px;}
+  .proof-head-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .proof-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--star);margin-bottom:0;}
+  .proof-arrows{display:flex;gap:8px;}
+  .proof-arrow-btn{
+    width:32px;height:32px;border-radius:50%;border:1px solid var(--line-on-dark);background:transparent;
+    color:var(--white);font-size:17px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    transition:background .15s;
+  }
+  .proof-arrow-btn:hover{background:rgba(255,255,255,0.1);}
+  .proof-strip{
+    display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;
+    padding-bottom:4px;-ms-overflow-style:none;scrollbar-width:none;
+  }
+  .proof-strip::-webkit-scrollbar{display:none;}
+  .proof-chip{
+    flex:0 0 calc((100% - 28px) / 3);scroll-snap-align:start;display:flex;gap:11px;align-items:flex-start;
+    background:var(--white);border:1px solid var(--green-line);border-radius:10px;padding:13px 15px;
+  }
+  .proof-avatar{
+    flex:0 0 34px;width:34px;height:34px;border-radius:50%;overflow:hidden;
+    background:linear-gradient(135deg, var(--dark), var(--dark-soft));color:var(--green-soft);
+    display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.02em;text-align:center;line-height:1.1;
+    box-shadow:0 0 0 2px var(--gold);
+  }
+  .proof-chip p{font-size:12px;color:var(--dark);margin:0 0 4px;line-height:1.4;}
+  .proof-chip .who{font-size:11px;color:var(--green-dark);font-weight:700;text-transform:uppercase;letter-spacing:.03em;}
+
+  /* COMING SOON — postmark cards, five across in one row. Ideas only, so
+     no dates anywhere: the stamp carries a simple brand mark instead. */
+  .coming-soon{background:var(--dark-soft);padding:48px 0;text-align:center;color:var(--white);}
+  .coming-soon .eyebrow{color:var(--gold);}
+  .coming-soon h3{color:var(--white);margin-bottom:26px;}
+  .coming-soon-cta{display:inline-block;margin-top:28px;font-size:13.5px;font-weight:700;color:var(--green-soft);text-decoration:none;}
+  .coming-soon-cta:hover{text-decoration:underline;}
+
+  .cs-row{display:flex;gap:16px;justify-content:center;overflow-x:auto;padding-bottom:4px;}
+  .cs-postmark-card{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:10px;width:208px;flex:0 0 208px;box-shadow:0 8px 20px rgba(21,34,48,0.18);text-align:left;}
+  .cs-postmark-photo{position:relative;border-radius:6px;overflow:hidden;aspect-ratio:4/3;background:linear-gradient(135deg, var(--dark-soft) 0%, var(--blue) 55%, var(--green-dark) 100%);}
+  .cs-postmark-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+  .cs-postmark-stamp{position:absolute;top:8px;right:8px;width:38px;height:38px;border-radius:50%;border:2px dashed rgba(255,253,247,0.9);background:rgba(21,34,48,0.55);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .cs-postmark-divider{height:1px;margin:12px 0;background-image:linear-gradient(to right, var(--line) 50%, rgba(0,0,0,0) 50%);background-size:8px 1px;}
+  .cs-postmark-title{font-family:'Libre Baskerville',serif;font-weight:700;font-size:14.5px;line-height:1.3;color:var(--dark);}
+
+  /* STAY UPDATED */
+  .stay-updated{background:var(--sky-tint);}
+  .update-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  .update-card{background:var(--white);border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 6px 18px rgba(21,34,48,0.09);display:flex;flex-direction:column;}
+  .update-card-photo{aspect-ratio:16/10;overflow:hidden;}
+  .update-card-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+  .update-card-body{padding:20px 20px 22px;border-top:3px solid var(--green);flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;}
+  .update-icon{width:30px;height:30px;border-radius:50%;background:var(--green-tint);color:var(--green-dark);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;flex:0 0 auto;}
+  .update-icon svg{width:15px;height:15px;}
+  .update-card h4{font-size:15px;margin-bottom:8px;}
+  .update-card p{font-size:12.5px;color:var(--muted);margin:0 0 16px;flex:1;}
+  .update-card .btn{width:100%;text-align:center;}
+  .newsletter-form{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:auto;}
+  .newsletter-form input{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:6px;background:var(--white);font-family:'Titillium Web',sans-serif;font-size:13px;text-align:center;box-sizing:border-box;}
+
+  /* CONTACT */
+  .contact-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:56px;align-items:start;}
+  .contact-channels{display:flex;flex-direction:column;gap:16px;margin-top:26px;}
+  .contact-channel{display:flex;align-items:center;gap:12px;font-size:15.5px;font-weight:600;color:var(--dark);text-decoration:none;font-family:'Libre Baskerville',serif;}
+  .contact-channel .cc-icon{width:26px;height:26px;border-radius:50%;background:var(--green-tint);color:var(--green-dark);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .contact-channel .cc-icon svg{width:13px;height:13px;}
+  .contact-form{background:var(--white);border-radius:16px;border:1px solid var(--line);border-top:4px solid var(--green);padding:32px;box-shadow:0 16px 36px rgba(21,34,48,0.12);}
+  .form-row{margin-bottom:16px;}
+  .form-row label{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:6px;}
+  .form-row select, .form-row textarea, .form-row input[type="text"], .form-row input[type="email"]{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:7px;background:var(--white);font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--dark);box-sizing:border-box;}
+  .form-row textarea{min-height:110px;resize:vertical;}
+  .form-row-split{display:flex;gap:16px;margin-bottom:16px;}
+  .form-row-split .form-row{flex:1;margin-bottom:0;}
+  .reason-chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .reason-chip{padding:9px 16px;border-radius:999px;border:1.5px solid var(--line);background:var(--white);font-family:'Titillium Web',sans-serif;font-weight:700;font-size:12.5px;color:var(--dark);cursor:pointer;transition:background .12s ease,border-color .12s ease,color .12s ease;}
+  .reason-chip:hover{border-color:var(--green);}
+  .reason-chip.active{background:var(--green-dark);border-color:var(--green-dark);color:var(--white);}
+
+  /* FAQ */
+  .faq-category-label{font-family:'Titillium Web',sans-serif;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--green-dark);margin:28px 0 6px;}
+  .faq-category-label:first-child{margin-top:0;}
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-item summary{list-style:none;cursor:pointer;padding:16px 0;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:15px;color:var(--dark);display:flex;justify-content:space-between;align-items:center;gap:16px;}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary:after{content:"+";font-size:20px;color:var(--green-dark);font-weight:400;}
+  .faq-item[open] summary:after{content:"\2013";}
+  .faq-item .faq-a{padding:0 0 18px;color:#3c4048;font-size:14.5px;max-width:760px;}
+  .faq-item .faq-a p{margin:0;}
+  .faq-item .faq-a p + p, .faq-item .faq-a p + ul, .faq-item .faq-a ul + p{margin-top:10px;}
+  .faq-item .faq-a ul{margin:10px 0 0;padding-left:20px;}
+  .faq-item .faq-a li{margin-bottom:5px;}
+
+  /* FOOTER */
+  .site-footer{background:var(--dark);color:#c7ccd1;padding:52px 0 0;}
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px;padding-bottom:36px;}
+  .footer-blurb{font-size:13.5px;color:#9aa4ae;margin-top:14px;max-width:280px;}
+  .footer-label{font-family:'Titillium Web',sans-serif;font-weight:800;font-size:11.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:14px;}
+  .footer-links{display:flex;flex-direction:column;gap:10px;}
+  .footer-links a{font-size:13.5px;color:#c7ccd1;text-decoration:none;}
+  .footer-links a:hover{color:var(--white);}
+  .footer-bottom{border-top:1px solid var(--line-on-dark);padding:20px 0;text-align:center;font-size:13px;color:var(--green-soft);}
+  .footer-bottom .mark{color:var(--gold);display:block;font-size:14px;margin-bottom:8px;}
+
+  @media (max-width:1000px){
+    .spotlight-grid{grid-template-columns:repeat(2,1fr);}
+    .update-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:900px){
+    .story-grid{grid-template-columns:1fr;}
+    .trip-block-head{align-items:flex-start;}
+    .trip-block-actions{justify-content:flex-start;}
+    .community-props{grid-template-columns:1fr;gap:18px;}
+    .proof-chip{flex:0 0 82%;}
+    .contact-grid{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:640px){
+    .global-nav .gn-wrap{flex-direction:column;align-items:flex-start;gap:10px;}
+    .footer-grid{grid-template-columns:1fr;}
+    .update-grid{grid-template-columns:1fr;}
+    .spotlight-grid{grid-template-columns:1fr;}
+  }
+
+  /* ===== New footer ===== */
+  .site-footer.nf{background:var(--dark);color:#c7ccd1;padding:0;}
+  .nf-grid{display:grid;grid-template-columns:1.4fr 1.4fr 1.1fr .9fr;gap:36px;padding:56px 24px 44px;}
+  .nf-logo{display:inline-flex;align-items:baseline;gap:8px;font-size:30px;margin-bottom:14px;}
+  .nf-blurb{font-size:14px;line-height:1.6;color:#aeb6bf;max-width:300px;margin:0 0 18px;}
+  .nf-featured{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#8b95a1;}
+  .nf-featured a{font-family:'Libre Baskerville',serif;font-size:15px;font-weight:700;letter-spacing:0;text-transform:none;color:var(--white);text-decoration:none;}
+  .nf-featured .nf-dot{color:var(--gold);font-size:10px;}
+  .nf-label{font-family:'Libre Baskerville',serif;font-weight:700;font-size:16px;color:var(--white);margin:6px 0 18px;}
+  .nf-social{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+  .fs-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);
+    border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.04);transition:background .15s ease, border-color .15s ease, transform .15s ease;}
+  .fs-icon svg{width:19px;height:19px;}
+  .fs-icon:hover{background:var(--green-dark);border-color:var(--green-dark);transform:translateY(-2px);}
+  .nf-group{font-size:14px;font-weight:700;color:var(--green);text-decoration:none;}
+  .nf-group:hover{color:var(--white);}
+  .nf-contact{display:flex;align-items:center;gap:12px;font-size:14.5px;font-weight:600;color:#c7ccd1;text-decoration:none;margin-bottom:14px;}
+  .nf-contact:hover{color:var(--white);}
+  .nf-ci{width:36px;height:36px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb, var(--green) 18%, transparent);color:var(--green);}
+  .nf-ci svg{width:18px;height:18px;}
+  .nf-links{display:block;}
+  .nf-links a{display:block;font-size:14.5px;margin:0 0 12px;padding:0;color:#c7ccd1;text-decoration:none;}
+  .nf-links a:hover{color:var(--white);}
+  .nf-bottom{border-top:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.18);}
+  .nf-bottom-in{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 24px;padding:18px 24px;font-size:13px;color:#aeb6bf;}
+  .nf-bottom .mark{color:var(--gold);margin-right:4px;}
+  .nf-legal{font-size:12px;color:#8b95a1;}
+  @media (max-width:900px){ .nf-grid{grid-template-columns:1fr 1fr;gap:34px;} }
+  @media (max-width:560px){ .nf-grid{grid-template-columns:1fr;padding:44px 24px 32px;} .nf-bottom-in{flex-direction:column;align-items:flex-start;} }
+
+  .proof-chip .who .who-trip{font-weight:600;color:var(--muted);text-transform:none;letter-spacing:0;margin-left:6px;}
+  .proof-chip .who .who-trip:before{content:"· ";}
+
+  /* ===== Legal pages ===== */
+  .legal-hero{background:var(--dark);color:var(--white);padding:46px 0 0;position:relative;}
+  .legal-hero h1{color:var(--white);font-size:clamp(30px,4vw,44px);margin:0 0 10px;}
+  .legal-hero .lh-meta{color:#aeb6bf;font-size:14px;margin:0 0 26px;}
+  .legal-hero .lh-meta strong{color:var(--white);}
+  .legal-tabs{display:flex;flex-wrap:wrap;gap:6px;}
+  .legal-tabs a{font-size:14px;font-weight:700;text-decoration:none;color:#c7ccd1;padding:11px 18px;border-radius:10px 10px 0 0;background:rgba(255,255,255,0.06);}
+  .legal-tabs a:hover{color:var(--white);background:rgba(255,255,255,0.12);}
+  .legal-tabs a.on{background:var(--paper);color:var(--dark);}
+  .legal-body{padding:40px 0 70px;}
+  .legal-grid{display:grid;grid-template-columns:260px 1fr;gap:40px;align-items:start;}
+  .legal-toc{position:sticky;top:20px;max-height:calc(100vh - 40px);overflow:auto;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:18px 16px 14px;}
+  .legal-toc .toc-label{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--green-dark);margin:0 0 10px 6px;}
+  .legal-toc a{display:flex;gap:8px;font-size:13.5px;line-height:1.35;color:#3c4048;text-decoration:none;padding:6px;border-radius:6px;}
+  .legal-toc a span{flex:none;min-width:20px;color:var(--muted);font-weight:700;}
+  .legal-toc a:hover{background:var(--green-tint);color:var(--dark);}
+  .legal-doc{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:44px 52px;min-width:0;}
+  .legal-doc .legal-notice{background:var(--sunset-tint);border:1px solid color-mix(in srgb, var(--sunset-1) 30%, var(--white));border-left:4px solid var(--sunset-1);border-radius:12px;padding:22px 26px;margin:0 0 34px;}
+  .legal-doc .legal-notice h2{font-size:15px;letter-spacing:.06em;margin:0 0 10px;color:var(--sunset-1);border:none;padding:0;}
+  .legal-doc .legal-notice h2:first-child{margin-top:0;}
+  .legal-doc .legal-notice p, .legal-doc .legal-notice li{font-size:14px;}
+  .legal-doc .legal-notice p:last-child{margin-bottom:0;}
+  .legal-doc section.ls{padding:0;}
+  .legal-doc .legal-intro{background:var(--sky-tint);border-radius:12px;padding:18px 22px;margin:0 0 34px;}
+  .legal-doc .legal-intro p{font-size:14px;margin:0 0 6px;}
+  .legal-doc .legal-intro p:last-child{margin:0;}
+  .legal-toc summary{list-style:none;cursor:pointer;}
+  .legal-toc summary::-webkit-details-marker{display:none;}
+  @media (min-width:981px){ .legal-toc summary{pointer-events:none;} }
+  @media (max-width:980px){ .legal-toc summary:after{content:' ▾';} .legal-toc[open] summary:after{content:' ▴';} }
+  .legal-doc h2{font-size:22px;margin:42px 0 14px;padding-top:22px;border-top:1px solid var(--line);scroll-margin-top:20px;}
+  .legal-doc section.ls:first-of-type h2{margin-top:0;padding-top:0;border-top:none;}
+  .legal-doc h2 .sn{color:var(--green-dark);margin-right:6px;}
+  .legal-doc h3{font-family:'Titillium Web',sans-serif;font-size:16.5px;font-weight:800;margin:24px 0 8px;color:var(--dark);}
+  .legal-doc p{font-size:15px;line-height:1.75;color:#33373d;margin:0 0 14px;}
+  .legal-doc ul, .legal-doc ol{margin:0 0 16px;padding-left:22px;}
+  .legal-doc li{font-size:15px;line-height:1.65;color:#33373d;margin:0 0 6px;}
+  .legal-doc ul li::marker{color:var(--green-dark);}
+  .legal-doc ol li::marker{color:var(--green-dark);font-weight:700;}
+  .legal-doc strong{color:var(--dark);}
+  .legal-doc table{width:100%;border-collapse:collapse;margin:8px 0 20px;font-size:14.5px;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .legal-doc th{background:var(--dark);color:var(--white);text-align:left;padding:12px 16px;font-weight:700;}
+  .legal-doc td{padding:12px 16px;border-top:1px solid var(--line);}
+  .legal-doc tr:nth-child(even) td{background:var(--paper);}
+  .legal-doc a{color:var(--green-dark);font-weight:700;}
+  .to-top{display:inline-block;margin-top:30px;font-size:13.5px;font-weight:700;color:var(--green-dark);text-decoration:none;}
+  @media (max-width:980px){ .legal-grid{grid-template-columns:1fr;} .legal-toc{position:static;max-height:none;} .legal-toc nav{columns:2;} }
+  @media (max-width:640px){ .legal-doc{padding:26px 20px;} .legal-toc nav{columns:1;} .legal-tabs{flex-wrap:nowrap;overflow-x:auto;margin:0 -24px;padding:0 24px;scrollbar-width:none;} .legal-tabs a{font-size:13px;padding:10px 12px;white-space:nowrap;flex:none;} }
+
+  /* Site navbar: Worldschooling Trips dropdown */
+  .gn-links{flex-wrap:wrap;}
+  .gn-dropdown{position:relative;display:flex;align-items:center;}
+  .gn-dropdown-menu{
+    position:absolute;top:100%;left:0;margin-top:14px;
+    background:var(--dark-soft);border:1px solid var(--line-on-dark);border-radius:8px;
+    min-width:200px;padding:6px;display:none;flex-direction:column;
+    box-shadow:0 12px 30px rgba(0,0,0,0.35);z-index:20;
+  }
+  /* The margin-top gap above would otherwise break :hover the instant the
+     cursor leaves the link - this pseudo-element bridges it so the menu
+     stays open on the way down to it. */
+  .gn-dropdown::after{content:'';position:absolute;top:100%;left:0;right:0;height:14px;}
+  .gn-dropdown:hover .gn-dropdown-menu{display:flex;}
+  .gn-dropdown-item{
+    padding:9px 12px;font-family:'Titillium Web',sans-serif;font-weight:600;font-size:13.5px;
+    color:#c7ccd1;text-decoration:none;border-radius:5px;white-space:nowrap;
+  }
+  .gn-dropdown-item:hover{background:rgba(255,255,255,0.08);color:var(--white);}
+
+  /* MOBILE NAVBAR - on phones only the logo + a menu button show; the links
+     open in a drawer that slides in from the left over the page (the page
+     behind is dimmed, not pushed down). The Trips dropdown is listed inline,
+     since there's no hover on touch screens. */
+  .gn-toggle,.gn-backdrop,.gn-drawer-logo{display:none;}
+  @media (max-width:760px){
+    .global-nav > .wrap, .global-nav > .gn-wrap{flex-direction:row;flex-wrap:nowrap;align-items:center;gap:0;}
+    .gn-toggle{
+      display:flex;flex-direction:column;justify-content:center;gap:5px;
+      width:42px;height:42px;padding:10px;margin-left:auto;position:relative;z-index:1002;
+      background:var(--dark-soft);border:1px solid var(--line-on-dark);border-radius:9px;cursor:pointer;
+    }
+    .gn-toggle span{display:block;height:2px;border-radius:2px;background:var(--white);transition:transform .2s ease, opacity .2s ease;}
+    .global-nav.open .gn-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .global-nav.open .gn-toggle span:nth-child(2){opacity:0;}
+    .global-nav.open .gn-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    #gnLinks{
+      position:fixed;top:0;left:0;bottom:0;z-index:1001;width:min(80vw,310px);
+      display:flex;flex-direction:column;flex-wrap:nowrap;gap:0;padding:22px 22px 30px;overflow-y:auto;
+      background:var(--dark-soft);box-shadow:8px 0 30px rgba(0,0,0,.35);
+      transform:translateX(-100%);visibility:hidden;transition:transform .25s ease, visibility 0s linear .25s;
+    }
+    .global-nav.open #gnLinks{transform:none;visibility:visible;transition:transform .25s ease;}
+    .gn-drawer-logo{display:flex;margin-bottom:14px;}
+    .gn-backdrop{
+      display:block;position:fixed;inset:0;z-index:1000;background:rgba(13,22,32,.55);
+      opacity:0;visibility:hidden;transition:opacity .25s ease, visibility 0s linear .25s;
+    }
+    .global-nav.open .gn-backdrop{opacity:1;visibility:visible;transition:opacity .25s ease;}
+    #gnLinks .gn-link{display:block;padding:13px 2px;font-size:16px;border-top:1px solid var(--line-on-dark);}
+    #gnLinks .gn-dropdown{flex-direction:column;align-items:stretch;}
+    #gnLinks .gn-dropdown::after{display:none;}
+    #gnLinks .gn-dropdown-menu{
+      display:flex;position:static;margin:0 0 6px;padding:0 0 0 16px;min-width:0;
+      background:none;border:none;box-shadow:none;
+    }
+    #gnLinks .gn-dropdown-item{padding:9px 2px;font-size:15px;}
+  }
+</style>
+</head>
+<body id="top">
+
+<!-- GLOBAL NAV -->
+<div class="global-nav">
+  <div class="gn-wrap">
+    <a href="/" class="gn-logo">
+      <span class="gn-script">Worldschooling</span><span class="gn-sans">journeys</span>
+    </a>
+    <button type="button" class="gn-toggle" id="gnToggle" aria-label="Open menu" aria-expanded="false" aria-controls="gnLinks"><span></span><span></span><span></span></button>
+    <div class="gn-links" id="gnLinks">
+      <a href="/" class="gn-link">Home</a>
+      <div class="gn-dropdown">
+        <a href="#" class="gn-link">Worldschooling Trips</a>
+        <div class="gn-dropdown-menu">
+          <a href="/cruises.html" class="gn-dropdown-item">Group Cruises</a>
+          <a href="/land-trips.html" class="gn-dropdown-item">Land Trips</a>
+        </div>
+      </div>
+      <a href="/about.html" class="gn-link">About Us</a>
+      <a href="#" class="gn-link">Stay Updated</a>
+      <a href="#" class="gn-link">Contact</a>
+    </div>
+  </div>
+</div>
+
+<header class="legal-hero"><div class="wrap">
+  <div class="eyebrow" style="color:var(--green);">Legal</div>
+  <h1>Privacy Policy</h1>
+  <p class="lh-meta">Every Avenue Travel LLC · Effective Date: <strong>5/22/24</strong></p>
+  <nav class="legal-tabs" aria-label="Legal pages"><a href="/terms-and-conditions.html" class="">Terms and Conditions</a><a href="/cancellation-policy.html" class="">Cancellation &amp; Refund Policy</a><a href="/privacy-policy.html" class="on">Privacy Policy</a></nav>
+</div></header>
+<div class="legal-body"><div class="wrap legal-grid">
+  <details class="legal-toc" open><summary class="toc-label">On this page</summary><nav><a href="#s1"><span>1.</span>Introduction</a><a href="#s2"><span>2.</span>Scope of This Policy</a><a href="#s3"><span>3.</span>Third-Party Services</a><a href="#s4"><span>4.</span>Acknowledgment and Consent</a><a href="#s5"><span>5.</span>Booking for Other People</a><a href="#s6"><span>6.</span>Personal Information We May Collect</a><a href="#s7"><span>7.</span>Sensitive Personal Information</a><a href="#s8"><span>8.</span>Sources of Personal Information</a><a href="#s9"><span>9.</span>How We Use Personal Information</a><a href="#s10"><span>10.</span>Legal Bases for Processing</a><a href="#s11"><span>11.</span>How We Disclose Personal Information</a><a href="#s12"><span>12.</span>We Do Not Sell Personal Information for Money</a><a href="#s13"><span>13.</span>Targeted Advertising and Privacy Choices</a><a href="#s14"><span>14.</span>Cookies and Similar Technologies</a><a href="#s15"><span>15.</span>Payment Security</a><a href="#s16"><span>16.</span>International Travel and Cross-Border Transfers</a><a href="#s17"><span>17.</span>Data Security</a><a href="#s18"><span>18.</span>Children's Privacy</a><a href="#s19"><span>19.</span>Data Retention</a><a href="#s20"><span>20.</span>Marketing Communications</a><a href="#s21"><span>21.</span>Automated Decision-Making</a><a href="#s22"><span>22.</span>Your Privacy Rights</a><a href="#s23"><span>23.</span>How to Submit a Privacy Request</a><a href="#s24"><span>24.</span>Verification of Requests</a><a href="#s25"><span>25.</span>Authorized Agents</a><a href="#s26"><span>26.</span>Response and Appeals</a><a href="#s27"><span>27.</span>No Unlawful Discrimination</a><a href="#s28"><span>28.</span>California and Other U.S. State Privacy Notice</a><a href="#s29"><span>29.</span>European Economic Area, United Kingdom, and Switzerland</a><a href="#s30"><span>30.</span>External Links, Embedded Content, and Affiliate Offers</a><a href="#s31"><span>31.</span>Testimonials, Reviews, and Public Submissions</a><a href="#s32"><span>32.</span>Changes to This Policy</a><a href="#s33"><span>33.</span>Contact Us</a></nav></details>
+  <article class="legal-doc">
+    <div class="legal-intro"><p><strong>Every Avenue Travel LLC is registered with the State of Florida as a Seller of Travel. Registration No. ST45213.</strong></p>
+<p><strong>Effective Date:</strong> 5/22/24</p></div><section class="ls" id="s1"><h2><span class="sn">1.</span>Introduction</h2><p>Every Avenue Travel LLC, referred to in this Privacy Policy as "Every Avenue Travel," the "Company," "we," "us," or "our," respects the privacy of our Travelers, Participants, parents, guardians, children, website visitors, subscribers, and other persons who interact with us.</p>
+<p>This Privacy Policy explains how we collect, use, disclose, store, transfer, retain, and protect personal information when you:</p>
+<ul>
+<li>Visit or interact with our website;</li>
+<li>Read or comment on Company content;</li>
+<li>Join a mailing list or waitlist;</li>
+<li>Request information or a quote;</li>
+<li>Submit a booking;</li>
+<li>Approve an itinerary;</li>
+<li>Pay an invoice;</li>
+<li>Communicate with us by email, telephone, text message, social media, or messaging platform;</li>
+<li>Participate in a Trip;</li>
+<li>Provide information for another Traveler;</li>
+<li>Provide information about a Minor;</li>
+<li>Submit insurance, medical, allergy, accessibility, or emergency information;</li>
+<li>Participate in surveys, promotions, contests, or reviews;</li>
+<li>Join a Company-managed group communication channel; or</li>
+<li>Otherwise use a service that links to this Privacy Policy.</li>
+</ul>
+<p>"Trip" includes any tour, retreat, cruise, port excursion, worldschooling experience, family travel program, individual itinerary, group itinerary, guided activity, adventure activity, cultural program, accommodation, transportation service, or other travel-related service arranged, coordinated, operated, hosted, or sold by the Company.</p></section>
+<section class="ls" id="s2"><h2><span class="sn">2.</span>Scope of This Policy</h2><p>This Policy applies to personal information collected by the Company through:</p>
+<ol>
+<li>EveryAvenueTravel.com and Company-operated webpages;</li>
+<li>Company booking and registration forms;</li>
+<li>Quotes, invoices, and payment requests;</li>
+<li>Company email and customer-support communications;</li>
+<li>Company-managed social-media pages;</li>
+<li>Company-managed newsletters;</li>
+<li>Company-managed Trip groups and communication channels;</li>
+<li>In-person interactions during Trips;</li>
+<li>Incident, safety, and emergency records;</li>
+<li>Company surveys, reviews, promotions, and testimonials; and</li>
+<li>Third-party platforms when the Company receives or controls the information collected through the platform.</li>
+</ol>
+<p>This Policy applies to both online and offline information.</p></section>
+<section class="ls" id="s3"><h2><span class="sn">3.</span>Third-Party Services</h2><p>Some services are provided through independent third parties, including:</p>
+<ul>
+<li>Booking platforms;</li>
+<li>Payment processors;</li>
+<li>Hotels and accommodations;</li>
+<li>Cruise lines;</li>
+<li>Ground transportation providers;</li>
+<li>Local and inter-island flight providers;</li>
+<li>Guides and destination-management companies;</li>
+<li>Activity and excursion operators;</li>
+<li>Insurance companies;</li>
+<li>Email and communication platforms;</li>
+<li>Analytics and advertising providers;</li>
+<li>Social-media services; and</li>
+<li>Cloud storage and business-software providers.</li>
+</ul>
+<p>A third party may process information:</p>
+<ol>
+<li>On our behalf as a service provider or processor;</li>
+<li>Jointly with us for a particular service; or</li>
+<li>For its own independent purposes as a separate business or data controller.</li>
+</ol>
+<p>When a third party determines its own purposes and means of processing, its privacy policy also applies. This Policy does not control an independent third party's practices.</p>
+<p>Links to third-party websites, affiliate offers, social-media pages, booking services, or Supplier pages do not mean that the Company controls those services.</p></section>
+<section class="ls" id="s4"><h2><span class="sn">4.</span>Acknowledgment and Consent</h2><p>No separate signature is required solely to acknowledge this Privacy Policy.</p>
+<p>By providing personal information, submitting a booking, paying an invoice, or using a Company service after receiving or being given access to this Policy, you acknowledge that you have been informed of the practices described here.</p>
+<p>Acknowledgment of the Privacy Policy is not the same as consent to every possible use of personal information.</p>
+<p>Where consent is required by applicable law, the Company will seek consent through an appropriate method, which may include:</p>
+<ul>
+<li>A booking or payment action clearly associated with the stated purpose;</li>
+<li>A checkbox;</li>
+<li>A parent or guardian authorization;</li>
+<li>A cookie-preference tool;</li>
+<li>An email confirmation;</li>
+<li>A form submission;</li>
+<li>A media-consent selection; or</li>
+<li>Another recorded affirmative action.</li>
+</ul>
+<p>You may withdraw consent for future processing where applicable, although withdrawal does not affect processing already lawfully completed and may prevent the Company from providing a requested service.</p></section>
+<section class="ls" id="s5"><h2><span class="sn">5.</span>Booking for Other People</h2><p>A person who provides information about another person represents that the person:</p>
+<ol>
+<li>Has authority to provide the information;</li>
+<li>Has informed the other person of this Privacy Policy;</li>
+<li>Has obtained any consent required to provide the information;</li>
+<li>Will not provide information beyond what is reasonably necessary; and</li>
+<li>Will promptly inform us if the information is inaccurate or authority is withdrawn.</li>
+</ol>
+<p>A Booking Client may provide basic booking information for accompanying adults. However, the Company may contact each adult directly to obtain additional information, provide legal documents, confirm preferences, or establish that adult's individual acceptance of booking agreements.</p>
+<p>A parent or legally authorized guardian may provide information about a Minor as described in Section 18.</p></section>
+<section class="ls" id="s6"><h2><span class="sn">6.</span>Personal Information We May Collect</h2><h3>6.1 Identity and contact information</h3>
+<p>We may collect:</p>
+<ul>
+<li>Full legal name;</li>
+<li>Preferred name;</li>
+<li>Mailing address;</li>
+<li>Residential address;</li>
+<li>Email address;</li>
+<li>Telephone number;</li>
+<li>Date of birth;</li>
+<li>Age;</li>
+<li>Gender or title where required by a Supplier;</li>
+<li>Nationality;</li>
+<li>Citizenship;</li>
+<li>Preferred language;</li>
+<li>Social-media username;</li>
+<li>Account username; and</li>
+<li>Signature or electronic acceptance records where applicable.</li>
+</ul>
+<h3>6.2 Booking and travel information</h3>
+<p>We may collect:</p>
+<ul>
+<li>Trip name and dates;</li>
+<li>Destination;</li>
+<li>Itinerary;</li>
+<li>Accommodation and rooming preferences;</li>
+<li>Family and travel-party composition;</li>
+<li>Transportation details;</li>
+<li>Arrival and departure information;</li>
+<li>Cruise information;</li>
+<li>Activity selections;</li>
+<li>Meal selections;</li>
+<li>Dietary preferences;</li>
+<li>Special requests;</li>
+<li>Loyalty or membership information;</li>
+<li>Supplier reservation numbers;</li>
+<li>Booking status;</li>
+<li>Cancellations, transfers, credits, and refund information;</li>
+<li>Trip attendance and participation information; and</li>
+<li>Information concerning missed services, late arrival, or early departure.</li>
+</ul>
+<p>The Company generally does not book airfare to or from a Trip. However, we may collect flight-arrival and departure information for scheduling transfers or coordinating the itinerary.</p>
+<p>Where a Trip expressly includes a local, charter, scenic, domestic, or inter-island flight, we may collect information required by the aviation Supplier.</p>
+<h3>6.3 Passport, visa, and government-document information</h3>
+<p>Where reasonably necessary for a Trip or Supplier, we may collect:</p>
+<ul>
+<li>Passport number;</li>
+<li>Passport issue and expiration dates;</li>
+<li>Passport issuing country;</li>
+<li>Passport image or copy;</li>
+<li>Visa or travel-authorization information;</li>
+<li>National identification information;</li>
+<li>Driver's-license information;</li>
+<li>Birth certificate or proof of relationship;</li>
+<li>Parental travel-consent documentation;</li>
+<li>Custody or guardianship documentation;</li>
+<li>Vaccination or entry documentation; and</li>
+<li>Other information required by immigration, customs, transportation, accommodation, cruise, or activity providers.</li>
+</ul>
+<p>We will not request these documents for every Trip. We collect them only when reasonably necessary.</p>
+<h3>6.4 Payment and transaction information</h3>
+<p>We may collect:</p>
+<ul>
+<li>Billing name and address;</li>
+<li>Amounts paid;</li>
+<li>Payment dates;</li>
+<li>Currency;</li>
+<li>Deposit and installment status;</li>
+<li>Invoice number;</li>
+<li>Refund or credit information;</li>
+<li>Payment method type;</li>
+<li>Transaction identifier;</li>
+<li>Limited payment-card information supplied by a processor, such as the card brand and last four digits;</li>
+<li>Bank-transfer information where applicable;</li>
+<li>Chargeback or payment-dispute information; and</li>
+<li>Records showing who paid for a booking.</li>
+</ul>
+<p>Third-party payment processors generally collect and process full card information directly.</p>
+<p>Unless the Company provides a specifically approved secure method, do not send us:</p>
+<ul>
+<li>A full payment-card number;</li>
+<li>Card security code;</li>
+<li>Online-banking password;</li>
+<li>Payment-account password; or</li>
+<li>Other sensitive financial authentication information</li>
+</ul>
+<p>through ordinary email, text message, social media, or a group chat.</p>
+<h3>6.5 Health, medical, dietary, and accessibility information</h3>
+<p>To assess requests, communicate with Suppliers, and support safe participation, we may collect:</p>
+<ul>
+<li>Allergies;</li>
+<li>Dietary restrictions;</li>
+<li>Food sensitivities;</li>
+<li>Physical or mental health conditions relevant to participation;</li>
+<li>Mobility limitations;</li>
+<li>Accessibility needs;</li>
+<li>Pregnancy information;</li>
+<li>Medication requirements;</li>
+<li>Emergency medication information;</li>
+<li>Recent surgery or injury;</li>
+<li>Sensory, cognitive, developmental, or behavioral needs;</li>
+<li>Swimming ability;</li>
+<li>Activity restrictions;</li>
+<li>Medical-clearance information;</li>
+<li>Physician or medical-provider contact information where appropriate;</li>
+<li>Communicable-illness information;</li>
+<li>Medical incidents occurring during a Trip; and</li>
+<li>Information reasonably necessary for emergency response.</li>
+</ul>
+<p>Please provide only information reasonably relevant to the Trip.</p>
+<p>Every Avenue Travel is a travel company, not ordinarily a health-care provider, health plan, or health-care clearinghouse. Information provided to a travel company may not be protected by HIPAA in the same way as information held by a HIPAA-covered provider, although we protect it under this Policy and other applicable laws. HIPAA applies to covered entities and business associates meeting the applicable legal definitions.</p>
+<h3>6.6 Insurance information</h3>
+<p>Because travel insurance is required under the applicable Participant Agreements, we may collect:</p>
+<ul>
+<li>Name of insurer;</li>
+<li>Policy number;</li>
+<li>Coverage dates;</li>
+<li>Name of insured person;</li>
+<li>Certificate or declaration page;</li>
+<li>Emergency-assistance telephone number;</li>
+<li>Medical-benefit information;</li>
+<li>Evacuation-benefit information;</li>
+<li>Information showing whether relevant adventure activities are covered;</li>
+<li>Insurance-claim correspondence voluntarily provided to us; and</li>
+<li>Proof that required coverage was obtained.</li>
+</ul>
+<p>We do not need your full insurance file unless it is reasonably necessary for a claim, emergency, or legal matter.</p>
+<p>You may redact:</p>
+<ul>
+<li>Premium amounts;</li>
+<li>Full payment-card details;</li>
+<li>Unrelated insured persons; and</li>
+<li>Information not reasonably needed to verify coverage.</li>
+</ul>
+<h3>6.7 Emergency-contact information</h3>
+<p>We may collect:</p>
+<ul>
+<li>Emergency contact's name;</li>
+<li>Relationship to the Traveler;</li>
+<li>Telephone number;</li>
+<li>Email address;</li>
+<li>Address;</li>
+<li>Preferred language; and</li>
+<li>Other information reasonably needed to reach the person.</li>
+</ul>
+<p>The person providing emergency-contact information represents that the contact may reasonably be identified and contacted for the stated purpose.</p>
+<h3>6.8 Information about Minors and families</h3>
+<p>We may collect:</p>
+<ul>
+<li>Minor's name;</li>
+<li>Date of birth;</li>
+<li>Age;</li>
+<li>Parent or guardian identity;</li>
+<li>Parent or guardian contact information;</li>
+<li>Parent-child relationship;</li>
+<li>Trip and activity participation;</li>
+<li>Health, allergy, dietary, developmental, behavioral, or accessibility information;</li>
+<li>Insurance information;</li>
+<li>Emergency-contact information;</li>
+<li>Passport and travel-document information;</li>
+<li>Custody, consent, or guardianship information;</li>
+<li>Activity eligibility information;</li>
+<li>Incident information; and</li>
+<li>Parent or guardian acceptance records.</li>
+</ul>
+<p>Information about a known child may be considered sensitive personal information under applicable law.</p>
+<h3>6.9 Communications and customer-service records</h3>
+<p>We may collect and retain:</p>
+<ul>
+<li>Emails;</li>
+<li>Text messages;</li>
+<li>Telephone notes;</li>
+<li>Contact-form submissions;</li>
+<li>Chat messages;</li>
+<li>Social-media messages;</li>
+<li>Booking-platform messages;</li>
+<li>Complaints;</li>
+<li>Refund requests;</li>
+<li>Questions;</li>
+<li>Requests for accommodation;</li>
+<li>Survey responses;</li>
+<li>Reviews;</li>
+<li>Testimonials;</li>
+<li>Incident communications; and</li>
+<li>Records of notices and agreements provided to you.</li>
+</ul>
+<p>Telephone or video calls will not be recorded without notice where notice or consent is required.</p>
+<h3>6.10 Website, device, and usage information</h3>
+<p>When you use our website, we or our service providers may automatically collect:</p>
+<ul>
+<li>Internet Protocol address;</li>
+<li>Browser type;</li>
+<li>Device type;</li>
+<li>Operating system;</li>
+<li>Device identifiers;</li>
+<li>Approximate location derived from an IP address;</li>
+<li>Referring website;</li>
+<li>Pages viewed;</li>
+<li>Links clicked;</li>
+<li>Time and date of access;</li>
+<li>Time spent on a page;</li>
+<li>Search terms;</li>
+<li>Form interaction;</li>
+<li>Newsletter interaction;</li>
+<li>Advertising interaction;</li>
+<li>Cookie identifiers;</li>
+<li>Session information;</li>
+<li>Error and diagnostic logs; and</li>
+<li>General website usage patterns.</li>
+</ul>
+<h3>6.11 Cookies and similar technologies</h3>
+<p>We may use:</p>
+<ul>
+<li>Cookies;</li>
+<li>Pixels;</li>
+<li>web beacons;</li>
+<li>tags;</li>
+<li>local storage;</li>
+<li>embedded scripts;</li>
+<li>software development kits;</li>
+<li>analytics identifiers; and</li>
+<li>similar technologies.</li>
+</ul>
+<p>These are described further in Section 14.</p>
+<h3>6.12 Social-media information</h3>
+<p>When you interact with us through social media, we may receive:</p>
+<ul>
+<li>Public profile information;</li>
+<li>Username;</li>
+<li>Name;</li>
+<li>Comments;</li>
+<li>Messages;</li>
+<li>Reactions;</li>
+<li>Posts;</li>
+<li>Photographs;</li>
+<li>Videos;</li>
+<li>Contest or promotion entries; and</li>
+<li>Information made available by the social-media platform according to your settings.</li>
+</ul>
+<p>The social-media platform's privacy policy also applies.</p>
+<h3>6.13 Photographs, video, and audio</h3>
+<p>During Trips, we may collect:</p>
+<ul>
+<li>Photographs;</li>
+<li>Video recordings;</li>
+<li>Audio recordings;</li>
+<li>Image metadata;</li>
+<li>Date, time, and general location of an image;</li>
+<li>Adult media-consent or opt-out information; and</li>
+<li>Separate parent or guardian media consent concerning a Minor.</li>
+</ul>
+<p>The Company will use an identifiable Minor as a featured promotional subject only pursuant to the separate consent process described in the Terms and Conditions and applicable media authorization.</p>
+<p>We do not intentionally use photographs or video to create facial-recognition templates or other biometric identifiers.</p>
+<h3>6.14 Incident, conduct, and safety information</h3>
+<p>We may collect:</p>
+<ul>
+<li>Accident and injury reports;</li>
+<li>Witness information;</li>
+<li>Photographs of an incident;</li>
+<li>Medical-response information;</li>
+<li>Property-damage information;</li>
+<li>Conduct complaints;</li>
+<li>Safety-rule violations;</li>
+<li>Removal or denied-participation records;</li>
+<li>Communications with Suppliers or authorities;</li>
+<li>Insurance documentation; and</li>
+<li>Information concerning legal claims.</li>
+</ul>
+<h3>6.15 Marketing and preference information</h3>
+<p>We may collect:</p>
+<ul>
+<li>Newsletter subscription status;</li>
+<li>Trip and destination interests;</li>
+<li>Preferred travel type;</li>
+<li>Family composition;</li>
+<li>Marketing-consent status;</li>
+<li>Email engagement;</li>
+<li>Event or waitlist interest;</li>
+<li>Promotion history;</li>
+<li>Advertising interaction; and</li>
+<li>Unsubscribe or opt-out records.</li>
+</ul>
+<h3>6.16 Public content</h3>
+<p>If our website allows comments, reviews, profiles, discussion boards, or public submissions, information you post may become publicly visible.</p>
+<p>Do not publicly post:</p>
+<ul>
+<li>Passport information;</li>
+<li>Payment information;</li>
+<li>Medical information;</li>
+<li>A child's precise location;</li>
+<li>Confidential family information; or</li>
+<li>Information about another person without authority.</li>
+</ul>
+<p>We may moderate, remove, or restrict public content in accordance with our website terms and legitimate safety or business needs.</p></section>
+<section class="ls" id="s7"><h2><span class="sn">7.</span>Sensitive Personal Information</h2><p>Depending on the Trip and applicable law, sensitive personal information may include:</p>
+<ul>
+<li>Passport and government identification information;</li>
+<li>Account-login credentials;</li>
+<li>Financial information;</li>
+<li>Precise geolocation;</li>
+<li>Health information;</li>
+<li>Disability or accessibility information;</li>
+<li>Racial or ethnic information;</li>
+<li>Religious information revealed by dietary or scheduling requests;</li>
+<li>Citizenship or immigration information;</li>
+<li>Information about a known child;</li>
+<li>Sexual-orientation information voluntarily disclosed in connection with rooming or safety requests;</li>
+<li>Biometric identifiers used for unique identification; and</li>
+<li>Contents of private communications not directed to us.</li>
+</ul>
+<p>We use sensitive personal information only where reasonably necessary to:</p>
+<ol>
+<li>Provide requested travel services;</li>
+<li>Meet Supplier requirements;</li>
+<li>Assess and arrange accommodations;</li>
+<li>Protect health and safety;</li>
+<li>Respond to an emergency;</li>
+<li>Verify identity or authority;</li>
+<li>Prevent fraud or security incidents;</li>
+<li>Comply with law;</li>
+<li>Establish, exercise, or defend legal claims; or</li>
+<li>Fulfill another purpose expressly disclosed to you.</li>
+</ol>
+<p>We do not use health, passport, insurance, or known-child information for targeted advertising.</p>
+<p>We do not use sensitive information to infer characteristics about a person for unrelated marketing purposes.</p></section>
+<section class="ls" id="s8"><h2><span class="sn">8.</span>Sources of Personal Information</h2><p>We may obtain information from:</p>
+<ol>
+<li>You;</li>
+<li>A Booking Client;</li>
+<li>A parent or guardian;</li>
+<li>An adult travel companion;</li>
+<li>An emergency contact;</li>
+<li>A family member;</li>
+<li>A Supplier;</li>
+<li>A booking platform;</li>
+<li>A payment processor;</li>
+<li>A travel-insurance provider or assistance service;</li>
+<li>A medical or emergency provider where authorized or legally permitted;</li>
+<li>A social-media platform;</li>
+<li>Website analytics and advertising providers;</li>
+<li>Publicly available sources;</li>
+<li>Government authorities;</li>
+<li>Professional advisers;</li>
+<li>Other Participants involved in an incident or complaint; and</li>
+<li>A person acting with your authorization.</li>
+</ol>
+<p>If information is provided by another person, we may contact you to verify, supplement, or correct it.</p></section>
+<section class="ls" id="s9"><h2><span class="sn">9.</span>How We Use Personal Information</h2><h3>9.1 Providing travel and booking services</h3>
+<p>We may use information to:</p>
+<ul>
+<li>Respond to inquiries;</li>
+<li>Prepare quotes;</li>
+<li>Design itineraries;</li>
+<li>Process bookings;</li>
+<li>Confirm availability;</li>
+<li>Arrange accommodations;</li>
+<li>Coordinate transportation;</li>
+<li>Reserve activities;</li>
+<li>Arrange local or inter-island flights included in a Trip;</li>
+<li>Arrange cruise or port services;</li>
+<li>Coordinate rooming;</li>
+<li>Communicate dietary or accessibility requests;</li>
+<li>Administer deposits, installments, credits, transfers, and refunds;</li>
+<li>Provide Trip documents;</li>
+<li>Communicate schedules and changes;</li>
+<li>Manage attendance; and</li>
+<li>Provide customer service.</li>
+</ul>
+<h3>9.2 Working with Suppliers</h3>
+<p>We may use and disclose information to:</p>
+<ul>
+<li>Confirm reservations;</li>
+<li>Meet Supplier identification requirements;</li>
+<li>Coordinate rooms and transportation;</li>
+<li>Verify age or activity eligibility;</li>
+<li>Communicate health, allergy, dietary, or accessibility needs;</li>
+<li>Arrange special assistance;</li>
+<li>Issue tickets or admission documents;</li>
+<li>Meet cruise, vessel, accommodation, or transportation requirements;</li>
+<li>Process Supplier changes or refunds; and</li>
+<li>Address complaints or incidents.</li>
+</ul>
+<h3>9.3 Health, safety, and emergencies</h3>
+<p>We may use information to:</p>
+<ul>
+<li>Assess whether a disclosed need can reasonably be accommodated;</li>
+<li>Communicate an allergy or mobility request;</li>
+<li>Verify required insurance;</li>
+<li>Contact an emergency contact;</li>
+<li>Arrange emergency services;</li>
+<li>Assist with medical care or evacuation;</li>
+<li>Share relevant information with medical personnel;</li>
+<li>Investigate an accident;</li>
+<li>Protect a Minor;</li>
+<li>Respond to a missing-person concern;</li>
+<li>Protect other Participants; and</li>
+<li>Comply with health or safety rules.</li>
+</ul>
+<h3>9.4 Payments and financial administration</h3>
+<p>We may use information to:</p>
+<ul>
+<li>Generate invoices;</li>
+<li>Process payments;</li>
+<li>Record deposits and installments;</li>
+<li>Issue refunds or credits;</li>
+<li>Reconcile Supplier payments;</li>
+<li>Respond to chargebacks;</li>
+<li>Detect fraud;</li>
+<li>Maintain tax and accounting records; and</li>
+<li>Collect properly due amounts.</li>
+</ul>
+<h3>9.5 Legal documents and acceptance records</h3>
+<p>We may use information to:</p>
+<ul>
+<li>Provide Terms and Conditions;</li>
+<li>Provide cancellation terms;</li>
+<li>Document electronic acceptance;</li>
+<li>Record the version accepted;</li>
+<li>Document parent or guardian authority;</li>
+<li>Administer adult and Minor waivers;</li>
+<li>Maintain emergency authorization records;</li>
+<li>Confirm insurance compliance; and</li>
+<li>Establish, exercise, or defend legal rights.</li>
+</ul>
+<h3>9.6 Website operation and improvement</h3>
+<p>We may use information to:</p>
+<ul>
+<li>Operate the website;</li>
+<li>Maintain user accounts where available;</li>
+<li>Remember preferences;</li>
+<li>Diagnose technical problems;</li>
+<li>Improve navigation;</li>
+<li>Measure site performance;</li>
+<li>Understand use of content;</li>
+<li>Prevent abuse;</li>
+<li>Maintain security; and</li>
+<li>Develop new services.</li>
+</ul>
+<h3>9.7 Communications</h3>
+<p>We may use information to send:</p>
+<ul>
+<li>Booking confirmations;</li>
+<li>Payment reminders;</li>
+<li>Itinerary updates;</li>
+<li>Schedule changes;</li>
+<li>Safety notices;</li>
+<li>Supplier communications;</li>
+<li>Emergency communications;</li>
+<li>Customer-service messages;</li>
+<li>Requested information;</li>
+<li>Newsletters;</li>
+<li>Trip announcements;</li>
+<li>Surveys; and</li>
+<li>Marketing messages where permitted.</li>
+</ul>
+<p>You cannot opt out of communications reasonably necessary to administer an active booking, safety matter, payment obligation, or legal notice.</p>
+<h3>9.8 Marketing and advertising</h3>
+<p>Subject to applicable choices and consent requirements, we may use information to:</p>
+<ul>
+<li>Send newsletters;</li>
+<li>Announce Trips;</li>
+<li>Recommend relevant content;</li>
+<li>Measure campaign effectiveness;</li>
+<li>Display advertising;</li>
+<li>Build audiences for advertising platforms;</li>
+<li>Limit repetitive advertising;</li>
+<li>Understand general audience interests; and</li>
+<li>Administer promotions.</li>
+</ul>
+<p>We do not use known-child information, health information, passport data, insurance information, or emergency information for targeted advertising.</p>
+<h3>9.9 Security, fraud prevention, and legal compliance</h3>
+<p>We may use information to:</p>
+<ul>
+<li>Authenticate a booking;</li>
+<li>Detect suspicious payments;</li>
+<li>Prevent fraud;</li>
+<li>Investigate unauthorized access;</li>
+<li>Protect accounts and systems;</li>
+<li>Enforce our agreements;</li>
+<li>Respond to subpoenas or lawful requests;</li>
+<li>Comply with tax, accounting, insurance, regulatory, and legal obligations;</li>
+<li>Protect the Company, Participants, Suppliers, and the public; and</li>
+<li>Establish, exercise, or defend claims.</li>
+</ul>
+<h3>9.10 Deidentified and aggregated information</h3>
+<p>We may create aggregated or deidentified information that does not reasonably identify an individual.</p>
+<p>We may use such information for:</p>
+<ul>
+<li>Business analysis;</li>
+<li>Service improvement;</li>
+<li>Reporting;</li>
+<li>Marketing analysis;</li>
+<li>Supplier evaluation;</li>
+<li>Safety planning; and</li>
+<li>Other lawful purposes.</li>
+</ul>
+<p>We will not attempt to reidentify deidentified information except as permitted to test whether deidentification is effective or as otherwise allowed by law.</p></section>
+<section class="ls" id="s10"><h2><span class="sn">10.</span>Legal Bases for Processing</h2><p>Where a jurisdiction requires a stated legal basis, we may process personal information based on:</p>
+<h3>10.1 Performance of a contract</h3>
+<p>Processing may be necessary to:</p>
+<ul>
+<li>Prepare or administer a booking;</li>
+<li>Provide a Trip;</li>
+<li>Process payment;</li>
+<li>Communicate with Suppliers;</li>
+<li>Fulfill requests;</li>
+<li>Administer cancellation and refund terms; and</li>
+<li>Perform our contractual obligations.</li>
+</ul>
+<h3>10.2 Consent</h3>
+<p>We may rely on consent for:</p>
+<ul>
+<li>Optional marketing;</li>
+<li>Nonessential cookies;</li>
+<li>Featured media use;</li>
+<li>Certain sensitive-data processing;</li>
+<li>Certain Minor-related processing;</li>
+<li>Optional disclosure to third parties; and</li>
+<li>Other purposes requiring consent.</li>
+</ul>
+<h3>10.3 Legitimate interests</h3>
+<p>Where permitted, we may process information for legitimate interests such as:</p>
+<ul>
+<li>Operating and improving our business;</li>
+<li>Preventing fraud;</li>
+<li>Maintaining security;</li>
+<li>Providing customer support;</li>
+<li>Managing Supplier relationships;</li>
+<li>Documenting agreements;</li>
+<li>Protecting legal rights;</li>
+<li>Promoting relevant services; and</li>
+<li>Ensuring Trip safety.</li>
+</ul>
+<p>We will consider the effect on the individual's rights when relying on legitimate interests.</p>
+<h3>10.4 Legal obligations</h3>
+<p>We may process information to comply with:</p>
+<ul>
+<li>Tax and accounting requirements;</li>
+<li>Court orders;</li>
+<li>Government requests;</li>
+<li>Travel and immigration requirements;</li>
+<li>Consumer-protection obligations;</li>
+<li>Safety requirements;</li>
+<li>Insurance obligations;</li>
+<li>Data-protection obligations; and</li>
+<li>Other applicable laws.</li>
+</ul>
+<h3>10.5 Vital interests and emergencies</h3>
+<p>We may process information when reasonably necessary to protect:</p>
+<ul>
+<li>A Traveler's life or health;</li>
+<li>A Minor;</li>
+<li>Another Participant;</li>
+<li>A Supplier representative; or</li>
+<li>Another person in an emergency.</li>
+</ul>
+<h3>10.6 Legal claims</h3>
+<p>We may process information where reasonably necessary to establish, exercise, investigate, or defend a legal or insurance claim.</p></section>
+<section class="ls" id="s11"><h2><span class="sn">11.</span>How We Disclose Personal Information</h2><h3>11.1 Travel Suppliers</h3>
+<p>We may disclose necessary information to:</p>
+<ul>
+<li>Hotels;</li>
+<li>Resorts;</li>
+<li>Retreat venues;</li>
+<li>Cruise lines;</li>
+<li>Transportation providers;</li>
+<li>Local flight operators;</li>
+<li>Destination-management companies;</li>
+<li>Guides;</li>
+<li>Activity providers;</li>
+<li>Excursion operators;</li>
+<li>Restaurants;</li>
+<li>Equipment providers;</li>
+<li>Ticketing services;</li>
+<li>Park or permit authorities; and</li>
+<li>Other travel Suppliers.</li>
+</ul>
+<p>We disclose only information reasonably relevant to the service, although Suppliers may independently request additional information.</p>
+<h3>11.2 Booking, payment, and business-service providers</h3>
+<p>We may disclose information to providers that assist with:</p>
+<ul>
+<li>Booking;</li>
+<li>Payment processing;</li>
+<li>Invoicing;</li>
+<li>Accounting;</li>
+<li>Customer relationship management;</li>
+<li>Email delivery;</li>
+<li>Form collection;</li>
+<li>Cloud storage;</li>
+<li>Website hosting;</li>
+<li>Website security;</li>
+<li>Document management;</li>
+<li>Electronic records;</li>
+<li>Customer support;</li>
+<li>Survey administration; and</li>
+<li>Business operations.</li>
+</ul>
+<h3>11.3 Analytics and advertising providers</h3>
+<p>Subject to applicable choices, we may allow analytics or advertising providers to receive:</p>
+<ul>
+<li>Cookie identifiers;</li>
+<li>IP address;</li>
+<li>Device information;</li>
+<li>Approximate location;</li>
+<li>Website activity;</li>
+<li>Advertising interaction; and</li>
+<li>Hashed or otherwise transformed contact information used for audience matching.</li>
+</ul>
+<p>See Sections 13 and 14.</p>
+<h3>11.4 Insurance, medical, and emergency recipients</h3>
+<p>Where reasonably necessary, we may disclose information to:</p>
+<ul>
+<li>Insurers;</li>
+<li>Travel-assistance services;</li>
+<li>Medical providers;</li>
+<li>Ambulance services;</li>
+<li>Search-and-rescue providers;</li>
+<li>Emergency personnel;</li>
+<li>Hospitals;</li>
+<li>Consular officials;</li>
+<li>Government authorities;</li>
+<li>Emergency contacts; and</li>
+<li>Family members.</li>
+</ul>
+<h3>11.5 Other Participants</h3>
+<p>For group Trips, we may disclose limited information reasonably necessary for group operations, such as:</p>
+<ul>
+<li>First name;</li>
+<li>Family or travel-party name;</li>
+<li>Rooming assignment;</li>
+<li>General schedule;</li>
+<li>Activity group;</li>
+<li>Meeting location; and</li>
+<li>Limited contact information where the Traveler agrees or the disclosure is operationally necessary.</li>
+</ul>
+<p>We will not ordinarily disclose another Traveler's:</p>
+<ul>
+<li>Passport information;</li>
+<li>Payment information;</li>
+<li>Detailed medical information;</li>
+<li>Insurance documents;</li>
+<li>Private communications; or</li>
+<li>Custody information</li>
+</ul>
+<p>to other Participants.</p>
+<h3>11.6 Group messaging platforms</h3>
+<p>We may invite Travelers to a Trip-specific group on a service such as a group messaging or social platform.</p>
+<p>Joining a group may make your:</p>
+<ul>
+<li>Name;</li>
+<li>Telephone number;</li>
+<li>Username;</li>
+<li>Profile image;</li>
+<li>Status;</li>
+<li>Messages; and</li>
+<li>Other profile information</li>
+</ul>
+<p>visible to group members according to the platform's settings.</p>
+<p>Where reasonably practicable, joining a nonessential group will be optional.</p>
+<p>The platform's own privacy policy applies.</p>
+<h3>11.7 Professional advisers</h3>
+<p>We may disclose information to:</p>
+<ul>
+<li>Attorneys;</li>
+<li>Accountants;</li>
+<li>Auditors;</li>
+<li>Insurance brokers;</li>
+<li>Insurers;</li>
+<li>Claims administrators;</li>
+<li>Security consultants;</li>
+<li>Technology consultants; and</li>
+<li>Other professional advisers</li>
+</ul>
+<p>where reasonably necessary.</p>
+<h3>11.8 Legal and protective disclosures</h3>
+<p>We may disclose information when we reasonably believe disclosure is necessary to:</p>
+<ul>
+<li>Comply with law;</li>
+<li>Respond to a lawful subpoena, court order, or government request;</li>
+<li>Report suspected abuse or danger;</li>
+<li>Protect a Minor;</li>
+<li>Prevent or investigate fraud;</li>
+<li>Address a security incident;</li>
+<li>Enforce agreements;</li>
+<li>Protect legal rights;</li>
+<li>Protect health and safety; or</li>
+<li>Respond to an emergency.</li>
+</ul>
+<h3>11.9 Business transactions</h3>
+<p>Information may be disclosed or transferred in connection with:</p>
+<ul>
+<li>A merger;</li>
+<li>Acquisition;</li>
+<li>Reorganization;</li>
+<li>Financing;</li>
+<li>Sale of assets;</li>
+<li>Business transition;</li>
+<li>Bankruptcy;</li>
+<li>Receivership; or</li>
+<li>Due diligence concerning a potential transaction.</li>
+</ul>
+<p>A recipient will be required to handle the information in accordance with applicable law and the commitments applicable to the information.</p>
+<h3>11.10 With direction or consent</h3>
+<p>We may disclose information where you direct us to do so or provide legally sufficient consent.</p></section>
+<section class="ls" id="s12"><h2><span class="sn">12.</span>We Do Not Sell Personal Information for Money</h2><p>We do not sell lists of Traveler passport, medical, insurance, emergency, or Minor information for monetary payment.</p>
+<p>We do not sell known-child information for monetary consideration.</p>
+<p>We do not sell health or passport information for advertising.</p>
+<p>However, certain privacy laws define "sale," "sharing," or "targeted advertising" broadly. Allowing an advertising or analytics provider to collect cookie identifiers, device information, or website activity may be considered a sale or sharing even when no money is exchanged.</p>
+<p>Where applicable, you may opt out through:</p>
+<ul>
+<li>The <strong>Your Privacy Choices</strong> link;</li>
+<li>The <strong>Do Not Sell or Share My Personal Information</strong> link;</li>
+<li>The cookie-preference tool;</li>
+<li>A legally recognized browser opt-out preference signal; or</li>
+<li>A request to booking@everyavenuetravel.com.</li>
+</ul>
+<p>The Company should not state that it does not "share" information for advertising if advertising cookies, audience-matching tools, or cross-site behavioral advertising are active.</p></section>
+<section class="ls" id="s13"><h2><span class="sn">13.</span>Targeted Advertising and Privacy Choices</h2><p>Depending on our website configuration, advertising providers may use information about activity over time and across websites or services to select or measure advertising.</p>
+<p>Where required by law, we will provide a method to opt out of:</p>
+<ul>
+<li>Sale of personal information;</li>
+<li>Sharing for cross-context behavioral advertising;</li>
+<li>Targeted advertising;</li>
+<li>Certain profiling;</li>
+<li>Nonessential advertising cookies; and</li>
+<li>Certain uses of sensitive information.</li>
+</ul>
+<p>We do not knowingly use personal information from a Minor for targeted advertising.</p>
+<p>We will process legally recognized opt-out preference signals, such as a qualifying browser-based signal, where required by applicable law.</p>
+<p>A privacy choice may be specific to:</p>
+<ul>
+<li>The browser;</li>
+<li>Device;</li>
+<li>Website;</li>
+<li>Account; or</li>
+<li>Email address</li>
+</ul>
+<p>used to submit the choice.</p>
+<p>You may need to repeat the choice when using another browser or device or after clearing cookies.</p></section>
+<section class="ls" id="s14"><h2><span class="sn">14.</span>Cookies and Similar Technologies</h2><h3>14.1 Strictly necessary technologies</h3>
+<p>These may be used to:</p>
+<ul>
+<li>Operate the website;</li>
+<li>Maintain security;</li>
+<li>Process forms;</li>
+<li>Remember privacy choices;</li>
+<li>Maintain a shopping or booking session;</li>
+<li>Prevent fraud; and</li>
+<li>Enable essential functions.</li>
+</ul>
+<p>These technologies generally cannot be disabled through our preference tool because the website may not function properly without them.</p>
+<h3>14.2 Functional technologies</h3>
+<p>These may be used to:</p>
+<ul>
+<li>Remember preferences;</li>
+<li>Support embedded content;</li>
+<li>Enable chat or customer-support features;</li>
+<li>Remember language or location choices; and</li>
+<li>Improve convenience.</li>
+</ul>
+<h3>14.3 Analytics technologies</h3>
+<p>These may be used to:</p>
+<ul>
+<li>Count visits;</li>
+<li>Understand page usage;</li>
+<li>Identify errors;</li>
+<li>Measure content performance;</li>
+<li>Understand general audience activity; and</li>
+<li>Improve the website.</li>
+</ul>
+<h3>14.4 Advertising technologies</h3>
+<p>These may be used to:</p>
+<ul>
+<li>Display advertising;</li>
+<li>Measure advertising;</li>
+<li>Limit repetition;</li>
+<li>Create or match advertising audiences;</li>
+<li>Understand engagement; and</li>
+<li>Deliver interest-based advertising.</li>
+</ul>
+<h3>14.5 Social-media technologies</h3>
+<p>Social-media buttons, videos, feeds, or embedded content may allow the applicable platform to receive information about your visit.</p>
+<h3>14.6 Managing cookies</h3>
+<p>You may manage nonessential technologies through:</p>
+<ul>
+<li>Our cookie-preference tool;</li>
+<li>Browser settings;</li>
+<li>Device settings;</li>
+<li>Advertising-industry opt-out tools;</li>
+<li>The provider's own settings; and</li>
+<li>Legally recognized opt-out signals.</li>
+</ul>
+<p>Blocking cookies may affect website functions.</p>
+<h3>14.7 Do Not Track</h3>
+<p>Some browsers transmit a "Do Not Track" signal for which no single universally applied response standard exists.</p>
+<p>We respond to opt-out preference signals where applicable law requires us to do so, but may not respond to other Do Not Track signals.</p></section>
+<section class="ls" id="s15"><h2><span class="sn">15.</span>Payment Security</h2><p>Where a third-party processor handles payment-card data, its privacy and security terms govern its processing.</p>
+<p>The Company generally receives transaction information rather than a complete payment-card number.</p>
+<p>You should not send full payment-card information through ordinary email, text, social media, or group chat.</p>
+<p>If the Company becomes aware that full card information was sent through an insecure channel, we may:</p>
+<ul>
+<li>Delete or redact it;</li>
+<li>Ask you to submit payment through an approved processor;</li>
+<li>Restrict access;</li>
+<li>Document the incident; and</li>
+<li>Take other reasonable protective measures.</li>
+</ul></section>
+<section class="ls" id="s16"><h2><span class="sn">16.</span>International Travel and Cross-Border Transfers</h2><p>Travel services necessarily involve international information transfers.</p>
+<p>We are based in the United States. Personal information may be processed or stored in:</p>
+<ul>
+<li>The United States;</li>
+<li>The destination country;</li>
+<li>A transit country;</li>
+<li>A Supplier's home country;</li>
+<li>A cloud-service location; or</li>
+<li>Another country in which a service provider operates.</li>
+</ul>
+<p>For example, a hotel in another country may need a Traveler's name, passport information, rooming information, dietary request, or arrival details.</p>
+<p>Privacy laws and government-access rules in another country may differ from those in your home jurisdiction.</p>
+<p>Where applicable law requires a transfer safeguard, we may use:</p>
+<ul>
+<li>A legally recognized adequacy decision;</li>
+<li>Contractual safeguards;</li>
+<li>Standard contractual clauses;</li>
+<li>A service-provider agreement;</li>
+<li>Consent where legally valid;</li>
+<li>A transfer necessary to perform a travel contract;</li>
+<li>A transfer necessary to protect vital interests; or</li>
+<li>Another lawful transfer method.</li>
+</ul>
+<p>International travel may require occasional transfers that are necessary to perform a contract in the Traveler's interest, such as providing identification to an overseas accommodation or activity provider.</p></section>
+<section class="ls" id="s17"><h2><span class="sn">17.</span>Data Security</h2><p>We use reasonable administrative, technical, and physical measures designed to protect personal information against unauthorized:</p>
+<ul>
+<li>Access;</li>
+<li>Use;</li>
+<li>Disclosure;</li>
+<li>Alteration;</li>
+<li>Loss;</li>
+<li>Destruction; and</li>
+<li>Acquisition.</li>
+</ul>
+<p>Depending on the nature of the information and system, safeguards may include:</p>
+<ul>
+<li>Access controls;</li>
+<li>Password protections;</li>
+<li>Multi-factor authentication;</li>
+<li>Encryption or secure transmission;</li>
+<li>Limited staff access;</li>
+<li>Confidentiality obligations;</li>
+<li>Secure payment processors;</li>
+<li>Vendor review;</li>
+<li>Backup and recovery procedures;</li>
+<li>System updates;</li>
+<li>Malware protection;</li>
+<li>Incident-response procedures;</li>
+<li>Secure disposal; and</li>
+<li>Staff training.</li>
+</ul>
+<p>No transmission or storage method is completely secure.</p>
+<p>Ordinary email and messaging services may not be appropriate for highly sensitive information. When available, use the secure form, portal, or upload method provided by the Company.</p>
+<p>Florida law requires covered commercial entities to take reasonable measures to protect and securely dispose of covered personal information and imposes notification requirements following qualifying security breaches.</p></section>
+<section class="ls" id="s18"><h2><span class="sn">18.</span>Children's Privacy</h2><h3>18.1 Services are intended for adults</h3>
+<p>Bookings must be initiated and managed by an adult.</p>
+<p>Our website, booking forms, payment services, and Trip-registration process are intended for:</p>
+<ul>
+<li>Adults;</li>
+<li>Parents;</li>
+<li>Natural guardians;</li>
+<li>Legal guardians; and</li>
+<li>Other legally authorized adults.</li>
+</ul>
+<p>A child should not independently:</p>
+<ul>
+<li>Create a booking;</li>
+<li>Pay an invoice;</li>
+<li>Submit a passport;</li>
+<li>Submit medical information;</li>
+<li>Submit insurance information;</li>
+<li>Join a mailing list;</li>
+<li>Create a public account;</li>
+<li>Enter a promotion; or</li>
+<li>Contact us with personal information</li>
+</ul>
+<p>without the involvement of a parent or guardian.</p>
+<h3>18.2 Parent-provided information</h3>
+<p>A parent or guardian may provide a child's information where reasonably necessary to:</p>
+<ul>
+<li>Arrange travel;</li>
+<li>Verify age;</li>
+<li>Arrange accommodations;</li>
+<li>Determine activity eligibility;</li>
+<li>Address dietary or accessibility needs;</li>
+<li>Respond to health and safety concerns;</li>
+<li>Obtain insurance proof;</li>
+<li>Prepare emergency records;</li>
+<li>Meet Supplier requirements; and</li>
+<li>Comply with legal obligations.</li>
+</ul>
+<h3>18.3 Children under thirteen</h3>
+<p>We do not intend to collect personal information online directly from a child under thirteen without appropriate parental involvement.</p>
+<p>If we operate an online feature directed to children under thirteen or knowingly collect personal information online directly from a child under thirteen, we will obtain verifiable parental consent where COPPA requires it.</p>
+<p>We will also provide applicable parental rights to:</p>
+<ul>
+<li>Review the information;</li>
+<li>Request deletion;</li>
+<li>Refuse further collection;</li>
+<li>Revoke consent; and</li>
+<li>Limit disclosure where required.</li>
+</ul>
+<p>A general statement that a parent booked a Trip should not be treated as a substitute for a legally required COPPA consent method when information is being collected directly from the child.</p>
+<h3>18.4 Teenagers</h3>
+<p>Where applicable law provides enhanced protection for individuals between thirteen and seventeen, we will seek the authorization or consent required for the particular processing.</p>
+<h3>18.5 No targeted advertising using known-child information</h3>
+<p>We do not knowingly use or disclose personal information from a known child for targeted advertising.</p>
+<h3>18.6 Parent or guardian requests</h3>
+<p>A parent or legally authorized guardian may request access to, correction of, or deletion of a Minor's personal information by following Section 22.</p>
+<p>We may require proof of:</p>
+<ul>
+<li>The requesting adult's identity;</li>
+<li>Relationship to the child;</li>
+<li>Parental responsibility;</li>
+<li>Guardianship; or</li>
+<li>Other legal authority.</li>
+</ul>
+<h3>18.7 Information submitted without authority</h3>
+<p>If you believe a child submitted information without appropriate parental permission, contact us at booking@everyavenuetravel.com with the subject line <strong>Child Privacy Request</strong>.</p>
+<p>We will investigate and take appropriate action.</p></section>
+<section class="ls" id="s19"><h2><span class="sn">19.</span>Data Retention</h2><p>We retain personal information only for as long as reasonably necessary for the stated purpose, including to:</p>
+<ul>
+<li>Complete the Trip;</li>
+<li>Maintain required business records;</li>
+<li>Document contractual acceptance;</li>
+<li>Administer refunds or credits;</li>
+<li>Meet tax and accounting obligations;</li>
+<li>Address health or safety matters;</li>
+<li>Respond to insurance claims;</li>
+<li>Resolve disputes;</li>
+<li>Enforce agreements;</li>
+<li>Comply with Supplier or legal requirements;</li>
+<li>Protect Minors; and</li>
+<li>Establish, exercise, or defend legal claims.</li>
+</ul>
+<p>The following is our intended retention framework. Actual retention may be longer or shorter when reasonably required by law, litigation hold, insurance, Supplier requirements, security, or an active dispute.</p>
+<h3>19.1 Inquiries and unconfirmed quotes</h3>
+<p>Generally retained for up to twenty-four months after the last substantive communication, unless the person requests earlier deletion or the record is needed for another lawful purpose.</p>
+<h3>19.2 Booking, payment, contract, and accounting records</h3>
+<p>Generally retained for at least seven years after the Trip is completed, canceled, or otherwise closed, or for the applicable tax, accounting, contractual, or claims period.</p>
+<h3>19.3 Acceptance and waiver records</h3>
+<p>Records showing delivery and acceptance of Terms, cancellation terms, adult agreements, Minor agreements, insurance obligations, and related versions may be retained for the period reasonably necessary to document the agreement and address potential claims. Records involving a Minor may be retained longer where appropriate because legal claims involving Minors may be subject to different limitation periods.</p>
+<h3>19.4 Passport and travel-document copies</h3>
+<p>Where the Company holds a copy, our target is to delete or securely dispose of it within ninety days after the Trip ends, unless:</p>
+<ul>
+<li>A Supplier or legal requirement requires longer retention;</li>
+<li>An incident or claim occurred;</li>
+<li>The Traveler asks us to retain it for a future booking;</li>
+<li>The document is part of a required transaction record; or</li>
+<li>Another legitimate legal or security reason applies.</li>
+</ul>
+<p>Supplier systems may have separate retention periods.</p>
+<h3>19.5 Health, allergy, accessibility, emergency, and insurance information</h3>
+<p>Generally retained until the Trip is completed and for a limited post-Trip period reasonably necessary to:</p>
+<ul>
+<li>Address follow-up questions;</li>
+<li>Document accommodations;</li>
+<li>Respond to an incident;</li>
+<li>Support an insurance claim;</li>
+<li>Meet legal requirements; or</li>
+<li>Defend a claim.</li>
+</ul>
+<p>If no incident occurred, our target is to delete or minimize detailed health and insurance records within twelve months after the Trip, unless continued retention is authorized or reasonably necessary.</p>
+<h3>19.6 Incident and claim records</h3>
+<p>Retained for the duration of the incident, insurance, dispute, or legal matter and for the applicable period afterward.</p>
+<h3>19.7 Website and security logs</h3>
+<p>Generally retained for up to twenty-four months, although security, fraud, backup, and diagnostic records may be retained longer where reasonably necessary.</p>
+<h3>19.8 Marketing records</h3>
+<p>Retained while the person remains subscribed or while we have another lawful basis for marketing. We may retain a minimal suppression record after unsubscribe so that we do not send further marketing to that address.</p>
+<h3>19.9 Cookie information</h3>
+<p>Retained according to the duration stated in the applicable cookie tool or provider settings.</p>
+<h3>19.10 Media</h3>
+<p>Photographs and videos may be retained while reasonably useful for the authorized purpose. A consent withdrawal generally applies prospectively and may not require removal from:</p>
+<ul>
+<li>Materials already printed;</li>
+<li>Completed publications;</li>
+<li>Archived records;</li>
+<li>Materials already distributed;</li>
+<li>Legal records; or</li>
+<li>Third-party reposts outside our reasonable control.</li>
+</ul>
+<h3>19.11 Privacy-request records</h3>
+<p>Generally retained for at least twenty-four months or another period required by applicable law to document the request and response.</p>
+<h3>19.12 Backups</h3>
+<p>Information deleted from active systems may remain temporarily in backups until the backup is overwritten or securely retired. We will not restore deleted information from backup for ordinary business use unless reasonably necessary for security, disaster recovery, or legal compliance.</p></section>
+<section class="ls" id="s20"><h2><span class="sn">20.</span>Marketing Communications</h2><p>You may unsubscribe from marketing email by:</p>
+<ul>
+<li>Using the unsubscribe link;</li>
+<li>Updating available preferences; or</li>
+<li>Emailing booking@everyavenuetravel.com.</li>
+</ul>
+<p>Marketing opt-out does not stop transactional or relationship messages concerning:</p>
+<ul>
+<li>An active booking;</li>
+<li>Payment;</li>
+<li>Itinerary;</li>
+<li>Safety;</li>
+<li>Insurance;</li>
+<li>A refund or credit;</li>
+<li>A complaint;</li>
+<li>A legal notice; or</li>
+<li>Another requested service.</li>
+</ul>
+<p>Commercial email recipients must be given an appropriate method to stop future marketing messages, and opt-out requests must be honored as required by law.</p>
+<p>Where we offer marketing text messages, we will provide applicable consent and opt-out instructions.</p>
+<p>Consent to receive marketing text messages is not a condition of purchasing a Trip unless applicable law permits and the arrangement is expressly disclosed.</p></section>
+<section class="ls" id="s21"><h2><span class="sn">21.</span>Automated Decision-Making</h2><p>Unless separately disclosed, we do not make decisions producing legal or similarly significant effects about Travelers solely through automated processing without meaningful human involvement.</p>
+<p>We may use automated tools for limited purposes such as:</p>
+<ul>
+<li>Fraud detection;</li>
+<li>Spam filtering;</li>
+<li>Website personalization;</li>
+<li>Analytics;</li>
+<li>Email delivery;</li>
+<li>Payment-risk screening;</li>
+<li>Sorting inquiries; and</li>
+<li>Identifying incomplete booking information.</li>
+</ul>
+<p>A Supplier or payment processor may independently use automated fraud, identity, eligibility, or security systems under its own policy.</p></section>
+<section class="ls" id="s22"><h2><span class="sn">22.</span>Your Privacy Rights</h2><p>Depending on where you live and which law applies, you may have the right to:</p>
+<ol>
+<li>Confirm whether we process your personal information;</li>
+<li>Access personal information;</li>
+<li>Correct inaccurate information;</li>
+<li>Request deletion;</li>
+<li>Obtain a portable copy;</li>
+<li>Restrict certain processing;</li>
+<li>Object to certain processing;</li>
+<li>Withdraw consent;</li>
+<li>Opt out of sale;</li>
+<li>Opt out of sharing for targeted or cross-context behavioral advertising;</li>
+<li>Opt out of certain profiling;</li>
+<li>Limit certain uses of sensitive personal information;</li>
+<li>Appeal a denied request;</li>
+<li>Obtain information about categories of recipients;</li>
+<li>Lodge a complaint with a regulator; and</li>
+<li>Exercise rights without unlawful discrimination.</li>
+</ol>
+<p>These rights are subject to applicable exceptions.</p>
+<p>For example, we may need to retain information to:</p>
+<ul>
+<li>Complete a booking;</li>
+<li>Provide requested services;</li>
+<li>Comply with law;</li>
+<li>Maintain tax or accounting records;</li>
+<li>Protect security;</li>
+<li>Prevent fraud;</li>
+<li>Document a waiver or agreement;</li>
+<li>Protect a Minor;</li>
+<li>Exercise free-expression rights;</li>
+<li>Resolve a dispute;</li>
+<li>Establish or defend a claim; or</li>
+<li>Maintain a marketing suppression list.</li>
+</ul>
+<p>The Florida Digital Bill of Rights, where applicable, identifies rights including access, correction, deletion, portability, and opt-outs for sale, targeted advertising, certain profiling, and certain sensitive-data processing.</p></section>
+<section class="ls" id="s23"><h2><span class="sn">23.</span>How to Submit a Privacy Request</h2><p>Submit a request by emailing:</p>
+<p><strong>booking@everyavenuetravel.com</strong></p>
+<p><strong>Subject line: Privacy Request</strong></p>
+<p>Include:</p>
+<ul>
+<li>Full name;</li>
+<li>Email address associated with the booking or website interaction;</li>
+<li>Booking or invoice number, if applicable;</li>
+<li>The right you wish to exercise;</li>
+<li>State or country of residence;</li>
+<li>Whether the request concerns a Minor; and</li>
+<li>Enough information to identify the relevant records.</li>
+</ul>
+<p>Do not send:</p>
+<ul>
+<li>A complete passport copy;</li>
+<li>Full payment-card information;</li>
+<li>An account password; or</li>
+<li>Unnecessary medical information</li>
+</ul>
+<p>in the initial request.</p></section>
+<section class="ls" id="s24"><h2><span class="sn">24.</span>Verification of Requests</h2><p>We may take reasonable steps to verify:</p>
+<ul>
+<li>Identity;</li>
+<li>Email control;</li>
+<li>Booking relationship;</li>
+<li>Authority to act for another person;</li>
+<li>Authority to act for a Minor; and</li>
+<li>Authenticity of the request.</li>
+</ul>
+<p>Verification information will be used only for verification, security, recordkeeping, and legal compliance.</p>
+<p>We may deny or limit a request when:</p>
+<ul>
+<li>Identity cannot be verified;</li>
+<li>Authority cannot be established;</li>
+<li>The request is fraudulent;</li>
+<li>An exception applies;</li>
+<li>Compliance would adversely affect another person's rights;</li>
+<li>The request seeks information we do not control;</li>
+<li>Information must be retained by law; or</li>
+<li>The request is manifestly unfounded or excessive under applicable law.</li>
+</ul>
+<p>We will explain a denial where required.</p></section>
+<section class="ls" id="s25"><h2><span class="sn">25.</span>Authorized Agents</h2><p>Where applicable law permits, an authorized agent may submit a request.</p>
+<p>We may require:</p>
+<ul>
+<li>Written authorization;</li>
+<li>Verification of the individual's identity;</li>
+<li>Verification of the agent's identity;</li>
+<li>Proof of legal authority; or</li>
+<li>Direct confirmation from the individual.</li>
+</ul>
+<p>A parent or guardian acting for a Minor may be required to provide proof of relationship or authority.</p></section>
+<section class="ls" id="s26"><h2><span class="sn">26.</span>Response and Appeals</h2><p>We will respond within the period required by applicable law.</p>
+<p>Where permitted, we may extend the response period because of request complexity or volume and will provide notice of the extension.</p>
+<p>If applicable law gives you a right to appeal a denied privacy request, submit the appeal to:</p>
+<p><strong>booking@everyavenuetravel.com</strong></p>
+<p><strong>Subject line: Privacy Request Appeal</strong></p>
+<p>Explain why you believe the decision should be reconsidered.</p></section>
+<section class="ls" id="s27"><h2><span class="sn">27.</span>No Unlawful Discrimination</h2><p>We will not unlawfully discriminate against a person for exercising an applicable privacy right.</p>
+<p>Exercising a privacy right may affect our ability to provide a service where the requested service reasonably requires the information.</p>
+<p>For example, we may be unable to:</p>
+<ul>
+<li>Reserve an accommodation without a name;</li>
+<li>Arrange a restricted activity without age information;</li>
+<li>Provide an allergy accommodation without relevant allergy information;</li>
+<li>Arrange international travel without required identification;</li>
+<li>Confirm insurance compliance without insurance information; or</li>
+<li>Maintain a booking after deletion of essential booking records.</li>
+</ul></section>
+<section class="ls" id="s28"><h2><span class="sn">28.</span>California and Other U.S. State Privacy Notice</h2><p>This Section applies to the extent a state privacy law applies to the Company and the relevant individual.</p>
+<p>The current California framework requires covered businesses to provide information at or before collection regarding categories, purposes, whether information is sold or shared, and retention periods, and to maintain a comprehensive privacy policy.</p>
+<h3>28.1 Categories collected during the preceding twelve months</h3>
+<p>Depending on your interaction with us, we may have collected:</p>
+<p><strong>Identifiers</strong></p>
+<p>Examples include name, email, telephone number, address, IP address, online identifier, passport number, and other government identification.</p>
+<p><strong>Customer-record information</strong></p>
+<p>Examples include contact information, booking information, payment information, travel documents, insurance information, and service records.</p>
+<p><strong>Protected classification information</strong></p>
+<p>Examples may include age, nationality, citizenship, disability, medical condition, family status, or other information voluntarily provided or required for the Trip.</p>
+<p><strong>Commercial information</strong></p>
+<p>Examples include Trip purchases, booking history, deposits, invoices, payments, cancellations, refunds, credits, interests, and service preferences.</p>
+<p><strong>Internet or electronic activity</strong></p>
+<p>Examples include browsing activity, pages visited, ad interaction, referral information, cookies, and device data.</p>
+<p><strong>Geolocation information</strong></p>
+<p>Examples include approximate location based on IP address and location voluntarily shared for transportation, Trip coordination, or an emergency.</p>
+<p><strong>Audio, visual, and sensory information</strong></p>
+<p>Examples include photographs, videos, customer-service communications, and recordings made with notice.</p>
+<p><strong>Professional or educational information</strong></p>
+<p>Examples may include work or school scheduling information voluntarily provided in connection with a booking and worldschooling interests.</p>
+<p><strong>Inferences</strong></p>
+<p>Examples may include likely Trip interests or content preferences inferred from website or booking interactions.</p>
+<p><strong>Sensitive personal information</strong></p>
+<p>Examples include passport information, financial-account information, account credentials, health information, citizenship information, precise location where voluntarily provided, and information concerning known children.</p>
+<h3>28.2 Categories of sources</h3>
+<p>We may collect these categories from:</p>
+<ul>
+<li>Consumers;</li>
+<li>Parents and guardians;</li>
+<li>Booking Clients;</li>
+<li>Travel companions;</li>
+<li>Suppliers;</li>
+<li>Payment and booking platforms;</li>
+<li>Website technologies;</li>
+<li>Social-media platforms;</li>
+<li>Insurers;</li>
+<li>Emergency providers;</li>
+<li>Public sources; and</li>
+<li>Authorized representatives.</li>
+</ul>
+<h3>28.3 Business and commercial purposes</h3>
+<p>Purposes include:</p>
+<ul>
+<li>Providing travel services;</li>
+<li>Processing payments;</li>
+<li>Fulfilling bookings;</li>
+<li>Communicating with Suppliers;</li>
+<li>Health and safety;</li>
+<li>Insurance verification;</li>
+<li>Emergency response;</li>
+<li>Customer support;</li>
+<li>Marketing;</li>
+<li>Analytics;</li>
+<li>Advertising;</li>
+<li>Fraud prevention;</li>
+<li>Security;</li>
+<li>Legal compliance;</li>
+<li>Recordkeeping; and</li>
+<li>Defending claims.</li>
+</ul>
+<h3>28.4 Categories disclosed for business purposes</h3>
+<p>We may disclose relevant categories to:</p>
+<ul>
+<li>Travel Suppliers;</li>
+<li>Payment processors;</li>
+<li>Booking platforms;</li>
+<li>Website and cloud providers;</li>
+<li>Email and communication providers;</li>
+<li>Analytics providers;</li>
+<li>Professional advisers;</li>
+<li>Insurers;</li>
+<li>Emergency providers;</li>
+<li>Government authorities; and</li>
+<li>Business transaction recipients.</li>
+</ul>
+<h3>28.5 Categories sold or shared</h3>
+<p>We do not sell personal information for monetary payment.</p>
+<p>Depending on website configuration, we may share the following categories with analytics or advertising partners in a manner that may qualify as "sharing" or "sale" under a broadly defined state law:</p>
+<ul>
+<li>Identifiers such as cookie or device identifiers;</li>
+<li>Internet or electronic activity;</li>
+<li>Approximate geolocation; and</li>
+<li>Inferences concerning content or travel interests.</li>
+</ul>
+<p>We do not knowingly sell or share for targeted advertising:</p>
+<ul>
+<li>Passport information;</li>
+<li>Detailed financial information;</li>
+<li>Health information;</li>
+<li>Insurance information;</li>
+<li>Emergency information; or</li>
+<li>Known-child information.</li>
+</ul>
+<h3>28.6 Sensitive personal information</h3>
+<p>We use sensitive personal information primarily to provide requested travel services, process payments, protect safety, verify identity, meet Supplier requirements, and comply with law.</p>
+<p>We do not use sensitive personal information to infer unrelated characteristics for advertising.</p>
+<h3>28.7 Retention</h3>
+<p>The retention periods and criteria are described in Section 19.</p>
+<h3>28.8 State privacy requests</h3>
+<p>Where the applicable state law provides the right, a resident may request:</p>
+<ul>
+<li>Access;</li>
+<li>Correction;</li>
+<li>Deletion;</li>
+<li>Portability;</li>
+<li>Opt-out of sale;</li>
+<li>Opt-out of targeted advertising or sharing;</li>
+<li>Limitation of certain sensitive-data uses;</li>
+<li>Information concerning disclosure; and</li>
+<li>Appeal of a denied request.</li>
+</ul>
+<p>Submit requests as described in Section 23.</p></section>
+<section class="ls" id="s29"><h2><span class="sn">29.</span>European Economic Area, United Kingdom, and Switzerland</h2><p>This Section applies only where the GDPR, UK GDPR, Swiss data-protection law, or comparable law applies to the processing.</p>
+<p>Individuals in the European Economic Area may have rights including information, access, correction, deletion, restriction, portability, objection, and protections concerning automated decision-making.</p>
+<h3>29.1 Controller</h3>
+<p>For processing covered by this Policy, the controller is:</p>
+<p><strong>Every Avenue Travel LLC</strong></p>
+<p>booking@everyavenuetravel.com</p>
+<h3>29.2 Legal bases</h3>
+<p>Our legal bases are described in Section 10.</p>
+<p>For health or other special-category information, the additional basis may include:</p>
+<ul>
+<li>Explicit consent;</li>
+<li>Vital interests;</li>
+<li>Establishment, exercise, or defense of legal claims;</li>
+<li>Substantial public interest where applicable; or</li>
+<li>Another basis permitted by law.</li>
+</ul>
+<h3>29.3 International transfers</h3>
+<p>Information may be transferred to the United States and to Trip destinations.</p>
+<p>Where required, we will use an applicable safeguard or lawful transfer basis, which may include contractual safeguards, adequacy, consent, vital interests, or a transfer necessary to perform a travel contract in the individual's interest.</p>
+<h3>29.4 Rights</h3>
+<p>Subject to applicable conditions, an individual may request:</p>
+<ul>
+<li>Access;</li>
+<li>Rectification;</li>
+<li>Erasure;</li>
+<li>Restriction;</li>
+<li>Portability;</li>
+<li>Objection;</li>
+<li>Withdrawal of consent; and</li>
+<li>Review of a significant solely automated decision.</li>
+</ul>
+<h3>29.5 Marketing objection</h3>
+<p>An individual may object at any time to processing for direct marketing.</p>
+<h3>29.6 Complaint</h3>
+<p>An individual may lodge a complaint with the data-protection authority in the individual's country or region.</p>
+<p>We encourage contacting us first so that we may attempt to address the concern.</p>
+<h3>29.7 Representative</h3>
+<p>If applicable law requires the Company to appoint an EEA, UK, or Swiss representative, the representative's contact information will be added to this Policy.</p></section>
+<section class="ls" id="s30"><h2><span class="sn">30.</span>External Links, Embedded Content, and Affiliate Offers</h2><p>Our website may contain:</p>
+<ul>
+<li>External links;</li>
+<li>Affiliate links;</li>
+<li>Embedded videos;</li>
+<li>Social-media feeds;</li>
+<li>Advertising;</li>
+<li>Sponsored content;</li>
+<li>Travel deals;</li>
+<li>Hotel or activity links;</li>
+<li>Credit-card or insurance information; and</li>
+<li>Links to Supplier booking pages.</li>
+</ul>
+<p>The third party may collect information when you:</p>
+<ul>
+<li>Click a link;</li>
+<li>View embedded content;</li>
+<li>Make a purchase;</li>
+<li>Create an account;</li>
+<li>Submit a form; or</li>
+<li>Interact with an advertisement.</li>
+</ul>
+<p>We do not control the third party's privacy practices.</p>
+<p>An affiliate relationship or commission arrangement should be disclosed separately where required.</p></section>
+<section class="ls" id="s31"><h2><span class="sn">31.</span>Testimonials, Reviews, and Public Submissions</h2><p>When you voluntarily submit a review, testimonial, photograph, article, comment, or public statement, we may use it according to:</p>
+<ul>
+<li>The context in which it was submitted;</li>
+<li>The permission provided;</li>
+<li>The applicable media terms; and</li>
+<li>Applicable law.</li>
+</ul>
+<p>We will not represent a private complaint or support email as a public endorsement without permission.</p>
+<p>A public review posted to a third-party platform is governed by that platform's terms.</p></section>
+<section class="ls" id="s32"><h2><span class="sn">32.</span>Changes to This Policy</h2><p>We may update this Policy to reflect:</p>
+<ul>
+<li>Changes in our services;</li>
+<li>New Suppliers or technology;</li>
+<li>New legal requirements;</li>
+<li>Changes in cookie or advertising practices;</li>
+<li>Security improvements; or</li>
+<li>Changes in business operations.</li>
+</ul>
+<p>The revised Policy will state a new "Last Updated" date.</p>
+<p>A revised Policy applies prospectively from its effective date.</p>
+<p>Where required, we will provide additional notice or seek consent before using previously collected information for a materially different purpose.</p>
+<p>We should retain archived copies of prior Privacy Policy versions associated with historical bookings.</p></section>
+<section class="ls" id="s33"><h2><span class="sn">33.</span>Contact Us</h2><p>For privacy questions, complaints, or requests, contact:</p>
+<p><strong>Every Avenue Travel LLC</strong></p>
+<p><strong>Email:</strong> booking@everyavenuetravel.com</p>
+<p><strong>Subject:</strong> Privacy Request</p>
+<p>For a child-related request, use the subject:</p>
+<p><strong>Child Privacy Request</strong></p>
+<p>For an appeal, use the subject:</p>
+<p><strong>Privacy Request Appeal</strong></p>
+<p>Please do not email full payment-card numbers, account passwords, or unnecessary passport or medical documents.</p>
+<p><strong>Effective Date:</strong> 5/22/24</p></section>
+    <a href="#top" class="to-top">↑ Back to top</a>
+  </article>
+</div></div>
+<script>if(window.innerWidth<=980){document.querySelector('.legal-toc').removeAttribute('open');}</script>
+<div class="brand-stripe"></div>
+<footer class="site-footer nf">
+  <div class="wrap nf-grid">
+    <div class="nf-brand">
+      <a href="/" class="gn-logo nf-logo"><span class="gn-script">Worldschooling</span><span class="gn-sans">journeys</span></a>
+      <p class="nf-blurb">Worldschooling group trips and cruises for homeschool families who want connection, community, and real-world learning.</p>
+      <div class="nf-featured"><span>As featured in</span><a href="#">People</a><span class="nf-dot">✦</span><a href="#">Daily Mail</a></div>
+    </div>
+    <div>
+      <div class="nf-label">Connect with us</div>
+      <div class="nf-social"><a href="#" class="fs-icon" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.5l.4-3H13.5V8.5c0-.87.24-1.46 1.49-1.46H16.5V4.36C16.2 4.32 15.19 4.23 14 4.23c-2.44 0-4.11 1.49-4.11 4.22V10.5H7.4v3h2.49V21h3.61z"/></svg></a><a href="#" class="fs-icon" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg></a><a href="#" class="fs-icon" aria-label="TikTok" title="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 3c.3 2.2 1.6 3.6 3.9 3.8v3a7.3 7.3 0 0 1-3.8-1.2v6.3c0 3.6-2.6 6.1-6 6.1a5.9 5.9 0 0 1-6-5.9c0-3.6 3.1-6.4 7-5.8v3.1c-1.9-.4-3.8.8-3.8 2.7 0 1.5 1.2 2.7 2.8 2.7 1.7 0 2.8-1.1 2.8-3V3h3.1z"/></svg></a><a href="https://www.messenger.com/login.php?next=https%3A%2F%2Fwww.messenger.com%2Ft%2F1472067489710819" class="fs-icon" aria-label="Messenger" title="Messenger"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5C6.6 2.5 2.5 6.4 2.5 11.4c0 2.7 1.2 5 3.2 6.6v3.5l3.1-1.7c1 .3 2.1.4 3.2.4 5.4 0 9.5-3.9 9.5-8.8S17.4 2.5 12 2.5zm1 11.8-2.4-2.6-4.7 2.6 5.2-5.5 2.5 2.6 4.6-2.6-5.2 5.5z"/></svg></a><a href="https://wa.me/message/6C5D7L3I726ND1" class="fs-icon" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.6a8.5 8.5 0 0 1-12.6 7.5L3.5 20.5l1.4-4.2A8.5 8.5 0 1 1 20.5 11.6z"/><path d="M9 8.6c.2 2.6 2.4 5 5.2 5.6l1-1.1-1.6-.9-.7.6c-1-.5-1.7-1.2-2.1-2.1l.6-.7-.8-1.6z" fill="currentColor" stroke="none"/></svg></a><a href="https://www.facebook.com/groups/everyavenuetravel" class="fs-icon" aria-label="Facebook Group" title="Facebook Group"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="8" r="3.2"/><circle cx="17" cy="9.2" r="2.5"/><path d="M2.8 19.5c0-3.5 2.8-6 6.2-6s6.2 2.5 6.2 6v.5H2.8z"/><path d="M16 20v-.5c0-1.8-.6-3.4-1.7-4.6.8-.5 1.7-.8 2.7-.8 2.7 0 4.5 2 4.5 4.8v1.1z"/></svg></a></div>
+      <a href="https://www.facebook.com/groups/everyavenuetravel" class="nf-group">Join our Worldschooling Facebook Group <span>&rarr;</span></a>
+    </div>
+    <div>
+      <div class="nf-label">Contact us</div>
+      <a href="https://wa.me/message/6C5D7L3I726ND1" class="nf-contact"><span class="nf-ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.6a8.5 8.5 0 0 1-12.6 7.5L3.5 20.5l1.4-4.2A8.5 8.5 0 1 1 20.5 11.6z"/><path d="M9 8.6c.2 2.6 2.4 5 5.2 5.6l1-1.1-1.6-.9-.7.6c-1-.5-1.7-1.2-2.1-2.1l.6-.7-.8-1.6z" fill="currentColor" stroke="none"/></svg></span>Connect via WhatsApp</a>
+      <a href="#" class="nf-contact"><span class="nf-ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.5-4.6A8 8 0 1 1 21 12z"/><circle cx="8.5" cy="12" r=".6" fill="currentColor"/><circle cx="12" cy="12" r=".6" fill="currentColor"/><circle cx="15.5" cy="12" r=".6" fill="currentColor"/></svg></span>Connect via ChatBot</a>
+    </div>
+    <div>
+      <div class="nf-label">Pages</div>
+      <div class="footer-links nf-links">
+        <a href="/terms-and-conditions.html">Terms and Conditions</a>
+        <a href="/cancellation-policy.html">Cancellations &amp; Refunds</a>
+        <a href="/privacy-policy.html">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+  <div class="nf-bottom">
+    <div class="wrap nf-bottom-in">
+      <span><span class="mark">&#10022;</span> &copy; 2026 Worldschooling Journeys, an Every Avenue Travel company</span>
+      <span class="nf-legal">Every Avenue Travel, LLC is registered with the State of Florida as a Seller of Travel. Registration No. ST45213. IATA No. 10620400.</span>
+    </div>
+  </div>
+</footer>
+
+
+
+<script>
+// MOBILE NAVBAR: the phone menu button opens/closes the side drawer; tapping
+// the dimmed page, a link, or Escape closes it. The page can't scroll behind it.
+(function(){
+  const nav = document.querySelector('.global-nav');
+  const btn = document.getElementById('gnToggle');
+  const links = document.getElementById('gnLinks');
+  if(!nav || !btn || !links) return;
+  const logo = nav.querySelector('.gn-logo');
+  if(logo){ const copy = logo.cloneNode(true); copy.classList.add('gn-drawer-logo'); links.prepend(copy); }
+  const backdrop = document.createElement('div');
+  backdrop.className = 'gn-backdrop';
+  nav.appendChild(backdrop);
+  function setOpen(open){
+    nav.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open);
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+  }
+  btn.addEventListener('click', () => setOpen(!nav.classList.contains('open')));
+  backdrop.addEventListener('click', () => setOpen(false));
+  links.addEventListener('click', (e) => { if(e.target.closest('a[href]:not([href="#"])')) setOpen(false); });
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') setOpen(false); });
+  window.addEventListener('resize', () => { if(innerWidth > 760) setOpen(false); });
+})();
+</script>
+</body>
+</html>
