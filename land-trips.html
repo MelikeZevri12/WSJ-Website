@@ -544,7 +544,7 @@
   // Fixed list, same order/spelling as the backend's CRUISE_REGIONS (see
   // domain/cruise-region.util.ts) - kept here too since this page has no
   // server-rendering step to share it from directly.
-  const ALL_REGIONS = ["Europe", "North America", "Africa"]; const CRUISE_REGIONS_UNUSED = ["Transpacific", "Transatlantic", "Mediterranean", "Caribbean & Mexico", "East Asia", "Southeast Asia", "Australia & New Zealand", "South America", "Alaska", "Hawaii", "Baltic & Scandinavia", "British Isles"];
+  const ALL_REGIONS = ["Europe", "North America", "Africa", "Middle East"]; const CRUISE_REGIONS_UNUSED = ["Transpacific", "Transatlantic", "Mediterranean", "Caribbean & Mexico", "East Asia", "Southeast Asia", "Australia & New Zealand", "South America", "Alaska", "Hawaii", "Baltic & Scandinavia", "British Isles"];
 
   const state = {
     durationMin: 0, durationMax: 0,
@@ -561,6 +561,7 @@
   const LAND_TRIPS = [
     { href: "/land-trips/morocco.html", title: "12-day Worldschooling Morocco Family Journey", dates: "Nov 1–12, 2026", sortDate: "2026-11-01", nights: 11, departures: 1, regions: ["Africa"], priceText: "$2,200 <small>/ person</small>", photoLabel: "Morocco", heroImageUrl: "/images/land-trips/morocco.webp", soldOut: false, startingPrice: null },
     { href: "/land-trips/austria-winter.html", title: "14-day Worldschooling Austrian Skiing & Christmas Markets Retreat", dates: "Dec 4–18, 2026", sortDate: "2026-12-04", nights: 14, departures: 2, regions: ["Europe"], priceText: "€2,700 <small>/ family</small>", photoLabel: "Austrian Alps in winter", heroImageUrl: "/images/land-trips/austria-winter.webp", soldOut: false, startingPrice: null, tag: "Few spots left" },
+    { href: "/land-trips/egypt-jordan.html", title: "15-day Worldschooling Egypt & Jordan Adventure", dates: "Jan 25 – Feb 8, 2027", sortDate: "2027-01-25", nights: 14, departures: 1, regions: ["Africa", "Middle East"], priceText: "$2,999 <small>/ person</small>", photoLabel: "Egypt & Jordan", heroImageUrl: "/images/land-trips/egypt-jordan.webp", soldOut: false, startingPrice: null },
     { href: "/land-trips/austria-summer.html", title: "14-day Worldschooling Austrian Mountain Summer Retreat", dates: "May 30 – Jul 11, 2027 · 3 sessions", sortDate: "2027-05-30", nights: 14, departures: 3, regions: ["Europe"], priceText: "€3,704 <small>/ family</small>", photoLabel: "Austrian Alps in summer", heroImageUrl: "/images/land-trips/austria-summer.webp", soldOut: false, startingPrice: null },
     { href: "/land-trips/austria-fall.html", title: "14-day Worldschooling Austrian Fall Mountain Retreat", dates: "Sep 5–19, 2027", sortDate: "2027-09-05", nights: 14, departures: 1, regions: ["Europe"], priceText: "€3,480 <small>/ family</small>", photoLabel: "Austrian Alps in fall", heroImageUrl: "/images/land-trips/austria-fall.webp", soldOut: false, startingPrice: null },
     { href: "/land-trips/dude-ranch.html", title: "7-day Worldschooling Horseback Riding Dude Ranch Experience", dates: "Sep 5–11, 2027", sortDate: "2027-09-05", nights: 6, departures: 2, regions: ["North America"], priceText: "$3,200 <small>/ person</small>", photoLabel: "VeeBar Guest Ranch", heroImageUrl: "/images/land-trips/dude-ranch.webp", soldOut: false, startingPrice: null },
