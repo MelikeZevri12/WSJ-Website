@@ -992,6 +992,38 @@
   /* Header photo */
   .hero{background-image:linear-gradient(180deg, rgba(21,34,48,0.55) 0%, rgba(13,22,32,0.82) 100%), url('/images/land-trips/austria-fall.webp');background-blend-mode:normal;}
   .hero .hero-photo-label{display:none;}
+
+  /* SITE FOOTER (from the Home page) */
+  .site-footer.nf{background:var(--dark);color:#c7ccd1;padding:0;}
+  .nf-grid{display:grid;grid-template-columns:1.4fr 1.4fr 1.1fr .9fr;gap:36px;padding:56px 24px 44px;}
+  .nf-logo{display:inline-flex;align-items:baseline;gap:8px;font-size:30px;margin-bottom:14px;}
+  .nf-blurb{font-size:14px;line-height:1.6;color:#aeb6bf;max-width:300px;margin:0 0 18px;}
+  .nf-featured{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#8b95a1;}
+  .nf-featured a{font-family:'Libre Baskerville',serif;font-size:15px;font-weight:700;letter-spacing:0;text-transform:none;color:var(--white);text-decoration:none;}
+  .nf-featured .nf-dot{color:var(--gold);font-size:10px;}
+  .nf-label{font-family:'Libre Baskerville',serif;font-weight:700;font-size:16px;color:var(--white);margin:6px 0 18px;}
+  .nf-social{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+  .fs-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);
+    border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.04);transition:background .15s ease, border-color .15s ease, transform .15s ease;}
+  .fs-icon svg{width:19px;height:19px;}
+  .fs-icon:hover{background:var(--green-dark);border-color:var(--green-dark);transform:translateY(-2px);}
+  .nf-group{font-size:14px;font-weight:700;color:var(--green);text-decoration:none;}
+  .nf-group:hover{color:var(--white);}
+  .nf-contact{display:flex;align-items:center;gap:12px;font-size:14.5px;font-weight:600;color:#c7ccd1;text-decoration:none;margin-bottom:14px;}
+  .nf-contact:hover{color:var(--white);}
+  .nf-ci{width:36px;height:36px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb, var(--green) 18%, transparent);color:var(--green);}
+  .nf-ci svg{width:18px;height:18px;}
+  .nf-links{display:block;}
+  .nf-links a{display:block;font-size:14.5px;margin:0 0 12px;padding:0;color:#c7ccd1;text-decoration:none;}
+  .nf-links a:hover{color:var(--white);}
+  .nf-bottom{border-top:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.18);}
+  .nf-bottom-in{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 24px;padding:18px 24px;font-size:13px;color:#aeb6bf;}
+  .nf-bottom .mark{color:var(--gold);margin-right:4px;}
+  .nf-legal{font-size:12px;color:#8b95a1;}
+  @media (max-width:900px){ .nf-grid{grid-template-columns:1fr 1fr;gap:34px;} }
+  @media (max-width:560px){ .nf-grid{grid-template-columns:1fr;padding:44px 24px 32px;} .nf-bottom-in{flex-direction:column;align-items:flex-start;} }
+  .site-footer.nf{text-align:left;font-size:inherit;}
+  .site-footer.nf::before{content:none;display:none;}
 </style>
 </head>
 <body>
@@ -1011,7 +1043,7 @@
           <a href="/land-trips.html" class="gn-dropdown-item">Land Trips</a>
         </div>
       </div>
-      <a href="#" class="gn-link">About Us</a>
+      <a href="/about.html" class="gn-link">About Us</a>
       <a href="#" class="gn-link">Stay Updated</a>
       <a href="#" class="gn-link">Contact</a>
     </div>
@@ -1226,7 +1258,39 @@
 </section>
 
 <div class="brand-stripe"></div>
-<footer>© 2026 Worldschooling Journeys, an Every Avenue Travel company</footer>
+<footer class="site-footer nf">
+  <div class="wrap nf-grid">
+    <div class="nf-brand">
+      <a href="/" class="gn-logo nf-logo"><span class="gn-script">Worldschooling</span><span class="gn-sans">journeys</span></a>
+      <p class="nf-blurb">Worldschooling group trips and cruises for homeschool families who want connection, community, and real-world learning.</p>
+      <div class="nf-featured"><span>As featured in</span><a href="#">People</a><span class="nf-dot">✦</span><a href="#">Daily Mail</a></div>
+    </div>
+    <div>
+      <div class="nf-label">Connect with us</div>
+      <div class="nf-social"><a href="#" class="fs-icon" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.5l.4-3H13.5V8.5c0-.87.24-1.46 1.49-1.46H16.5V4.36C16.2 4.32 15.19 4.23 14 4.23c-2.44 0-4.11 1.49-4.11 4.22V10.5H7.4v3h2.49V21h3.61z"/></svg></a><a href="#" class="fs-icon" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg></a><a href="#" class="fs-icon" aria-label="TikTok" title="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 3c.3 2.2 1.6 3.6 3.9 3.8v3a7.3 7.3 0 0 1-3.8-1.2v6.3c0 3.6-2.6 6.1-6 6.1a5.9 5.9 0 0 1-6-5.9c0-3.6 3.1-6.4 7-5.8v3.1c-1.9-.4-3.8.8-3.8 2.7 0 1.5 1.2 2.7 2.8 2.7 1.7 0 2.8-1.1 2.8-3V3h3.1z"/></svg></a><a href="https://www.messenger.com/login.php?next=https%3A%2F%2Fwww.messenger.com%2Ft%2F1472067489710819" class="fs-icon" aria-label="Messenger" title="Messenger"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5C6.6 2.5 2.5 6.4 2.5 11.4c0 2.7 1.2 5 3.2 6.6v3.5l3.1-1.7c1 .3 2.1.4 3.2.4 5.4 0 9.5-3.9 9.5-8.8S17.4 2.5 12 2.5zm1 11.8-2.4-2.6-4.7 2.6 5.2-5.5 2.5 2.6 4.6-2.6-5.2 5.5z"/></svg></a><a href="https://wa.me/message/6C5D7L3I726ND1" class="fs-icon" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.6a8.5 8.5 0 0 1-12.6 7.5L3.5 20.5l1.4-4.2A8.5 8.5 0 1 1 20.5 11.6z"/><path d="M9 8.6c.2 2.6 2.4 5 5.2 5.6l1-1.1-1.6-.9-.7.6c-1-.5-1.7-1.2-2.1-2.1l.6-.7-.8-1.6z" fill="currentColor" stroke="none"/></svg></a><a href="https://www.facebook.com/groups/everyavenuetravel" class="fs-icon" aria-label="Facebook Group" title="Facebook Group"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="8" r="3.2"/><circle cx="17" cy="9.2" r="2.5"/><path d="M2.8 19.5c0-3.5 2.8-6 6.2-6s6.2 2.5 6.2 6v.5H2.8z"/><path d="M16 20v-.5c0-1.8-.6-3.4-1.7-4.6.8-.5 1.7-.8 2.7-.8 2.7 0 4.5 2 4.5 4.8v1.1z"/></svg></a></div>
+      <a href="https://www.facebook.com/groups/everyavenuetravel" class="nf-group">Join our Worldschooling Facebook Group <span>&rarr;</span></a>
+    </div>
+    <div>
+      <div class="nf-label">Contact us</div>
+      <a href="https://wa.me/message/6C5D7L3I726ND1" class="nf-contact"><span class="nf-ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.6a8.5 8.5 0 0 1-12.6 7.5L3.5 20.5l1.4-4.2A8.5 8.5 0 1 1 20.5 11.6z"/><path d="M9 8.6c.2 2.6 2.4 5 5.2 5.6l1-1.1-1.6-.9-.7.6c-1-.5-1.7-1.2-2.1-2.1l.6-.7-.8-1.6z" fill="currentColor" stroke="none"/></svg></span>Connect via WhatsApp</a>
+      <a href="#" class="nf-contact"><span class="nf-ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.5-4.6A8 8 0 1 1 21 12z"/><circle cx="8.5" cy="12" r=".6" fill="currentColor"/><circle cx="12" cy="12" r=".6" fill="currentColor"/><circle cx="15.5" cy="12" r=".6" fill="currentColor"/></svg></span>Connect via ChatBot</a>
+    </div>
+    <div>
+      <div class="nf-label">Pages</div>
+      <div class="footer-links nf-links">
+        <a href="https://worldschoolingjourneys.com/terms-and-conditions/">Terms and Conditions</a>
+        <a href="https://worldschoolingjourneys.com/cancellation-refund-policy/">Cancellations &amp; Refunds</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+  <div class="nf-bottom">
+    <div class="wrap nf-bottom-in">
+      <span><span class="mark">&#10022;</span> &copy; 2026 Worldschooling Journeys, an Every Avenue Travel company</span>
+      <span class="nf-legal">Every Avenue Travel, LLC is registered with the State of Florida as a Seller of Travel. Registration No. ST45213. IATA No. 10620400.</span>
+    </div>
+  </div>
+</footer>
 
 <div class="sticky-bar">
   <div class="sb-price" id="sbPrice"></div>

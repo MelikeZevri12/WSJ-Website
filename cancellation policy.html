@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cancellation &amp; Refund Policy — Worldschooling Journeys</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#A5BD8E;
+    --green-dark:#708F53;
+    --green-hover:#2D3A22;
+    --dark:#152230;
+    --dark-soft:#1e3040;
+    --blue:#2f7f8a;
+    --blue-tint:color-mix(in srgb, var(--blue) 22%, white);
+    --blue-line:color-mix(in srgb, var(--blue) 48%, white);
+    --green-tint:color-mix(in srgb, var(--green) 14%, white);
+    --sky-tint:color-mix(in srgb, var(--blue) 16%, var(--white));
+    --sky-line:color-mix(in srgb, var(--blue) 42%, var(--white));
+    --green-line:color-mix(in srgb, var(--green) 42%, white);
+    --green-soft:color-mix(in srgb, var(--green) 55%, white);
+    --white:#fffdf7;
+    --paper:#f4f1e9;
+    --line:rgba(21,34,48,0.16);
+    --line-on-dark:rgba(255,255,255,0.2);
+    --muted:#6d6552;
+    --sunset-1:#c14a2f;
+    --sunset-2:#e0893c;
+    --sunset-tint:color-mix(in srgb, var(--sunset-1) 12%, var(--white));
+    --gold:#d9a441;
+    --star:rgba(255,255,255,0.85);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:'Titillium Web', sans-serif;color:var(--dark);background:var(--paper);line-height:1.6;}
+  a{color:inherit;}
+  button{font-family:inherit;}
+  h1,h2,h3,h4{font-family:'Libre Baskerville', serif;font-weight:700;margin:0 0 .4em 0;color:var(--dark);}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+  .brand-stripe{height:5px;width:100%;background:linear-gradient(90deg, var(--blue) 0%, var(--sunset-2) 55%, var(--sunset-1) 100%);}
+
+  /* GLOBAL NAV */
+  .global-nav{background:var(--dark-soft);border-bottom:1px solid var(--line-on-dark);}
+  .global-nav .gn-wrap{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 24px;gap:16px;flex-wrap:wrap;}
+  .gn-logo{display:flex;align-items:baseline;gap:8px;text-decoration:none;}
+  .gn-logo .gn-script{font-family:'Caveat',cursive;font-weight:700;font-size:26px;color:var(--gold);line-height:1;}
+  .gn-logo .gn-sans{font-family:'Titillium Web',sans-serif;font-weight:600;font-size:14px;color:var(--green);letter-spacing:.02em;}
+  .gn-links{display:flex;gap:26px;}
+  .gn-link{padding:4px 0;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:14px;text-decoration:none;color:#c7ccd1;transition:color .15s ease;}
+  .gn-link:hover{color:var(--white);}
+  .gn-link.active{color:var(--green);}
+
+  .concept-note{background:var(--dark);border-bottom:1px solid var(--gold);color:var(--gold);font-size:13px;text-align:center;padding:8px 16px;font-family:'Titillium Web',sans-serif;}
+
+  .cruise-card, .story-media, .spotlight-card{outline:1.5px dashed rgba(21,34,48,0.3);outline-offset:-6px;}
+
+  /* HERO */
+.hero{
+    position:relative;
+    background-color:var(--dark);
+    background-image:
+      linear-gradient(180deg, rgba(21,34,48,0.6) 0%, rgba(13,22,32,0.84) 100%),
+      none;
+    background-position:center 60%;
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-blend-mode:multiply, normal;
+    color:var(--white);
+    padding:56px 0 40px;
+  }
+  .hero .wrap{position:relative;}
+  .eyebrow{font-family:'Titillium Web',sans-serif;font-weight:800;color:var(--green-dark);text-transform:uppercase;letter-spacing:.13em;font-size:12px;margin-bottom:10px;}
+  .hero .eyebrow{color:var(--gold);}
+  .hero h1{color:var(--white);font-size:clamp(30px,4.2vw,46px);line-height:1.15;max-width:720px;}
+  .hero p.lede{max-width:640px;color:#d9dbe0;font-size:16px;margin-top:14px;}
+  .hero .hero-cta{margin-top:26px;display:flex;gap:14px;flex-wrap:wrap;}
+
+  .btn{display:inline-block;padding:13px 26px;border-radius:6px;font-weight:700;font-size:14.5px;text-decoration:none;letter-spacing:.02em;cursor:pointer;border:2px solid transparent;transition:transform .12s ease, opacity .12s ease;}
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{background:var(--green-dark);color:var(--white);}
+  .btn-primary:hover{background:var(--green-hover);}
+  .btn-outline{background:var(--white);border-color:var(--green);color:var(--green-dark);}
+  .btn-outline:hover{background:var(--green-tint);border-color:var(--green-dark);}
+  .btn-outline-hero{background:transparent;border-color:rgba(255,255,255,.5);color:var(--white);}
+  .btn-outline-hero:hover{border-color:var(--white);}
+  .btn-sm{padding:8px 16px;font-size:12.5px;}
+  .proof-more-btn{margin-left:6px;}
+
+  /* HERO "AS FEATURED IN" LINE — small credibility line inside the hero itself */
+  .hero-featured{margin-top:28px;font-size:12.5px;color:#aeb6bd;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .hero-featured .hf-label{text-transform:uppercase;letter-spacing:.1em;font-weight:800;font-size:10.5px;color:#8b95a0;}
+  .hero-featured .hf-names{font-family:'Libre Baskerville',serif;font-style:italic;font-size:14px;color:var(--green-soft);}
+
+  /* MOUNTAIN DIVIDER — jagged silhouette that turns the hard edge under the hero
+     into a shaped transition, same technique used on the trip detail page */
+  .mountain-divider{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:34px;display:block;line-height:0;}
+  .mountain-divider path{fill:var(--dark);}
+
+  section{padding:68px 0;}
+  section.alt{background:var(--white);}
+  .section-head{max-width:680px;margin-bottom:32px;}
+  .section-head h2{font-size:clamp(24px,3vw,32px);}
+  .section-head p{color:var(--muted);font-size:15.5px;}
+  .section-head.center{max-width:680px;margin-left:auto;margin-right:auto;text-align:center;}
+
+  /* STORY */
+  .story-grid{display:grid;grid-template-columns:0.85fr 1.15fr;gap:48px;align-items:stretch;}
+  .story-media{width:100%;height:100%;min-height:340px;border-radius:10px;overflow:hidden;background:var(--sky-tint);border:1px solid var(--sky-line);display:flex;align-items:center;justify-content:center;}
+  .story-media span{font-size:13px;color:var(--muted);font-weight:600;text-align:center;padding:0 24px;}
+  .story-media.has-photo{border:none;}
+  .story-media img{width:100%;height:100%;object-fit:cover;object-position:center 78%;display:block;}
+  .story-heading{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+  .story-icon{width:44px;height:44px;border-radius:50%;background:var(--green-tint);border:1px solid var(--green-line);color:var(--green-dark);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .story-icon svg{width:22px;height:22px;}
+  .story-heading h2{margin:0;font-size:clamp(22px,2.8vw,28px);}
+  .story-copy p{color:#3c4048;font-size:15.5px;margin:0 0 14px;}
+  .story-copy p:last-child{margin-bottom:0;}
+  .story-copy p.story-intro{font-style:italic;color:var(--green-dark);font-size:16.5px;}
+  .story-copy .story-accent{color:var(--green-dark);}
+
+  /* QUOTE BAND */
+  .quote-band{background:var(--dark);color:var(--white);text-align:center;padding:14px 0 36px;}
+  .quote-band .mark{color:var(--gold);font-size:15px;margin-bottom:10px;}
+  .quote-band blockquote{font-family:'Libre Baskerville',serif;font-style:italic;font-size:clamp(16px,1.8vw,19px);line-height:1.4;max-width:640px;margin:0 auto;color:var(--white);}
+  .quote-band .attribution{margin-top:10px;font-size:11px;color:var(--green-soft);text-transform:uppercase;letter-spacing:.1em;font-weight:700;}
+
+  /* FACEBOOK COMMUNITY BANNER — community photo collage as background,
+     dark gradient overlay on top so white text stays readable at any point
+     in the image. Capped at 200px tall, same footprint as the old strip. */
+  .fb-banner{
+    position:relative;text-align:center;padding:20px 0;max-height:200px;
+    display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--white);
+    background-image:
+      linear-gradient(180deg, rgba(13,22,32,0.72) 0%, rgba(13,22,32,0.82) 55%, rgba(13,22,32,0.92) 100%),
+      none;
+    background-size:cover;background-position:center;
+  }
+  .fb-banner-inner{max-width:620px;margin:0 auto;position:relative;z-index:1;}
+  .fb-icon{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.38);color:var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 6px;}
+  .fb-icon svg{width:15px;height:15px;}
+  .fb-banner .eyebrow{margin-bottom:4px;font-size:11px;color:var(--gold);}
+  .fb-banner h2{font-size:clamp(18px,2vw,22px);margin:0 0 12px;color:var(--white);text-shadow:0 2px 14px rgba(0,0,0,0.35);}
+
+  /* TRIP TYPE STRIP — Land Trips and Cruises are separate sections again,
+     told apart by background color (paper vs. sky-tint) rather than merged
+     into one. Both use the same explanation shape: eyebrow, heading, one
+     short intro line, a row of tags. Accent colors (teal for cruises,
+     terracotta for land trips) live only in the eyebrow text. The year
+     filter buttons sit on the right, in the same row as "See All". */
+  .trip-strip{padding:64px 0;}
+  .trip-strip.trip-strip-top{padding-bottom:24px;}
+  .trip-strip.trip-strip-bottom{padding-top:24px;}
+  .trip-strip.tone-sky{background:var(--paper);}
+  .trip-block-head{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;margin-bottom:40px;flex-wrap:wrap;}
+  .trip-block-copy{max-width:640px;}
+  .trip-block-copy h2{font-size:clamp(21px,2.4vw,26px);margin:0 0 10px;}
+  .trip-block-intro{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 14px;}
+  .trip-tags{display:flex;gap:10px;flex-wrap:wrap;}
+  .trip-tag{display:inline-flex;align-items:center;padding:6px 14px;border-radius:999px;border:1px solid var(--sky-line);background:var(--white);font-size:12.5px;font-weight:700;color:var(--dark);}
+  .trip-strip .eyebrow{margin-bottom:8px;}
+  .trip-block-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:flex-end;}
+  .trip-filter-row{display:flex;gap:8px;}
+  .trip-filter-btn{font-family:'Titillium Web',sans-serif;font-size:12px;font-weight:700;letter-spacing:.03em;padding:6px 16px;border-radius:999px;border:1.5px solid var(--sky-line);background:transparent;color:var(--dark);cursor:pointer;transition:background .15s,color .15s,border-color .15s;}
+  .trip-filter-btn:hover{border-color:var(--blue);}
+  .trip-filter-btn.active{background:var(--dark);color:var(--white);border-color:var(--dark);}
+  .trip-empty-note{font-size:14px;color:var(--muted);padding:10px 0 0;margin:0;}
+  .eyebrow.tone-terracotta{color:var(--sunset-1);}
+  .eyebrow.tone-teal{color:var(--blue);}
+
+  /* SPOTLIGHT STRIP — compact trip promo, repeats between sections instead of one big carousel.
+     Vertical cards, same photo-on-top / body-below shape as the cruises listing page's cruise-card.
+     Same white background as the Story section right after it, so the two read as one continuous
+     zone coming out of the dark hero/facts-bar instead of a cream-to-white seam. */
+  .spotlight-strip{padding:44px 0 42px;background:var(--white);}
+  .spotlight-strip + section.alt{padding-top:43px;}
+  .spotlight-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:10px;}
+  .spotlight-head .eyebrow{margin-bottom:2px;}
+  .spotlight-head h3{font-size:19px;margin:0;}
+  .spotlight-see-all{font-size:13px;font-weight:700;color:var(--green-dark);text-decoration:none;white-space:nowrap;}
+  .spotlight-see-all:hover{text-decoration:underline;}
+  .spotlight-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  .spotlight-card{
+    display:flex;flex-direction:column;background:var(--white);border-radius:12px;
+    border:1px solid var(--line);border-top:3px solid transparent;overflow:hidden;
+    text-decoration:none;color:inherit;box-shadow:0 1px 3px rgba(21,34,48,0.05);
+    transition:border-top-color .15s ease, transform .12s ease, box-shadow .12s ease;
+  }
+  .spotlight-card:hover{border-top-color:var(--green-dark);transform:translateY(-3px);box-shadow:0 10px 24px rgba(21,34,48,0.12);}
+  .spotlight-photo{
+    width:100%;aspect-ratio:16/10;background:var(--sky-tint);border-bottom:1px solid var(--sky-line);
+    display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted);
+    text-align:center;padding:6px;
+  }
+  .spotlight-body{padding:14px 16px 16px;}
+  .spotlight-dates{font-size:10.5px;font-weight:700;color:var(--green-dark);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;}
+  .spotlight-title{font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;line-height:1.35;color:var(--dark);}
+
+  /* --- COMPARISON: OPTION 1 — photo-overlay editorial card --- */
+  .spotlight-card.style-photo{
+    position:relative;aspect-ratio:4/3;border-radius:14px;overflow:hidden;outline:none;
+    background:linear-gradient(135deg, var(--dark-soft) 0%, var(--blue) 55%, var(--green-dark) 100%);
+    text-decoration:none;color:var(--white);box-shadow:0 4px 14px rgba(21,34,48,0.15);
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .spotlight-card.style-photo:hover{transform:translateY(-4px);box-shadow:0 16px 32px rgba(21,34,48,0.28);}
+  .spotlight-card.style-photo .sp-caption{position:absolute;top:12px;left:14px;font-size:9px;color:rgba(255,255,255,0.55);letter-spacing:.03em;}
+  .spotlight-card.style-photo .sp-price{
+    position:absolute;top:12px;right:12px;background:rgba(21,34,48,0.55);backdrop-filter:blur(3px);
+    color:var(--white);font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:20px;
+    border:1px solid rgba(255,255,255,0.25);
+  }
+  .spotlight-card.style-photo .sp-price b{color:var(--gold);font-family:'Libre Baskerville',serif;font-size:13px;}
+  .spotlight-card.style-photo .sp-overlay{position:absolute;left:0;right:0;bottom:0;padding:20px 18px 18px;background:linear-gradient(180deg, rgba(21,34,48,0) 0%, rgba(13,22,32,0.88) 68%);}
+  .spotlight-card.style-photo .spotlight-dates{color:var(--gold);margin-bottom:7px;font-size:11.5px;}
+  .spotlight-card.style-photo .spotlight-title{color:var(--white);font-size:19px;line-height:1.25;}
+  .spotlight-card.style-photo.has-photo{
+    background-image: linear-gradient(180deg, rgba(21,34,48,0.05) 0%, rgba(13,22,32,0.15) 60%), none;
+    background-size:cover;background-position:center 42%;background-repeat:no-repeat;
+  }
+
+
+  /* MERGED COMMUNITY + FRIENDS + TESTIMONIALS */
+  /* COMMUNITY SECTION — same dark night-sky + numbered-triangle + proof-strip
+     language used on the individual cruise pages' "Community" tab */
+  section.night-sky{
+    background-image:
+      radial-gradient(1.6px 1.6px at 6% 18%, var(--star), transparent 60%),
+      radial-gradient(1.3px 1.3px at 14% 62%, var(--star), transparent 60%),
+      radial-gradient(1.8px 1.8px at 24% 30%, var(--star), transparent 60%),
+      radial-gradient(1.2px 1.2px at 33% 78%, var(--star), transparent 60%),
+      radial-gradient(1.6px 1.6px at 46% 12%, var(--star), transparent 60%),
+      radial-gradient(1.3px 1.3px at 58% 55%, var(--star), transparent 60%),
+      radial-gradient(1.8px 1.8px at 68% 22%, var(--star), transparent 60%),
+      radial-gradient(1.2px 1.2px at 77% 70%, var(--star), transparent 60%),
+      radial-gradient(1.6px 1.6px at 88% 16%, var(--star), transparent 60%),
+      radial-gradient(1.4px 1.4px at 94% 60%, var(--star), transparent 60%),
+      radial-gradient(1.3px 1.3px at 40% 90%, var(--star), transparent 60%),
+      radial-gradient(1.5px 1.5px at 82% 88%, var(--star), transparent 60%);
+    background-repeat:no-repeat;
+  }
+  .moon-eyebrow:before{content:"\263E  ";color:var(--gold);}
+  section.dark-section{background:var(--dark);color:var(--white);position:relative;overflow:hidden;}
+  section.dark-section.night-sky{padding-bottom:20px;}
+  section.dark-section h2, section.dark-section h3, section.dark-section h4{color:var(--white);}
+  section.dark-section .section-head p{color:#c7ccd1;}
+  section.dark-section .section-head .eyebrow{color:var(--gold);}
+
+  .community-props{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:4px 0 32px;}
+  .community-prop{display:flex;gap:13px;align-items:flex-start;}
+  .community-num-wrap{
+    flex:0 0 38px;width:38px;height:38px;background:var(--gold);
+    clip-path:polygon(50% 0%, 100% 100%, 0% 100%);
+    display:flex;align-items:flex-end;justify-content:center;padding-bottom:2px;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,0.35));
+  }
+  .community-num{
+    width:32px;height:32px;background:linear-gradient(160deg, var(--sunset-2), var(--sunset-1));color:var(--white);
+    display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px;
+    font-weight:700;font-family:'Libre Baskerville',serif;font-size:13px;
+    clip-path:polygon(50% 0%, 100% 100%, 0% 100%);
+  }
+  .community-prop h4{font-size:14.5px;margin:0 0 3px;color:var(--white);}
+  .community-prop p{font-size:13px;color:#c3c9d0;margin:0;line-height:1.45;}
+
+  .proof-strip-wrap{border-top:1px solid var(--line-on-dark);padding-top:24px;margin-top:8px;}
+  .proof-head-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .proof-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--star);margin-bottom:0;}
+  .proof-arrows{display:flex;gap:8px;}
+  .proof-arrow-btn{
+    width:32px;height:32px;border-radius:50%;border:1px solid var(--line-on-dark);background:transparent;
+    color:var(--white);font-size:17px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    transition:background .15s;
+  }
+  .proof-arrow-btn:hover{background:rgba(255,255,255,0.1);}
+  .proof-strip{
+    display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;
+    padding-bottom:4px;-ms-overflow-style:none;scrollbar-width:none;
+  }
+  .proof-strip::-webkit-scrollbar{display:none;}
+  .proof-chip{
+    flex:0 0 calc((100% - 28px) / 3);scroll-snap-align:start;display:flex;gap:11px;align-items:flex-start;
+    background:var(--white);border:1px solid var(--green-line);border-radius:10px;padding:13px 15px;
+  }
+  .proof-avatar{
+    flex:0 0 34px;width:34px;height:34px;border-radius:50%;overflow:hidden;
+    background:linear-gradient(135deg, var(--dark), var(--dark-soft));color:var(--green-soft);
+    display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.02em;text-align:center;line-height:1.1;
+    box-shadow:0 0 0 2px var(--gold);
+  }
+  .proof-chip p{font-size:12px;color:var(--dark);margin:0 0 4px;line-height:1.4;}
+  .proof-chip .who{font-size:11px;color:var(--green-dark);font-weight:700;text-transform:uppercase;letter-spacing:.03em;}
+
+  /* COMING SOON — postmark cards, five across in one row. Ideas only, so
+     no dates anywhere: the stamp carries a simple brand mark instead. */
+  .coming-soon{background:var(--dark-soft);padding:48px 0;text-align:center;color:var(--white);}
+  .coming-soon .eyebrow{color:var(--gold);}
+  .coming-soon h3{color:var(--white);margin-bottom:26px;}
+  .coming-soon-cta{display:inline-block;margin-top:28px;font-size:13.5px;font-weight:700;color:var(--green-soft);text-decoration:none;}
+  .coming-soon-cta:hover{text-decoration:underline;}
+
+  .cs-row{display:flex;gap:16px;justify-content:center;overflow-x:auto;padding-bottom:4px;}
+  .cs-postmark-card{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:10px;width:208px;flex:0 0 208px;box-shadow:0 8px 20px rgba(21,34,48,0.18);text-align:left;}
+  .cs-postmark-photo{position:relative;border-radius:6px;overflow:hidden;aspect-ratio:4/3;background:linear-gradient(135deg, var(--dark-soft) 0%, var(--blue) 55%, var(--green-dark) 100%);}
+  .cs-postmark-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+  .cs-postmark-stamp{position:absolute;top:8px;right:8px;width:38px;height:38px;border-radius:50%;border:2px dashed rgba(255,253,247,0.9);background:rgba(21,34,48,0.55);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .cs-postmark-divider{height:1px;margin:12px 0;background-image:linear-gradient(to right, var(--line) 50%, rgba(0,0,0,0) 50%);background-size:8px 1px;}
+  .cs-postmark-title{font-family:'Libre Baskerville',serif;font-weight:700;font-size:14.5px;line-height:1.3;color:var(--dark);}
+
+  /* STAY UPDATED */
+  .stay-updated{background:var(--sky-tint);}
+  .update-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  .update-card{background:var(--white);border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 6px 18px rgba(21,34,48,0.09);display:flex;flex-direction:column;}
+  .update-card-photo{aspect-ratio:16/10;overflow:hidden;}
+  .update-card-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+  .update-card-body{padding:20px 20px 22px;border-top:3px solid var(--green);flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;}
+  .update-icon{width:30px;height:30px;border-radius:50%;background:var(--green-tint);color:var(--green-dark);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;flex:0 0 auto;}
+  .update-icon svg{width:15px;height:15px;}
+  .update-card h4{font-size:15px;margin-bottom:8px;}
+  .update-card p{font-size:12.5px;color:var(--muted);margin:0 0 16px;flex:1;}
+  .update-card .btn{width:100%;text-align:center;}
+  .newsletter-form{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:auto;}
+  .newsletter-form input{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:6px;background:var(--white);font-family:'Titillium Web',sans-serif;font-size:13px;text-align:center;box-sizing:border-box;}
+
+  /* CONTACT */
+  .contact-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:56px;align-items:start;}
+  .contact-channels{display:flex;flex-direction:column;gap:16px;margin-top:26px;}
+  .contact-channel{display:flex;align-items:center;gap:12px;font-size:15.5px;font-weight:600;color:var(--dark);text-decoration:none;font-family:'Libre Baskerville',serif;}
+  .contact-channel .cc-icon{width:26px;height:26px;border-radius:50%;background:var(--green-tint);color:var(--green-dark);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .contact-channel .cc-icon svg{width:13px;height:13px;}
+  .contact-form{background:var(--white);border-radius:16px;border:1px solid var(--line);border-top:4px solid var(--green);padding:32px;box-shadow:0 16px 36px rgba(21,34,48,0.12);}
+  .form-row{margin-bottom:16px;}
+  .form-row label{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:6px;}
+  .form-row select, .form-row textarea, .form-row input[type="text"], .form-row input[type="email"]{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:7px;background:var(--white);font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--dark);box-sizing:border-box;}
+  .form-row textarea{min-height:110px;resize:vertical;}
+  .form-row-split{display:flex;gap:16px;margin-bottom:16px;}
+  .form-row-split .form-row{flex:1;margin-bottom:0;}
+  .reason-chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .reason-chip{padding:9px 16px;border-radius:999px;border:1.5px solid var(--line);background:var(--white);font-family:'Titillium Web',sans-serif;font-weight:700;font-size:12.5px;color:var(--dark);cursor:pointer;transition:background .12s ease,border-color .12s ease,color .12s ease;}
+  .reason-chip:hover{border-color:var(--green);}
+  .reason-chip.active{background:var(--green-dark);border-color:var(--green-dark);color:var(--white);}
+
+  /* FAQ */
+  .faq-category-label{font-family:'Titillium Web',sans-serif;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--green-dark);margin:28px 0 6px;}
+  .faq-category-label:first-child{margin-top:0;}
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-item summary{list-style:none;cursor:pointer;padding:16px 0;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:15px;color:var(--dark);display:flex;justify-content:space-between;align-items:center;gap:16px;}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary:after{content:"+";font-size:20px;color:var(--green-dark);font-weight:400;}
+  .faq-item[open] summary:after{content:"\2013";}
+  .faq-item .faq-a{padding:0 0 18px;color:#3c4048;font-size:14.5px;max-width:760px;}
+  .faq-item .faq-a p{margin:0;}
+  .faq-item .faq-a p + p, .faq-item .faq-a p + ul, .faq-item .faq-a ul + p{margin-top:10px;}
+  .faq-item .faq-a ul{margin:10px 0 0;padding-left:20px;}
+  .faq-item .faq-a li{margin-bottom:5px;}
+
+  /* FOOTER */
+  .site-footer{background:var(--dark);color:#c7ccd1;padding:52px 0 0;}
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px;padding-bottom:36px;}
+  .footer-blurb{font-size:13.5px;color:#9aa4ae;margin-top:14px;max-width:280px;}
+  .footer-label{font-family:'Titillium Web',sans-serif;font-weight:800;font-size:11.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:14px;}
+  .footer-links{display:flex;flex-direction:column;gap:10px;}
+  .footer-links a{font-size:13.5px;color:#c7ccd1;text-decoration:none;}
+  .footer-links a:hover{color:var(--white);}
+  .footer-bottom{border-top:1px solid var(--line-on-dark);padding:20px 0;text-align:center;font-size:13px;color:var(--green-soft);}
+  .footer-bottom .mark{color:var(--gold);display:block;font-size:14px;margin-bottom:8px;}
+
+  @media (max-width:1000px){
+    .spotlight-grid{grid-template-columns:repeat(2,1fr);}
+    .update-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:900px){
+    .story-grid{grid-template-columns:1fr;}
+    .trip-block-head{align-items:flex-start;}
+    .trip-block-actions{justify-content:flex-start;}
+    .community-props{grid-template-columns:1fr;gap:18px;}
+    .proof-chip{flex:0 0 82%;}
+    .contact-grid{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:640px){
+    .global-nav .gn-wrap{flex-direction:column;align-items:flex-start;gap:10px;}
+    .footer-grid{grid-template-columns:1fr;}
+    .update-grid{grid-template-columns:1fr;}
+    .spotlight-grid{grid-template-columns:1fr;}
+  }
+
+  /* ===== New footer ===== */
+  .site-footer.nf{background:var(--dark);color:#c7ccd1;padding:0;}
+  .nf-grid{display:grid;grid-template-columns:1.4fr 1.4fr 1.1fr .9fr;gap:36px;padding:56px 24px 44px;}
+  .nf-logo{display:inline-flex;align-items:baseline;gap:8px;font-size:30px;margin-bottom:14px;}
+  .nf-blurb{font-size:14px;line-height:1.6;color:#aeb6bf;max-width:300px;margin:0 0 18px;}
+  .nf-featured{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#8b95a1;}
+  .nf-featured a{font-family:'Libre Baskerville',serif;font-size:15px;font-weight:700;letter-spacing:0;text-transform:none;color:var(--white);text-decoration:none;}
+  .nf-featured .nf-dot{color:var(--gold);font-size:10px;}
+  .nf-label{font-family:'Libre Baskerville',serif;font-weight:700;font-size:16px;color:var(--white);margin:6px 0 18px;}
+  .nf-social{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+  .fs-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);
+    border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.04);transition:background .15s ease, border-color .15s ease, transform .15s ease;}
+  .fs-icon svg{width:19px;height:19px;}
+  .fs-icon:hover{background:var(--green-dark);border-color:var(--green-dark);transform:translateY(-2px);}
+  .nf-group{font-size:14px;font-weight:700;color:var(--green);text-decoration:none;}
+  .nf-group:hover{color:var(--white);}
+  .nf-contact{display:flex;align-items:center;gap:12px;font-size:14.5px;font-weight:600;color:#c7ccd1;text-decoration:none;margin-bottom:14px;}
+  .nf-contact:hover{color:var(--white);}
+  .nf-ci{width:36px;height:36px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb, var(--green) 18%, transparent);color:var(--green);}
+  .nf-ci svg{width:18px;height:18px;}
+  .nf-links{display:block;}
+  .nf-links a{display:block;font-size:14.5px;margin:0 0 12px;padding:0;color:#c7ccd1;text-decoration:none;}
+  .nf-links a:hover{color:var(--white);}
+  .nf-bottom{border-top:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.18);}
+  .nf-bottom-in{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 24px;padding:18px 24px;font-size:13px;color:#aeb6bf;}
+  .nf-bottom .mark{color:var(--gold);margin-right:4px;}
+  .nf-legal{font-size:12px;color:#8b95a1;}
+  @media (max-width:900px){ .nf-grid{grid-template-columns:1fr 1fr;gap:34px;} }
+  @media (max-width:560px){ .nf-grid{grid-template-columns:1fr;padding:44px 24px 32px;} .nf-bottom-in{flex-direction:column;align-items:flex-start;} }
+
+  .proof-chip .who .who-trip{font-weight:600;color:var(--muted);text-transform:none;letter-spacing:0;margin-left:6px;}
+  .proof-chip .who .who-trip:before{content:"· ";}
+
+  /* ===== Legal pages ===== */
+  .legal-hero{background:var(--dark);color:var(--white);padding:46px 0 0;position:relative;}
+  .legal-hero h1{color:var(--white);font-size:clamp(30px,4vw,44px);margin:0 0 10px;}
+  .legal-hero .lh-meta{color:#aeb6bf;font-size:14px;margin:0 0 26px;}
+  .legal-hero .lh-meta strong{color:var(--white);}
+  .legal-tabs{display:flex;flex-wrap:wrap;gap:6px;}
+  .legal-tabs a{font-size:14px;font-weight:700;text-decoration:none;color:#c7ccd1;padding:11px 18px;border-radius:10px 10px 0 0;background:rgba(255,255,255,0.06);}
+  .legal-tabs a:hover{color:var(--white);background:rgba(255,255,255,0.12);}
+  .legal-tabs a.on{background:var(--paper);color:var(--dark);}
+  .legal-body{padding:40px 0 70px;}
+  .legal-grid{display:grid;grid-template-columns:260px 1fr;gap:40px;align-items:start;}
+  .legal-toc{position:sticky;top:20px;max-height:calc(100vh - 40px);overflow:auto;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:18px 16px 14px;}
+  .legal-toc .toc-label{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--green-dark);margin:0 0 10px 6px;}
+  .legal-toc a{display:flex;gap:8px;font-size:13.5px;line-height:1.35;color:#3c4048;text-decoration:none;padding:6px;border-radius:6px;}
+  .legal-toc a span{flex:none;min-width:20px;color:var(--muted);font-weight:700;}
+  .legal-toc a:hover{background:var(--green-tint);color:var(--dark);}
+  .legal-doc{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:44px 52px;min-width:0;}
+  .legal-doc .legal-notice{background:var(--sunset-tint);border:1px solid color-mix(in srgb, var(--sunset-1) 30%, var(--white));border-left:4px solid var(--sunset-1);border-radius:12px;padding:22px 26px;margin:0 0 34px;}
+  .legal-doc .legal-notice h2{font-size:15px;letter-spacing:.06em;margin:0 0 10px;color:var(--sunset-1);border:none;padding:0;}
+  .legal-doc .legal-notice h2:first-child{margin-top:0;}
+  .legal-doc .legal-notice p, .legal-doc .legal-notice li{font-size:14px;}
+  .legal-doc .legal-notice p:last-child{margin-bottom:0;}
+  .legal-doc section.ls{padding:0;}
+  .legal-doc .legal-intro{background:var(--sky-tint);border-radius:12px;padding:18px 22px;margin:0 0 34px;}
+  .legal-doc .legal-intro p{font-size:14px;margin:0 0 6px;}
+  .legal-doc .legal-intro p:last-child{margin:0;}
+  .legal-toc summary{list-style:none;cursor:pointer;}
+  .legal-toc summary::-webkit-details-marker{display:none;}
+  @media (min-width:981px){ .legal-toc summary{pointer-events:none;} }
+  @media (max-width:980px){ .legal-toc summary:after{content:' ▾';} .legal-toc[open] summary:after{content:' ▴';} }
+  .legal-doc h2{font-size:22px;margin:42px 0 14px;padding-top:22px;border-top:1px solid var(--line);scroll-margin-top:20px;}
+  .legal-doc section.ls:first-of-type h2{margin-top:0;padding-top:0;border-top:none;}
+  .legal-doc h2 .sn{color:var(--green-dark);margin-right:6px;}
+  .legal-doc h3{font-family:'Titillium Web',sans-serif;font-size:16.5px;font-weight:800;margin:24px 0 8px;color:var(--dark);}
+  .legal-doc p{font-size:15px;line-height:1.75;color:#33373d;margin:0 0 14px;}
+  .legal-doc ul, .legal-doc ol{margin:0 0 16px;padding-left:22px;}
+  .legal-doc li{font-size:15px;line-height:1.65;color:#33373d;margin:0 0 6px;}
+  .legal-doc ul li::marker{color:var(--green-dark);}
+  .legal-doc ol li::marker{color:var(--green-dark);font-weight:700;}
+  .legal-doc strong{color:var(--dark);}
+  .legal-doc table{width:100%;border-collapse:collapse;margin:8px 0 20px;font-size:14.5px;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .legal-doc th{background:var(--dark);color:var(--white);text-align:left;padding:12px 16px;font-weight:700;}
+  .legal-doc td{padding:12px 16px;border-top:1px solid var(--line);}
+  .legal-doc tr:nth-child(even) td{background:var(--paper);}
+  .legal-doc a{color:var(--green-dark);font-weight:700;}
+  .to-top{display:inline-block;margin-top:30px;font-size:13.5px;font-weight:700;color:var(--green-dark);text-decoration:none;}
+  @media (max-width:980px){ .legal-grid{grid-template-columns:1fr;} .legal-toc{position:static;max-height:none;} .legal-toc nav{columns:2;} }
+  @media (max-width:640px){ .legal-doc{padding:26px 20px;} .legal-toc nav{columns:1;} .legal-tabs{flex-wrap:nowrap;overflow-x:auto;margin:0 -24px;padding:0 24px;scrollbar-width:none;} .legal-tabs a{font-size:13px;padding:10px 12px;white-space:nowrap;flex:none;} }
+</style>
+</head>
+<body id="top">
+
+<!-- GLOBAL NAV -->
+<div class="global-nav">
+  <div class="gn-wrap">
+    <a href="homepage-newtheme.html" class="gn-logo">
+      <span class="gn-script">Worldschooling</span><span class="gn-sans">journeys</span>
+    </a>
+    <div class="gn-links">
+      <a href="homepage-newtheme.html" class="gn-link">Home</a>
+      <a href="#" class="gn-link">Land Trips</a>
+      <a href="cruises-listing.html" class="gn-link">Cruises</a>
+      <a href="#" class="gn-link">About</a>
+      <a href="#faq" class="gn-link">FAQ</a>
+    </div>
+  </div>
+</div>
+
+<div class="concept-note">Redesign concept for review — legal page in the new theme. Text is copied from the live page.</div>
+<header class="legal-hero"><div class="wrap">
+  <div class="eyebrow" style="color:var(--green);">Legal</div>
+  <h1>Cancellation &amp; Refund Policy</h1>
+  <p class="lh-meta">Every Avenue Travel LLC · Effective Date: <strong>5/22/24</strong></p>
+  <nav class="legal-tabs" aria-label="Legal pages"><a href="legal-terms.html" class="">Terms and Conditions</a><a href="legal-cancellation.html" class="on">Cancellation &amp; Refund Policy</a><a href="legal-privacy.html" class="">Privacy Policy</a></nav>
+</div></header>
+<div class="legal-body"><div class="wrap legal-grid">
+  <details class="legal-toc" open><summary class="toc-label">On this page</summary><nav><a href="#s1"><span>1.</span>Scope and Incorporation</a><a href="#s2"><span>2.</span>Definitions</a><a href="#s3"><span>3.</span>Order of Precedence</a><a href="#s4"><span>4.</span>Deposits and Other Nonrefundable Amounts</a><a href="#s5"><span>5.</span>How to Cancel</a><a href="#s6"><span>6.</span>Standard Client Cancellation Schedule</a><a href="#s7"><span>7.</span>Standard Refund Calculation</a><a href="#s8"><span>8.</span>Supplier-Specific Cancellation Terms</a><a href="#s9"><span>9.</span>Partial Cancellations and Occupancy Changes</a><a href="#s10"><span>10.</span>Transfers, Substitutions, and Name Changes</a><a href="#s11"><span>11.</span>Final Payments and Nonpayment</a><a href="#s12"><span>12.</span>No-Shows, Late Arrivals, and Early Departures</a><a href="#s13"><span>13.</span>Personal Circumstances and Traveler-Initiated Cancellations</a><a href="#s14"><span>14.</span>Cruise and Port Excursion Cancellations</a><a href="#s15"><span>15.</span>Company Cancellations Within the Company's Control</a><a href="#s16"><span>16.</span>Minimum Enrollment</a><a href="#s17"><span>17.</span>Force Majeure</a><a href="#s18"><span>18.</span>Supplier Cancellation, Insolvency, or Failure</a><a href="#s19"><span>19.</span>Credits and Vouchers</a><a href="#s20"><span>20.</span>Refund Processing</a><a href="#s21"><span>21.</span>Travel Insurance</a><a href="#s22"><span>22.</span>Chargebacks and Payment Disputes</a><a href="#s23"><span>23.</span>No Waiver of Mandatory Rights</a><a href="#s24"><span>24.</span>Governing Law and Disputes</a><a href="#s25"><span>25.</span>Policy Changes</a><a href="#s26"><span>26.</span>Contact Information</a><a href="#s27"><span>27.</span>Acknowledgment</a></nav></details>
+  <article class="legal-doc">
+    <div class="legal-notice"><h2>IMPORTANT CANCELLATION NOTICE</h2>
+<p>UNLESS A TRIP-SPECIFIC DOCUMENT EXPRESSLY STATES OTHERWISE:</p>
+<ul>
+<li>THE BOOKING DEPOSIT IS NONREFUNDABLE FROM THE TIME IT IS PAID.</li>
+<li>CANCELLATION PENALTIES INCREASE AS THE TRIP START DATE APPROACHES.</li>
+<li>SOME CRUISES, ACCOMMODATIONS, EXCURSIONS, ACTIVITIES, TRANSPORTATION SERVICES, AND OTHER THIRD-PARTY SUPPLIER SERVICES MAY HAVE STRICTER CANCELLATION TERMS.</li>
+<li>CANCELLATIONS MUST BE SUBMITTED IN WRITING TO BOOKING@EVERYAVENUETRAVEL.COM.</li>
+<li>COMPREHENSIVE TRAVEL INSURANCE IS REQUIRED, AND FAILURE TO PROVIDE PROOF MAY RESULT IN CANCELLATION, DENIED PARTICIPATION, OR FULL SELF-INSURED FINANCIAL RESPONSIBILITY UNDER THE ADULT PARTICIPANT AGREEMENT;</li>
+</ul>
+<p>PLEASE REVIEW THIS POLICY AND ALL TRIP-SPECIFIC CANCELLATION TERMS BEFORE MAKING ANY PAYMENT.</p>
+<p><strong>Every Avenue Travel LLC is registered with the State of Florida as a Seller of Travel. Registration No. ST45213.</strong></p></div><section class="ls" id="s1"><h2><span class="sn">1.</span>Scope and Incorporation</h2><p>This Cancellation &amp; Refund Policy applies to travel services, tours, retreats, cruises, port excursions, worldschooling experiences, family travel, individual bookings, group travel, guided experiences, activities, accommodations, transportation, and other travel-related services arranged, coordinated, operated, or sold by Every Avenue Travel LLC.</p>
+<p>This Policy is incorporated into and forms part of the Every Avenue Travel LLC Travel Services Terms and Conditions.</p>
+<p>By submitting a booking, approving a quote, paying a deposit or other amount, confirming participation, or participating in a Trip after receiving or being given access to this Policy, the Traveler acknowledges and accepts this Policy.</p>
+<p>The version provided or made available at the time of booking governs that booking unless the Traveler later agrees to a written amendment.</p></section>
+<section class="ls" id="s2"><h2><span class="sn">2.</span>Definitions</h2><p>For purposes of this Policy:</p>
+<p><strong>"Booking Client"</strong> means the person who initiates, pays for, or manages a reservation for one or more Participants.</p>
+<p><strong>"Company"</strong> means Every Avenue Travel LLC.</p>
+<p><strong>"Company Credit"</strong> means a written credit issued directly by the Company for future eligible Company travel services.</p>
+<p><strong>"Deposit"</strong> means the amount identified as a deposit in the applicable quote, invoice, booking page, confirmation, or Trip Document.</p>
+<p><strong>"Eligible Payments"</strong> means payments actually received and retained by the Company for Trip services governed by the standard cancellation schedule, excluding the Deposit and other amounts identified as nonrefundable under this Policy.</p>
+<p><strong>"Force Majeure Event"</strong> means an event outside the Company's reasonable control, as described in Section 17.</p>
+<p><strong>"Participant" or "Traveler"</strong> means each adult or minor included in or participating under a booking.</p>
+<p><strong>"Supplier"</strong> means an independent hotel, resort, cruise line, transportation company, activity operator, excursion operator, guide, venue, restaurant, equipment provider, booking platform, or other third party providing a Trip service.</p>
+<p><strong>"Supplier Credit"</strong> means a voucher, credit, certificate, or future-travel benefit issued by a Supplier.</p>
+<p><strong>"Supplier Terms"</strong> means the Supplier's payment, cancellation, refund, voucher, name-change, transfer, ticket, fare, or other contractual terms.</p>
+<p><strong>"Trip"</strong> means the applicable tour, retreat, cruise, excursion, worldschooling experience, individual itinerary, group itinerary, activity, package, or other travel service.</p>
+<p><strong>"Trip Documents"</strong> means the applicable booking page, quote, invoice, confirmation, itinerary, trip-specific cancellation terms, written inclusions and exclusions, payment schedule, and written addenda.</p>
+<p><strong>"Trip Start Date"</strong> means the first date on which the first Company-arranged Trip service is scheduled to begin unless the Trip Documents expressly identify a different date.</p></section>
+<section class="ls" id="s3"><h2><span class="sn">3.</span>Order of Precedence</h2><p>For cancellation, refund, credit, and transfer matters, the following order applies:</p>
+<ol>
+<li>Applicable nonwaivable law;</li>
+<li>A written trip-specific cancellation addendum that expressly replaces this Policy;</li>
+<li>Supplier Terms disclosed or made available before payment, but only for the affected Supplier service;</li>
+<li>This Cancellation &amp; Refund Policy; and</li>
+<li>The general Travel Services Terms and Conditions.</li>
+</ol>
+<p>Trip-specific or Supplier Terms may be more restrictive or more favorable than this standard Policy.</p>
+<p>A stricter term applies only to the Trip or component to which it relates. It does not automatically replace the cancellation terms for unrelated Trip components.</p>
+<p>No verbal statement changes this Policy unless an authorized Company representative confirms the change in writing.</p></section>
+<section class="ls" id="s4"><h2><span class="sn">4.</span>Deposits and Other Nonrefundable Amounts</h2><h3>4.1 Standard Deposit rule</h3>
+<p>Unless the applicable Trip Documents expressly provide a refundable period or a different rule, the Deposit is nonrefundable from the time it is paid.</p>
+<p>The Deposit amount may be:</p>
+<ul>
+<li>A fixed amount per booking;</li>
+<li>A fixed amount per person;</li>
+<li>A percentage of the Trip price; or</li>
+<li>Another amount identified in the Trip Documents.</li>
+</ul>
+<h3>4.2 Trip-specific Deposit rules</h3>
+<p>Some Trips may provide that a Deposit remains refundable until a specified date or becomes nonrefundable a stated number of days before departure.</p>
+<p>When clearly disclosed before payment, that Trip-specific rule replaces the standard rule for that Trip.</p>
+<h3>4.3 Other nonrefundable amounts</h3>
+<p>In addition to the Deposit, the following amounts may be nonrefundable when disclosed before payment or imposed under applicable Supplier Terms:</p>
+<ul>
+<li>Cruise deposits or fares;</li>
+<li>Accommodation deposits;</li>
+<li>Activity or excursion charges;</li>
+<li>Transportation tickets;</li>
+<li>Permit, park, admission, or reservation charges;</li>
+<li>Special-event tickets;</li>
+<li>Local or inter-island flight charges;</li>
+<li>Name-change or transfer charges;</li>
+<li>Payment-processing or platform charges that are not returned to the Company;</li>
+<li>Travel insurance premiums;</li>
+<li>Services already performed or provided;</li>
+<li>Custom planning or administrative fees separately identified as nonrefundable; and</li>
+<li>Other nonrecoverable Supplier commitments.</li>
+</ul>
+<p>No Company planning or administrative fee will be treated as nonrefundable unless it was separately identified and disclosed before payment.</p>
+<h3>4.4 Promotional or complimentary services</h3>
+<p>A complimentary, promotional, discounted, or no-charge service has no independent cash-refund value.</p>
+<p>Refunds are based on the amount actually paid, not the advertised retail value of a promotional benefit.</p></section>
+<section class="ls" id="s5"><h2><span class="sn">5.</span>How to Cancel</h2><h3>5.1 Written notice required</h3>
+<p>All cancellations must be submitted by email to:</p>
+<p><strong>booking@everyavenuetravel.com</strong></p>
+<p>The cancellation email must include:</p>
+<ol>
+<li>The Booking Client's full name;</li>
+<li>The Trip name and dates;</li>
+<li>The names of the Participants being canceled;</li>
+<li>A clear statement that the Booking Client or Participant is canceling; and</li>
+<li>The booking or invoice number, if available.</li>
+</ol>
+<h3>5.2 Effective date of cancellation</h3>
+<p>A cancellation becomes effective on the calendar date the cancellation email is successfully received by the Company's email system.</p>
+<p>Cancellation dates are determined using Eastern Time.</p>
+<p>A cancellation sent to an incorrect email address, returned as undeliverable, or posted only through social media, a group chat, text message, or verbal conversation is not effective unless the Company confirms acceptance in writing.</p>
+<p>The Traveler should retain proof of transmission and the Company's acknowledgment.</p>
+<h3>5.3 Cancellation by one Participant</h3>
+<p>A request to remove one or more Participants from a multi-person booking is treated as a partial cancellation and is subject to Sections 8 and 9.</p>
+<h3>5.4 Transfer requests are not cancellation notices</h3>
+<p>A request to transfer a booking, change a name, or change dates is not a cancellation notice.</p>
+<p>Submitting a transfer or change request does not stop the cancellation schedule from continuing to run.</p>
+<p>If the Traveler later decides to cancel, the applicable cancellation date is the date the Company receives an actual written cancellation notice.</p></section>
+<section class="ls" id="s6"><h2><span class="sn">6.</span>Standard Client Cancellation Schedule</h2><p>Unless a Trip-specific or Supplier policy expressly states otherwise, the following schedule applies.</p>
+<table>
+<thead>
+<tr>
+<th>Written Cancellation Received Before Trip Start Date</th>
+<th>Standard Refund</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>120 or more calendar days</strong></td>
+<td>100% of Eligible Payments</td>
+</tr>
+<tr>
+<td><strong>90–119 calendar days</strong></td>
+<td>75% of Eligible Payments</td>
+</tr>
+<tr>
+<td><strong>60–89 calendar days</strong></td>
+<td>50% of Eligible Payments</td>
+</tr>
+<tr>
+<td><strong>30–59 calendar days</strong></td>
+<td>25% of Eligible Payments</td>
+</tr>
+<tr>
+<td><strong>Fewer than 30 calendar days</strong></td>
+<td>No refund</td>
+</tr>
+</tbody>
+</table>
+<p>The Deposit is excluded before the refund percentage is calculated.</p>
+<p>The refund will never exceed the amount actually paid to and retained by the Company.</p></section>
+<section class="ls" id="s7"><h2><span class="sn">7.</span>Standard Refund Calculation</h2><h3>7.1 Eligible Payments</h3>
+<p>For components governed by the standard schedule:</p>
+<p><strong>Eligible Payments = Payments actually received by the Company minus the nonrefundable Deposit and other separately disclosed nonrefundable amounts.</strong></p>
+<p>The applicable percentage in Section 6 is applied to Eligible Payments.</p>
+<h3>7.2 Example</h3>
+<p>Assume:</p>
+<ul>
+<li>Total Trip price: $3,500;</li>
+<li>Nonrefundable Deposit: $750;</li>
+<li>Total paid to the Company: $3,500;</li>
+<li>Cancellation received 100 days before the Trip Start Date; and</li>
+<li>No separate Supplier penalty applies.</li>
+</ul>
+<p>The calculation would be:</p>
+<ul>
+<li>Payments received: $3,500;</li>
+<li>Less nonrefundable Deposit: $750;</li>
+<li>Eligible Payments: $2,750;</li>
+<li>Applicable refund percentage: 75%;</li>
+<li>Refund: <strong>$2,062.50</strong>.</li>
+</ul>
+<p>This example is illustrative only. Actual refunds may differ because of partial payments, Supplier Terms, occupancy changes, or Trip-specific conditions.</p>
+<h3>7.3 Partial payment</h3>
+<p>If the booking has not been paid in full, the refund calculation is based on payments actually received, subject to any already-due or irrevocably committed amounts under the Trip Documents and disclosed Supplier Terms.</p>
+<p>Cancellation does not automatically eliminate:</p>
+<ul>
+<li>An installment that was already due;</li>
+<li>A Supplier charge already incurred on the Traveler's behalf;</li>
+<li>A payment obligation made nonrefundable before cancellation; or</li>
+<li>Costs arising from a Traveler-requested change.</li>
+</ul>
+<p>The Company will not collect more than the applicable cancellation amount, disclosed Supplier charges, and other amounts properly due under the Agreement.</p>
+<h3>7.4 No double application of policies</h3>
+<p>A component governed by separate Supplier Terms will be calculated under those terms and excluded from the standard calculation to the extent necessary to avoid applying two cancellation schedules to the same amount.</p>
+<p>The standard schedule applies to the remaining components.</p>
+<h3>7.5 Refund calculation statement</h3>
+<p>Upon request, the Company will provide a reasonable summary showing:</p>
+<ul>
+<li>Payments received by the Company;</li>
+<li>Deposit retained;</li>
+<li>Applicable refund percentage;</li>
+<li>Supplier deductions;</li>
+<li>Separate nonrefundable fees;</li>
+<li>Credits or refunds received from Suppliers; and</li>
+<li>Net refund or credit due.</li>
+</ul></section>
+<section class="ls" id="s8"><h2><span class="sn">8.</span>Supplier-Specific Cancellation Terms</h2><h3>8.1 Supplier Terms may control a component</h3>
+<p>Hotels, resorts, cruise lines, transportation providers, activity operators, excursion operators, venues, and other Suppliers may have cancellation rules that differ from the standard schedule.</p>
+<p>Those Supplier Terms control the affected component when:</p>
+<ol>
+<li>They were disclosed or made reasonably accessible before payment;</li>
+<li>The Traveler later accepted them in writing; or</li>
+<li>They are mandatory nonwaivable carrier or Supplier terms applicable to the service.</li>
+</ol>
+<h3>8.2 Examples of stricter Supplier Terms</h3>
+<p>A Supplier may impose:</p>
+<ul>
+<li>A nonrefundable deposit;</li>
+<li>A 100% cancellation charge after a specific date;</li>
+<li>A nonrefundable ticket or fare;</li>
+<li>A name-change fee;</li>
+<li>A rebooking fee;</li>
+<li>A future credit instead of cash;</li>
+<li>A credit expiration date;</li>
+<li>A minimum-stay charge;</li>
+<li>A room-block attrition charge; or</li>
+<li>A requirement that the same Participant use the booking.</li>
+</ul>
+<h3>8.3 Direct Supplier payments</h3>
+<p>When a Traveler pays a Supplier directly:</p>
+<ul>
+<li>The Company does not hold or control those funds;</li>
+<li>The Supplier's cancellation and refund terms apply;</li>
+<li>The Traveler must ordinarily request the refund directly from the Supplier; and</li>
+<li>The Company cannot issue a refund for money it never received.</li>
+</ul>
+<p>The Company may provide reasonable assistance with the request but does not guarantee that the Supplier will approve a refund or credit.</p>
+<h3>8.4 Supplier refund passed through</h3>
+<p>When the Company receives a cash refund from a Supplier on behalf of a Traveler, the Company will pass through the amount attributable to that Traveler, subject to:</p>
+<ul>
+<li>Applicable cancellation charges;</li>
+<li>Any authorized offsets;</li>
+<li>Nonrefundable transaction costs; and</li>
+<li>Amounts already refunded or credited.</li>
+</ul>
+<p>If a Supplier provides only a credit or voucher, the Company may pass through or administer the Supplier Credit subject to the Supplier's restrictions.</p></section>
+<section class="ls" id="s9"><h2><span class="sn">9.</span>Partial Cancellations and Occupancy Changes</h2><h3>9.1 Individual cancellation from a shared booking</h3>
+<p>When one Participant cancels but other Participants continue, the cancellation is calculated using the payments reasonably attributable to the canceling Participant.</p>
+<h3>9.2 Repricing</h3>
+<p>Trip prices may depend on:</p>
+<ul>
+<li>Double, triple, or family occupancy;</li>
+<li>Number of Participants;</li>
+<li>Age of Participants;</li>
+<li>Room type;</li>
+<li>Group size;</li>
+<li>Family composition; or</li>
+<li>Promotional pricing.</li>
+</ul>
+<p>If a partial cancellation changes occupancy or eligibility for a group price, the remaining booking may be repriced.</p>
+<p>Examples include:</p>
+<ul>
+<li>A single-occupancy supplement;</li>
+<li>Loss of a family or group discount;</li>
+<li>A different room category;</li>
+<li>Increased transportation cost per person; or</li>
+<li>A Supplier name-change or reallocation charge.</li>
+</ul>
+<h3>9.3 Effect on refund</h3>
+<p>A documented occupancy or repricing adjustment may be:</p>
+<ul>
+<li>Charged to the continuing Participants;</li>
+<li>Deducted from the canceling Participant's refund when authorized by the booking arrangement; or</li>
+<li>Allocated as reasonably stated in the Trip Documents.</li>
+</ul>
+<p>The Company will disclose the adjustment before finalizing the partial cancellation when reasonably practicable.</p>
+<h3>9.4 Cancellation by remaining Participants</h3>
+<p>If continuing Participants do not accept the necessary revised price, they may cancel. Their refund will be calculated using the date their own written cancellation is received.</p>
+<p>The earlier cancellation date of another Participant does not automatically apply to them.</p></section>
+<section class="ls" id="s10"><h2><span class="sn">10.</span>Transfers, Substitutions, and Name Changes</h2><h3>10.1 Transfer request deadline</h3>
+<p>A Booking Client may request to substitute another eligible Traveler up to sixty calendar days before the Trip Start Date.</p>
+<p>Requests received fewer than sixty days before departure may be denied.</p>
+<h3>10.2 Transfer conditions</h3>
+<p>A transfer is subject to:</p>
+<ul>
+<li>Written Company approval;</li>
+<li>Supplier approval;</li>
+<li>Availability;</li>
+<li>The replacement Traveler meeting all eligibility requirements;</li>
+<li>Completion of all required forms and waivers;</li>
+<li>Acceptance of the Agreement by the replacement Traveler;</li>
+<li>Payment of any outstanding balance;</li>
+<li>Payment of name-change, Supplier, administrative, or price-difference charges; and</li>
+<li>Compliance with rooming and occupancy requirements.</li>
+</ul>
+<h3>10.3 Disclosure of transfer charges</h3>
+<p>The Company will disclose known transfer and Supplier charges before completing the transfer.</p>
+<p>The transfer is not effective until the Company confirms it in writing.</p>
+<h3>10.4 Original Traveler remains responsible until completion</h3>
+<p>The original Traveler remains responsible for the booking and payment obligations until:</p>
+<ol>
+<li>The replacement Traveler has been approved;</li>
+<li>Required documents have been accepted;</li>
+<li>All applicable charges have been paid; and</li>
+<li>The Company has confirmed the transfer in writing.</li>
+</ol>
+<h3>10.5 Nontransferable components</h3>
+<p>A transfer may be denied or limited when a Supplier service is nontransferable, including certain:</p>
+<ul>
+<li>Cruise reservations;</li>
+<li>Admission tickets;</li>
+<li>Permits;</li>
+<li>Transportation tickets;</li>
+<li>Local flights;</li>
+<li>Personalized services; or</li>
+<li>Promotional rates.</li>
+</ul>
+<h3>10.6 Date changes</h3>
+<p>A request to move a booking to a different date or Trip is generally treated as a cancellation and new booking unless the Company approves a transfer in writing.</p>
+<p>The Company is not required to transfer a booking to another departure.</p></section>
+<section class="ls" id="s11"><h2><span class="sn">11.</span>Final Payments and Nonpayment</h2><h3>11.1 Final-payment due date</h3>
+<p>Final payment must be received by the date stated in the Trip Documents.</p>
+<p>The Traveler remains responsible for monitoring payment deadlines.</p>
+<h3>11.2 Fourteen-day nonpayment period</h3>
+<p>Unless Trip-specific or Supplier deadlines require a shorter period and were disclosed, the Company may cancel and release a booking if final payment remains unpaid fourteen calendar days after the stated due date.</p>
+<p>The Company is not required to provide additional notice before releasing the booking after that period.</p>
+<h3>11.3 Supplier deadlines</h3>
+<p>Some Supplier reservations may be released or become nonrefundable immediately after a payment deadline.</p>
+<p>When a shorter or stricter deadline applies, it should be stated in the Trip Documents.</p>
+<h3>11.4 Effect of cancellation for nonpayment</h3>
+<p>A booking canceled for nonpayment is treated as a Client cancellation effective on the date the Company cancels or releases the booking.</p>
+<p>The Deposit remains nonrefundable, and any additional refund is determined under:</p>
+<ul>
+<li>The standard cancellation schedule;</li>
+<li>Trip-specific terms;</li>
+<li>Supplier Terms; and</li>
+<li>Costs already incurred or committed.</li>
+</ul>
+<h3>11.5 Reinstatement</h3>
+<p>A canceled booking may be reinstated only with written Company approval.</p>
+<p>Reinstatement may require:</p>
+<ul>
+<li>Immediate payment in full;</li>
+<li>A new Deposit;</li>
+<li>Repricing;</li>
+<li>Payment of Supplier or administrative charges; and</li>
+<li>Acceptance of changed availability or services.</li>
+</ul>
+<p>Reinstatement is not guaranteed.</p>
+<h3>11.6 Bookings made after the final-payment deadline</h3>
+<p>For bookings made after the stated final-payment deadline:</p>
+<ul>
+<li>The full price is due immediately unless the Company states otherwise;</li>
+<li>A Deposit alone does not secure the booking;</li>
+<li>Space is not confirmed until all required funds have cleared; and</li>
+<li>The cancellation schedule is based on the actual number of days remaining before the Trip Start Date.</li>
+</ul></section>
+<section class="ls" id="s12"><h2><span class="sn">12.</span>No-Shows, Late Arrivals, and Early Departures</h2><h3>12.1 No-show</h3>
+<p>Failure to attend, appear, or join the Trip without prior written cancellation is a no-show.</p>
+<p>A no-show forfeits all payments.</p>
+<h3>12.2 Late arrival</h3>
+<p>A late arrival does not entitle the Traveler to a refund for missed:</p>
+<ul>
+<li>Accommodations;</li>
+<li>Transportation;</li>
+<li>Meals;</li>
+<li>Activities;</li>
+<li>Excursions;</li>
+<li>Guide services; or</li>
+<li>Other Trip components.</li>
+</ul>
+<p>The Traveler is responsible for the cost and logistics of joining or rejoining the group.</p>
+<h3>12.3 Early departure</h3>
+<p>Once the Trip begins, no refund is provided for services unused because a Participant:</p>
+<ul>
+<li>Leaves voluntarily;</li>
+<li>Becomes homesick;</li>
+<li>Changes personal plans;</li>
+<li>Elects not to participate;</li>
+<li>Is unable to continue;</li>
+<li>Is removed for misconduct;</li>
+<li>Fails to supervise a Minor; or</li>
+<li>Declines an available service.</li>
+</ul>
+<h3>12.4 Removal</h3>
+<p>A Participant removed for unsafe, unlawful, materially disruptive, or prohibited conduct receives no refund for unused services and is responsible for resulting transportation, accommodation, and other costs.</p>
+<h3>12.5 Services not provided by the Company</h3>
+<p>This Section does not eliminate a remedy that may apply when the Company itself materially fails to provide a contracted service and no reasonable substitute is offered.</p></section>
+<section class="ls" id="s13"><h2><span class="sn">13.</span>Personal Circumstances and Traveler-Initiated Cancellations</h2><p>Unless the Company cancels the Trip or applicable law requires otherwise, the standard cancellation rules apply when a Traveler cancels because of:</p>
+<ul>
+<li>Illness or injury;</li>
+<li>Pregnancy;</li>
+<li>Death or illness of a family member;</li>
+<li>Work, school, or family obligations;</li>
+<li>Change of mind;</li>
+<li>Fear or reluctance to travel;</li>
+<li>Financial hardship;</li>
+<li>Relationship or custody changes;</li>
+<li>Failure to obtain time off;</li>
+<li>Passport or visa problems;</li>
+<li>Denial of entry or boarding;</li>
+<li>Missing documentation;</li>
+<li>Vaccination or health-rule issues;</li>
+<li>Weather affecting independently arranged transportation;</li>
+<li>Independently arranged flight delay or cancellation;</li>
+<li>Missed connection;</li>
+<li>Travel advisory;</li>
+<li>Personal safety concern when the Trip remains operational;</li>
+<li>Failure to meet an activity requirement; or</li>
+<li>Any other circumstance personal to the Traveler.</li>
+</ul>
+<p>Comprehensive travel insurance is required for every Participant. Each Participant must provide proof of coverage by the deadline stated in the Adult Participant Agreement and applicable Trip Documents. Failure to provide proof may result in cancellation, denied participation, or treatment of the Participant as self-insured. A Participant treated as self-insured assumes sole and full financial responsibility for uninsured or underinsured costs and losses, subject to liabilities that cannot legally be waived or transferred.</p>
+<p>The Company may offer a discretionary exception, transfer, or credit in an individual case. A discretionary accommodation:</p>
+<ul>
+<li>Is not guaranteed;</li>
+<li>Does not amend this Policy;</li>
+<li>Does not establish a precedent; and</li>
+<li>Is not effective unless confirmed in writing.</li>
+</ul></section>
+<section class="ls" id="s14"><h2><span class="sn">14.</span>Cruise and Port Excursion Cancellations</h2><h3>14.1 Cruise-line terms</h3>
+<p>Cruise fares, deposits, cabins, taxes, add-ons, and onboard services are subject to the cruise line's passenger-ticket contract and cancellation rules.</p>
+<p>Cruise-line terms may be more restrictive than this Policy.</p>
+<h3>14.2 Missed or changed ports</h3>
+<p>A cruise line may omit, replace, shorten, or reschedule a port call because of:</p>
+<ul>
+<li>Weather;</li>
+<li>Safety;</li>
+<li>Operational conditions;</li>
+<li>Government action;</li>
+<li>Mechanical issues;</li>
+<li>Medical emergencies; or</li>
+<li>Other circumstances.</li>
+</ul>
+<p>A missed or changed port does not automatically create a right to an excursion refund.</p>
+<h3>14.3 Excursion-operator terms</h3>
+<p>Port excursions are frequently nonrefundable or subject to special operator terms.</p>
+<p>Refund eligibility following a missed port, itinerary change, weather event, late ship arrival, or operator cancellation is determined by:</p>
+<ul>
+<li>The excursion operator's disclosed terms;</li>
+<li>The cruise line's terms;</li>
+<li>Amounts actually recovered; and</li>
+<li>Applicable law.</li>
+</ul>
+<h3>14.4 Company assistance</h3>
+<p>The Company will make reasonable efforts to request a refund or credit when a port excursion cannot occur.</p>
+<p>The Company does not guarantee that the excursion operator will issue a cash refund.</p>
+<p>Any amount actually recovered for the Traveler will be passed through in accordance with Section 8.</p>
+<h3>14.5 Excursion canceled by the Company</h3>
+<p>If the Company itself cancels an excursion for a reason within its reasonable control and no comparable substitute is provided, the Traveler will receive a refund of amounts paid to the Company for the canceled excursion.</p>
+<h3>14.6 Independently booked excursions</h3>
+<p>The Company is not responsible for refunding or administering an excursion booked directly by the Traveler.</p></section>
+<section class="ls" id="s15"><h2><span class="sn">15.</span>Company Cancellations Within the Company's Control</h2><h3>15.1 Entire Trip cancellation</h3>
+<p>If the Company cancels an entire Trip before it begins because of:</p>
+<ul>
+<li>Low enrollment;</li>
+<li>Internal staffing or operational concerns;</li>
+<li>A Company scheduling decision; or</li>
+<li>Another reason within the Company's reasonable control,</li>
+</ul>
+<p>the Traveler may choose:</p>
+<ol>
+<li>A refund of all amounts paid to the Company for the canceled Trip services, including the Deposit; or</li>
+<li>A Company Credit equal to the amount paid to the Company for the canceled Trip services.</li>
+</ol>
+<h3>15.2 Traveler election</h3>
+<p>The Company may provide a reasonable written deadline for choosing between a refund and Company Credit.</p>
+<p>Unless the notice states a longer period, the Traveler will have fourteen calendar days after the Company's notice to make the election.</p>
+<p>If the Traveler does not elect a Company Credit by the deadline, the Company may issue the cash refund.</p>
+<h3>15.3 Partial Company cancellation</h3>
+<p>If the Company cancels only one Trip component for a reason within its control, the Company may provide:</p>
+<ul>
+<li>A comparable substitute;</li>
+<li>A refund for the canceled unprovided component;</li>
+<li>A Company Credit for that component; or</li>
+<li>Another reasonable remedy agreed to by the Traveler.</li>
+</ul>
+<p>A reasonable comparable substitution is not considered cancellation of the entire Trip.</p>
+<h3>15.4 Independent expenses</h3>
+<p>The Company is not responsible for independently arranged expenses, including:</p>
+<ul>
+<li>Airfare;</li>
+<li>Transportation;</li>
+<li>Visas;</li>
+<li>Insurance premiums;</li>
+<li>Equipment;</li>
+<li>Childcare;</li>
+<li>Additional lodging; or</li>
+<li>Other services not purchased from the Company.</li>
+</ul>
+<p>Travel insurance should be used to protect those expenses.</p></section>
+<section class="ls" id="s16"><h2><span class="sn">16.</span>Minimum Enrollment</h2><p>A group Trip may require minimum enrollment.</p>
+<p>If minimum enrollment is not reached, the Company may:</p>
+<ol>
+<li>Cancel the Trip and provide the refund or credit options in Section 15;</li>
+<li>Offer a revised price;</li>
+<li>Offer a revised itinerary;</li>
+<li>Offer a different Trip or date; or</li>
+<li>Request that the Traveler transfer the booking.</li>
+</ol>
+<p>A Traveler is not required to accept a higher revised price.</p>
+<p>If the Traveler declines a revised price following a minimum-enrollment shortfall, the Traveler will receive a refund of amounts paid to the Company for the canceled Trip services.</p>
+<p>The Company will provide notice of a minimum-enrollment cancellation as soon as reasonably practicable.</p></section>
+<section class="ls" id="s17"><h2><span class="sn">17.</span>Force Majeure</h2><h3>17.1 Force Majeure Events</h3>
+<p>A Force Majeure Event includes an event outside the Company's reasonable control that prevents, materially impairs, makes illegal, or makes commercially impracticable all or part of a Trip, including:</p>
+<ul>
+<li>Hurricane, flood, earthquake, wildfire, volcanic activity, avalanche, severe storm, or other natural disaster;</li>
+<li>Epidemic, pandemic, quarantine, communicable-disease event, or public-health restriction;</li>
+<li>War, invasion, terrorism, credible security threat, civil unrest, or political instability;</li>
+<li>Government order, border closure, travel ban, embargo, visa suspension, or change in law;</li>
+<li>Strike, labor interruption, port closure, transportation shutdown, or utility failure;</li>
+<li>Airspace, roadway, rail, or maritime closure;</li>
+<li>Severe weather or unsafe environmental conditions;</li>
+<li>Closure of a destination, attraction, property, or activity site;</li>
+<li>Supplier insolvency, cessation, or failure not caused by the Company;</li>
+<li>Cyberattack or major systems interruption affecting essential travel services; or</li>
+<li>Another comparable event beyond the Company's reasonable control.</li>
+</ul>
+<h3>17.2 Company options</h3>
+<p>Following a Force Majeure Event, the Company may:</p>
+<ul>
+<li>Modify or reroute the Trip;</li>
+<li>Change accommodations or transportation;</li>
+<li>Replace an activity or destination;</li>
+<li>Shorten or extend the Trip;</li>
+<li>Suspend or postpone the Trip;</li>
+<li>Offer revised dates;</li>
+<li>Offer a Company or Supplier Credit;</li>
+<li>Cancel the affected component; or</li>
+<li>Cancel the entire Trip.</li>
+</ul>
+<h3>17.3 Recoverable Funds</h3>
+<p>When a Trip or component is canceled because of a Force Majeure Event, cash refunds are limited to Recoverable Funds unless applicable law or the Company's own contractual responsibility requires otherwise.</p>
+<p>"Recoverable Funds" means:</p>
+<ol>
+<li>Cash amounts actually returned to the Company by Suppliers for unprovided services; plus</li>
+<li>Amounts held by the Company for unprovided services that had not yet been committed, paid, or spent;</li>
+</ol>
+<p>less:</p>
+<ul>
+<li>Nonrefundable Supplier charges;</li>
+<li>Nonreturned payment-processing or transfer charges disclosed as nonrefundable;</li>
+<li>Separately identified, earned, nonrefundable Company planning or administrative fees disclosed before payment; and</li>
+<li>Other documented nonrecoverable booking costs.</li>
+</ul>
+<h3>17.4 Supplier voucher instead of cash</h3>
+<p>If a Supplier provides only a credit or voucher, the Company may pass through or administer that credit subject to the Supplier's terms.</p>
+<p>The Company is not required to convert a Supplier Credit into cash from the Company's own funds unless applicable law requires otherwise.</p>
+<h3>17.5 Later recovery</h3>
+<p>If the Company recovers additional Supplier funds after issuing an initial refund calculation, the Company will provide a supplemental refund or applicable credit for the Traveler's share, less any previously disclosed authorized deductions.</p>
+<h3>17.6 Trip modifications</h3>
+<p>A reasonable itinerary modification or comparable substitution made because of a Force Majeure Event does not automatically create a right to cancel the entire Trip for a full refund.</p>
+<p>If the Traveler declines to participate in a Trip that remains reasonably capable of operating, the Client cancellation schedule applies unless the Company agrees otherwise.</p>
+<h3>17.7 Force Majeure after the Trip begins</h3>
+<p>If a Force Majeure Event occurs after the Trip begins:</p>
+<ul>
+<li>The Company may alter, suspend, shorten, or terminate the itinerary;</li>
+<li>Refunds for unused services are limited to amounts recovered or not committed;</li>
+<li>The Traveler is responsible for additional accommodation, transportation, medical, evacuation, meal, or repatriation expenses; and</li>
+<li>Travel-insurance coverage should be used where available.</li>
+</ul>
+<h3>17.8 No guarantee of Supplier recovery</h3>
+<p>The Company will make reasonable efforts to recover funds but does not guarantee that a Supplier will provide a refund.</p>
+<p>The Company is not required to advance its own funds to replace an amount lawfully retained by a Supplier, except where the Company's own breach or applicable law requires payment.</p></section>
+<section class="ls" id="s18"><h2><span class="sn">18.</span>Supplier Cancellation, Insolvency, or Failure</h2><p>If a Supplier cancels, materially changes, becomes insolvent, ceases operations, or fails to provide a service, the Company may:</p>
+<ol>
+<li>Arrange a reasonable replacement;</li>
+<li>Modify the itinerary;</li>
+<li>Pass through a Supplier refund;</li>
+<li>Pass through or administer a Supplier Credit;</li>
+<li>Refund Recoverable Funds for the affected service; or</li>
+<li>Provide another reasonable remedy.</li>
+</ol>
+<p>If a reasonable comparable replacement is provided, the affected service will not ordinarily be treated as canceled.</p>
+<p>If the replacement has a materially lower value, the Company may provide an appropriate partial refund or credit reflecting the difference.</p>
+<p>Nothing in this Section eliminates responsibility for the Company's own breach, misrepresentation, or duty that cannot legally be limited.</p></section>
+<section class="ls" id="s19"><h2><span class="sn">19.</span>Credits and Vouchers</h2><h3>19.1 Credits must be in writing</h3>
+<p>No Company Credit exists until the Company issues written confirmation stating:</p>
+<ul>
+<li>The credit amount;</li>
+<li>The person or booking to which it applies;</li>
+<li>Eligible uses;</li>
+<li>Transferability, if any;</li>
+<li>Any booking or travel deadline permitted by law;</li>
+<li>Treatment of price differences;</li>
+<li>Treatment of unused balances; and</li>
+<li>Other material restrictions.</li>
+</ul>
+<h3>19.2 Company Credit</h3>
+<p>Unless the written credit terms state otherwise and applicable law permits:</p>
+<ul>
+<li>A Company Credit may be applied only to eligible Company services;</li>
+<li>The Traveler must pay any price difference;</li>
+<li>The credit has no greater cash value than its stated amount;</li>
+<li>It cannot be combined with every promotion or discount;</li>
+<li>It is not redeemable for cash except where required by law; and</li>
+<li>It cannot be used to pay a cancellation or chargeback debt.</li>
+</ul>
+<h3>19.3 Supplier Credit</h3>
+<p>A Supplier Credit is controlled by the Supplier and may be:</p>
+<ul>
+<li>Nontransferable;</li>
+<li>Restricted to particular dates, destinations, or Participants;</li>
+<li>Subject to availability;</li>
+<li>Single-use;</li>
+<li>Subject to a fare or price difference; or</li>
+<li>Limited by an expiration date permitted under applicable law.</li>
+</ul>
+<p>The Company does not control or extend a Supplier Credit unless the Supplier authorizes it.</p>
+<h3>19.4 Acceptance instead of cash</h3>
+<p>A Company Credit will replace an otherwise available Company cash refund only when:</p>
+<ul>
+<li>The Traveler affirmatively elects the credit;</li>
+<li>A written settlement expressly provides otherwise; or</li>
+<li>Applicable Force Majeure or Supplier terms lawfully limit recovery to credit.</li>
+</ul>
+<h3>19.5 Applicable credit law</h3>
+<p>Company Credits and Supplier Credits will be administered subject to applicable laws governing gift certificates, credit memos, expiration dates, and fees.</p>
+<p>No expiration date or post-issuance fee will be imposed where prohibited by law. Florida generally restricts expiration dates and post-sale fees on gift certificates and credit memos, subject to statutory definitions and exceptions, which is why no blanket Company-credit expiration period is imposed in this draft.</p></section>
+<section class="ls" id="s20"><h2><span class="sn">20.</span>Refund Processing</h2><h3>20.1 Company-controlled refunds</h3>
+<p>A refund that does not depend on Supplier recovery will ordinarily be initiated within thirty calendar days after:</p>
+<ol>
+<li>The Company confirms eligibility;</li>
+<li>The final refundable amount can reasonably be determined; and</li>
+<li>Any necessary payment or identity information has been received.</li>
+</ol>
+<h3>20.2 Supplier-dependent refunds</h3>
+<p>A refund dependent on a Supplier will ordinarily be initiated within thirty calendar days after:</p>
+<ul>
+<li>The Company actually receives cleared funds from the Supplier; and</li>
+<li>The amount attributable to the Traveler can reasonably be determined.</li>
+</ul>
+<p>The Company cannot guarantee how long a Supplier will take to evaluate or pay a refund request.</p>
+<h3>20.3 Original payment method</h3>
+<p>Refunds will ordinarily be returned to the original payment method and original payer.</p>
+<p>When multiple people made payments, refunds may be returned proportionately to the original payment methods.</p>
+<p>The Booking Client is not automatically entitled to receive money paid by another person.</p>
+<h3>20.4 Unavailable payment method</h3>
+<p>If the original payment method is no longer available, the Company may require:</p>
+<ul>
+<li>Identity verification;</li>
+<li>Proof of payment;</li>
+<li>Updated banking or payment information; and</li>
+<li>A completed refund authorization.</li>
+</ul>
+<h3>20.5 Bank and processor posting times</h3>
+<p>After the Company initiates a refund, the Traveler's bank, payment processor, card issuer, or platform may require additional time to post the funds.</p>
+<p>The Company does not control that processing time.</p>
+<h3>20.6 Currency</h3>
+<p>A refund will ordinarily be issued in the currency and amount received by the Company.</p>
+<p>The Company is not responsible for:</p>
+<ul>
+<li>Exchange-rate differences;</li>
+<li>Foreign transaction fees;</li>
+<li>Bank charges;</li>
+<li>Currency-conversion losses; or</li>
+<li>Charges imposed by the Traveler's financial institution.</li>
+</ul>
+<h3>20.7 Taxes and mandatory fees</h3>
+<p>Taxes, port charges, entrance fees, and other mandatory amounts are refundable only to the extent returned or not yet paid, unless applicable law requires otherwise.</p>
+<h3>20.8 Refund during a payment dispute</h3>
+<p>The Company may pause a voluntary refund while a chargeback, payment reversal, fraud investigation, or payment dispute involving the same transaction is pending, to prevent duplicate recovery.</p>
+<p>Any undisputed amount may still be processed when reasonably practicable.</p></section>
+<section class="ls" id="s21"><h2><span class="sn">21.</span>Travel Insurance</h2><p>Comprehensive travel insurance is required for every Participant. Each Participant must provide proof of coverage by the deadline stated in the Adult Participant Agreement and applicable Trip Documents. Failure to provide proof may result in cancellation, denied participation, or treatment of the Participant as self-insured. A Participant treated as self-insured assumes sole and full financial responsibility for uninsured or underinsured costs and losses, subject to liabilities that cannot legally be waived or transferred.</p>
+<p>Travelers should consider coverage for:</p>
+<ul>
+<li>Trip cancellation;</li>
+<li>Trip interruption;</li>
+<li>Medical treatment;</li>
+<li>Emergency evacuation;</li>
+<li>Repatriation;</li>
+<li>Baggage loss or delay;</li>
+<li>Travel delay;</li>
+<li>Missed connections;</li>
+<li>Missed cruise ports;</li>
+<li>Supplier default where available;</li>
+<li>Adventure activities;</li>
+<li>Communicable-disease disruptions;</li>
+<li>Preexisting conditions where available; and</li>
+<li>Cancel-for-any-reason protection where desired and available.</li>
+</ul>
+<p>Travel insurance should be purchased promptly after the initial Trip payment because some benefits may be available only when purchased within a limited period.</p>
+<p>The Company is not an insurer and does not determine whether an insurance claim will be approved.</p>
+<p>A credit card's travel benefits may be limited and should not be assumed to replace comprehensive travel insurance.</p>
+<p>A Traveler who declines or fails to purchase adequate insurance accepts the financial risk of losses that insurance might otherwise have covered.</p></section>
+<section class="ls" id="s22"><h2><span class="sn">22.</span>Chargebacks and Payment Disputes</h2><p>A chargeback is not a substitute for submitting a cancellation under this Policy.</p>
+<p>Before disputing an authorized charge, the Traveler should provide the Company a reasonable opportunity to:</p>
+<ul>
+<li>Review the booking;</li>
+<li>Explain the cancellation calculation;</li>
+<li>Correct an error;</li>
+<li>Provide documentation; or</li>
+<li>Issue an eligible refund.</li>
+</ul>
+<p>The Company may provide the payment processor or financial institution with:</p>
+<ul>
+<li>The Terms and Conditions;</li>
+<li>This Policy;</li>
+<li>Booking records;</li>
+<li>Payment records;</li>
+<li>Communications;</li>
+<li>Supplier documentation;</li>
+<li>Proof of services; and</li>
+<li>Evidence that the cancellation terms were disclosed before payment.</li>
+</ul>
+<p>Nothing in this Section restricts nonwaivable rights involving unauthorized transactions, fraud, or legally protected billing errors.</p>
+<p>A Traveler may not retain both:</p>
+<ul>
+<li>A refund or credit for a transaction; and</li>
+<li>A chargeback recovery for the same transaction.</li>
+</ul>
+<p>Any duplicate recovery must be returned or may be offset against another amount due.</p></section>
+<section class="ls" id="s23"><h2><span class="sn">23.</span>No Waiver of Mandatory Rights</h2><p>Nothing in this Policy waives or limits:</p>
+<ul>
+<li>A right that cannot legally be waived;</li>
+<li>The Company's obligations under the Florida Sellers of Travel Act;</li>
+<li>A statutory cancellation right applicable to a particular product;</li>
+<li>Rights concerning unauthorized charges;</li>
+<li>Rights arising from fraud or intentional misconduct; or</li>
+<li>Any other consumer protection required by applicable law.</li>
+</ul>
+<p>Where a mandatory law conflicts with this Policy, the mandatory law controls.</p></section>
+<section class="ls" id="s24"><h2><span class="sn">24.</span>Governing Law and Disputes</h2><p>This Policy is governed by the dispute, governing-law, and venue provisions in the Every Avenue Travel LLC Travel Services Terms and Conditions.</p>
+<p>Unless another mandatory law applies, disputes with the Company must be brought in the courts identified in those Terms.</p>
+<p>Before filing a lawsuit, the parties should follow the notice and informal-resolution procedure in the Terms and Conditions.</p></section>
+<section class="ls" id="s25"><h2><span class="sn">25.</span>Policy Changes</h2><p>The Company may update this Policy for future bookings.</p>
+<p>The version provided or made available at the time of booking governs an existing confirmed booking unless:</p>
+<ol>
+<li>The Traveler later agrees to a written change;</li>
+<li>A change is required by law; or</li>
+<li>A change provides the Traveler with more favorable cancellation or refund rights.</li>
+</ol>
+<p>Publishing a revised website version does not automatically replace the version governing an earlier confirmed booking.</p>
+<p>The Company should retain archived copies of each version.</p></section>
+<section class="ls" id="s26"><h2><span class="sn">26.</span>Contact Information</h2><p>Cancellation requests and refund questions must be sent to:</p>
+<p><strong>Every Avenue Travel LLC</strong></p>
+<p><strong>Email:</strong> booking@everyavenuetravel.com</p>
+<p>Formal cancellation notices should not be sent solely through social media, text messages, or group chats.</p></section>
+<section class="ls" id="s27"><h2><span class="sn">27.</span>Acknowledgment</h2><p>By submitting a booking, approving a quote, paying a Deposit or other amount, or confirming participation after receiving or being given access to this Policy, the Traveler acknowledges that:</p>
+<ol>
+<li>The Traveler reviewed this Policy before payment;</li>
+<li>The Deposit may be nonrefundable;</li>
+<li>Refund percentages decline as the Trip Start Date approaches;</li>
+<li>Trip-specific or Supplier Terms may apply;</li>
+<li>Some Supplier services may be entirely nonrefundable;</li>
+<li>No refund is provided for no-shows, voluntary early departure, or unused services;</li>
+<li>Company cancellations, Supplier cancellations, and Force Majeure Events are treated differently;</li>
+<li>Transfers require written approval;</li>
+<li>Refunds may depend on Supplier recovery;</li>
+<li>Comprehensive travel insurance is required, and failure to provide proof may result in cancellation, denied participation, or full self-insured financial responsibility under the Adult Participant Agreement; and</li>
+<li>Payment constitutes acceptance of this Policy and the incorporated Travel Services Terms and Conditions.</li>
+</ol>
+<p><strong>Every Avenue Travel LLC is registered with the State of Florida as a Seller of Travel. Registration No. ST45213.</strong></p>
+<p><strong>Effective Date:</strong> 5/22/24</p></section>
+    <a href="#top" class="to-top">↑ Back to top</a>
+  </article>
+</div></div>
+<script>if(window.innerWidth<=980){document.querySelector('.legal-toc').removeAttribute('open');}</script>
+<div class="brand-stripe"></div>
+<footer class="site-footer nf">
+  <div class="wrap nf-grid">
+    <div class="nf-brand">
+      <a href="homepage-newtheme.html" class="gn-logo nf-logo"><span class="gn-script">Worldschooling</span><span class="gn-sans">journeys</span></a>
+      <p class="nf-blurb">Worldschooling group trips and cruises for homeschool families who want connection, community, and real-world learning.</p>
+      <div class="nf-featured"><span>As featured in</span><a href="#">People</a><span class="nf-dot">✦</span><a href="#">Daily Mail</a></div>
+    </div>
+    <div>
+      <div class="nf-label">Connect with us</div>
+      <div class="nf-social"><a href="#" class="fs-icon" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.5l.4-3H13.5V8.5c0-.87.24-1.46 1.49-1.46H16.5V4.36C16.2 4.32 15.19 4.23 14 4.23c-2.44 0-4.11 1.49-4.11 4.22V10.5H7.4v3h2.49V21h3.61z"/></svg></a><a href="#" class="fs-icon" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg></a><a href="#" class="fs-icon" aria-label="TikTok" title="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 3c.3 2.2 1.6 3.6 3.9 3.8v3a7.3 7.3 0 0 1-3.8-1.2v6.3c0 3.6-2.6 6.1-6 6.1a5.9 5.9 0 0 1-6-5.9c0-3.6 3.1-6.4 7-5.8v3.1c-1.9-.4-3.8.8-3.8 2.7 0 1.5 1.2 2.7 2.8 2.7 1.7 0 2.8-1.1 2.8-3V3h3.1z"/></svg></a><a href="#" class="fs-icon" aria-label="Messenger" title="Messenger"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5C6.6 2.5 2.5 6.4 2.5 11.4c0 2.7 1.2 5 3.2 6.6v3.5l3.1-1.7c1 .3 2.1.4 3.2.4 5.4 0 9.5-3.9 9.5-8.8S17.4 2.5 12 2.5zm1 11.8-2.4-2.6-4.7 2.6 5.2-5.5 2.5 2.6 4.6-2.6-5.2 5.5z"/></svg></a><a href="#" class="fs-icon" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.6a8.5 8.5 0 0 1-12.6 7.5L3.5 20.5l1.4-4.2A8.5 8.5 0 1 1 20.5 11.6z"/><path d="M9 8.6c.2 2.6 2.4 5 5.2 5.6l1-1.1-1.6-.9-.7.6c-1-.5-1.7-1.2-2.1-2.1l.6-.7-.8-1.6z" fill="currentColor" stroke="none"/></svg></a><a href="#" class="fs-icon" aria-label="Facebook Group" title="Facebook Group"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="8" r="3.2"/><circle cx="17" cy="9.2" r="2.5"/><path d="M2.8 19.5c0-3.5 2.8-6 6.2-6s6.2 2.5 6.2 6v.5H2.8z"/><path d="M16 20v-.5c0-1.8-.6-3.4-1.7-4.6.8-.5 1.7-.8 2.7-.8 2.7 0 4.5 2 4.5 4.8v1.1z"/></svg></a></div>
+      <a href="#" class="nf-group">Join our Worldschooling Facebook Group <span>&rarr;</span></a>
+    </div>
+    <div>
+      <div class="nf-label">Contact us</div>
+      <a href="#" class="nf-contact"><span class="nf-ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.6a8.5 8.5 0 0 1-12.6 7.5L3.5 20.5l1.4-4.2A8.5 8.5 0 1 1 20.5 11.6z"/><path d="M9 8.6c.2 2.6 2.4 5 5.2 5.6l1-1.1-1.6-.9-.7.6c-1-.5-1.7-1.2-2.1-2.1l.6-.7-.8-1.6z" fill="currentColor" stroke="none"/></svg></span>Connect via WhatsApp</a>
+      <a href="#" class="nf-contact"><span class="nf-ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.5-4.6A8 8 0 1 1 21 12z"/><circle cx="8.5" cy="12" r=".6" fill="currentColor"/><circle cx="12" cy="12" r=".6" fill="currentColor"/><circle cx="15.5" cy="12" r=".6" fill="currentColor"/></svg></span>Connect via ChatBot</a>
+    </div>
+    <div>
+      <div class="nf-label">Pages</div>
+      <div class="footer-links nf-links">
+        <a href="legal-terms.html">Terms and Conditions</a>
+        <a href="legal-cancellation.html">Cancellations &amp; Refunds</a>
+        <a href="legal-privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+  <div class="nf-bottom">
+    <div class="wrap nf-bottom-in">
+      <span><span class="mark">&#10022;</span> &copy; 2026 Worldschooling Journeys, an Every Avenue Travel company</span>
+      <span class="nf-legal">Every Avenue Travel, LLC is registered with the State of Florida as a Seller of Travel. Registration No. ST45213. IATA No. 10620400.</span>
+    </div>
+  </div>
+</footer>
+
+
+
+</body>
+</html>

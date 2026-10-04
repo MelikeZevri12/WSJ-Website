@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Terms and Conditions — Worldschooling Journeys</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#A5BD8E;
+    --green-dark:#708F53;
+    --green-hover:#2D3A22;
+    --dark:#152230;
+    --dark-soft:#1e3040;
+    --blue:#2f7f8a;
+    --blue-tint:color-mix(in srgb, var(--blue) 22%, white);
+    --blue-line:color-mix(in srgb, var(--blue) 48%, white);
+    --green-tint:color-mix(in srgb, var(--green) 14%, white);
+    --sky-tint:color-mix(in srgb, var(--blue) 16%, var(--white));
+    --sky-line:color-mix(in srgb, var(--blue) 42%, var(--white));
+    --green-line:color-mix(in srgb, var(--green) 42%, white);
+    --green-soft:color-mix(in srgb, var(--green) 55%, white);
+    --white:#fffdf7;
+    --paper:#f4f1e9;
+    --line:rgba(21,34,48,0.16);
+    --line-on-dark:rgba(255,255,255,0.2);
+    --muted:#6d6552;
+    --sunset-1:#c14a2f;
+    --sunset-2:#e0893c;
+    --sunset-tint:color-mix(in srgb, var(--sunset-1) 12%, var(--white));
+    --gold:#d9a441;
+    --star:rgba(255,255,255,0.85);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:'Titillium Web', sans-serif;color:var(--dark);background:var(--paper);line-height:1.6;}
+  a{color:inherit;}
+  button{font-family:inherit;}
+  h1,h2,h3,h4{font-family:'Libre Baskerville', serif;font-weight:700;margin:0 0 .4em 0;color:var(--dark);}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+  .brand-stripe{height:5px;width:100%;background:linear-gradient(90deg, var(--blue) 0%, var(--sunset-2) 55%, var(--sunset-1) 100%);}
+
+  /* GLOBAL NAV */
+  .global-nav{background:var(--dark-soft);border-bottom:1px solid var(--line-on-dark);}
+  .global-nav .gn-wrap{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 24px;gap:16px;flex-wrap:wrap;}
+  .gn-logo{display:flex;align-items:baseline;gap:8px;text-decoration:none;}
+  .gn-logo .gn-script{font-family:'Caveat',cursive;font-weight:700;font-size:26px;color:var(--gold);line-height:1;}
+  .gn-logo .gn-sans{font-family:'Titillium Web',sans-serif;font-weight:600;font-size:14px;color:var(--green);letter-spacing:.02em;}
+  .gn-links{display:flex;gap:26px;}
+  .gn-link{padding:4px 0;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:14px;text-decoration:none;color:#c7ccd1;transition:color .15s ease;}
+  .gn-link:hover{color:var(--white);}
+  .gn-link.active{color:var(--green);}
+
+  .concept-note{background:var(--dark);border-bottom:1px solid var(--gold);color:var(--gold);font-size:13px;text-align:center;padding:8px 16px;font-family:'Titillium Web',sans-serif;}
+
+  .cruise-card, .story-media, .spotlight-card{outline:1.5px dashed rgba(21,34,48,0.3);outline-offset:-6px;}
+
+  /* HERO */
+.hero{
+    position:relative;
+    background-color:var(--dark);
+    background-image:
+      linear-gradient(180deg, rgba(21,34,48,0.6) 0%, rgba(13,22,32,0.84) 100%),
+      none;
+    background-position:center 60%;
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-blend-mode:multiply, normal;
+    color:var(--white);
+    padding:56px 0 40px;
+  }
+  .hero .wrap{position:relative;}
+  .eyebrow{font-family:'Titillium Web',sans-serif;font-weight:800;color:var(--green-dark);text-transform:uppercase;letter-spacing:.13em;font-size:12px;margin-bottom:10px;}
+  .hero .eyebrow{color:var(--gold);}
+  .hero h1{color:var(--white);font-size:clamp(30px,4.2vw,46px);line-height:1.15;max-width:720px;}
+  .hero p.lede{max-width:640px;color:#d9dbe0;font-size:16px;margin-top:14px;}
+  .hero .hero-cta{margin-top:26px;display:flex;gap:14px;flex-wrap:wrap;}
+
+  .btn{display:inline-block;padding:13px 26px;border-radius:6px;font-weight:700;font-size:14.5px;text-decoration:none;letter-spacing:.02em;cursor:pointer;border:2px solid transparent;transition:transform .12s ease, opacity .12s ease;}
+  .btn:hover{transform:translateY(-1px);}
+  .btn-primary{background:var(--green-dark);color:var(--white);}
+  .btn-primary:hover{background:var(--green-hover);}
+  .btn-outline{background:var(--white);border-color:var(--green);color:var(--green-dark);}
+  .btn-outline:hover{background:var(--green-tint);border-color:var(--green-dark);}
+  .btn-outline-hero{background:transparent;border-color:rgba(255,255,255,.5);color:var(--white);}
+  .btn-outline-hero:hover{border-color:var(--white);}
+  .btn-sm{padding:8px 16px;font-size:12.5px;}
+  .proof-more-btn{margin-left:6px;}
+
+  /* HERO "AS FEATURED IN" LINE — small credibility line inside the hero itself */
+  .hero-featured{margin-top:28px;font-size:12.5px;color:#aeb6bd;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .hero-featured .hf-label{text-transform:uppercase;letter-spacing:.1em;font-weight:800;font-size:10.5px;color:#8b95a0;}
+  .hero-featured .hf-names{font-family:'Libre Baskerville',serif;font-style:italic;font-size:14px;color:var(--green-soft);}
+
+  /* MOUNTAIN DIVIDER — jagged silhouette that turns the hard edge under the hero
+     into a shaped transition, same technique used on the trip detail page */
+  .mountain-divider{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:34px;display:block;line-height:0;}
+  .mountain-divider path{fill:var(--dark);}
+
+  section{padding:68px 0;}
+  section.alt{background:var(--white);}
+  .section-head{max-width:680px;margin-bottom:32px;}
+  .section-head h2{font-size:clamp(24px,3vw,32px);}
+  .section-head p{color:var(--muted);font-size:15.5px;}
+  .section-head.center{max-width:680px;margin-left:auto;margin-right:auto;text-align:center;}
+
+  /* STORY */
+  .story-grid{display:grid;grid-template-columns:0.85fr 1.15fr;gap:48px;align-items:stretch;}
+  .story-media{width:100%;height:100%;min-height:340px;border-radius:10px;overflow:hidden;background:var(--sky-tint);border:1px solid var(--sky-line);display:flex;align-items:center;justify-content:center;}
+  .story-media span{font-size:13px;color:var(--muted);font-weight:600;text-align:center;padding:0 24px;}
+  .story-media.has-photo{border:none;}
+  .story-media img{width:100%;height:100%;object-fit:cover;object-position:center 78%;display:block;}
+  .story-heading{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+  .story-icon{width:44px;height:44px;border-radius:50%;background:var(--green-tint);border:1px solid var(--green-line);color:var(--green-dark);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .story-icon svg{width:22px;height:22px;}
+  .story-heading h2{margin:0;font-size:clamp(22px,2.8vw,28px);}
+  .story-copy p{color:#3c4048;font-size:15.5px;margin:0 0 14px;}
+  .story-copy p:last-child{margin-bottom:0;}
+  .story-copy p.story-intro{font-style:italic;color:var(--green-dark);font-size:16.5px;}
+  .story-copy .story-accent{color:var(--green-dark);}
+
+  /* QUOTE BAND */
+  .quote-band{background:var(--dark);color:var(--white);text-align:center;padding:14px 0 36px;}
+  .quote-band .mark{color:var(--gold);font-size:15px;margin-bottom:10px;}
+  .quote-band blockquote{font-family:'Libre Baskerville',serif;font-style:italic;font-size:clamp(16px,1.8vw,19px);line-height:1.4;max-width:640px;margin:0 auto;color:var(--white);}
+  .quote-band .attribution{margin-top:10px;font-size:11px;color:var(--green-soft);text-transform:uppercase;letter-spacing:.1em;font-weight:700;}
+
+  /* FACEBOOK COMMUNITY BANNER — community photo collage as background,
+     dark gradient overlay on top so white text stays readable at any point
+     in the image. Capped at 200px tall, same footprint as the old strip. */
+  .fb-banner{
+    position:relative;text-align:center;padding:20px 0;max-height:200px;
+    display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--white);
+    background-image:
+      linear-gradient(180deg, rgba(13,22,32,0.72) 0%, rgba(13,22,32,0.82) 55%, rgba(13,22,32,0.92) 100%),
+      none;
+    background-size:cover;background-position:center;
+  }
+  .fb-banner-inner{max-width:620px;margin:0 auto;position:relative;z-index:1;}
+  .fb-icon{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.14);border:1px solid rgba(255,255,255,0.38);color:var(--gold);display:flex;align-items:center;justify-content:center;margin:0 auto 6px;}
+  .fb-icon svg{width:15px;height:15px;}
+  .fb-banner .eyebrow{margin-bottom:4px;font-size:11px;color:var(--gold);}
+  .fb-banner h2{font-size:clamp(18px,2vw,22px);margin:0 0 12px;color:var(--white);text-shadow:0 2px 14px rgba(0,0,0,0.35);}
+
+  /* TRIP TYPE STRIP — Land Trips and Cruises are separate sections again,
+     told apart by background color (paper vs. sky-tint) rather than merged
+     into one. Both use the same explanation shape: eyebrow, heading, one
+     short intro line, a row of tags. Accent colors (teal for cruises,
+     terracotta for land trips) live only in the eyebrow text. The year
+     filter buttons sit on the right, in the same row as "See All". */
+  .trip-strip{padding:64px 0;}
+  .trip-strip.trip-strip-top{padding-bottom:24px;}
+  .trip-strip.trip-strip-bottom{padding-top:24px;}
+  .trip-strip.tone-sky{background:var(--paper);}
+  .trip-block-head{display:flex;align-items:flex-end;justify-content:space-between;gap:32px;margin-bottom:40px;flex-wrap:wrap;}
+  .trip-block-copy{max-width:640px;}
+  .trip-block-copy h2{font-size:clamp(21px,2.4vw,26px);margin:0 0 10px;}
+  .trip-block-intro{color:var(--muted);font-size:14.5px;line-height:1.6;margin:0 0 14px;}
+  .trip-tags{display:flex;gap:10px;flex-wrap:wrap;}
+  .trip-tag{display:inline-flex;align-items:center;padding:6px 14px;border-radius:999px;border:1px solid var(--sky-line);background:var(--white);font-size:12.5px;font-weight:700;color:var(--dark);}
+  .trip-strip .eyebrow{margin-bottom:8px;}
+  .trip-block-actions{display:flex;align-items:center;gap:16px;flex-wrap:wrap;justify-content:flex-end;}
+  .trip-filter-row{display:flex;gap:8px;}
+  .trip-filter-btn{font-family:'Titillium Web',sans-serif;font-size:12px;font-weight:700;letter-spacing:.03em;padding:6px 16px;border-radius:999px;border:1.5px solid var(--sky-line);background:transparent;color:var(--dark);cursor:pointer;transition:background .15s,color .15s,border-color .15s;}
+  .trip-filter-btn:hover{border-color:var(--blue);}
+  .trip-filter-btn.active{background:var(--dark);color:var(--white);border-color:var(--dark);}
+  .trip-empty-note{font-size:14px;color:var(--muted);padding:10px 0 0;margin:0;}
+  .eyebrow.tone-terracotta{color:var(--sunset-1);}
+  .eyebrow.tone-teal{color:var(--blue);}
+
+  /* SPOTLIGHT STRIP — compact trip promo, repeats between sections instead of one big carousel.
+     Vertical cards, same photo-on-top / body-below shape as the cruises listing page's cruise-card.
+     Same white background as the Story section right after it, so the two read as one continuous
+     zone coming out of the dark hero/facts-bar instead of a cream-to-white seam. */
+  .spotlight-strip{padding:44px 0 42px;background:var(--white);}
+  .spotlight-strip + section.alt{padding-top:43px;}
+  .spotlight-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:10px;}
+  .spotlight-head .eyebrow{margin-bottom:2px;}
+  .spotlight-head h3{font-size:19px;margin:0;}
+  .spotlight-see-all{font-size:13px;font-weight:700;color:var(--green-dark);text-decoration:none;white-space:nowrap;}
+  .spotlight-see-all:hover{text-decoration:underline;}
+  .spotlight-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  .spotlight-card{
+    display:flex;flex-direction:column;background:var(--white);border-radius:12px;
+    border:1px solid var(--line);border-top:3px solid transparent;overflow:hidden;
+    text-decoration:none;color:inherit;box-shadow:0 1px 3px rgba(21,34,48,0.05);
+    transition:border-top-color .15s ease, transform .12s ease, box-shadow .12s ease;
+  }
+  .spotlight-card:hover{border-top-color:var(--green-dark);transform:translateY(-3px);box-shadow:0 10px 24px rgba(21,34,48,0.12);}
+  .spotlight-photo{
+    width:100%;aspect-ratio:16/10;background:var(--sky-tint);border-bottom:1px solid var(--sky-line);
+    display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted);
+    text-align:center;padding:6px;
+  }
+  .spotlight-body{padding:14px 16px 16px;}
+  .spotlight-dates{font-size:10.5px;font-weight:700;color:var(--green-dark);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;}
+  .spotlight-title{font-family:'Libre Baskerville',serif;font-size:14px;font-weight:700;line-height:1.35;color:var(--dark);}
+
+  /* --- COMPARISON: OPTION 1 — photo-overlay editorial card --- */
+  .spotlight-card.style-photo{
+    position:relative;aspect-ratio:4/3;border-radius:14px;overflow:hidden;outline:none;
+    background:linear-gradient(135deg, var(--dark-soft) 0%, var(--blue) 55%, var(--green-dark) 100%);
+    text-decoration:none;color:var(--white);box-shadow:0 4px 14px rgba(21,34,48,0.15);
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .spotlight-card.style-photo:hover{transform:translateY(-4px);box-shadow:0 16px 32px rgba(21,34,48,0.28);}
+  .spotlight-card.style-photo .sp-caption{position:absolute;top:12px;left:14px;font-size:9px;color:rgba(255,255,255,0.55);letter-spacing:.03em;}
+  .spotlight-card.style-photo .sp-price{
+    position:absolute;top:12px;right:12px;background:rgba(21,34,48,0.55);backdrop-filter:blur(3px);
+    color:var(--white);font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:20px;
+    border:1px solid rgba(255,255,255,0.25);
+  }
+  .spotlight-card.style-photo .sp-price b{color:var(--gold);font-family:'Libre Baskerville',serif;font-size:13px;}
+  .spotlight-card.style-photo .sp-overlay{position:absolute;left:0;right:0;bottom:0;padding:20px 18px 18px;background:linear-gradient(180deg, rgba(21,34,48,0) 0%, rgba(13,22,32,0.88) 68%);}
+  .spotlight-card.style-photo .spotlight-dates{color:var(--gold);margin-bottom:7px;font-size:11.5px;}
+  .spotlight-card.style-photo .spotlight-title{color:var(--white);font-size:19px;line-height:1.25;}
+  .spotlight-card.style-photo.has-photo{
+    background-image: linear-gradient(180deg, rgba(21,34,48,0.05) 0%, rgba(13,22,32,0.15) 60%), none;
+    background-size:cover;background-position:center 42%;background-repeat:no-repeat;
+  }
+
+
+  /* MERGED COMMUNITY + FRIENDS + TESTIMONIALS */
+  /* COMMUNITY SECTION — same dark night-sky + numbered-triangle + proof-strip
+     language used on the individual cruise pages' "Community" tab */
+  section.night-sky{
+    background-image:
+      radial-gradient(1.6px 1.6px at 6% 18%, var(--star), transparent 60%),
+      radial-gradient(1.3px 1.3px at 14% 62%, var(--star), transparent 60%),
+      radial-gradient(1.8px 1.8px at 24% 30%, var(--star), transparent 60%),
+      radial-gradient(1.2px 1.2px at 33% 78%, var(--star), transparent 60%),
+      radial-gradient(1.6px 1.6px at 46% 12%, var(--star), transparent 60%),
+      radial-gradient(1.3px 1.3px at 58% 55%, var(--star), transparent 60%),
+      radial-gradient(1.8px 1.8px at 68% 22%, var(--star), transparent 60%),
+      radial-gradient(1.2px 1.2px at 77% 70%, var(--star), transparent 60%),
+      radial-gradient(1.6px 1.6px at 88% 16%, var(--star), transparent 60%),
+      radial-gradient(1.4px 1.4px at 94% 60%, var(--star), transparent 60%),
+      radial-gradient(1.3px 1.3px at 40% 90%, var(--star), transparent 60%),
+      radial-gradient(1.5px 1.5px at 82% 88%, var(--star), transparent 60%);
+    background-repeat:no-repeat;
+  }
+  .moon-eyebrow:before{content:"\263E  ";color:var(--gold);}
+  section.dark-section{background:var(--dark);color:var(--white);position:relative;overflow:hidden;}
+  section.dark-section.night-sky{padding-bottom:20px;}
+  section.dark-section h2, section.dark-section h3, section.dark-section h4{color:var(--white);}
+  section.dark-section .section-head p{color:#c7ccd1;}
+  section.dark-section .section-head .eyebrow{color:var(--gold);}
+
+  .community-props{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin:4px 0 32px;}
+  .community-prop{display:flex;gap:13px;align-items:flex-start;}
+  .community-num-wrap{
+    flex:0 0 38px;width:38px;height:38px;background:var(--gold);
+    clip-path:polygon(50% 0%, 100% 100%, 0% 100%);
+    display:flex;align-items:flex-end;justify-content:center;padding-bottom:2px;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,0.35));
+  }
+  .community-num{
+    width:32px;height:32px;background:linear-gradient(160deg, var(--sunset-2), var(--sunset-1));color:var(--white);
+    display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px;
+    font-weight:700;font-family:'Libre Baskerville',serif;font-size:13px;
+    clip-path:polygon(50% 0%, 100% 100%, 0% 100%);
+  }
+  .community-prop h4{font-size:14.5px;margin:0 0 3px;color:var(--white);}
+  .community-prop p{font-size:13px;color:#c3c9d0;margin:0;line-height:1.45;}
+
+  .proof-strip-wrap{border-top:1px solid var(--line-on-dark);padding-top:24px;margin-top:8px;}
+  .proof-head-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+  .proof-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--star);margin-bottom:0;}
+  .proof-arrows{display:flex;gap:8px;}
+  .proof-arrow-btn{
+    width:32px;height:32px;border-radius:50%;border:1px solid var(--line-on-dark);background:transparent;
+    color:var(--white);font-size:17px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    transition:background .15s;
+  }
+  .proof-arrow-btn:hover{background:rgba(255,255,255,0.1);}
+  .proof-strip{
+    display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;
+    padding-bottom:4px;-ms-overflow-style:none;scrollbar-width:none;
+  }
+  .proof-strip::-webkit-scrollbar{display:none;}
+  .proof-chip{
+    flex:0 0 calc((100% - 28px) / 3);scroll-snap-align:start;display:flex;gap:11px;align-items:flex-start;
+    background:var(--white);border:1px solid var(--green-line);border-radius:10px;padding:13px 15px;
+  }
+  .proof-avatar{
+    flex:0 0 34px;width:34px;height:34px;border-radius:50%;overflow:hidden;
+    background:linear-gradient(135deg, var(--dark), var(--dark-soft));color:var(--green-soft);
+    display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;
+    text-transform:uppercase;letter-spacing:.02em;text-align:center;line-height:1.1;
+    box-shadow:0 0 0 2px var(--gold);
+  }
+  .proof-chip p{font-size:12px;color:var(--dark);margin:0 0 4px;line-height:1.4;}
+  .proof-chip .who{font-size:11px;color:var(--green-dark);font-weight:700;text-transform:uppercase;letter-spacing:.03em;}
+
+  /* COMING SOON — postmark cards, five across in one row. Ideas only, so
+     no dates anywhere: the stamp carries a simple brand mark instead. */
+  .coming-soon{background:var(--dark-soft);padding:48px 0;text-align:center;color:var(--white);}
+  .coming-soon .eyebrow{color:var(--gold);}
+  .coming-soon h3{color:var(--white);margin-bottom:26px;}
+  .coming-soon-cta{display:inline-block;margin-top:28px;font-size:13.5px;font-weight:700;color:var(--green-soft);text-decoration:none;}
+  .coming-soon-cta:hover{text-decoration:underline;}
+
+  .cs-row{display:flex;gap:16px;justify-content:center;overflow-x:auto;padding-bottom:4px;}
+  .cs-postmark-card{background:var(--white);border:1px solid var(--line);border-radius:10px;padding:10px;width:208px;flex:0 0 208px;box-shadow:0 8px 20px rgba(21,34,48,0.18);text-align:left;}
+  .cs-postmark-photo{position:relative;border-radius:6px;overflow:hidden;aspect-ratio:4/3;background:linear-gradient(135deg, var(--dark-soft) 0%, var(--blue) 55%, var(--green-dark) 100%);}
+  .cs-postmark-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+  .cs-postmark-stamp{position:absolute;top:8px;right:8px;width:38px;height:38px;border-radius:50%;border:2px dashed rgba(255,253,247,0.9);background:rgba(21,34,48,0.55);color:var(--white);display:flex;align-items:center;justify-content:center;font-size:15px;}
+  .cs-postmark-divider{height:1px;margin:12px 0;background-image:linear-gradient(to right, var(--line) 50%, rgba(0,0,0,0) 50%);background-size:8px 1px;}
+  .cs-postmark-title{font-family:'Libre Baskerville',serif;font-weight:700;font-size:14.5px;line-height:1.3;color:var(--dark);}
+
+  /* STAY UPDATED */
+  .stay-updated{background:var(--sky-tint);}
+  .update-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+  .update-card{background:var(--white);border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 6px 18px rgba(21,34,48,0.09);display:flex;flex-direction:column;}
+  .update-card-photo{aspect-ratio:16/10;overflow:hidden;}
+  .update-card-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+  .update-card-body{padding:20px 20px 22px;border-top:3px solid var(--green);flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;}
+  .update-icon{width:30px;height:30px;border-radius:50%;background:var(--green-tint);color:var(--green-dark);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;flex:0 0 auto;}
+  .update-icon svg{width:15px;height:15px;}
+  .update-card h4{font-size:15px;margin-bottom:8px;}
+  .update-card p{font-size:12.5px;color:var(--muted);margin:0 0 16px;flex:1;}
+  .update-card .btn{width:100%;text-align:center;}
+  .newsletter-form{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:auto;}
+  .newsletter-form input{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:6px;background:var(--white);font-family:'Titillium Web',sans-serif;font-size:13px;text-align:center;box-sizing:border-box;}
+
+  /* CONTACT */
+  .contact-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:56px;align-items:start;}
+  .contact-channels{display:flex;flex-direction:column;gap:16px;margin-top:26px;}
+  .contact-channel{display:flex;align-items:center;gap:12px;font-size:15.5px;font-weight:600;color:var(--dark);text-decoration:none;font-family:'Libre Baskerville',serif;}
+  .contact-channel .cc-icon{width:26px;height:26px;border-radius:50%;background:var(--green-tint);color:var(--green-dark);display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .contact-channel .cc-icon svg{width:13px;height:13px;}
+  .contact-form{background:var(--white);border-radius:16px;border:1px solid var(--line);border-top:4px solid var(--green);padding:32px;box-shadow:0 16px 36px rgba(21,34,48,0.12);}
+  .form-row{margin-bottom:16px;}
+  .form-row label{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:6px;}
+  .form-row select, .form-row textarea, .form-row input[type="text"], .form-row input[type="email"]{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:7px;background:var(--white);font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--dark);box-sizing:border-box;}
+  .form-row textarea{min-height:110px;resize:vertical;}
+  .form-row-split{display:flex;gap:16px;margin-bottom:16px;}
+  .form-row-split .form-row{flex:1;margin-bottom:0;}
+  .reason-chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .reason-chip{padding:9px 16px;border-radius:999px;border:1.5px solid var(--line);background:var(--white);font-family:'Titillium Web',sans-serif;font-weight:700;font-size:12.5px;color:var(--dark);cursor:pointer;transition:background .12s ease,border-color .12s ease,color .12s ease;}
+  .reason-chip:hover{border-color:var(--green);}
+  .reason-chip.active{background:var(--green-dark);border-color:var(--green-dark);color:var(--white);}
+
+  /* FAQ */
+  .faq-category-label{font-family:'Titillium Web',sans-serif;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--green-dark);margin:28px 0 6px;}
+  .faq-category-label:first-child{margin-top:0;}
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-item summary{list-style:none;cursor:pointer;padding:16px 0;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:15px;color:var(--dark);display:flex;justify-content:space-between;align-items:center;gap:16px;}
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary:after{content:"+";font-size:20px;color:var(--green-dark);font-weight:400;}
+  .faq-item[open] summary:after{content:"\2013";}
+  .faq-item .faq-a{padding:0 0 18px;color:#3c4048;font-size:14.5px;max-width:760px;}
+  .faq-item .faq-a p{margin:0;}
+  .faq-item .faq-a p + p, .faq-item .faq-a p + ul, .faq-item .faq-a ul + p{margin-top:10px;}
+  .faq-item .faq-a ul{margin:10px 0 0;padding-left:20px;}
+  .faq-item .faq-a li{margin-bottom:5px;}
+
+  /* FOOTER */
+  .site-footer{background:var(--dark);color:#c7ccd1;padding:52px 0 0;}
+  .footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px;padding-bottom:36px;}
+  .footer-blurb{font-size:13.5px;color:#9aa4ae;margin-top:14px;max-width:280px;}
+  .footer-label{font-family:'Titillium Web',sans-serif;font-weight:800;font-size:11.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:14px;}
+  .footer-links{display:flex;flex-direction:column;gap:10px;}
+  .footer-links a{font-size:13.5px;color:#c7ccd1;text-decoration:none;}
+  .footer-links a:hover{color:var(--white);}
+  .footer-bottom{border-top:1px solid var(--line-on-dark);padding:20px 0;text-align:center;font-size:13px;color:var(--green-soft);}
+  .footer-bottom .mark{color:var(--gold);display:block;font-size:14px;margin-bottom:8px;}
+
+  @media (max-width:1000px){
+    .spotlight-grid{grid-template-columns:repeat(2,1fr);}
+    .update-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:900px){
+    .story-grid{grid-template-columns:1fr;}
+    .trip-block-head{align-items:flex-start;}
+    .trip-block-actions{justify-content:flex-start;}
+    .community-props{grid-template-columns:1fr;gap:18px;}
+    .proof-chip{flex:0 0 82%;}
+    .contact-grid{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:640px){
+    .global-nav .gn-wrap{flex-direction:column;align-items:flex-start;gap:10px;}
+    .footer-grid{grid-template-columns:1fr;}
+    .update-grid{grid-template-columns:1fr;}
+    .spotlight-grid{grid-template-columns:1fr;}
+  }
+
+  /* ===== New footer ===== */
+  .site-footer.nf{background:var(--dark);color:#c7ccd1;padding:0;}
+  .nf-grid{display:grid;grid-template-columns:1.4fr 1.4fr 1.1fr .9fr;gap:36px;padding:56px 24px 44px;}
+  .nf-logo{display:inline-flex;align-items:baseline;gap:8px;font-size:30px;margin-bottom:14px;}
+  .nf-blurb{font-size:14px;line-height:1.6;color:#aeb6bf;max-width:300px;margin:0 0 18px;}
+  .nf-featured{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#8b95a1;}
+  .nf-featured a{font-family:'Libre Baskerville',serif;font-size:15px;font-weight:700;letter-spacing:0;text-transform:none;color:var(--white);text-decoration:none;}
+  .nf-featured .nf-dot{color:var(--gold);font-size:10px;}
+  .nf-label{font-family:'Libre Baskerville',serif;font-weight:700;font-size:16px;color:var(--white);margin:6px 0 18px;}
+  .nf-social{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+  .fs-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);
+    border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.04);transition:background .15s ease, border-color .15s ease, transform .15s ease;}
+  .fs-icon svg{width:19px;height:19px;}
+  .fs-icon:hover{background:var(--green-dark);border-color:var(--green-dark);transform:translateY(-2px);}
+  .nf-group{font-size:14px;font-weight:700;color:var(--green);text-decoration:none;}
+  .nf-group:hover{color:var(--white);}
+  .nf-contact{display:flex;align-items:center;gap:12px;font-size:14.5px;font-weight:600;color:#c7ccd1;text-decoration:none;margin-bottom:14px;}
+  .nf-contact:hover{color:var(--white);}
+  .nf-ci{width:36px;height:36px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb, var(--green) 18%, transparent);color:var(--green);}
+  .nf-ci svg{width:18px;height:18px;}
+  .nf-links{display:block;}
+  .nf-links a{display:block;font-size:14.5px;margin:0 0 12px;padding:0;color:#c7ccd1;text-decoration:none;}
+  .nf-links a:hover{color:var(--white);}
+  .nf-bottom{border-top:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.18);}
+  .nf-bottom-in{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 24px;padding:18px 24px;font-size:13px;color:#aeb6bf;}
+  .nf-bottom .mark{color:var(--gold);margin-right:4px;}
+  .nf-legal{font-size:12px;color:#8b95a1;}
+  @media (max-width:900px){ .nf-grid{grid-template-columns:1fr 1fr;gap:34px;} }
+  @media (max-width:560px){ .nf-grid{grid-template-columns:1fr;padding:44px 24px 32px;} .nf-bottom-in{flex-direction:column;align-items:flex-start;} }
+
+  .proof-chip .who .who-trip{font-weight:600;color:var(--muted);text-transform:none;letter-spacing:0;margin-left:6px;}
+  .proof-chip .who .who-trip:before{content:"· ";}
+
+  /* ===== Legal pages ===== */
+  .legal-hero{background:var(--dark);color:var(--white);padding:46px 0 0;position:relative;}
+  .legal-hero h1{color:var(--white);font-size:clamp(30px,4vw,44px);margin:0 0 10px;}
+  .legal-hero .lh-meta{color:#aeb6bf;font-size:14px;margin:0 0 26px;}
+  .legal-hero .lh-meta strong{color:var(--white);}
+  .legal-tabs{display:flex;flex-wrap:wrap;gap:6px;}
+  .legal-tabs a{font-size:14px;font-weight:700;text-decoration:none;color:#c7ccd1;padding:11px 18px;border-radius:10px 10px 0 0;background:rgba(255,255,255,0.06);}
+  .legal-tabs a:hover{color:var(--white);background:rgba(255,255,255,0.12);}
+  .legal-tabs a.on{background:var(--paper);color:var(--dark);}
+  .legal-body{padding:40px 0 70px;}
+  .legal-grid{display:grid;grid-template-columns:260px 1fr;gap:40px;align-items:start;}
+  .legal-toc{position:sticky;top:20px;max-height:calc(100vh - 40px);overflow:auto;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:18px 16px 14px;}
+  .legal-toc .toc-label{font-size:11.5px;font-weight:800;text-transform:uppercase;letter-spacing:.12em;color:var(--green-dark);margin:0 0 10px 6px;}
+  .legal-toc a{display:flex;gap:8px;font-size:13.5px;line-height:1.35;color:#3c4048;text-decoration:none;padding:6px;border-radius:6px;}
+  .legal-toc a span{flex:none;min-width:20px;color:var(--muted);font-weight:700;}
+  .legal-toc a:hover{background:var(--green-tint);color:var(--dark);}
+  .legal-doc{background:var(--white);border:1px solid var(--line);border-radius:16px;padding:44px 52px;min-width:0;}
+  .legal-doc .legal-notice{background:var(--sunset-tint);border:1px solid color-mix(in srgb, var(--sunset-1) 30%, var(--white));border-left:4px solid var(--sunset-1);border-radius:12px;padding:22px 26px;margin:0 0 34px;}
+  .legal-doc .legal-notice h2{font-size:15px;letter-spacing:.06em;margin:0 0 10px;color:var(--sunset-1);border:none;padding:0;}
+  .legal-doc .legal-notice h2:first-child{margin-top:0;}
+  .legal-doc .legal-notice p, .legal-doc .legal-notice li{font-size:14px;}
+  .legal-doc .legal-notice p:last-child{margin-bottom:0;}
+  .legal-doc section.ls{padding:0;}
+  .legal-doc .legal-intro{background:var(--sky-tint);border-radius:12px;padding:18px 22px;margin:0 0 34px;}
+  .legal-doc .legal-intro p{font-size:14px;margin:0 0 6px;}
+  .legal-doc .legal-intro p:last-child{margin:0;}
+  .legal-toc summary{list-style:none;cursor:pointer;}
+  .legal-toc summary::-webkit-details-marker{display:none;}
+  @media (min-width:981px){ .legal-toc summary{pointer-events:none;} }
+  @media (max-width:980px){ .legal-toc summary:after{content:' ▾';} .legal-toc[open] summary:after{content:' ▴';} }
+  .legal-doc h2{font-size:22px;margin:42px 0 14px;padding-top:22px;border-top:1px solid var(--line);scroll-margin-top:20px;}
+  .legal-doc section.ls:first-of-type h2{margin-top:0;padding-top:0;border-top:none;}
+  .legal-doc h2 .sn{color:var(--green-dark);margin-right:6px;}
+  .legal-doc h3{font-family:'Titillium Web',sans-serif;font-size:16.5px;font-weight:800;margin:24px 0 8px;color:var(--dark);}
+  .legal-doc p{font-size:15px;line-height:1.75;color:#33373d;margin:0 0 14px;}
+  .legal-doc ul, .legal-doc ol{margin:0 0 16px;padding-left:22px;}
+  .legal-doc li{font-size:15px;line-height:1.65;color:#33373d;margin:0 0 6px;}
+  .legal-doc ul li::marker{color:var(--green-dark);}
+  .legal-doc ol li::marker{color:var(--green-dark);font-weight:700;}
+  .legal-doc strong{color:var(--dark);}
+  .legal-doc table{width:100%;border-collapse:collapse;margin:8px 0 20px;font-size:14.5px;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+  .legal-doc th{background:var(--dark);color:var(--white);text-align:left;padding:12px 16px;font-weight:700;}
+  .legal-doc td{padding:12px 16px;border-top:1px solid var(--line);}
+  .legal-doc tr:nth-child(even) td{background:var(--paper);}
+  .legal-doc a{color:var(--green-dark);font-weight:700;}
+  .to-top{display:inline-block;margin-top:30px;font-size:13.5px;font-weight:700;color:var(--green-dark);text-decoration:none;}
+  @media (max-width:980px){ .legal-grid{grid-template-columns:1fr;} .legal-toc{position:static;max-height:none;} .legal-toc nav{columns:2;} }
+  @media (max-width:640px){ .legal-doc{padding:26px 20px;} .legal-toc nav{columns:1;} .legal-tabs{flex-wrap:nowrap;overflow-x:auto;margin:0 -24px;padding:0 24px;scrollbar-width:none;} .legal-tabs a{font-size:13px;padding:10px 12px;white-space:nowrap;flex:none;} }
+</style>
+</head>
+<body id="top">
+
+<!-- GLOBAL NAV -->
+<div class="global-nav">
+  <div class="gn-wrap">
+    <a href="homepage-newtheme.html" class="gn-logo">
+      <span class="gn-script">Worldschooling</span><span class="gn-sans">journeys</span>
+    </a>
+    <div class="gn-links">
+      <a href="homepage-newtheme.html" class="gn-link">Home</a>
+      <a href="#" class="gn-link">Land Trips</a>
+      <a href="cruises-listing.html" class="gn-link">Cruises</a>
+      <a href="#" class="gn-link">About</a>
+      <a href="#faq" class="gn-link">FAQ</a>
+    </div>
+  </div>
+</div>
+
+<div class="concept-note">Redesign concept for review — legal page in the new theme. Text is copied from the live page.</div>
+<header class="legal-hero"><div class="wrap">
+  <div class="eyebrow" style="color:var(--green);">Legal</div>
+  <h1>Terms and Conditions</h1>
+  <p class="lh-meta">Every Avenue Travel LLC · Effective Date: <strong>5/22/24</strong></p>
+  <nav class="legal-tabs" aria-label="Legal pages"><a href="legal-terms.html" class="on">Terms and Conditions</a><a href="legal-cancellation.html" class="">Cancellation &amp; Refund Policy</a><a href="legal-privacy.html" class="">Privacy Policy</a></nav>
+</div></header>
+<div class="legal-body"><div class="wrap legal-grid">
+  <details class="legal-toc" open><summary class="toc-label">On this page</summary><nav><a href="#s1"><span>1.</span>Company and Seller of Travel Disclosure</a><a href="#s2"><span>2.</span>Acceptance of This Agreement</a><a href="#s3"><span>3.</span>Definitions</a><a href="#s4"><span>4.</span>Contract Documents and Order of Precedence</a><a href="#s5"><span>5.</span>Scope of the Company's Role</a><a href="#s6"><span>6.</span>Eligibility and Booking Requirements</a><a href="#s7"><span>7.</span>Quotes, Availability, and Booking Confirmation</a><a href="#s8"><span>8.</span>Prices, Currency, Inclusions, and Exclusions</a><a href="#s9"><span>9.</span>Payment Terms</a><a href="#s10"><span>10.</span>Air Travel</a><a href="#s11"><span>11.</span>Cancellations, Refunds, Credits, and Transfers</a><a href="#s12"><span>12.</span>Travel Insurance</a><a href="#s13"><span>13.</span>Independent Suppliers</a><a href="#s14"><span>14.</span>Itineraries, Substitutions, and Minimum Enrollment</a><a href="#s15"><span>15.</span>Company Cancellations, Postponement, and Force Majeure</a><a href="#s16"><span>16.</span>Travel Documents and Entry Requirements</a><a href="#s17"><span>17.</span>Destination Conditions and Local Laws</a><a href="#s18"><span>18.</span>Health, Fitness, Accessibility, and Special Requests</a><a href="#s19"><span>19.</span>Medication and Personal Medical Equipment</a><a href="#s20"><span>20.</span>Medical Emergencies and Evacuation</a><a href="#s21"><span>21.</span>Assumption of Travel and Adventure Risks</a><a href="#s22"><span>22.</span>Adventure Activity Requirements</a><a href="#s23"><span>23.</span>Minors and Family Responsibility</a><a href="#s24"><span>24.</span>Worldschooling and Educational Activities</a><a href="#s25"><span>25.</span>Accommodations and Rooming</a><a href="#s26"><span>26.</span>Transportation, Luggage, and Child Restraints</a><a href="#s27"><span>27.</span>Cruises and Port Excursions</a><a href="#s28"><span>28.</span>Participant Conduct</a><a href="#s29"><span>29.</span>Removal from a Trip</a><a href="#s30"><span>30.</span>Photography, Video, and Media</a><a href="#s31"><span>31.</span>Privacy and Personal Information</a><a href="#s32"><span>32.</span>Intellectual Property and Group Privacy</a><a href="#s33"><span>33.</span>Personal Property</a><a href="#s34"><span>34.</span>Complaints and Service Issues</a><a href="#s35"><span>35.</span>No Guarantees of Subjective Experience</a><a href="#s36"><span>36.</span>Allocation of Responsibility and Limitation of Liability</a><a href="#s37"><span>37.</span>Participant Indemnification</a><a href="#s38"><span>38.</span>Governing Law and Exclusive Venue</a><a href="#s39"><span>39.</span>Notices and Communications</a><a href="#s40"><span>40.</span>Changes to These Terms</a><a href="#s41"><span>41.</span>General Provisions</a><a href="#s42"><span>42.</span>Final Acknowledgment</a></nav></details>
+  <article class="legal-doc">
+    <div class="legal-notice"><h2>TRAVEL SERVICES TERMS AND CONDITIONS</h2>
+<h2>IMPORTANT NOTICE</h2>
+<p>PLEASE READ THESE TERMS AND CONDITIONS CAREFULLY BEFORE SUBMITTING A BOOKING OR MAKING A PAYMENT. THESE TERMS CONTAIN IMPORTANT PROVISIONS REGARDING CANCELLATIONS, REFUNDS, TRAVEL RISKS, ADVENTURE ACTIVITIES, MINORS, THIRD-PARTY SUPPLIERS, LIMITATIONS OF LIABILITY, AND THE EXCLUSIVE LOCATION FOR DISPUTES.</p>
+<p>BY SUBMITTING A BOOKING, APPROVING A QUOTE, PAYING A DEPOSIT OR OTHER AMOUNT, OR PARTICIPATING IN A TRIP AFTER RECEIVING OR BEING GIVEN ACCESS TO THESE TERMS, YOU ACKNOWLEDGE THAT YOU HAVE READ, UNDERSTOOD, AND AGREED TO THEM.</p></div><section class="ls" id="s1"><h2><span class="sn">1.</span>Company and Seller of Travel Disclosure</h2><p>These Travel Services Terms and Conditions are entered into between Every Avenue Travel LLC, a Florida limited liability company, referred to in this Agreement as the "Company," "Every Avenue Travel," "we," "us," or "our," and each person who books, pays for, attends, or participates in a Trip, referred to as the "Traveler," "Client," or "Participant."</p>
+<p>Every Avenue Travel LLC is registered with the State of Florida as a Seller of Travel. Registration No. ST45213.</p>
+<p>The Company organizes and coordinates group and individual travel services, including tours, retreats, cruises, port excursions, family travel, worldschooling experiences, cultural programs, guided experiences, adventure activities, accommodations, transportation, and other travel-related services.</p></section>
+<section class="ls" id="s2"><h2><span class="sn">2.</span>Acceptance of This Agreement</h2><h3>2.1 Actions constituting acceptance</h3>
+<p>A Traveler accepts and agrees to this Agreement by taking any of the following actions after receiving or being given access to it:</p>
+<ul>
+<li>Submitting a reservation or registration;</li>
+<li>Approving a quote or itinerary;</li>
+<li>Paying a deposit, installment, invoice, or other amount;</li>
+<li>Authorizing another person to make a payment or booking on the Traveler's behalf;</li>
+<li>Confirming participation by email or through a booking platform; or</li>
+<li>Attending or participating in any portion of a Trip.</li>
+</ul>
+<p>A handwritten signature is not required for these Terms to become binding. Separate adult or minor waivers, medical authorizations, supplier forms, or activity releases may require an electronic or handwritten signature.</p>
+<h3>2.2 Availability before payment</h3>
+<p>The Company will make these Terms and the applicable Cancellation &amp; Refund Policy available before or at the time payment is requested through a website link, downloadable document, invoice attachment, email, booking platform, or other reasonably accessible electronic method.</p>
+<p>The Traveler should not submit payment if the Traveler cannot access or retain these Terms. A copy may be requested by emailing booking@everyavenuetravel.com. These Terms are available on worldschoolingjourneys.com.</p>
+<h3>2.3 Electronic transactions</h3>
+<p>The Traveler agrees that booking communications, invoices, confirmations, notices, policies, and contractual records may be provided electronically. The Traveler may download, print, or save the Agreement for future reference.</p>
+<p>Electronic approval, payment, submission of information, or other electronic conduct associated with the booking may be attributed to the person whose name, email address, account, or payment method was used, subject to applicable law.</p>
+<h3>2.4 Each adult's acceptance</h3>
+<p>Each adult Participant is individually responsible for reviewing and accepting this Agreement.</p>
+<p>The person making the reservation, referred to as the "Booking Client," agrees to provide these Terms and all Trip Documents to every adult included in the reservation. Each adult becomes individually bound by this Agreement when that adult submits information, makes or authorizes a payment, confirms participation, or participates after receiving or being given access to the Agreement.</p>
+<p>The Booking Client may not release or waive another adult's legal rights unless the Booking Client has specific legal authority to do so.</p>
+<h3>2.5 Booking for minors</h3>
+<p>A parent or legally authorized guardian booking for a Minor:</p>
+<ul>
+<li>Accepts this Agreement with respect to the parent's or guardian's own obligations;</li>
+<li>Consents to the Minor's participation, subject to all required forms and eligibility rules;</li>
+<li>Accepts responsibility for supervising the Minor;</li>
+<li>Represents that the person has authority to provide the Minor's information and make travel arrangements for the Minor; and</li>
+<li>Agrees to complete any separate parent consent, medical authorization, or minor activity waiver required by the Company or a Supplier.</li>
+</ul>
+<p>Nothing in this general Agreement is intended to substitute for the separate Minor Activity Waiver or to waive a Minor's claim beyond what is permitted by applicable law.</p></section>
+<section class="ls" id="s3"><h2><span class="sn">3.</span>Definitions</h2><p>For purposes of this Agreement:</p>
+<ul>
+<li><strong>"Agreement"</strong> means these Terms and Conditions together with the applicable Cancellation &amp; Refund Policy, Trip Documents, adult or minor waivers, medical authorizations, Privacy Policy, and applicable Supplier Terms.</li>
+<li><strong>"Booking Client"</strong> means the person who initiates or manages a reservation for one or more Participants.</li>
+<li><strong>"Company Parties"</strong> means Every Avenue Travel LLC and its members, managers, officers, employees, authorized trip leaders, representatives, and agents acting within the scope of their duties.</li>
+<li><strong>"Force Majeure Event"</strong> means an event outside the Company's reasonable control, as described in Section 15.</li>
+<li><strong>"Minor"</strong> means a Participant who is younger than eighteen years old at the time of participation.</li>
+<li><strong>"Participant"</strong> or <strong>"Traveler"</strong> means every adult or Minor included in or participating in a booking.</li>
+<li><strong>"Supplier"</strong> means an independent third party that provides any accommodation, transportation, cruise, excursion, activity, guide service, meal, venue, ticket, equipment, or other travel-related service.</li>
+<li><strong>"Supplier Terms"</strong> means the Supplier's contract, ticket terms, fare rules, conditions of carriage, cancellation policy, waiver, eligibility requirements, or other applicable terms.</li>
+<li><strong>"Trip"</strong> means any individual or group trip, tour, retreat, cruise, excursion, worldschooling experience, guided experience, activity, itinerary, package, or travel service arranged, coordinated, operated, or sold by the Company.</li>
+<li><strong>"Trip Documents"</strong> means the applicable quote, invoice, booking confirmation, itinerary, trip webpage, written inclusions and exclusions, payment schedule, trip-specific terms, and written addenda.</li>
+<li><strong>"Trip Start Date"</strong> means the first date on which the first Company-arranged service is scheduled to begin, unless a Trip Document expressly defines another date.</li>
+</ul></section>
+<section class="ls" id="s4"><h2><span class="sn">4.</span>Contract Documents and Order of Precedence</h2><p>The Agreement must be read as a coordinated set of documents.</p>
+<p>If two documents directly conflict, they will apply in the following order:</p>
+<ol>
+<li>Applicable nonwaivable law;</li>
+<li>A written Trip-specific addendum or Trip Document that expressly states it overrides a particular general provision;</li>
+<li>Trip-specific cancellation or Supplier terms disclosed before payment, but only for the affected Trip or Supplier service;</li>
+<li>The Cancellation &amp; Refund Policy for cancellation, refund, credit, transfer, and no-show matters;</li>
+<li>A separate adult or minor waiver for assumption-of-risk and release matters;</li>
+<li>The Privacy Policy for privacy and personal-information matters;</li>
+<li>These Terms and Conditions; and</li>
+<li>General marketing materials, social-media posts, photographs, or informal descriptions.</li>
+</ol>
+<p>A Supplier's terms govern the service provided by that Supplier. Supplier Terms do not automatically override the entire Agreement and do not eliminate any responsibility imposed on the Company by nonwaivable law.</p>
+<p>No verbal statement overrides a written term unless an authorized Company representative confirms the change in writing.</p></section>
+<section class="ls" id="s5"><h2><span class="sn">5.</span>Scope of the Company's Role</h2><p>The Company may perform different roles for different portions of a Trip.</p>
+<p>The Company may:</p>
+<ul>
+<li>Design and coordinate an itinerary;</li>
+<li>Operate or host certain group services;</li>
+<li>Arrange services provided by independent Suppliers;</li>
+<li>Collect payments for Company and Supplier services;</li>
+<li>Direct the Traveler to pay a Supplier directly;</li>
+<li>Provide group leaders, facilitators, or hosts;</li>
+<li>Provide general destination or scheduling information; and</li>
+<li>Assist with communications between a Traveler and a Supplier.</li>
+</ul>
+<p>Unless a Trip Document expressly states that the Company itself owns or operates a service, accommodations, vessels, vehicles, guides, excursions, activity providers, and venues are provided by independent Suppliers.</p>
+<p>Company trip leaders may coordinate the group, communicate schedules, facilitate activities, or provide general assistance. They are not automatically medical professionals, educators, childcare providers, lifeguards, security personnel, or licensed activity instructors.</p></section>
+<section class="ls" id="s6"><h2><span class="sn">6.</span>Eligibility and Booking Requirements</h2><h3>6.1 Adult eligibility</h3>
+<p>A person must be at least eighteen years old to make a booking unless the Company expressly agrees otherwise in writing.</p>
+<h3>6.2 Accurate information</h3>
+<p>The Booking Client and each Participant must provide complete and accurate information, including:</p>
+<ul>
+<li>Full legal name matching travel documents;</li>
+<li>Date of birth when required;</li>
+<li>Contact information;</li>
+<li>Emergency-contact information;</li>
+<li>Rooming and occupancy information;</li>
+<li>Information reasonably needed by Suppliers;</li>
+<li>Relevant health, allergy, dietary, mobility, or accessibility information; and</li>
+<li>Any information required for legal entry or participation.</li>
+</ul>
+<p>The Traveler is responsible for losses, correction fees, denied services, or delays caused by inaccurate, incomplete, outdated, or late information.</p>
+<h3>6.3 Eligibility criteria</h3>
+<p>A Trip or activity may have age, height, weight, fitness, swimming, mobility, health, skill, licensing, or other eligibility requirements. Requirements known before booking will be included in or referenced by the applicable Trip Documents when reasonably practicable.</p>
+<p>A Supplier may make the final eligibility determination for its service.</p>
+<h3>6.4 Right to decline before confirmation</h3>
+<p>Before a booking is confirmed, the Company may decline a reservation because of capacity, nonpayment, failure to provide required information, inability to satisfy an essential eligibility or safety requirement, prior material misconduct, legal restrictions, or another legitimate operational reason, subject to applicable law.</p></section>
+<section class="ls" id="s7"><h2><span class="sn">7.</span>Quotes, Availability, and Booking Confirmation</h2><h3>7.1 Quotes are not reservations</h3>
+<p>A quote, proposed itinerary, availability statement, or invoice does not hold space unless the Company expressly states otherwise.</p>
+<p>A standard booking is confirmed only when:</p>
+<ul>
+<li>The required deposit or payment has cleared;</li>
+<li>The required booking information has been received;</li>
+<li>Required forms due at booking have been completed; and</li>
+<li>The Company issues a written confirmation.</li>
+</ul>
+<h3>7.2 Bookings after the final-payment deadline</h3>
+<p>For a booking made after the stated final-payment deadline, the full balance may be due immediately.</p>
+<p>Unless the Company confirms otherwise in writing, a deposit alone does not secure a late booking. Space is not confirmed until the full required payment has cleared and written confirmation has been issued.</p>
+<h3>7.3 Availability</h3>
+<p>All services remain subject to availability until confirmed. Supplier space, rooms, activity places, cruise inventory, and transportation may sell out or be withdrawn before confirmation.</p>
+<h3>7.4 Waitlists</h3>
+<p>Placement on a waitlist is not a confirmed booking. The Company may require immediate payment when space becomes available.</p></section>
+<section class="ls" id="s8"><h2><span class="sn">8.</span>Prices, Currency, Inclusions, and Exclusions</h2><h3>8.1 Currency</h3>
+<p>Prices are stated in the currency shown in the applicable Trip Documents. If no currency is identified, the price is in United States dollars.</p>
+<p>The Traveler is responsible for currency-conversion charges, foreign transaction fees, bank charges, and payment-provider charges imposed by the Traveler's financial institution.</p>
+<h3>8.2 Included services</h3>
+<p>Only services specifically identified as included in the applicable Trip Documents are included in the price.</p>
+<p>The Trip Documents should be reviewed carefully. A service is not included merely because it appears in a sample itinerary, photograph, general destination description, prior Trip, social-media post, or informal conversation.</p>
+<h3>8.3 Common exclusions</h3>
+<p>Unless expressly identified as included, the price does not include:</p>
+<ul>
+<li>Independently arranged airfare;</li>
+<li>Travel insurance;</li>
+<li>Passports, visas, permits, or entry documents;</li>
+<li>Vaccinations, testing, or medical documentation;</li>
+<li>Baggage and excess-baggage charges;</li>
+<li>Airport transportation;</li>
+<li>Meals and beverages not specifically listed;</li>
+<li>Alcoholic beverages;</li>
+<li>Gratuities;</li>
+<li>Optional activities;</li>
+<li>Personal purchases;</li>
+<li>Laundry, telephone, internet, or minibar charges;</li>
+<li>Resort, city, tourism, departure, or local taxes not expressly included;</li>
+<li>Medical treatment or evacuation;</li>
+<li>Childcare or babysitting;</li>
+<li>Personal equipment;</li>
+<li>Damage deposits;</li>
+<li>Costs resulting from delays, missed connections, or early departure; or</li>
+<li>Services obtained independently by the Traveler.</li>
+</ul>
+<h3>8.4 Occupancy-based pricing</h3>
+<p>Prices may depend on room occupancy, family composition, group size, or minimum enrollment.</p>
+<p>If a cancellation or requested change results in fewer occupants in a room, the remaining occupants may be responsible for a single supplement or other occupancy-related price adjustment, subject to the Cancellation &amp; Refund Policy and Trip Documents.</p>
+<h3>8.5 Price changes before confirmation</h3>
+<p>Before confirmation, prices may change because of Supplier pricing, availability, exchange rates, government charges, taxes, or correction of an error.</p>
+<h3>8.6 Price changes after confirmation</h3>
+<p>After confirmation, the Company may pass through:</p>
+<ul>
+<li>Newly imposed or increased government taxes or fees;</li>
+<li>Supplier fuel, port, security, or mandatory service surcharges;</li>
+<li>Currency changes if the Trip Documents expressly identify the price as variable;</li>
+<li>Costs caused by a Traveler-requested change; or</li>
+<li>Occupancy adjustments caused by a change in the booking.</li>
+</ul>
+<p>The Company will provide notice of any required additional payment.</p>
+<h3>8.7 Pricing or clerical errors</h3>
+<p>The Company may correct an obvious typographical, mathematical, currency, availability, or pricing error.</p>
+<p>If a material error is discovered after confirmation, the Company may offer the correct price or cancel the affected service and refund the amount paid to the Company for that service. The Company will not knowingly rely on an obvious error to require performance at an unintended price.</p></section>
+<section class="ls" id="s9"><h2><span class="sn">9.</span>Payment Terms</h2><h3>9.1 Deposit and payment schedule</h3>
+<p>The required deposit and payment schedule will be stated in the applicable Trip Documents.</p>
+<p>Unless the Trip Documents expressly state otherwise, a deposit is nonrefundable.</p>
+<h3>9.2 Timely payment</h3>
+<p>Payments must be received by the stated due dates. The Company is not required to send repeated reminders.</p>
+<p>Failure to pay by the due date, including any grace period stated in the Cancellation &amp; Refund Policy or Trip Documents, may result in:</p>
+<ul>
+<li>Release of the booking or reserved space;</li>
+<li>Cancellation of part or all of the booking;</li>
+<li>Loss of the deposit;</li>
+<li>Application of the cancellation schedule;</li>
+<li>Supplier penalties; and</li>
+<li>Repricing if the booking is later reinstated.</li>
+</ul>
+<p>Reinstatement is not guaranteed.</p>
+<h3>9.3 Cleared funds</h3>
+<p>Payment is considered received when it has successfully cleared and is no longer pending, reversed, declined, or disputed.</p>
+<h3>9.4 Payments made to the Company</h3>
+<p>When the Company collects payment, it may use the payment to reserve or pay for accommodations, transportation, activities, and other Trip costs. Once funds have been committed or remitted to Suppliers, they may become nonrefundable under Supplier Terms.</p>
+<p>The fact that the Company collected a payment does not mean every portion of the payment remains recoverable.</p>
+<h3>9.5 Direct payments to Suppliers</h3>
+<p>For some bookings, the Traveler may pay a Supplier directly. In that situation:</p>
+<ul>
+<li>The payment contract is directly between the Traveler and the Supplier;</li>
+<li>The Supplier's payment and refund rules apply;</li>
+<li>The Company does not hold or control those funds;</li>
+<li>Refunds generally must be issued by the Supplier; and</li>
+<li>The Company may provide reasonable assistance but cannot guarantee a refund or credit.</li>
+</ul>
+<h3>9.6 Payment-processing fees</h3>
+<p>Payment-processing, bank-transfer, currency-conversion, or platform fees are refundable only if the applicable Trip Documents or Cancellation &amp; Refund Policy expressly state that they are refundable.</p>
+<h3>9.7 Chargebacks and payment disputes</h3>
+<p>A chargeback or payment dispute is not a substitute for cancellation under the Cancellation &amp; Refund Policy.</p>
+<p>Before initiating a chargeback, the Traveler should provide the Company a reasonable opportunity to address the issue. The Company may suspend or cancel a booking while a chargeback is pending and may provide the payment processor with the Agreement, cancellation terms, communications, booking records, and evidence of services.</p>
+<p>Nothing in this section restricts a Traveler's nonwaivable rights regarding unauthorized charges or legally protected billing errors.</p></section>
+<section class="ls" id="s10"><h2><span class="sn">10.</span>Air Travel</h2><h3>10.1 No independently booked airfare</h3>
+<p>Except for a local, charter, scenic, domestic, or inter-island flight segment expressly listed as part of an included itinerary, the Company does not reserve, sell, issue, manage, or accept responsibility for a Traveler's airfare to or from a Trip.</p>
+<p>Travelers must independently arrange their flights.</p>
+<h3>10.2 Flight timing</h3>
+<p>The Traveler is responsible for choosing flights that allow adequate time for delays, immigration, baggage collection, transfers, check-in, and the scheduled start of the Trip.</p>
+<p>Any flight guidance offered by the Company is general information and is not a guarantee that a particular flight is suitable.</p>
+<h3>10.3 Flight disruptions</h3>
+<p>The Company is not responsible for independently arranged flight delays, cancellations, missed connections, denied boarding, schedule changes, baggage problems, or resulting missed Trip services.</p>
+<p>Unless otherwise required by law or stated in the Cancellation &amp; Refund Policy, no refund is provided for Trip portions missed because of an independently arranged flight disruption.</p>
+<h3>10.4 Included local flight segments</h3>
+<p>Where a Trip expressly includes a local or inter-island flight, that segment is provided by the applicable aviation Supplier and is subject to its:</p>
+<ul>
+<li>Baggage and weight restrictions;</li>
+<li>Schedule;</li>
+<li>Safety rules;</li>
+<li>Weather limitations;</li>
+<li>Aircraft availability;</li>
+<li>Cancellation rules; and</li>
+<li>Conditions of carriage.</li>
+</ul>
+<p>The Supplier may change the schedule, aircraft, route, or baggage allowance.</p></section>
+<section class="ls" id="s11"><h2><span class="sn">11.</span>Cancellations, Refunds, Credits, and Transfers</h2><h3>11.1 Incorporated policy</h3>
+<p>The Company's Cancellation &amp; Refund Policy, as provided or linked at the time of booking, is incorporated into this Agreement.</p>
+<p>The version provided at the time of booking governs unless the Traveler later agrees to a written change.</p>
+<h3>11.2 Written cancellation required</h3>
+<p>A cancellation must be submitted in writing to:</p>
+<p>booking@everyavenuetravel.com</p>
+<p>The cancellation is effective on the date the email is received by the Company's email system, provided it clearly identifies the booking and states the intent to cancel.</p>
+<p>The Traveler should retain the sent message and the Company's confirmation of receipt.</p>
+<h3>11.3 General cancellation schedule</h3>
+<p>Refund eligibility is based on the Cancellation &amp; Refund Policy and the number of days before the Trip Start Date.</p>
+<p>A Trip may have different or stricter cancellation terms. A Trip-specific term controls only when it is clearly disclosed before payment.</p>
+<h3>11.4 Deposits</h3>
+<p>The refundability of a deposit will be stated in the Trip Documents or Cancellation &amp; Refund Policy. Unless expressly stated otherwise, the deposit is nonrefundable and is deducted before calculating any additional refund.</p>
+<h3>11.5 Supplier cancellation terms</h3>
+<p>Supplier Terms may be stricter than the general Company policy for a particular accommodation, cruise, excursion, activity, transportation segment, ticket, or other service.</p>
+<p>Stricter Supplier Terms apply only to the affected service and should be disclosed in the Trip Documents, quote, booking page, invoice, or written addendum before payment.</p>
+<h3>11.6 No-shows, late arrivals, and early departure</h3>
+<p>A no-show, late arrival, failure to join the Trip, voluntary early departure, or decision not to participate does not entitle the Traveler to a refund for unused accommodations, meals, activities, transportation, or other services.</p>
+<h3>11.7 Denied participation</h3>
+<p>No refund is due when a Participant is denied or removed from a service because of:</p>
+<ul>
+<li>Failure to meet a disclosed eligibility requirement;</li>
+<li>Failure to provide a required document;</li>
+<li>Failure to sign a required Supplier or Company waiver;</li>
+<li>Unsafe or disruptive conduct;</li>
+<li>Intoxication;</li>
+<li>Violation of law;</li>
+<li>Failure to supervise a Minor; or</li>
+<li>Refusal to follow reasonable safety instructions.</li>
+</ul>
+<p>This applies only to the extent the requirement was reasonably disclosed or the conduct justified removal.</p>
+<h3>11.8 Transfers and substitutions</h3>
+<p>Booking transfers and Participant substitutions are governed by the Cancellation &amp; Refund Policy and Supplier Terms.</p>
+<p>A transfer is not effective unless approved in writing by the Company and all required name-change, administrative, Supplier, and price-difference amounts have been paid.</p></section>
+<section class="ls" id="s12"><h2><span class="sn">12.</span>Travel Insurance</h2><p>Comprehensive travel insurance is required for every Participant. Each Participant must provide proof of coverage by the deadline stated in the Adult Participant Agreement and applicable Trip Documents. Failure to provide proof may result in cancellation, denied participation, or treatment of the Participant as self-insured. A Participant treated as self-insured assumes sole and full financial responsibility for uninsured or underinsured costs and losses, subject to liabilities that cannot legally be waived or transferred. Travelers should consider coverage for:</p>
+<ul>
+<li>Trip cancellation;</li>
+<li>Trip interruption;</li>
+<li>Medical treatment;</li>
+<li>Emergency evacuation and repatriation;</li>
+<li>Baggage loss or delay;</li>
+<li>Travel delay;</li>
+<li>Missed connections;</li>
+<li>Missed cruise ports;</li>
+<li>Supplier default where available;</li>
+<li>Adventure activities;</li>
+<li>Preexisting medical conditions where available;</li>
+<li>Communicable-disease disruptions; and</li>
+<li>Cancel-for-any-reason protection where desired and available.</li>
+</ul>
+<p>Insurance should be purchased promptly because some coverage is available only if purchased within a specified period after the initial booking payment.</p>
+<p>The Company is not an insurer and does not guarantee that a policy will cover a particular event, destination, activity, condition, or loss. Policy terms, exclusions, purchase deadlines, and claims decisions are controlled by the insurer.</p>
+<p>A credit card's travel benefits may be limited and are not automatically a substitute for comprehensive travel insurance.</p>
+<p>By declining or failing to purchase adequate coverage, the Traveler accepts responsibility for losses that insurance might otherwise have covered.</p></section>
+<section class="ls" id="s13"><h2><span class="sn">13.</span>Independent Suppliers</h2><h3>13.1 Supplier relationship</h3>
+<p>Suppliers are independent businesses and are not employees of the Company unless the Trip Documents expressly state otherwise.</p>
+<p>The Company generally does not control a Supplier's day-to-day operations, personnel, equipment, policies, schedules, or performance.</p>
+<h3>13.2 Supplier Terms</h3>
+<p>The Traveler agrees to comply with applicable Supplier Terms, including:</p>
+<ul>
+<li>Hotel rules;</li>
+<li>Cruise passenger-ticket contracts;</li>
+<li>Conditions of carriage;</li>
+<li>Excursion waivers;</li>
+<li>Activity restrictions;</li>
+<li>Check-in deadlines;</li>
+<li>Baggage rules;</li>
+<li>Health and safety requirements;</li>
+<li>Cancellation rules; and</li>
+<li>Codes of conduct.</li>
+</ul>
+<p>A Supplier may require the Traveler to sign an additional contract or waiver before providing service.</p>
+<h3>13.3 Supplier changes</h3>
+<p>The Company may replace a Supplier when reasonably necessary because of availability, safety, performance, cancellation, insolvency, operational needs, or another legitimate reason.</p>
+<p>The Company will use reasonable efforts to obtain a comparable replacement when practicable but does not guarantee identical amenities, equipment, schedules, or services.</p>
+<h3>13.4 Supplier cancellation or failure</h3>
+<p>If a Supplier cancels, ceases operations, becomes insolvent, refuses service, or materially changes a service, the Company may:</p>
+<ul>
+<li>Seek a substitute;</li>
+<li>Modify the itinerary;</li>
+<li>Pass through a Supplier refund or credit;</li>
+<li>Refund recoverable amounts for the affected service; or</li>
+<li>Take another reasonable action based on the circumstances.</li>
+</ul>
+<p>The Company is not required to advance its own funds to replace amounts retained by a Supplier, except where applicable law or the Company's own contractual responsibility requires otherwise.</p>
+<h3>13.5 Company's own responsibilities preserved</h3>
+<p>Nothing in this section excuses the Company from responsibility for its own acts, representations, contractual commitments, or duties that cannot lawfully be limited.</p></section>
+<section class="ls" id="s14"><h2><span class="sn">14.</span>Itineraries, Substitutions, and Minimum Enrollment</h2><h3>14.1 Itineraries are subject to change</h3>
+<p>Travel requires flexibility. The Company may reasonably change:</p>
+<ul>
+<li>The order or timing of activities;</li>
+<li>Departure and meeting times;</li>
+<li>Guides or trip leaders;</li>
+<li>Accommodations;</li>
+<li>Restaurants or meal arrangements;</li>
+<li>Transportation providers;</li>
+<li>Routes;</li>
+<li>Ports;</li>
+<li>Included activities;</li>
+<li>Venues; or</li>
+<li>Other itinerary details.</li>
+</ul>
+<p>Changes may be made because of safety, weather, Supplier availability, local conditions, road closures, government action, group needs, illness, or operational considerations.</p>
+<h3>14.2 Comparable substitutions</h3>
+<p>A reasonable substitution of comparable purpose, category, or value is not considered a cancellation of the Trip and does not ordinarily create a right to a refund.</p>
+<p>Exact equivalence cannot always be guaranteed, particularly in remote areas or destinations with limited alternatives.</p>
+<h3>14.3 Material changes</h3>
+<p>If the Company makes a material predeparture change for a reason within its reasonable control, the Company may offer:</p>
+<ul>
+<li>A reasonable substitute;</li>
+<li>A partial refund or credit reflecting the affected unprovided service;</li>
+<li>A revised itinerary; or</li>
+<li>Cancellation with a refund of amounts paid to the Company for the canceled Trip services.</li>
+</ul>
+<p>Force Majeure Events and independent Supplier changes are governed by Sections 13 and 15.</p>
+<h3>14.4 Minimum enrollment</h3>
+<p>A group Trip may require minimum enrollment.</p>
+<p>If minimum enrollment is not met, the Company may:</p>
+<ul>
+<li>Cancel the Trip and issue the refund described in Section 15.2;</li>
+<li>Offer a revised price, which the Traveler may accept or decline; or</li>
+<li>Offer a different date, itinerary, or Trip.</li>
+</ul>
+<p>A Traveler who declines a revised price or replacement following a minimum-enrollment cancellation will receive a refund of amounts paid to the Company for the canceled Trip services.</p>
+<h3>14.5 Missed services caused by the Traveler</h3>
+<p>The Company is not required to delay the group or alter the itinerary because a Participant is late, absent, unprepared, or unable to participate.</p>
+<p>The Participant is responsible for the cost of rejoining the group.</p>
+<h3>14.6 Independently arranged activities</h3>
+<p>Activities arranged independently by a Traveler during free time or outside the Company itinerary are not Company services, even if a Company representative informally mentions or recommends them.</p></section>
+<section class="ls" id="s15"><h2><span class="sn">15.</span>Company Cancellations, Postponement, and Force Majeure</h2><h3>15.1 Cancellation within the Company's control</h3>
+<p>If the Company cancels an entire Trip because of low enrollment, internal operational reasons, or another reason within the Company's reasonable control, the Traveler may choose:</p>
+<ul>
+<li>A refund of amounts paid to the Company for the canceled Trip services; or</li>
+<li>A credit toward an eligible future Trip, subject to written credit terms.</li>
+</ul>
+<p>The Company may provide a reasonable deadline for making that election. If the Traveler does not elect a credit by the deadline, the Company may issue the refund.</p>
+<p>For cancellation of only one component, the Company may provide a comparable substitute, an appropriate refund or credit for the affected unprovided component, or another reasonable remedy.</p>
+<h3>15.2 Independent expenses</h3>
+<p>Unless required by law, the Company is not responsible for expenses booked independently by the Traveler, including independently arranged airfare, visas, insurance premiums, equipment, childcare, lodging, or transportation.</p>
+<p>This is an important reason to purchase travel insurance.</p>
+<h3>15.3 Force Majeure Events</h3>
+<p>A Force Majeure Event includes an event outside the Company's reasonable control that prevents, materially impairs, makes illegal, or makes commercially impracticable the performance of all or part of a Trip, including:</p>
+<ul>
+<li>Hurricane, flood, fire, wildfire, earthquake, avalanche, volcanic activity, severe storm, or other natural disaster;</li>
+<li>Epidemic, pandemic, communicable-disease event, quarantine, or public-health restriction;</li>
+<li>War, invasion, terrorism, credible security threat, civil unrest, or political instability;</li>
+<li>Government order, border closure, travel ban, visa suspension, embargo, or change in law;</li>
+<li>Strike, labor interruption, transportation shutdown, port closure, or utility failure;</li>
+<li>Airspace, road, rail, or maritime closure;</li>
+<li>Severe weather or unsafe environmental conditions;</li>
+<li>Unexpected closure of a destination, attraction, accommodation, or activity site;</li>
+<li>Supplier cessation, insolvency, or failure not caused by the Company;</li>
+<li>Cyberattack or major system interruption affecting essential travel services; or</li>
+<li>Another comparable event beyond the Company's reasonable control.</li>
+</ul>
+<h3>15.4 Company options following Force Majeure</h3>
+<p>Following a Force Majeure Event, the Company may:</p>
+<ul>
+<li>Modify, reroute, shorten, extend, suspend, postpone, or cancel a Trip;</li>
+<li>Substitute accommodations, transportation, activities, destinations, dates, or Suppliers;</li>
+<li>Offer a future credit;</li>
+<li>Pass through a Supplier credit or voucher; or</li>
+<li>Refund Recoverable Funds.</li>
+</ul>
+<h3>15.5 Recoverable Funds</h3>
+<p>"Recoverable Funds" means:</p>
+<ul>
+<li>Amounts actually returned to the Company by Suppliers for unprovided services; plus</li>
+<li>Amounts paid to the Company for unprovided services that had not yet been committed or spent;</li>
+</ul>
+<p>less:</p>
+<ul>
+<li>Nonrefundable Supplier charges;</li>
+<li>Payment-processing or transfer charges that were disclosed as nonrefundable;</li>
+<li>Separately identified nonrefundable Company planning or administrative fees that were disclosed before payment and already earned; and</li>
+<li>Other documented nonrecoverable booking costs disclosed in the Trip Documents.</li>
+</ul>
+<p>If a Supplier provides only a credit or voucher rather than cash, the Company may pass through that credit or voucher subject to its restrictions, unless applicable law requires a cash refund.</p>
+<h3>15.6 No guarantee of recovery</h3>
+<p>The Company will make reasonable efforts to recover funds but does not guarantee that a Supplier will issue a refund.</p>
+<p>The Company is not required to pay a refund from its own funds for an amount retained by a Supplier, except to the extent the loss resulted from the Company's own breach or applicable law requires payment.</p>
+<h3>15.7 Nonwaivable rights</h3>
+<p>This Force Majeure section does not waive a right or benefit that cannot legally be waived.</p></section>
+<section class="ls" id="s16"><h2><span class="sn">16.</span>Travel Documents and Entry Requirements</h2><p>Each Traveler is solely responsible for obtaining and carrying all required:</p>
+<ul>
+<li>Passports;</li>
+<li>Visas;</li>
+<li>Residency permits;</li>
+<li>Transit visas;</li>
+<li>Parental-consent documents;</li>
+<li>Vaccination records;</li>
+<li>Health forms;</li>
+<li>Testing records;</li>
+<li>Travel authorizations;</li>
+<li>Driver's licenses;</li>
+<li>Proof of onward travel;</li>
+<li>Insurance documentation; and</li>
+<li>Other entry, exit, or participation documents.</li>
+</ul>
+<p>Names provided to the Company must match the Traveler's official documents.</p>
+<p>Entry and health requirements may change. The Company may provide general information, but the Traveler must verify current requirements with official government, embassy, consular, and Supplier sources.</p>
+<p>The Company is not responsible for denial of boarding, entry, exit, transit, or participation caused by missing, expired, invalid, inaccurate, or insufficient documents.</p>
+<p>No refund is due for services missed because a Traveler:</p>
+<ul>
+<li>Lacks required documents;</li>
+<li>Is denied a visa;</li>
+<li>Is denied entry or boarding;</li>
+<li>Fails to comply with customs or immigration rules;</li>
+<li>Has a passport validity problem;</li>
+<li>Has a criminal or immigration history affecting entry; or</li>
+<li>Fails to satisfy a destination's legal requirements.</li>
+</ul>
+<p>Parents are responsible for determining whether a Minor requires a notarized consent letter, custody documentation, or authorization from another parent.</p></section>
+<section class="ls" id="s17"><h2><span class="sn">17.</span>Destination Conditions and Local Laws</h2><p>Travelers must comply with the laws, customs, cultural expectations, health requirements, and safety rules of each destination.</p>
+<p>Conditions may differ substantially from those in the Traveler's home country, including standards relating to:</p>
+<ul>
+<li>Roads and transportation;</li>
+<li>Accessibility;</li>
+<li>Building codes;</li>
+<li>Food preparation;</li>
+<li>Emergency services;</li>
+<li>Medical care;</li>
+<li>Sanitation;</li>
+<li>Security;</li>
+<li>Internet and communications;</li>
+<li>Weather;</li>
+<li>Wildlife; and</li>
+<li>Personal conduct.</li>
+</ul>
+<p>The Traveler is responsible for reviewing relevant government travel advisories and making an informed decision to travel.</p>
+<p>The Company does not guarantee that any destination, neighborhood, facility, transportation method, or activity is free of risk.</p></section>
+<section class="ls" id="s18"><h2><span class="sn">18.</span>Health, Fitness, Accessibility, and Special Requests</h2><h3>18.1 Fitness to participate</h3>
+<p>Each Participant is responsible for determining whether the Trip and its activities are appropriate for the Participant's health, fitness, mobility, skills, and experience.</p>
+<p>The Company does not provide medical advice.</p>
+<h3>18.2 Health and accessibility information</h3>
+<p>A Participant should disclose information reasonably necessary for the Company to evaluate or arrange participation, including relevant:</p>
+<ul>
+<li>Medical conditions;</li>
+<li>Allergies;</li>
+<li>Dietary restrictions;</li>
+<li>Mobility limitations;</li>
+<li>Pregnancy;</li>
+<li>Sensory or cognitive needs;</li>
+<li>Medication needs; and</li>
+<li>Activity limitations.</li>
+</ul>
+<p>Information should be provided before booking when it may materially affect participation and updated promptly if circumstances change.</p>
+<h3>18.3 Reasonable requests</h3>
+<p>The Company will consider reasonable accessibility, dietary, rooming, and other special requests, subject to applicable law and the practical limitations of the itinerary, destination, facilities, and Suppliers.</p>
+<p>A request is not guaranteed unless the Company confirms it in writing.</p>
+<h3>18.4 Essential eligibility and safety requirements</h3>
+<p>The Company or a Supplier may require medical clearance or restrict participation in a particular activity when reasonably necessary to satisfy an essential safety, health, legal, or eligibility requirement.</p>
+<p>Where reasonably practicable and legally required, the Company will consider an appropriate modification or alternative.</p>
+<h3>18.5 Dietary restrictions</h3>
+<p>The Company will communicate timely disclosed dietary information to applicable Suppliers when appropriate but cannot guarantee:</p>
+<ul>
+<li>A completely allergen-free environment;</li>
+<li>The absence of cross-contact;</li>
+<li>Compliance by every restaurant or Supplier; or</li>
+<li>Availability of every dietary preference.</li>
+</ul>
+<p>A Participant with a severe allergy is responsible for carrying appropriate medication and communicating directly with food providers.</p>
+<h3>18.6 Communicable illness</h3>
+<p>A Participant must not knowingly expose others to a serious communicable illness.</p>
+<p>The Company may require a Participant to obtain medical evaluation, refrain from an activity, isolate, leave shared transportation or accommodations, or depart the Trip when reasonably necessary for group health and safety or required by law or a Supplier.</p>
+<p>Related costs are the Participant's responsibility unless otherwise required by law.</p></section>
+<section class="ls" id="s19"><h2><span class="sn">19.</span>Medication and Personal Medical Equipment</h2><p>Each Participant is responsible for:</p>
+<ul>
+<li>Bringing sufficient medication;</li>
+<li>Carrying prescriptions in legally compliant packaging;</li>
+<li>Properly storing medication;</li>
+<li>Administering medication;</li>
+<li>Bringing backup supplies;</li>
+<li>Bringing mobility aids or medical equipment;</li>
+<li>Confirming electrical or refrigeration needs; and</li>
+<li>Complying with destination restrictions on medication.</li>
+</ul>
+<p>Company representatives do not administer, store, monitor, prescribe, or manage medication unless the Company expressly agrees in a separate written arrangement.</p>
+<p>Parents remain solely responsible for a Minor's medication and medical equipment.</p></section>
+<section class="ls" id="s20"><h2><span class="sn">20.</span>Medical Emergencies and Evacuation</h2><h3>20.1 Emergency assistance</h3>
+<p>If a Participant is unable to make or communicate a medical decision, the Participant authorizes the Company, where reasonably necessary and legally permitted, to contact emergency services, arrange transportation, communicate with medical providers, contact the emergency contact, and assist in obtaining treatment.</p>
+<p>This authorization does not create a duty for the Company to provide medical care.</p>
+<h3>20.2 Costs</h3>
+<p>The Participant is responsible for all costs of:</p>
+<ul>
+<li>Medical treatment;</li>
+<li>Ambulance or other transportation;</li>
+<li>Hospitalization;</li>
+<li>Medication;</li>
+<li>Testing;</li>
+<li>Medical escort;</li>
+<li>Search and rescue;</li>
+<li>Emergency evacuation;</li>
+<li>Repatriation; and</li>
+<li>Additional lodging or travel.</li>
+</ul>
+<h3>20.3 Medical providers</h3>
+<p>Medical providers are independent professionals. The Company does not control or guarantee their diagnosis, treatment, competence, availability, response time, or outcome.</p>
+<h3>20.4 Medical information</h3>
+<p>The Participant authorizes the Company to disclose health, emergency-contact, insurance, and identification information to Suppliers, medical providers, emergency personnel, insurers, authorities, or family members when reasonably necessary to protect the Participant or others.</p>
+<h3>20.5 Minors</h3>
+<p>Medical authorization for a Minor will be addressed in a separate Parent/Guardian Consent and Medical Authorization. The Company may still contact emergency services or take legally permitted protective action when immediate assistance is reasonably necessary.</p></section>
+<section class="ls" id="s21"><h2><span class="sn">21.</span>Assumption of Travel and Adventure Risks</h2><p><strong>TRAVEL AND ADVENTURE ACTIVITIES INVOLVE INHERENT AND OTHER RISKS, INCLUDING THE RISK OF SERIOUS INJURY, ILLNESS, DISABILITY, PROPERTY DAMAGE, AND DEATH.</strong></p>
+<p>Trips may involve risks arising from:</p>
+<ul>
+<li>Hiking, climbing, uneven terrain, altitude, or remote locations;</li>
+<li>Swimming, snorkeling, scuba activities, kayaking, boating, rafting, or other water activities;</li>
+<li>Horseback riding, cycling, ziplining, ATV use, skiing, wildlife encounters, or similar activities;</li>
+<li>Vehicles, boats, small aircraft, public transportation, and transfers;</li>
+<li>Weather, heat, cold, storms, currents, waves, tides, or natural hazards;</li>
+<li>Equipment failure or misuse;</li>
+<li>Acts or omissions of other Participants or third parties;</li>
+<li>Limited or delayed medical care;</li>
+<li>Food, water, insects, animals, plants, or communicable illness;</li>
+<li>Crime, civil unrest, terrorism, or government action; and</li>
+<li>Other known or unknown conditions associated with travel and outdoor activity.</li>
+</ul>
+<p>Participation in an optional activity is voluntary.</p>
+<p>Each adult Participant knowingly accepts the ordinary and inherent risks of travel and participation, subject to applicable law and the separate Adult Assumption of Risk and Release Agreement.</p>
+<p>This section does not itself attempt to release claims beyond what is legally permitted and does not replace any required adult or minor waiver.</p></section>
+<section class="ls" id="s22"><h2><span class="sn">22.</span>Adventure Activity Requirements</h2><p>A Participant must:</p>
+<ul>
+<li>Follow reasonable safety instructions;</li>
+<li>Use required safety equipment;</li>
+<li>Disclose information relevant to safe participation;</li>
+<li>Refrain from participating while impaired;</li>
+<li>Remain within designated areas;</li>
+<li>Comply with age, weight, height, fitness, skill, or swimming requirements;</li>
+<li>Sign required Company and Supplier waivers; and</li>
+<li>Stop participating if the Participant cannot safely continue.</li>
+</ul>
+<p>The Company or activity Supplier may deny or end participation when the Participant does not meet a requirement or creates an unreasonable safety risk.</p>
+<p>When an eligibility requirement or required waiver was disclosed before booking, the denial of participation does not create a refund right.</p></section>
+<section class="ls" id="s23"><h2><span class="sn">23.</span>Minors and Family Responsibility</h2><h3>23.1 Accompaniment required</h3>
+<p>Every Minor must be accompanied by a parent or legally authorized guardian approved by the Company.</p>
+<p>A nonparent accompanying adult may be required to provide written parental authorization, custody documents, medical authorization, and other documentation acceptable to the Company and Suppliers.</p>
+<h3>23.2 No childcare or transfer of custody</h3>
+<p><strong>THE COMPANY DOES NOT PROVIDE CHILDCARE, BABYSITTING, DAYCARE, CUSTODIAL CARE, OR UNSUPERVISED CHILDREN'S PROGRAMMING.</strong></p>
+<p>A parent or guardian remains responsible for the Minor at all times, including during:</p>
+<ul>
+<li>Group activities;</li>
+<li>Educational sessions;</li>
+<li>Guided tours;</li>
+<li>Meals;</li>
+<li>Transportation;</li>
+<li>Accommodations;</li>
+<li>Pool or beach time;</li>
+<li>Adventure activities;</li>
+<li>Free time; and</li>
+<li>Emergencies.</li>
+</ul>
+<p>A guide, instructor, host, or trip leader giving group instructions or activity directions does not transfer custody or general supervisory responsibility from the parent or guardian.</p>
+<h3>23.3 Parent and guardian duties</h3>
+<p>The parent or guardian must:</p>
+<ul>
+<li>Know the Minor's location;</li>
+<li>Provide age-appropriate supervision;</li>
+<li>Ensure the Minor follows instructions;</li>
+<li>Manage the Minor's medication and health needs;</li>
+<li>Determine whether an activity is suitable;</li>
+<li>Ensure proper use of restraints and safety equipment;</li>
+<li>Prevent the Minor from disrupting or endangering others; and</li>
+<li>Pay for damage caused by the Minor to the extent permitted by law.</li>
+</ul>
+<h3>23.4 Failure to supervise</h3>
+<p>If a parent or guardian fails to supervise a Minor, the Company may remove the Minor from an activity or require the family to leave the Trip.</p>
+<p>No refund is due when removal results from a material failure to supervise or comply with safety requirements.</p>
+<h3>23.5 Separate minor waiver</h3>
+<p>Participation by a Minor in an activity involving inherent risk may require a separate Parent/Guardian Consent and Minor Activity Waiver executed by the Minor's natural guardian or another person with legally sufficient authority.</p>
+<p>The Company may refuse the Minor's participation if the required form is not properly completed.</p>
+<h3>23.6 Minor media consent</h3>
+<p>General acceptance of these Terms does not automatically authorize featured promotional use of an identifiable Minor's image. Minor media consent is addressed separately in Section 30.</p></section>
+<section class="ls" id="s24"><h2><span class="sn">24.</span>Worldschooling and Educational Activities</h2><p>Worldschooling, cultural, experiential, and educational activities offered during a Trip are informal travel experiences.</p>
+<p>Unless expressly stated otherwise, the Company does not:</p>
+<ul>
+<li>Operate an accredited school;</li>
+<li>Award academic credit;</li>
+<li>Issue grades or transcripts;</li>
+<li>Provide a legally recognized curriculum;</li>
+<li>Guarantee curriculum equivalency;</li>
+<li>Evaluate educational progress;</li>
+<li>Satisfy compulsory-attendance laws;</li>
+<li>Provide special-education services; or</li>
+<li>Assume responsibility for a child's education.</li>
+</ul>
+<p>Parents and guardians remain solely responsible for complying with homeschool, worldschool, compulsory-education, recordkeeping, testing, and reporting requirements applicable to their family.</p>
+<p>Educational activities are generally optional unless a Trip Document states otherwise.</p>
+<p>No particular educational, developmental, social, or academic outcome is guaranteed.</p></section>
+<section class="ls" id="s25"><h2><span class="sn">25.</span>Accommodations and Rooming</h2><h3>25.1 Accommodation standards</h3>
+<p>Accommodation standards, room sizes, bedding, air conditioning, heating, elevators, plumbing, internet access, noise, and amenities may differ by destination.</p>
+<p>Descriptions and classifications are based on information reasonably available at the time of publication and may not correspond to rating systems in the Traveler's home country.</p>
+<h3>25.2 Room requests</h3>
+<p>Room type, location, connecting rooms, adjoining rooms, views, bed configuration, floor, and other preferences are requests unless confirmed in writing.</p>
+<p>Even a confirmed request may be changed by a Supplier for operational or safety reasons.</p>
+<h3>25.3 Shared and family accommodations</h3>
+<p>Participants must respect:</p>
+<ul>
+<li>Quiet hours;</li>
+<li>Shared kitchens, bathrooms, lounges, and outdoor spaces;</li>
+<li>Occupancy limits;</li>
+<li>Property rules;</li>
+<li>Other families' privacy; and</li>
+<li>Community guidelines.</li>
+</ul>
+<h3>25.4 Room changes</h3>
+<p>A Traveler requesting a room change is responsible for any additional cost.</p>
+<p>The Company may require a room change when necessary for safety, occupancy, property rules, or group operations.</p>
+<h3>25.5 Incidental charges and deposits</h3>
+<p>The Traveler is responsible for incidental charges, security deposits, minibar use, damage, excessive cleaning, lost keys, smoking charges, or other amounts imposed by the accommodation.</p>
+<h3>25.6 Damage</h3>
+<p>A Participant is responsible for damage caused by that Participant or a Minor under the Participant's supervision.</p>
+<p>The Company may charge the payment method on file or seek reimbursement after providing reasonable documentation.</p>
+<h3>25.7 Overbooking or closure</h3>
+<p>If an accommodation becomes unavailable, the Company will use reasonable efforts to arrange a comparable alternative. Exact location, room configuration, and amenities cannot be guaranteed.</p></section>
+<section class="ls" id="s26"><h2><span class="sn">26.</span>Transportation, Luggage, and Child Restraints</h2><h3>26.1 Transportation</h3>
+<p>Transportation may be provided by independent Suppliers using buses, vans, taxis, trains, boats, ferries, public transportation, local aircraft, or other vehicles.</p>
+<p>Schedules and routes may change.</p>
+<h3>26.2 Safety restraints</h3>
+<p>Participants must use seat belts and other restraints when provided and required.</p>
+<p>Parents and guardians are responsible for determining and arranging legally and developmentally appropriate child seats, booster seats, flotation devices, or other restraints unless the Trip Documents expressly state that the Company will provide them.</p>
+<p>Availability and legal standards vary by destination. A request for a child restraint is not guaranteed unless confirmed in writing.</p>
+<h3>26.3 Luggage</h3>
+<p>Participants must comply with the most restrictive applicable luggage rule, including rules for boats, local aircraft, transfers, and shared vehicles.</p>
+<p>The Participant is responsible for excess-baggage charges and for arranging storage or alternative transport for luggage that cannot be accommodated.</p>
+<h3>26.4 Delays</h3>
+<p>Traffic, weather, mechanical issues, road conditions, checkpoints, public schedules, and other circumstances may cause delay. The Company does not guarantee exact travel times.</p></section>
+<section class="ls" id="s27"><h2><span class="sn">27.</span>Cruises and Port Excursions</h2><h3>27.1 Cruise-line contract</h3>
+<p>Cruise transportation and onboard services are subject to the cruise line's passenger-ticket contract and other terms.</p>
+<p>The cruise line may control:</p>
+<ul>
+<li>Boarding eligibility;</li>
+<li>Itinerary and ports;</li>
+<li>Cabin assignments;</li>
+<li>Health requirements;</li>
+<li>Conduct;</li>
+<li>Baggage;</li>
+<li>Schedule;</li>
+<li>Onboard services; and</li>
+<li>Cancellation.</li>
+</ul>
+<h3>27.2 Port changes</h3>
+<p>A cruise line may omit, replace, shorten, or reschedule a port call because of weather, safety, operational needs, government action, or another reason.</p>
+<p>The Company does not guarantee that a ship will call at a particular port.</p>
+<h3>27.3 Excursion refunds</h3>
+<p>Port excursions are subject to the excursion operator's cancellation and refund terms.</p>
+<p>A missed port does not automatically entitle the Traveler to an excursion refund. The Company will use reasonable efforts to assist with a refund or credit request, but the operator's rules and recovery decision control unless applicable law provides otherwise.</p>
+<h3>27.4 Independently booked excursions</h3>
+<p>The Company is not responsible for an excursion booked independently by the Traveler.</p>
+<p>The Traveler is responsible for returning to the ship or group by the required time.</p></section>
+<section class="ls" id="s28"><h2><span class="sn">28.</span>Participant Conduct</h2><p>Participants must behave lawfully, safely, and respectfully toward other Travelers, families, children, hosts, local residents, Suppliers, guides, Company representatives, and property.</p>
+<p>Prohibited conduct includes:</p>
+<ul>
+<li>Violence, threats, intimidation, or harassment;</li>
+<li>Sexual harassment or misconduct;</li>
+<li>Discriminatory abuse;</li>
+<li>Bullying;</li>
+<li>Illegal drugs or unlawful activity;</li>
+<li>Dangerous intoxication;</li>
+<li>Possession or use of a prohibited weapon;</li>
+<li>Intentional property damage;</li>
+<li>Repeated material disruption;</li>
+<li>Failure to follow reasonable safety instructions;</li>
+<li>Endangering a child or failing to supervise a Minor;</li>
+<li>Interfering with a guide, driver, activity provider, or Trip operation;</li>
+<li>Unauthorized entry into private areas; or</li>
+<li>Conduct reasonably likely to cause injury, legal exposure, or substantial disruption.</li>
+</ul></section>
+<section class="ls" id="s29"><h2><span class="sn">29.</span>Removal from a Trip</h2><p>The Company may remove a Participant from an activity or Trip when, in the Company's reasonable judgment, the Participant:</p>
+<ul>
+<li>Creates a safety risk;</li>
+<li>Materially violates this Agreement;</li>
+<li>Engages in prohibited conduct;</li>
+<li>Fails to pay;</li>
+<li>Refuses to follow reasonable instructions;</li>
+<li>Violates Supplier rules or local law;</li>
+<li>Materially interferes with the Trip; or</li>
+<li>Fails to supervise a Minor.</li>
+</ul>
+<p>When practicable, the Company may provide a warning or opportunity to correct the behavior. An immediate removal may occur when reasonably necessary for safety or legal compliance.</p>
+<p>A removed Participant:</p>
+<ul>
+<li>Is not entitled to a refund for unused services;</li>
+<li>Is responsible for transportation, lodging, meals, and other costs after removal;</li>
+<li>Must reimburse damage caused by the Participant; and</li>
+<li>May be reported to the appropriate Supplier or authority.</li>
+</ul>
+<p>If a Minor's parent or guardian is removed, the Minor must leave with that parent or guardian.</p></section>
+<section class="ls" id="s30"><h2><span class="sn">30.</span>Photography, Video, and Media</h2><h3>30.1 Adult Participants</h3>
+<p>Unless an adult Participant opts out in writing before the Trip Start Date, the adult grants the Company a nonexclusive, worldwide, royalty-free permission to photograph or record the adult during Company activities and to use the adult's image, likeness, or voice in reasonable Company marketing, social-media, website, educational, and promotional materials.</p>
+<p>This permission does not transfer ownership of photographs personally created by the Participant.</p>
+<h3>30.2 Adult opt-out</h3>
+<p>An adult may opt out by emailing booking@everyavenuetravel.com before departure.</p>
+<p>The Company will use reasonable efforts not to intentionally feature an opted-out Participant. The Company cannot guarantee exclusion from:</p>
+<ul>
+<li>Incidental background images;</li>
+<li>Large crowd or public-space photographs;</li>
+<li>Images taken by Suppliers or other Participants; or</li>
+<li>Materials already printed, distributed, or published before the request was processed.</li>
+</ul>
+<p>A withdrawal applies prospectively where reasonably practicable.</p>
+<h3>30.3 Minors</h3>
+<p>The Company will obtain separate parent or guardian consent before knowingly using an identifiable Minor as a featured subject in Company advertising or promotional materials.</p>
+<p>A parent's acceptance of these Terms alone is not treated as that separate featured-media consent.</p>
+<p>Incidental appearance in a distant group, crowd, or public-space image may be difficult to prevent. A parent who wants the Company to avoid photographing a Minor should notify the Company in writing before the Trip.</p>
+<h3>30.4 Participant photography</h3>
+<p>Participants must respect the privacy of others and may not photograph or record another person in a private setting or after being asked to stop.</p>
+<p>The Company does not control media captured or published by other Participants, members of the public, or independent Suppliers.</p>
+<h3>30.5 Testimonials</h3>
+<p>The Company may use a testimonial, review, or statement submitted for publication by a Participant. Private communications will not be represented as a public endorsement without permission.</p></section>
+<section class="ls" id="s31"><h2><span class="sn">31.</span>Privacy and Personal Information</h2><p>The Company's Privacy Policy is incorporated into this Agreement.</p>
+<p>The Company may collect, use, store, and disclose information reasonably necessary to:</p>
+<ul>
+<li>Process a booking;</li>
+<li>Arrange Trip services;</li>
+<li>Communicate with Participants;</li>
+<li>Process payments;</li>
+<li>Coordinate rooming and transportation;</li>
+<li>Meet Supplier requirements;</li>
+<li>Address health or accessibility needs;</li>
+<li>Respond to emergencies;</li>
+<li>Comply with legal requirements; and</li>
+<li>Protect Participants and the Company.</li>
+</ul>
+<p>Information may be shared with Suppliers, payment platforms, insurers, emergency personnel, medical providers, government authorities, professional advisers, and service providers when reasonably necessary.</p>
+<p>Travel services may require information to be transmitted to or processed in other countries.</p>
+<p>The Booking Client represents that the Booking Client has authority to provide personal information for each person included in the booking. A parent or guardian is responsible for providing and authorizing use of a Minor's information.</p>
+<p>Service and safety communications are part of the booking and are not optional marketing messages. Marketing communications may be unsubscribed from separately.</p></section>
+<section class="ls" id="s32"><h2><span class="sn">32.</span>Intellectual Property and Group Privacy</h2><p>Company itineraries, written guides, educational materials, logos, graphics, website content, schedules, templates, and branded materials are owned by or licensed to the Company.</p>
+<p>The Company grants Participants a limited, personal, noncommercial right to use Trip materials for their own travel.</p>
+<p>Without written permission, a person may not:</p>
+<ul>
+<li>Reproduce or sell Company itineraries or guides;</li>
+<li>Use Company branding to market another trip;</li>
+<li>Represent another event as affiliated with the Company;</li>
+<li>Copy substantial proprietary content for commercial use; or</li>
+<li>Use another Participant's contact information for unrelated solicitation.</li>
+</ul>
+<p>Participants must not publish private health, family, location, contact, or personal information about another Participant without permission.</p></section>
+<section class="ls" id="s33"><h2><span class="sn">33.</span>Personal Property</h2><p>Participants are responsible for passports, money, electronics, baggage, medication, jewelry, documents, and other personal property.</p>
+<p>Participants should use available safes, luggage locks, tracking devices, and other reasonable precautions.</p>
+<p>To the fullest extent permitted by law, the Company is not responsible for property that is lost, stolen, forgotten, confiscated, or damaged by a Supplier, another Participant, or a third party, except to the extent directly caused by the Company's own legally actionable conduct.</p>
+<p>Baggage claims against a carrier are subject to that carrier's terms and deadlines.</p></section>
+<section class="ls" id="s34"><h2><span class="sn">34.</span>Complaints and Service Issues</h2><h3>34.1 Notice during the Trip</h3>
+<p>A Participant should promptly report a material service, safety, accommodation, transportation, or itinerary issue to the Company representative or relevant Supplier while the issue is occurring.</p>
+<p>Prompt notice gives the Company or Supplier an opportunity to investigate and, where possible, correct the issue.</p>
+<h3>34.2 Written post-Trip complaint</h3>
+<p>A post-Trip complaint should be submitted to booking@everyavenuetravel.com within thirty days after the Trip ends and should include:</p>
+<ul>
+<li>The booking name and Trip;</li>
+<li>A clear description of the issue;</li>
+<li>The date and location;</li>
+<li>The person notified during the Trip;</li>
+<li>Supporting photographs or documents; and</li>
+<li>The requested resolution.</li>
+</ul>
+<p>This thirty-day procedure is intended to assist investigation and resolution. It does not shorten a legal limitation period or waive a right that cannot legally be waived.</p>
+<h3>34.3 Supplier claims</h3>
+<p>Claims involving a Supplier may be subject to shorter Supplier notice periods. The Traveler is responsible for complying with those deadlines.</p>
+<h3>34.4 Failure to provide prompt notice</h3>
+<p>To the extent permitted by law, the Company is not responsible for a loss that could reasonably have been avoided or reduced if the Traveler had provided timely notice and a reasonable opportunity to address the issue.</p></section>
+<section class="ls" id="s35"><h2><span class="sn">35.</span>No Guarantees of Subjective Experience</h2><p>The Company does not guarantee:</p>
+<ul>
+<li>Particular weather;</li>
+<li>Wildlife sightings;</li>
+<li>Snow, water, trail, or natural conditions;</li>
+<li>Social compatibility;</li>
+<li>Personal enjoyment;</li>
+<li>Educational outcomes;</li>
+<li>Internet quality;</li>
+<li>Uninterrupted utilities;</li>
+<li>A specific guide unless expressly guaranteed;</li>
+<li>An exact schedule; or</li>
+<li>That every Participant will be able to complete every activity.</li>
+</ul>
+<p>Photographs and descriptions are illustrative and may reflect seasonal or prior conditions.</p></section>
+<section class="ls" id="s36"><h2><span class="sn">36.</span>Allocation of Responsibility and Limitation of Liability</h2><p><strong>THIS SECTION AFFECTS LEGAL RIGHTS. IT SHOULD BE READ TOGETHER WITH THE SEPARATE ADULT OR MINOR WAIVER APPLICABLE TO THE TRIP.</strong></p>
+<h3>36.1 Nonwaivable rights preserved</h3>
+<p>Nothing in this Agreement waives or limits:</p>
+<ul>
+<li>A right or benefit that cannot legally be waived;</li>
+<li>The Company's duties under the Florida Sellers of Travel Act;</li>
+<li>Liability for fraud or intentional misconduct;</li>
+<li>Liability that applicable law prohibits the Company from limiting; or</li>
+<li>A Minor's rights beyond the scope permitted by applicable law and a properly executed separate waiver.</li>
+</ul>
+<h3>36.2 Independent Suppliers</h3>
+<p>To the fullest extent permitted by law, the Company is not liable solely because it arranged or recommended a Supplier for the Supplier's independent acts, omissions, negligence, delays, cancellations, insolvency, failure to perform, equipment, personnel, or service quality.</p>
+<p>This does not eliminate responsibility for the Company's own legally actionable conduct in selecting, representing, arranging, or managing a service.</p>
+<h3>36.3 Events outside Company control</h3>
+<p>To the fullest extent permitted by law, the Company is not liable for loss caused by:</p>
+<ul>
+<li>A Force Majeure Event;</li>
+<li>Government or border action;</li>
+<li>Independently arranged travel;</li>
+<li>A Participant's conduct or health;</li>
+<li>Failure to obtain required documents;</li>
+<li>A Supplier's independent decision;</li>
+<li>Crime or conduct of an unrelated third party; or</li>
+<li>A condition the Company could not reasonably prevent or control.</li>
+</ul>
+<h3>36.4 Direct economic damages</h3>
+<p>For a claim involving only direct economic loss and not involving personal injury, death, fraud, willful misconduct, gross negligence where it cannot lawfully be limited, damage to tangible property directly caused by the Company, or a nonwaivable statutory claim, the Company's aggregate contractual liability will not exceed the amount the claimant paid to the Company for the specific affected service.</p>
+<h3>36.5 Indirect damages</h3>
+<p>To the fullest extent permitted by law, the Company is not liable for indirect, incidental, special, exemplary, or consequential damages, including lost income, lost opportunity, loss of enjoyment, or costs of independently arranged services, except where applicable law does not permit such a limitation.</p>
+<h3>36.6 Separate waivers</h3>
+<p>An adult Participant may be required to execute a separate Assumption of Risk, Release of Liability, and Indemnification Agreement.</p>
+<p>A Minor's natural guardian may be required to execute a separate Parent/Guardian Consent, Medical Authorization, and Minor Activity Waiver.</p>
+<p>Those documents control the specific assumption-of-risk and release issues they address.</p></section>
+<section class="ls" id="s37"><h2><span class="sn">37.</span>Participant Indemnification</h2><p>To the fullest extent permitted by law, an adult Participant agrees to indemnify and hold the Company Parties harmless from third-party claims, losses, liabilities, fines, damages, and reasonable legal expenses arising from:</p>
+<ul>
+<li>The Participant's intentional or negligent misconduct;</li>
+<li>The Participant's violation of law;</li>
+<li>Damage caused by the Participant;</li>
+<li>The Participant's material breach of this Agreement;</li>
+<li>Unauthorized use of Company intellectual property;</li>
+<li>The Participant's provision of information without authority; or</li>
+<li>The Participant's material failure to supervise a Minor.</li>
+</ul>
+<p>This obligation does not require a Participant to indemnify a Company Party for that Company Party's own negligence, willful misconduct, or other conduct for which indemnification cannot legally be required.</p>
+<p>This section is not intended to require a parent to indemnify the Company merely because the parent's Minor asserts a legally protected claim.</p></section>
+<section class="ls" id="s38"><h2><span class="sn">38.</span>Governing Law and Exclusive Venue</h2><p>This Agreement is governed by the laws of the State of Florida, without regard to conflict-of-law principles, except where federal law or another mandatory law applies.</p>
+<p>Any dispute between a Traveler and the Company must be brought exclusively in:</p>
+<ul>
+<li>A state court located in Lee County, Florida; or</li>
+<li>If federal jurisdiction applies, the United States District Court serving Lee County, Florida.</li>
+</ul>
+<p>The parties consent to personal jurisdiction and venue in those courts and waive an objection based on inconvenient forum, to the extent permitted by law.</p>
+<p>This provision does not change a Supplier's separate forum or governing-law provision for a claim directly against that Supplier.</p>
+<h3>38.1 Informal resolution before filing</h3>
+<p>Before filing a lawsuit, a party should provide written notice describing the dispute and requested resolution and allow thirty days for a good-faith attempt to resolve it.</p>
+<p>This requirement does not apply when emergency injunctive relief is reasonably necessary or when waiting would cause a legal filing deadline to expire.</p>
+<h3>38.2 No mandatory arbitration</h3>
+<p>This Agreement does not require arbitration. Disputes that are not resolved informally will be handled in the courts identified above.</p></section>
+<section class="ls" id="s39"><h2><span class="sn">39.</span>Notices and Communications</h2><h3>39.1 Traveler contact information</h3>
+<p>The Traveler must maintain an active email address and promptly notify the Company of changes to contact information.</p>
+<h3>39.2 Company communications</h3>
+<p>The Company may send confirmations, invoices, itinerary changes, safety information, and other notices to the email address or messaging number associated with the booking.</p>
+<p>An electronic notice is considered delivered when it enters the recipient's designated system and is not returned as undeliverable, subject to applicable law.</p>
+<h3>39.3 Cancellation notices</h3>
+<p>A cancellation must be sent to:</p>
+<p>booking@everyavenuetravel.com</p>
+<p>A social-media message, text message, group-chat message, or verbal statement is not a valid cancellation unless the Company confirms acceptance in writing.</p>
+<h3>39.4 Formal legal notices</h3>
+<p>Formal legal notices to the Company should be sent by email to booking@everyavenuetravel.com</p></section>
+<section class="ls" id="s40"><h2><span class="sn">40.</span>Changes to These Terms</h2><p>The Company may update these Terms from time to time.</p>
+<p>The version made available to the Traveler at the time of booking governs that booking unless:</p>
+<ul>
+<li>The Traveler later agrees to a written amendment;</li>
+<li>A change is required by law; or</li>
+<li>A reasonable operational or safety change is necessary and does not retroactively eliminate an accrued refund or other nonwaivable right.</li>
+</ul>
+<p>Website updates apply to future bookings and do not automatically replace the version governing an existing confirmed booking.</p>
+<p>The Company should retain an archived copy of each published version.</p></section>
+<section class="ls" id="s41"><h2><span class="sn">41.</span>General Provisions</h2><h3>41.1 Entire agreement</h3>
+<p>The Agreement constitutes the entire agreement regarding the booking and replaces prior discussions, proposals, or representations concerning the same subject, except for fraud or another matter that cannot lawfully be excluded.</p>
+<h3>41.2 No oral modification</h3>
+<p>A modification must be in writing and issued or confirmed by an authorized Company representative.</p>
+<h3>41.3 Severability</h3>
+<p>If a provision is held invalid or unenforceable, it will be narrowed to the minimum extent necessary where permitted, and the remainder of the Agreement will remain effective.</p>
+<h3>41.4 No waiver</h3>
+<p>Failure to enforce a provision on one occasion does not waive the right to enforce it later.</p>
+<h3>41.5 Assignment</h3>
+<p>The Traveler may not assign or transfer the booking except as permitted by the Cancellation &amp; Refund Policy.</p>
+<p>The Company may assign the Agreement to a successor resulting from a merger, sale, reorganization, or transfer of substantially all relevant business assets, provided the assignment does not materially reduce the Traveler's existing contractual rights.</p>
+<h3>41.6 No partnership</h3>
+<p>The Agreement does not create an employment, partnership, joint venture, fiduciary, or franchise relationship between the Traveler and the Company.</p>
+<h3>41.7 Third-party beneficiaries</h3>
+<p>Company Parties may rely on provisions that expressly protect them. Suppliers may rely on provisions that expressly apply to Suppliers. Except for those protections, the Agreement does not create rights for unrelated third parties.</p>
+<h3>41.8 Headings</h3>
+<p>Headings are for convenience and do not limit the meaning of a provision.</p>
+<h3>41.9 Survival</h3>
+<p>Payment obligations, intellectual-property provisions, privacy authorizations, limitations of liability, indemnification, dispute provisions, and other terms that logically should continue will survive cancellation or completion of the Trip.</p>
+<h3>41.10 English-language version</h3>
+<p>The English-language version controls. Any translation is provided for convenience unless applicable law requires otherwise.</p></section>
+<section class="ls" id="s42"><h2><span class="sn">42.</span>Final Acknowledgment</h2><p>By submitting a booking, approving a quote, paying any amount, or participating after being provided or given access to this Agreement, the Traveler acknowledges and agrees that:</p>
+<ul>
+<li>The Traveler has read and accepts these Terms;</li>
+<li>The Cancellation &amp; Refund Policy is part of the Agreement;</li>
+<li>Cancellation penalties and nonrefundable amounts were disclosed before payment;</li>
+<li>The Company generally does not book independently arranged airfare;</li>
+<li>Comprehensive travel insurance is required, and failure to provide proof may result in cancellation, denied participation, or full self-insured financial responsibility under the Adult Participant Agreement;</li>
+<li>Travel and adventure activities involve risk;</li>
+<li>Required adult, Supplier, and minor waivers must be completed;</li>
+<li>Parents and guardians remain responsible for supervising Minors at all times;</li>
+<li>The Company does not provide childcare or accredited education;</li>
+<li>Independent Suppliers provide many Trip services;</li>
+<li>Itineraries may reasonably change;</li>
+<li>Florida law and the courts identified in Section 38 govern disputes with the Company; and</li>
+<li>The Booking Client will provide the Agreement and Trip Documents to every Participant included in the booking.</li>
+</ul>
+<p>Every Avenue Travel LLC is registered with the State of Florida as a Seller of Travel. Registration No. ST45213.</p>
+<p>Effective Date: 5/22/24</p></section>
+    <a href="#top" class="to-top">↑ Back to top</a>
+  </article>
+</div></div>
+<script>if(window.innerWidth<=980){document.querySelector('.legal-toc').removeAttribute('open');}</script>
+<div class="brand-stripe"></div>
+<footer class="site-footer nf">
+  <div class="wrap nf-grid">
+    <div class="nf-brand">
+      <a href="homepage-newtheme.html" class="gn-logo nf-logo"><span class="gn-script">Worldschooling</span><span class="gn-sans">journeys</span></a>
+      <p class="nf-blurb">Worldschooling group trips and cruises for homeschool families who want connection, community, and real-world learning.</p>
+      <div class="nf-featured"><span>As featured in</span><a href="#">People</a><span class="nf-dot">✦</span><a href="#">Daily Mail</a></div>
+    </div>
+    <div>
+      <div class="nf-label">Connect with us</div>
+      <div class="nf-social"><a href="#" class="fs-icon" aria-label="Facebook" title="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7.5h2.5l.4-3H13.5V8.5c0-.87.24-1.46 1.49-1.46H16.5V4.36C16.2 4.32 15.19 4.23 14 4.23c-2.44 0-4.11 1.49-4.11 4.22V10.5H7.4v3h2.49V21h3.61z"/></svg></a><a href="#" class="fs-icon" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/></svg></a><a href="#" class="fs-icon" aria-label="TikTok" title="TikTok"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.6 3c.3 2.2 1.6 3.6 3.9 3.8v3a7.3 7.3 0 0 1-3.8-1.2v6.3c0 3.6-2.6 6.1-6 6.1a5.9 5.9 0 0 1-6-5.9c0-3.6 3.1-6.4 7-5.8v3.1c-1.9-.4-3.8.8-3.8 2.7 0 1.5 1.2 2.7 2.8 2.7 1.7 0 2.8-1.1 2.8-3V3h3.1z"/></svg></a><a href="#" class="fs-icon" aria-label="Messenger" title="Messenger"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5C6.6 2.5 2.5 6.4 2.5 11.4c0 2.7 1.2 5 3.2 6.6v3.5l3.1-1.7c1 .3 2.1.4 3.2.4 5.4 0 9.5-3.9 9.5-8.8S17.4 2.5 12 2.5zm1 11.8-2.4-2.6-4.7 2.6 5.2-5.5 2.5 2.6 4.6-2.6-5.2 5.5z"/></svg></a><a href="#" class="fs-icon" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.6a8.5 8.5 0 0 1-12.6 7.5L3.5 20.5l1.4-4.2A8.5 8.5 0 1 1 20.5 11.6z"/><path d="M9 8.6c.2 2.6 2.4 5 5.2 5.6l1-1.1-1.6-.9-.7.6c-1-.5-1.7-1.2-2.1-2.1l.6-.7-.8-1.6z" fill="currentColor" stroke="none"/></svg></a><a href="#" class="fs-icon" aria-label="Facebook Group" title="Facebook Group"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="8" r="3.2"/><circle cx="17" cy="9.2" r="2.5"/><path d="M2.8 19.5c0-3.5 2.8-6 6.2-6s6.2 2.5 6.2 6v.5H2.8z"/><path d="M16 20v-.5c0-1.8-.6-3.4-1.7-4.6.8-.5 1.7-.8 2.7-.8 2.7 0 4.5 2 4.5 4.8v1.1z"/></svg></a></div>
+      <a href="#" class="nf-group">Join our Worldschooling Facebook Group <span>&rarr;</span></a>
+    </div>
+    <div>
+      <div class="nf-label">Contact us</div>
+      <a href="#" class="nf-contact"><span class="nf-ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 11.6a8.5 8.5 0 0 1-12.6 7.5L3.5 20.5l1.4-4.2A8.5 8.5 0 1 1 20.5 11.6z"/><path d="M9 8.6c.2 2.6 2.4 5 5.2 5.6l1-1.1-1.6-.9-.7.6c-1-.5-1.7-1.2-2.1-2.1l.6-.7-.8-1.6z" fill="currentColor" stroke="none"/></svg></span>Connect via WhatsApp</a>
+      <a href="#" class="nf-contact"><span class="nf-ci"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20.5l1.5-4.6A8 8 0 1 1 21 12z"/><circle cx="8.5" cy="12" r=".6" fill="currentColor"/><circle cx="12" cy="12" r=".6" fill="currentColor"/><circle cx="15.5" cy="12" r=".6" fill="currentColor"/></svg></span>Connect via ChatBot</a>
+    </div>
+    <div>
+      <div class="nf-label">Pages</div>
+      <div class="footer-links nf-links">
+        <a href="legal-terms.html">Terms and Conditions</a>
+        <a href="legal-cancellation.html">Cancellations &amp; Refunds</a>
+        <a href="legal-privacy.html">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+  <div class="nf-bottom">
+    <div class="wrap nf-bottom-in">
+      <span><span class="mark">&#10022;</span> &copy; 2026 Worldschooling Journeys, an Every Avenue Travel company</span>
+      <span class="nf-legal">Every Avenue Travel, LLC is registered with the State of Florida as a Seller of Travel. Registration No. ST45213. IATA No. 10620400.</span>
+    </div>
+  </div>
+</footer>
+
+
+
+</body>
+</html>

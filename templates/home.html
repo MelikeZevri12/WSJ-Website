@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Worldschooling Journeys</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --dark:#152230;
+    --dark-soft:#1e3040;
+    --blue:#2f7f8a;
+    --white:#fffdf7;
+    --paper:#f4f1e9;
+    --line-on-dark:rgba(255,255,255,0.2);
+    --muted:#6d6552;
+    --sunset-1:#c14a2f;
+    --sunset-2:#e0893c;
+    --gold:#d9a441;
+    --green:#A5BD8E;
+    --green-dark:#708F53;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Titillium Web',sans-serif;color:var(--dark);background:var(--paper);min-height:100vh;display:flex;flex-direction:column;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+  .brand-stripe{height:5px;width:100%;background:linear-gradient(90deg, var(--blue) 0%, var(--sunset-2) 55%, var(--sunset-1) 100%);}
+
+  /* GLOBAL NAV — same pattern as cruises.html/cruise-detail.html, minus the
+     Admin link (that entry point is intentionally hidden now - see the
+     secret key-combo script below). */
+  .global-nav{background:var(--dark-soft);border-bottom:1px solid var(--line-on-dark);}
+  .global-nav .gn-wrap{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 24px;gap:16px;flex-wrap:wrap;}
+  .gn-logo{display:flex;align-items:baseline;gap:8px;text-decoration:none;}
+  .gn-logo .gn-script{font-family:'Caveat',cursive;font-weight:700;font-size:26px;color:var(--gold);line-height:1;}
+  .gn-logo .gn-sans{font-family:'Titillium Web',sans-serif;font-weight:600;font-size:14px;color:var(--green);letter-spacing:.02em;}
+  .gn-links{display:flex;gap:8px 26px;flex-wrap:wrap;}
+  .gn-link{
+    padding:4px 0;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:14px;
+    text-decoration:none;color:#c7ccd1;
+    transition:color .15s ease;
+  }
+  .gn-link:hover{color:var(--white);}
+  .gn-link.active{color:var(--green);}
+
+  /* display:flex + align-items:center so the wrapped <a> lines up with its
+     plain <a> siblings - without this, the div (stretched to the row's
+     full height as a flex item) leaves its inline <a> child sitting at the
+     top of that box instead of centered like the others. */
+  .gn-dropdown{position:relative;display:flex;align-items:center;}
+  .gn-dropdown-menu{
+    position:absolute;top:100%;left:0;margin-top:14px;
+    background:var(--dark-soft);border:1px solid var(--line-on-dark);border-radius:8px;
+    min-width:200px;padding:6px;display:none;flex-direction:column;
+    box-shadow:0 12px 30px rgba(0,0,0,0.35);z-index:20;
+  }
+  /* The margin-top gap above would otherwise break :hover the instant the
+     cursor leaves the link - this pseudo-element bridges it so the menu
+     stays open on the way down to it. */
+  .gn-dropdown::after{content:'';position:absolute;top:100%;left:0;right:0;height:14px;}
+  .gn-dropdown:hover .gn-dropdown-menu{display:flex;}
+  .gn-dropdown-item{
+    padding:9px 12px;font-family:'Titillium Web',sans-serif;font-weight:600;font-size:13.5px;
+    color:#c7ccd1;text-decoration:none;border-radius:5px;white-space:nowrap;
+  }
+  .gn-dropdown-item:hover{background:rgba(255,255,255,0.08);color:var(--white);}
+
+  @media(max-width:680px){
+    .global-nav .gn-wrap{flex-direction:column;align-items:flex-start;gap:10px;}
+  }
+
+  .hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 20px;}
+  .hero .script{font-family:'Caveat',cursive;font-weight:700;font-size:48px;color:var(--gold);display:block;}
+  .hero .sans{font-family:'Titillium Web',sans-serif;font-weight:600;font-size:15px;color:var(--green-dark);letter-spacing:.08em;display:block;margin-top:4px;text-transform:uppercase;}
+  .tagline{color:var(--muted);font-size:14px;margin-top:22px;max-width:380px;}
+
+  /* MOBILE NAVBAR - on phones only the logo + a menu button show; the links
+     open in a drawer that slides in from the left over the page (the page
+     behind is dimmed, not pushed down). The Trips dropdown is listed inline,
+     since there's no hover on touch screens. */
+  .gn-toggle,.gn-backdrop,.gn-drawer-logo{display:none;}
+  @media (max-width:760px){
+    .global-nav > .wrap, .global-nav > .gn-wrap{flex-direction:row;flex-wrap:nowrap;align-items:center;gap:0;}
+    .gn-toggle{
+      display:flex;flex-direction:column;justify-content:center;gap:5px;
+      width:42px;height:42px;padding:10px;margin-left:auto;position:relative;z-index:1002;
+      background:var(--dark-soft);border:1px solid var(--line-on-dark);border-radius:9px;cursor:pointer;
+    }
+    .gn-toggle span{display:block;height:2px;border-radius:2px;background:var(--white);transition:transform .2s ease, opacity .2s ease;}
+    .global-nav.open .gn-toggle span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .global-nav.open .gn-toggle span:nth-child(2){opacity:0;}
+    .global-nav.open .gn-toggle span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    #gnLinks{
+      position:fixed;top:0;left:0;bottom:0;z-index:1001;width:min(80vw,310px);
+      display:flex;flex-direction:column;flex-wrap:nowrap;gap:0;padding:22px 22px 30px;overflow-y:auto;
+      background:var(--dark-soft);box-shadow:8px 0 30px rgba(0,0,0,.35);
+      transform:translateX(-100%);visibility:hidden;transition:transform .25s ease, visibility 0s linear .25s;
+    }
+    .global-nav.open #gnLinks{transform:none;visibility:visible;transition:transform .25s ease;}
+    .gn-drawer-logo{display:flex;margin-bottom:14px;}
+    .gn-backdrop{
+      display:block;position:fixed;inset:0;z-index:1000;background:rgba(13,22,32,.55);
+      opacity:0;visibility:hidden;transition:opacity .25s ease, visibility 0s linear .25s;
+    }
+    .global-nav.open .gn-backdrop{opacity:1;visibility:visible;transition:opacity .25s ease;}
+    #gnLinks .gn-link{display:block;padding:13px 2px;font-size:16px;border-top:1px solid var(--line-on-dark);}
+    #gnLinks .gn-dropdown{flex-direction:column;align-items:stretch;}
+    #gnLinks .gn-dropdown::after{display:none;}
+    #gnLinks .gn-dropdown-menu{
+      display:flex;position:static;margin:0 0 6px;padding:0 0 0 16px;min-width:0;
+      background:none;border:none;box-shadow:none;
+    }
+    #gnLinks .gn-dropdown-item{padding:9px 2px;font-size:15px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- GLOBAL NAV -->
+<div class="global-nav">
+  <div class="gn-wrap">
+    <a href="/" class="gn-logo">
+      <span class="gn-script">Worldschooling</span><span class="gn-sans">journeys</span>
+    </a>
+    <button type="button" class="gn-toggle" id="gnToggle" aria-label="Open menu" aria-expanded="false" aria-controls="gnLinks"><span></span><span></span><span></span></button>
+    <div class="gn-links" id="gnLinks">
+      <a href="/" class="gn-link active">Home</a>
+      <div class="gn-dropdown">
+        <a href="#" class="gn-link">Worldschooling Trips</a>
+        <div class="gn-dropdown-menu">
+          <a href="/cruises.html" class="gn-dropdown-item">Group Cruises</a>
+          <a href="/land-trips.html" class="gn-dropdown-item">Land Trips</a>
+        </div>
+      </div>
+      <a href="#" class="gn-link">About Us</a>
+      <a href="#" class="gn-link">Stay Updated</a>
+      <a href="#" class="gn-link">Contact</a>
+    </div>
+  </div>
+</div>
+
+<div class="hero">
+  <span class="script">Every Avenue</span>
+  <span class="sans">Worldschooling Journeys</span>
+  <p class="tagline">This site is under construction.</p>
+</div>
+
+<div class="brand-stripe"></div>
+
+<script>
+  // Once logged into the admin tool (admin.html stores its JWT under this
+  // same key - see AUTH_TOKEN_KEY there), show a nav shortcut back to it
+  // instead of making them retype the secret combo every visit. Just a
+  // convenience - admin.html's own login gate is still the real boundary,
+  // so a stale/expired token here just bounces them back to that login.
+  if (localStorage.getItem('cruiseAdminAuthToken')) {
+    const adminLink = document.createElement('a');
+    adminLink.href = '/admin.html';
+    adminLink.className = 'gn-link';
+    adminLink.textContent = 'Admin';
+    document.getElementById('gnLinks').prepend(adminLink);
+  }
+
+  // Hidden admin entry point - not linked anywhere on the page. Typing
+  // "admin" anywhere (no input is ever focused on this page) jumps to the
+  // cruise-lines/ships/ports admin tool, which is itself still fully gated
+  // behind its own password login - this combo is just how staff find the
+  // door, not the actual security boundary.
+  const SECRET_COMBO = 'admin';
+  let typed = '';
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key.length !== 1) return; // ignore Shift, Enter, arrows, etc.
+    typed = (typed + e.key.toLowerCase()).slice(-SECRET_COMBO.length);
+    if (typed === SECRET_COMBO) {
+      window.location.href = '/admin.html';
+    }
+  });
+</script>
+<script>
+// MOBILE NAVBAR: the phone menu button opens/closes the side drawer; tapping
+// the dimmed page, a link, or Escape closes it. The page can't scroll behind it.
+(function(){
+  const nav = document.querySelector('.global-nav');
+  const btn = document.getElementById('gnToggle');
+  const links = document.getElementById('gnLinks');
+  if(!nav || !btn || !links) return;
+  const logo = nav.querySelector('.gn-logo');
+  if(logo){ const copy = logo.cloneNode(true); copy.classList.add('gn-drawer-logo'); links.prepend(copy); }
+  const backdrop = document.createElement('div');
+  backdrop.className = 'gn-backdrop';
+  nav.appendChild(backdrop);
+  function setOpen(open){
+    nav.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open);
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    document.documentElement.style.overflow = open ? 'hidden' : '';
+  }
+  btn.addEventListener('click', () => setOpen(!nav.classList.contains('open')));
+  backdrop.addEventListener('click', () => setOpen(false));
+  links.addEventListener('click', (e) => { if(e.target.closest('a[href]:not([href="#"])')) setOpen(false); });
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') setOpen(false); });
+  window.addEventListener('resize', () => { if(innerWidth > 760) setOpen(false); });
+})();
+</script>
+</body>
+</html>
