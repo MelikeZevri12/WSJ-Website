@@ -1,5 +1,5 @@
 // Home + About trip strips, filled from js/trips.js:
-//   #soonGrid   - "Departing Soon": the next 4 departures (cruises + land trips), not sold out
+//   #soonGrid   - "Departing Soon": the next 3 departures (cruises + land trips), not sold out
 //   #cruise-grid - every upcoming cruise and 3+ cruise journey (not sold out), sideways slider
 //   #land-grid   - every upcoming land trip, sideways slider
 // Each slider's year buttons are built from the years that actually have trips;
@@ -10,16 +10,21 @@
   const shortTitle = (t) => String(t || "").replace(/^(\d+-(leg|day)\s+)+/i, "").replace(/^(mini\s+)?worldschooling\s+/i, "");
   const bySoonest = (a, b) => String(a.sortDate).localeCompare(String(b.sortDate));
 
-  function priceBadge(c){
-    if (!c.price) return `<div class="sp-price"><b>${c.tag && /waitlist/i.test(c.tag) ? "Waitlist" : "Coming soon"}</b></div>`;
-    return `<div class="sp-price">From <b>${esc(c.price)}</b> ${c.per === "family" ? "/ family" : "pp"}</div>`;
+  const CALENDAR = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>';
+  function priceHTML(c){
+    if (!c.price) return `<div><div class="cc-price">${c.tag && /waitlist/i.test(c.tag) ? "Waitlist" : "Coming soon"}</div></div>`;
+    return `<div><div class="cc-price-label">Starting from</div><div class="cc-price">${esc(c.price)} <small>/ ${c.per === "family" ? "family" : "person"}</small></div></div>`;
   }
+  // Two stacked zones: the photo on top (fully visible), the dates, name,
+  // price and Learn More on a navy band underneath.
   function cardHTML(c){
-    const photo = c.photo ? ` has-photo" style="background-image:linear-gradient(180deg, rgba(21,34,48,0.05) 0%, rgba(13,22,32,0.15) 60%), url('${esc(c.photo)}')` : "";
-    return `<a href="${esc(c.href)}" class="spotlight-card style-photo${photo}">` +
+    return `<a href="${esc(c.href)}" class="spotlight-card style-photo trip-card${c.photo ? " has-photo" : ""}">` +
+      `<div class="sp-photo"${c.photo ? ` style="background-image:url('${esc(c.photo)}')"` : ""}></div>` +
       (c.photo ? "" : `<span class="sp-caption">Photo: ${esc(c.photoLabel)}</span>`) +
-      priceBadge(c) +
-      `<div class="sp-overlay"><div class="spotlight-dates">${esc(c.dates)}</div><div class="spotlight-title">${esc(shortTitle(c.title))}</div></div></a>`;
+      (c.tag ? `<span class="cc-tag">${esc(c.tag)}</span>` : "") +
+      `<div class="sp-overlay"><div class="spotlight-dates">${CALENDAR}<span>${esc(c.dates)}</span></div>` +
+      `<div class="spotlight-title">${esc(shortTitle(c.title))}</div>` +
+      `<div class="cc-foot">${priceHTML(c)}<span class="cc-more">Learn More</span></div></div></a>`;
   }
 
   function setupSlider(gridId, years, cardsFor){
@@ -58,13 +63,13 @@
       updateArrows();
     }
     if (row) {
-      row.innerHTML = '<button type="button" class="trip-filter-btn active" data-year="all">All</button>' +
-        years.map((y) => `<button type="button" class="trip-filter-btn" data-year="${y}">${y}</button>`).join("");
+      row.innerHTML = '<button type="button" class="trip-filter-btn active" data-year="all" aria-pressed="true">All</button>' +
+        years.map((y) => `<button type="button" class="trip-filter-btn" data-year="${y}" aria-pressed="false">${y}</button>`).join("");
       row.hidden = years.length < 2;
       row.addEventListener("click", (e) => {
         const btn = e.target.closest(".trip-filter-btn");
         if (!btn) return;
-        row.querySelectorAll(".trip-filter-btn").forEach((b) => b.classList.toggle("active", b === btn));
+        row.querySelectorAll(".trip-filter-btn").forEach((b) => { b.classList.toggle("active", b === btn); b.setAttribute("aria-pressed", String(b === btn)); });
         year = btn.dataset.year === "all" ? null : Number(btn.dataset.year);
         draw();
       });
@@ -85,7 +90,7 @@
       data = await W.loadCruiseCards();
     } catch (e) {
       if (cruiseGrid) cruiseGrid.outerHTML = '<p class="trip-empty-note">Cruises couldn’t be loaded right now. <a href="/cruises.html">See all cruises</a></p>';
-      if (soon) soon.innerHTML = W.landTrips().sort(bySoonest).slice(0, 4).map(cardHTML).join("");
+      if (soon) soon.innerHTML = W.landTrips().sort(bySoonest).slice(0, 3).map(cardHTML).join("");
       return;
     }
     const cruiseCards = [...data.cruises, ...data.journeys].filter((c) => !c.soldOut);
@@ -93,7 +98,7 @@
     setupSlider("cruise-grid", cruiseYears, (y) => cruiseCards.filter((c) => !y || c.year === y));
     if (soon) {
       // individual cruises + land trips (journeys repeat their first cruise's date)
-      const next = [...data.cruises.filter((c) => !c.soldOut), ...W.landTrips()].sort(bySoonest).slice(0, 4);
+      const next = [...data.cruises.filter((c) => !c.soldOut), ...W.landTrips()].sort(bySoonest).slice(0, 3);
       soon.innerHTML = next.map(cardHTML).join("");
     }
   }
