@@ -11,6 +11,8 @@
 | Footer styles | `css/footer.css` |
 | Page headers (hero) sizes | `css/hero.css` |
 | Rounded card corners | `css/cards.css` |
+| Land trip booking: WeTravel UUIDs / booking links per trip and year (no UUID = waitlist) | `js/booking.js` |
+| Waitlist popup (land trips) | `js/waitlist.js` |
 
 Pages pull the navbar and footer in with a marker:
 
