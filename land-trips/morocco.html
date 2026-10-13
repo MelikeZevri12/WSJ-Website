@@ -100,7 +100,7 @@
     <div class="cost-card">
       <div class="trav-row">
         <span class="calc-row-label" style="margin:0;">Travelers</span>
-        <span class="stepper"><button type="button" id="travMinus" aria-label="Fewer travelers">−</button><span id="travCount">4</span><button type="button" id="travPlus" aria-label="More travelers">+</button></span>
+        <span class="stepper"><button type="button" id="travMinus" aria-label="Fewer travelers">−</button><span id="travCount">2</span><button type="button" id="travPlus" aria-label="More travelers">+</button></span>
         <span style="font-size:13px;color:var(--muted);" id="perPersonLabel"></span>
       </div>
       <div class="price-summary">
@@ -228,8 +228,8 @@ const TRIP = {
     notes: ['Meals not listed are on your own, which gives families freedom with picky eaters and allergies.',
             'Plain options (unseasoned meat, vegetables, fruit) can be requested for kids at included meals.'],
   },
-  included: ['Scheduled group activities and daily experiences', 'An experienced tour leader and knowledgeable local guides who handle the details and share cultural insights', 'A like-minded group of worldschooling families, plus a WhatsApp group before and during the trip', 'Hotels, traditional guesthouses and a Sahara desert camp', 'Train from Marrakech to Fes, private transfers throughout, a camel ride in the Sahara and a donkey ride for kids in the Atlas Mountains', 'Meals: 11 breakfasts, 1 lunch and 5 dinners'],
-  notIncluded: ['International flights to and from North America', 'Meals and drinks not mentioned in the itinerary', 'Optional experiences with additional fees outside the main itinerary, unless otherwise specified', 'Travel insurance (required for all participants)'],
+  included: ['Scheduled group activities and daily experiences', 'An experienced tour leader and knowledgeable local guides who handle the details and share cultural insights', 'A like-minded group of worldschooling families', 'A WhatsApp group to get to know each other before and during the trip', 'Hotels, traditional guesthouses and a Sahara desert camp', 'Train from Marrakech to Fes, private transfers throughout, a camel ride in the Sahara and a donkey ride for kids in the Atlas Mountains', 'Meals: 11 breakfasts, 1 lunch and 5 dinners'],
+  notIncluded: ['International flights', 'Meals and drinks not mentioned in the itinerary', 'Optional experiences with additional fees outside the main itinerary, unless otherwise specified', 'Travel insurance, required for all participants (we recommend <a href="https://www.notion.so/Travel-Insurance-Guide-Faye-vs-SafetyWing-3334ff0a052380f5abedc5605a762ddc?source=copy_link" target="_blank" rel="noopener">SafetyWing or Faye</a>)'],
   policy: {                 // one rule for every departure; all dates are calculated from it
     currency: '$', deposit: 500, depositUnit: 'per person',
     nonRefundableDays: 90, finalPaymentDays: 75,
@@ -313,7 +313,7 @@ const STATUS = {open:'Spots open', few:'Few spots left', soldout:'Sold Out'};
 const ROSTER_MIN_FAMILIES = 3;
 const BOOKABLE = DEPARTURES.filter(d => d.status !== 'past');
 let selIdx = DEPARTURES.indexOf(BOOKABLE.find(d => d.status !== 'soldout') || BOOKABLE[0]);
-let travelers = 4;
+let travelers = 2;
 const dep = () => DEPARTURES[selIdx];
 
 // ---------- itinerary (trip-level, same for every departure) ----------
@@ -461,7 +461,7 @@ function renderCost(){
   ].map(([k, v, s]) => `<div class="pay-step">${k}<strong>${v}</strong>${s}</div>`).join('');
   const ln = document.getElementById('lateNote');
   ln.style.display = late ? '' : 'none';
-  ln.textContent = late ? `The final payment date for this departure (${fmtD(finalPay)}) has passed, so the full balance is due when we send your quote. Spots are confirmed once it’s paid.` : '';
+  ln.textContent = late ? 'Full balance is due at the time of booking.' : '';
   document.getElementById('sbPrice').innerHTML = `<span>${range(d)}</span>${money(d.price)} / person`;
 }
 
@@ -495,7 +495,7 @@ selects.forEach(sel => {
       if(list.getBoundingClientRect().right > window.innerWidth - 8) wrap.classList.add('flip');
       (list.querySelector('[aria-selected="true"]') || list.firstChild).focus(); } });
   btn.addEventListener('keydown', e => { if(['ArrowDown','Enter',' '].includes(e.key)){ e.preventDefault(); btn.click(); } });
-  list.addEventListener('click', e => { e.stopPropagation(); const li = e.target.closest('.cs-opt'); if(li) choose(li.dataset.v, btn); });
+  list.addEventListener('click', e => { e.stopPropagation(); e.preventDefault(); /* no label re-click */ const li = e.target.closest('.cs-opt'); if(li) choose(li.dataset.v, btn); });
   list.addEventListener('keydown', e => { const items = [...list.children], k = items.indexOf(document.activeElement);
     if(e.key === 'ArrowDown'){ e.preventDefault(); (items[k+1] || items[0]).focus(); }
     else if(e.key === 'ArrowUp'){ e.preventDefault(); (items[k-1] || items[items.length-1]).focus(); }
@@ -503,7 +503,7 @@ selects.forEach(sel => {
     else if(e.key === 'Escape'){ closeCS(); btn.focus(); } });
 });
 document.querySelectorAll('.hp-field, .sb-field').forEach(f => f.addEventListener('click', e => {
-  if(!e.target.closest('.cs-btn') && !e.target.closest('.cs-list')){ e.preventDefault(); f.querySelector('.cs-btn').click(); } }));
+  if(!e.target.closest('.cs-btn') && !e.target.closest('.cs-list')){ e.preventDefault(); e.stopPropagation(); f.querySelector('.cs-btn').click(); } }));
 function syncPickers(){
   selects.forEach(sel => { const c = sel._cs; sel.value = selIdx; c.btn.textContent = sel.selectedOptions[0].text;
     c.list.innerHTML = BOOKABLE.map(x => { const i = DEPARTURES.indexOf(x);
@@ -533,5 +533,6 @@ renderStatic();
 renderDeparture();
 </script>
 <script src="/js/nav.js?v=20261013"></script>
+<script src="/js/waitlist.js"></script>
 </body>
 </html>

@@ -175,10 +175,10 @@ button{font-family:inherit;}
   .facts-grid{grid-template-columns:repeat(2,1fr);row-gap:16px;}
   .fact:nth-child(3){border-left:none;}
 }
-/* Phones: the filter bar shrinks to one sticky row (Filters button +
+/* Phones and tablets: the filter bar shrinks to one sticky row (Filters button +
      result count); the controls open as a stacked panel under it. */
 .filter-mobile-toggle,.filter-mobile-done{display:none;}
-@media (max-width:760px){
+@media (max-width:1239px){
   .filter-bar{padding:9px 0;}
   .filter-bar-inner{flex-wrap:wrap;gap:0;}
   .filter-mobile-toggle{order:1;display:inline-flex;align-items:center;gap:8px;padding:7px 15px;border:1.5px solid var(--line);background:var(--white);cursor:pointer;font-family:'Titillium Web',sans-serif;font-weight:700;color:var(--dark)}
@@ -351,3 +351,27 @@ button{font-family:inherit;}
 .press-logo{display:block;flex:none;background:var(--white);opacity:.82;transition:opacity .2s ease, background-color .2s ease;
   -webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;}
 a.press-logo:hover{opacity:1;background:var(--gold);}
+
+/* FILTER BAR ON ONE LINE (screens 1240px and wider): everything sits in a single row;
+   slightly smaller controls so it fits with the bigger site text.
+   On narrower screens the bar becomes the "Filters" button (the 1239px rules above). */
+@media (min-width:1240px){
+  .filter-bar .wrap{max-width:1400px;}
+  .filter-bar-inner{gap:0 10px;}
+  .filter-bar-controls{flex-wrap:nowrap;gap:0 10px;}
+  .filter-sort .filter-label{display:none;}   /* the choices say what they sort by ("Date: Soonest First") */
+  .filter-group{gap:7px;}
+  .filter-label{font-size:13px;letter-spacing:.05em;}
+  .lv{font-size:14px;}
+  .filter-dropdown-btn, .filter-sort select{min-height:42px;font-size:15px;}
+  .filter-dropdown-btn{padding:0 12px;}
+  .filter-sort select{padding:0 8px;}
+  .pill-btn{min-height:42px;padding:0 11px;font-size:15px;}
+  .year-pills{gap:4px;flex-wrap:nowrap;}
+  .dual-range{width:64px;}
+  .filter-toggles{gap:12px;}
+  .filter-toggle{font-size:15px;}
+  .filter-toggle input{width:16px;height:16px;}
+  .reset-link{font-size:14px;}
+  .results-count{font-size:14px;white-space:nowrap;flex:0 0 auto;}
+}

@@ -136,7 +136,7 @@
     <div class="cost-card">
       <div class="trav-row">
         <span class="calc-row-label" style="margin:0;">Travelers</span>
-        <span class="stepper"><button type="button" id="travMinus" aria-label="Fewer travelers">−</button><span id="travCount">4</span><button type="button" id="travPlus" aria-label="More travelers">+</button></span>
+        <span class="stepper"><button type="button" id="travMinus" aria-label="Fewer travelers">−</button><span id="travCount">2</span><button type="button" id="travPlus" aria-label="More travelers">+</button></span>
         <span style="font-size:13px;color:var(--muted);" id="perPersonLabel"></span>
       </div>
       <div class="price-summary">
@@ -332,7 +332,7 @@ const isWL = d => d.status === 'waitlist';
 const ROSTER_MIN_FAMILIES = 3;
 const BOOKABLE = DEPARTURES.filter(d => d.status !== 'past');
 let selIdx = DEPARTURES.indexOf(BOOKABLE.find(d => d.status !== 'soldout') || BOOKABLE[0]);
-let travelers = 4;
+let travelers = 2;
 const dep = () => DEPARTURES[selIdx];
 
 // ---------- itinerary (trip-level, same for every departure) ----------
@@ -393,7 +393,7 @@ function renderStatic(){
   document.getElementById('inclNo').innerHTML = TRIP.notIncluded.map(i => `<li>${i}</li>`).join('');
 
   // shared FAQ (same on every trip) + this trip's own
-  const FAQ_LIST = [{"q": "How do we book?", "a": "We're gathering our group before setting the final date! Click the \"Book Your Spot\" button below to join the waitlist, you'll be the first to hear when details are confirmed and bookings open."}, {"q": "Is there an educational component to this trip?", "a": "Every single travel experience is educational. On this trip we will not be sitting in classrooms, or looking at textbooks. We will be exploring, immersing, learning from doing. We will be sharing all the knowledge about the area that we have collected over the years. We will be encouraging kids and adults to break out of their shell and step a little out of their comfort zone and remember what it's like to be a wild child. This might not be in your local school's curriculum but it will be transformational in another way. We hope that you will leave inspired, full of wonder and with your soul well rested."}, {"q": "Do you facilitate group communication?", "a": "Yes, all the families will be added to a WhatsApp group to get to know each other before the trip and discuss the itinerary. We will also use WhatsApp to communicate during the trip."}, {"q": "How do I know if we get along with the other families?", "a": "I think that's a question you need to ask yourself. We have never had an issue whether families did not get along.<br><br>During our past trips, introverts have enjoyed sporadic company of other introverts, while their kids were able to be social and extroverts had fun with the whole group. No matter what you will have the perfect experience for you. The more you put into it the more you will get out of it. Be yourself, be authentic, and make time to connect with others. You'll be so happy you did!"}, {"q": "Can you tell me more about your mission and vision?", "a": "Read this post about our mission and vision: <a href=\"https://www.facebook.com/groups/everyavenuetravel/permalink/2836753246474734/\"><strong>POST</strong></a>"}];   // word for word from the live page
+  const FAQ_LIST = [{"q": "How do we book?", "a": "We're gathering our group before setting the final date! Click the \"Book Your Spot\" button below to join the waitlist, you'll be the first to hear when details are confirmed and bookings open."}, {"q": "Is there an educational component to this trip?", "a": "Every single travel experience is educational. On this trip we will not be sitting in classrooms, or looking at textbooks. We will be exploring, immersing, learning from doing. We will be sharing all the knowledge about the area that we have collected over the years. We will be encouraging kids and adults to break out of their shell and step a little out of their comfort zone and remember what it's like to be a wild child. This might not be in your local school's curriculum but it will be transformational in another way. We hope that you will leave inspired, full of wonder and with your soul well rested."}, {"q": "Do you facilitate group communication?", "a": "Yes, all the families will be added to a WhatsApp group to get to know each other before the trip and discuss the itinerary. We will also use WhatsApp to communicate during the trip."}, {"q": "How do I know if we get along with the other families?", "a": "I think that's a question you need to ask yourself. We have never had an issue whether families did not get along.<br><br>During our past trips, introverts have enjoyed sporadic company of other introverts, while their kids were able to be social and extroverts had fun with the whole group. No matter what you will have the perfect experience for you. The more you put into it the more you will get out of it. Be yourself, be authentic, and make time to connect with others. You'll be so happy you did!"}, {"q": "Can you tell me more about your mission and vision?", "a": "Read this post about our mission and vision: <a href=\"https://www.facebook.com/groups/everyavenuetravel/permalink/2836753246474734/\" target=\"_blank\" rel=\"noopener\"><strong>POST</strong></a>"}];   // word for word from the live page
   document.getElementById('faqBody').innerHTML = FAQ_LIST.map((f, i) =>
     `<details class="faq-item" ${i === 0 ? 'open' : ''}><summary>${f.q}</summary><div class="faq-a">${f.a === '__POLICY__' ? '<div class="faq-policy"></div>' : '<div class="faq-text">' + f.a.replace('__TWO_SESSIONS__', '<span class=\"faq-two\"></span>') + '</div>'}</div></details>`).join('');
 }
@@ -519,7 +519,7 @@ selects.forEach(sel => {
       if(list.getBoundingClientRect().right > window.innerWidth - 8) wrap.classList.add('flip');
       (list.querySelector('[aria-selected="true"]') || list.firstChild).focus(); } });
   btn.addEventListener('keydown', e => { if(['ArrowDown','Enter',' '].includes(e.key)){ e.preventDefault(); btn.click(); } });
-  list.addEventListener('click', e => { e.stopPropagation(); const li = e.target.closest('.cs-opt'); if(li) choose(li.dataset.v, btn); });
+  list.addEventListener('click', e => { e.stopPropagation(); e.preventDefault(); /* no label re-click */ const li = e.target.closest('.cs-opt'); if(li) choose(li.dataset.v, btn); });
   list.addEventListener('keydown', e => { const items = [...list.children], k = items.indexOf(document.activeElement);
     if(e.key === 'ArrowDown'){ e.preventDefault(); (items[k+1] || items[0]).focus(); }
     else if(e.key === 'ArrowUp'){ e.preventDefault(); (items[k-1] || items[items.length-1]).focus(); }
@@ -527,7 +527,7 @@ selects.forEach(sel => {
     else if(e.key === 'Escape'){ closeCS(); btn.focus(); } });
 });
 document.querySelectorAll('.hp-field, .sb-field').forEach(f => f.addEventListener('click', e => {
-  if(!e.target.closest('.cs-btn') && !e.target.closest('.cs-list')){ e.preventDefault(); f.querySelector('.cs-btn').click(); } }));
+  if(!e.target.closest('.cs-btn') && !e.target.closest('.cs-list')){ e.preventDefault(); e.stopPropagation(); f.querySelector('.cs-btn').click(); } }));
 function syncPickers(){
   selects.forEach(sel => { const c = sel._cs; sel.value = selIdx; c.btn.textContent = sel.selectedOptions[0].text;
     c.list.innerHTML = BOOKABLE.map(x => { const i = DEPARTURES.indexOf(x);
@@ -557,5 +557,6 @@ renderStatic();
 renderDeparture();
 </script>
 <script src="/js/nav.js?v=20261013"></script>
+<script src="/js/waitlist.js"></script>
 </body>
 </html>

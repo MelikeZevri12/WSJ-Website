@@ -35,3 +35,9 @@ body .hero .hero-featured{margin-top:26px;}
   body .hero .hero-cta > .btn{flex:1 1 auto;justify-content:center;padding-left:16px;padding-right:16px;}
   body .hero .hero-featured{margin-top:20px;}
 }
+
+/* Departure / year / session pickers in the hero: the same 56px height as the
+   hero buttons (label on top, date below; the whole box is the tap target) */
+body .hero .hp-field{min-height:56px;padding:6px 14px;justify-content:center;gap:1px;}
+body .hero .hp-label{font-size:12.5px;line-height:1.2;}
+body .hero .hp-field .cs-btn, body .hero .hp-field select{min-height:0;line-height:1.4;}

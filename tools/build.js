@@ -10,8 +10,9 @@ const ROOT = path.join(__dirname, '..');
 const OUT = process.argv[2];
 if (!OUT) { console.error('usage: node tools/build.js <outputFolder>'); process.exit(1); }
 
-// stays on this PC: admin dashboard, local test server, design mockups, build tools, logs
-const SKIP = new Set(['.git', '.github', 'admin.html', 'server.js', 'templates', 'partials', 'tools', 'deploy.cmd',
+// stays on this PC: local test server, design mockups, build tools, logs
+// (the admin dashboard IS uploaded: trips.worldschoolingjourneys.com/admin.html, behind the staff login)
+const SKIP = new Set(['.git', '.github', 'server.js', 'templates', 'partials', 'tools', 'deploy.cmd',
   'desktop.ini', '.gitignore', '.gitattributes', '.htaccess', 'node_modules', 'README.md']);
 
 // Links to our own .css/.js files get ?v=<fingerprint of the file>, so a

@@ -99,9 +99,14 @@
     <div class="dep-picker mini-picker"><span class="mp-label">Prices for:</span><select class="dep-select" aria-label="Choose your departure"></select></div>
     <div class="cost-card">
       <div class="trav-row">
-        <span class="calc-row-label" style="margin:0;">Travelers</span>
-        <span class="stepper"><button type="button" id="travMinus" aria-label="Fewer travelers">−</button><span id="travCount">4</span><button type="button" id="travPlus" aria-label="More travelers">+</button></span>
+        <span class="calc-row-label" style="margin:0;">Travelers (age 4+)</span>
+        <span class="stepper"><button type="button" id="travMinus" aria-label="Fewer travelers">−</button><span id="travCount">2</span><button type="button" id="travPlus" aria-label="More travelers">+</button></span>
         <span style="font-size:13px;color:var(--muted);" id="perPersonLabel"></span>
+      </div>
+      <div class="trav-row">
+        <span class="calc-row-label" style="margin:0;">Kids 3 and under</span>
+        <span class="stepper"><button type="button" id="infMinus" aria-label="Fewer kids 3 and under">−</button><span id="infCount">0</span><button type="button" id="infPlus" aria-label="More kids 3 and under">+</button></span>
+        <span style="font-size:13px;color:var(--muted);" id="infLabel"></span>
       </div>
       <div class="price-summary">
         <div class="total">
@@ -186,7 +191,7 @@ const TRIP = {
   eyebrow: 'Worldschooling Group Adventure · For Homeschool Families',
   badges: ['Pyramids of Giza', 'Nile Cruise', 'Petra', 'Wadi Rum Desert'],
   destination: 'Cairo, the Nile, Petra & Wadi Rum',
-  minAge: 'All ages · under 3: $999',
+  minAge: 'All ages · 3 and under: $999',
   groupSize: null,
   mode: 'fixed',
   theme: 'desert',
@@ -226,10 +231,11 @@ const TRIP = {
     'La Maison Petra':            {where:'Petra', type:'Hotel'},
   },
   food: { notes: [] },
-  included: ['Scheduled group activities and daily experiences', 'An English-speaking tour leader, plus an Egyptologist guide for the temple visits', 'A like-minded group of worldschooling families, plus a WhatsApp group before and during the trip', '10 hotel nights, 1 night on the sleeper train and 3 nights on the Nile cruise', 'Air-conditioned transportation throughout, the sleeper train from Cairo to Aswan, and flights from Luxor to Cairo and Cairo to Amman', 'Listed activities and entrance fees', 'Meals listed in the itinerary: 14 breakfasts, 4 lunches and 10 dinners'],
-  notIncluded: ['International flights to and from North America', 'Arrival and departure transfers', 'Airport taxes and required visas', 'Late hotel check-outs', 'Meals and drinks not listed in the itinerary, and alcoholic drinks with included meals', 'Tips for leaders, guides and drivers', 'Optional activities and personal expenses', 'Travel insurance (required for all participants)'],
+  included: ['Scheduled group activities and daily experiences', 'An English-speaking tour leader, plus an Egyptologist guide for the temple visits', 'A like-minded group of worldschooling families', 'A WhatsApp group to get to know each other before and during the trip', '10 hotel nights, 1 night on the sleeper train and 3 nights on the Nile cruise', 'Air-conditioned transportation throughout, the sleeper train from Cairo to Aswan, and flights from Luxor to Cairo and Cairo to Amman', 'Listed activities and entrance fees', 'Meals listed in the itinerary: 14 breakfasts, 4 lunches and 10 dinners'],
+  notIncluded: ['International flights', 'Arrival and departure transfers', 'Airport taxes and required visas', 'Late hotel check-outs', 'Meals and drinks not listed in the itinerary, and alcoholic drinks with included meals', 'Tips for leaders, guides and drivers', 'Optional activities and personal expenses', 'Travel insurance, required for all participants (we recommend <a href="https://www.notion.so/Travel-Insurance-Guide-Faye-vs-SafetyWing-3334ff0a052380f5abedc5605a762ddc?source=copy_link" target="_blank" rel="noopener">SafetyWing or Faye</a>)'],
   policy: {
-    currency: '$', deposit: 500, depositUnit: 'per person',
+    currency: '$', infantPrice: 999,   // kids 3 and under, per child (a departure can set its own infantPrice)
+    deposit: 500, depositUnit: 'per person',
     nonRefundableDays: 150, finalPaymentDays: 120,
     lines: [['Cancellations', 'Cancelling 100–120 days before travel incurs an 80% cancellation fee. Cancelling 100 days or less before travel incurs a 100% fee. No-shows count as a cancellation.'],
             ['Booking after the final payment date', 'The full balance is due as soon as we share your quote. The deposit alone doesn’t secure your spots; they’re confirmed once the full payment is received.']],
@@ -313,7 +319,7 @@ const STATUS = {open:'Spots open', few:'Few spots left', soldout:'Sold Out'};
 const ROSTER_MIN_FAMILIES = 3;
 const BOOKABLE = DEPARTURES.filter(d => d.status !== 'past');
 let selIdx = DEPARTURES.indexOf(BOOKABLE.find(d => d.status !== 'soldout') || BOOKABLE[0]);
-let travelers = 4;
+let travelers = 2, infants = 0;   // infants = kids 3 and under
 const dep = () => DEPARTURES[selIdx];
 
 // ---------- itinerary (trip-level, same for every departure) ----------
@@ -371,7 +377,7 @@ function renderStatic(){
   document.getElementById('inclNo').innerHTML = TRIP.notIncluded.map(i => `<li>${i}</li>`).join('');
 
   // shared FAQ (same on every trip) + this trip's own
-  const FAQ_LIST = [{"q": "How do we book?", "a": "Please click the 'Book Now' button right below this section. Here you will be taken to our checkout page to pay the deposit. The deposit reserves your spot.<br><br>You can find our contact information at the bottom of this page if you need help."}, {"q": "Is there an educational component to this trip?", "a": "Every single travel experience is educational. On this trip we will not be sitting in classrooms, or looking at textbooks. We will be exploring, immersing, learning from doing. We will be sharing all the knowledge about the area that we have collected over the years. We will be encouraging kids and adults to break out of their shell and step a little out of their comfort zone and remember what it's like to be a wild child. This might not be in your local school's curriculum but it will be transformational in another way. We hope that you will leave inspired, full of wonder and with your soul well rested."}, {"q": "Do you facilitate group communication?", "a": "Yes, all the families will be added to a WhatsApp group to get to know each other before the trip and discuss the itinerary. We will also use WhatsApp to communicate during the trip."}, {"q": "How do I know if we get along with the other families?", "a": "I think that's a question you need to ask yourself. Most families get along really well if they actually participate in the group and are open to new friends.<br><br>During our past trips, introverts have enjoyed sporadic company of other introverts, while their kids were able to be social and extroverts had fun with the whole group. No matter what you will have the perfect experience for you. The more you put into it the more you will get out of it. Be yourself, be authentic, and make time to connect with others. You'll be so happy you did!"}, {"q": "What is the minimum age for this trip?", "a": "There is no minimum age. Kids under 3 travel for $999."}, {"q": "What's the cancellation policy?", "a": "__POLICY__"}, {"q": "Can you tell me more about your mission and vision?", "a": "Read this post about our mission and vision: <a href=\"#\">POST</a>"}];   // word for word from the live page
+  const FAQ_LIST = [{"q": "How do we book?", "a": "Please click the 'Book Now' button right below this section. Here you will be taken to our checkout page to pay the deposit. The deposit reserves your spot.<br><br>You can find our contact information at the bottom of this page if you need help."}, {"q": "Is there an educational component to this trip?", "a": "Every single travel experience is educational. On this trip we will not be sitting in classrooms, or looking at textbooks. We will be exploring, immersing, learning from doing. We will be sharing all the knowledge about the area that we have collected over the years. We will be encouraging kids and adults to break out of their shell and step a little out of their comfort zone and remember what it's like to be a wild child. This might not be in your local school's curriculum but it will be transformational in another way. We hope that you will leave inspired, full of wonder and with your soul well rested."}, {"q": "Do you facilitate group communication?", "a": "Yes, all the families will be added to a WhatsApp group to get to know each other before the trip and discuss the itinerary. We will also use WhatsApp to communicate during the trip."}, {"q": "How do I know if we get along with the other families?", "a": "I think that's a question you need to ask yourself. Most families get along really well if they actually participate in the group and are open to new friends.<br><br>During our past trips, introverts have enjoyed sporadic company of other introverts, while their kids were able to be social and extroverts had fun with the whole group. No matter what you will have the perfect experience for you. The more you put into it the more you will get out of it. Be yourself, be authentic, and make time to connect with others. You'll be so happy you did!"}, {"q": "What is the minimum age for this trip?", "a": "There is no minimum age. Kids 3 and under travel for $999."}, {"q": "What's the cancellation policy?", "a": "__POLICY__"}, {"q": "Can you tell me more about your mission and vision?", "a": "Read this post about our mission and vision: <a href=\"#\">POST</a>"}];   // word for word from the live page
   document.getElementById('faqBody').innerHTML = FAQ_LIST.map((f, i) =>
     `<details class="faq-item" ${i === 0 ? 'open' : ''}><summary>${f.q}</summary><div class="faq-a">${f.a === '__POLICY__' ? '<div class="faq-policy"></div>' : '<div class="faq-text">' + f.a.replace('__TWO_SESSIONS__', '<span class=\"faq-two\"></span>') + '</div>'}</div></details>`).join('');
 }
@@ -449,19 +455,23 @@ function renderDeparture(){
 function renderCost(){
   const d = dep(), P = TRIP.policy, start = D(d.start);
   const finalPay = addDays(start, -P.finalPaymentDays);
+  const infPrice = d.infantPrice || P.infantPrice, people = travelers + infants;
+  const total = d.price * travelers + infPrice * infants;
   document.getElementById('travCount').textContent = travelers;
-  document.getElementById('perPersonLabel').textContent = `${money(d.price)} per person · kids under 3 travel for $999`;
-  document.getElementById('costTotal').textContent = money(d.price * travelers);
-  document.getElementById('costSub').textContent = `${travelers} travelers × ${money(d.price)} · ${range(d)}`;
+  document.getElementById('infCount').textContent = infants;
+  document.getElementById('perPersonLabel').textContent = `${money(d.price)} per person`;
+  document.getElementById('infLabel').textContent = `${money(infPrice)} per child`;
+  document.getElementById('costTotal').textContent = money(total);
+  document.getElementById('costSub').textContent = `${travelers} × ${money(d.price)}${infants ? ` + ${infants} × ${money(infPrice)} (3 and under)` : ''} · ${range(d)}`;
   const late = finalPay < today;
   document.getElementById('paySteps').innerHTML = [
-    ['Today', late ? money(d.price * travelers) : money(P.deposit * travelers), late ? 'full balance' : 'deposit'],
-    ['By ' + fmtD(finalPay), late ? '—' : money((d.price - P.deposit) * travelers), late ? 'already passed' : 'remaining balance'],
-    ['Total', money(d.price * travelers), 'for your family'],
+    ['Today', late ? money(total) : money(P.deposit * people), late ? 'full balance' : 'deposit'],
+    ['By ' + fmtD(finalPay), late ? '—' : money(total - P.deposit * people), late ? 'already passed' : 'remaining balance'],
+    ['Total', money(total), 'for your family'],
   ].map(([k, v, s]) => `<div class="pay-step">${k}<strong>${v}</strong>${s}</div>`).join('');
   const ln = document.getElementById('lateNote');
   ln.style.display = late ? '' : 'none';
-  ln.textContent = late ? `The final payment date for this departure (${fmtD(finalPay)}) has passed, so the full balance is due when we send your quote. Spots are confirmed once it’s paid.` : '';
+  ln.textContent = late ? 'Full balance is due at the time of booking.' : '';
   document.getElementById('sbPrice').innerHTML = `<span>${range(d)}</span>${money(d.price)} / person`;
 }
 
@@ -495,7 +505,7 @@ selects.forEach(sel => {
       if(list.getBoundingClientRect().right > window.innerWidth - 8) wrap.classList.add('flip');
       (list.querySelector('[aria-selected="true"]') || list.firstChild).focus(); } });
   btn.addEventListener('keydown', e => { if(['ArrowDown','Enter',' '].includes(e.key)){ e.preventDefault(); btn.click(); } });
-  list.addEventListener('click', e => { e.stopPropagation(); const li = e.target.closest('.cs-opt'); if(li) choose(li.dataset.v, btn); });
+  list.addEventListener('click', e => { e.stopPropagation(); e.preventDefault(); /* no label re-click */ const li = e.target.closest('.cs-opt'); if(li) choose(li.dataset.v, btn); });
   list.addEventListener('keydown', e => { const items = [...list.children], k = items.indexOf(document.activeElement);
     if(e.key === 'ArrowDown'){ e.preventDefault(); (items[k+1] || items[0]).focus(); }
     else if(e.key === 'ArrowUp'){ e.preventDefault(); (items[k-1] || items[items.length-1]).focus(); }
@@ -503,7 +513,7 @@ selects.forEach(sel => {
     else if(e.key === 'Escape'){ closeCS(); btn.focus(); } });
 });
 document.querySelectorAll('.hp-field, .sb-field').forEach(f => f.addEventListener('click', e => {
-  if(!e.target.closest('.cs-btn') && !e.target.closest('.cs-list')){ e.preventDefault(); f.querySelector('.cs-btn').click(); } }));
+  if(!e.target.closest('.cs-btn') && !e.target.closest('.cs-list')){ e.preventDefault(); e.stopPropagation(); f.querySelector('.cs-btn').click(); } }));
 function syncPickers(){
   selects.forEach(sel => { const c = sel._cs; sel.value = selIdx; c.btn.textContent = sel.selectedOptions[0].text;
     c.list.innerHTML = BOOKABLE.map(x => { const i = DEPARTURES.indexOf(x);
@@ -513,6 +523,8 @@ function choose(i, focusBack){ selIdx = +i; closeCS(); renderDeparture(); writeU
 document.addEventListener('click', closeCS);
 document.getElementById('travMinus').addEventListener('click', () => { travelers = Math.max(1, travelers - 1); renderCost(); });
 document.getElementById('travPlus').addEventListener('click', () => { travelers = Math.min(12, travelers + 1); renderCost(); });
+document.getElementById('infMinus').addEventListener('click', () => { infants = Math.max(0, infants - 1); renderCost(); });
+document.getElementById('infPlus').addEventListener('click', () => { infants = Math.min(6, infants + 1); renderCost(); });
 
 // shareable link: ?departure=2027-03
 function writeUrl(){ try{ history.replaceState(null, '', location.pathname + '?departure=' + dep().start.slice(0,7) + location.hash); }catch(e){} }
@@ -533,5 +545,6 @@ renderStatic();
 renderDeparture();
 </script>
 <script src="/js/nav.js?v=20261013"></script>
+<script src="/js/waitlist.js"></script>
 </body>
 </html>

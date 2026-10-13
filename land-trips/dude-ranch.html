@@ -364,8 +364,8 @@ const TRIP = {
     ],
     extra: '<div><h4>Special diets</h4><p>Not everyone can eat like ranch hands, so let the ranch know well in advance about special diets and they’ll do their best to accommodate. Vegetarian options are available.</p><p style="color:var(--muted);font-size:13px;">The John Wayne Saloon has a full bar with beer, wine and liquor. Drinks from the bar aren’t included.</p></div>',
   },
-  included: ['Your cabin or suite for the week, with a private bathroom, fresh linens and toiletries', 'Breakfast, lunch and dinner every day, plus coffee, tea, juice and fresh fruit', 'Your own horse for the week, with riding instruction from the wranglers and rides tailored to your level', 'Cattle work: herding skills, cow soccer, team penning and a real cattle drive', 'Barrel racing, roping, archery, trap shooting, guided hikes, swimming and river tubing', 'Fishing and fly fishing on the Little Laramie River, with rods, reels, flies and limited waders', 'Hayrides, boot branding, campfire games, saloon games, the hot tub, playground and horseshoes', 'Hands-on learning all week: horse care, ranch life, Western traditions, nature and outdoor skills', 'The whole ranch to our group, and a WhatsApp group to get to know each other before and during the trip'],
-  notIncluded: ['Flights to Wyoming or Colorado', 'Rental cars, gas and any transportation to and from the ranch', 'Hotel stays before or after the trip', 'Meals before check-in or after check-out', 'Hard liquor and extra drinks from the bar', 'Fishing license for anyone 14 or older', 'Ranch store purchases, souvenirs and other personal charges at the ranch', '15% service charge and 8.3% tax, paid to the ranch at checkout', '3% processing fee on credit card payments', 'Travel insurance (required for all participants) and medical expenses'],
+  included: ['Your cabin or suite for the week, with a private bathroom, fresh linens and toiletries', 'Breakfast, lunch and dinner every day, plus coffee, tea, juice and fresh fruit', 'Your own horse for the week, with riding instruction from the wranglers and rides tailored to your level', 'Cattle work: herding skills, cow soccer, team penning and a real cattle drive', 'Barrel racing, roping, archery, trap shooting, guided hikes, swimming and river tubing', 'Fishing and fly fishing on the Little Laramie River, with rods, reels, flies and limited waders', 'Hayrides, boot branding, campfire games, saloon games, the hot tub, playground and horseshoes', 'Hands-on learning all week: horse care, ranch life, Western traditions, nature and outdoor skills', 'The whole ranch to our group', 'A WhatsApp group to get to know each other before and during the trip'],
+  notIncluded: ['Flights to Wyoming or Colorado', 'Rental cars, gas and any transportation to and from the ranch', 'Hotel stays before or after the trip', 'Meals before check-in or after check-out', 'Hard liquor and extra drinks from the bar', 'Fishing license for anyone 14 or older', 'Ranch store purchases, souvenirs and other personal charges at the ranch', '15% service charge and 8.3% tax, paid to the ranch at checkout', '3% processing fee on credit card payments', 'Travel insurance, required for all participants (we recommend <a href="https://www.notion.so/Travel-Insurance-Guide-Faye-vs-SafetyWing-3334ff0a052380f5abedc5605a762ddc?source=copy_link" target="_blank" rel="noopener">SafetyWing or Faye</a>), and medical expenses'],
   // per person, from the live 2027 page
   pricing: { firstTwo: 3400, adult: 3200, kid6: 3200, kid35: 3400, single: 3200, serviceRate: 0.15, taxRate: 0.083, cardFee: 0.03 },
   policy: { currency: '$', depositRate: 0.30, finalPaymentDays: 120 },
@@ -458,7 +458,7 @@ const YEARS = Object.keys(SEASONS).map(Number).sort();
 const yearPast = y => SEASONS[y].sessions.every(s => s.status === 'past');
 const firstOpenYear = YEARS.find(y => !yearPast(y)) || YEARS[YEARS.length - 1];
 let sel = {year: firstOpenYear, from: 1, to: 1};
-let fam = {adults: 2, k6: 2, k35: 0, halfBoard: false};
+let fam = {adults: 2, k6: 0, k35: 0, halfBoard: false};
 const isInterest = () => !!SEASONS[sel.year].interest;
 const dateText = () => SEASONS[sel.year].dateLabel || span(selStart(), selEnd());
 const sessionsOf = s => SEASONS[s.year].sessions.filter(x => x.n >= s.from && x.n <= s.to);
@@ -633,7 +633,7 @@ function renderCost(){
   ].map(([a, v, s]) => `<div class="pay-step">${a}<strong>${v}</strong>${s}</div>`).join('');
   const ln = document.getElementById('lateNote');
   ln.style.display = late ? '' : 'none';
-  ln.textContent = late ? `The full payment date (${fmtD(finalPay)}) has passed, so the full stay is due when you book.` : '';
+  ln.textContent = late ? 'Full balance is due at the time of booking.' : '';
   document.getElementById('sbPrice').innerHTML = `<span>${dateText()}</span>From ${money(minFamilyPrice())} / person`;
 }
 
@@ -654,7 +654,7 @@ function renderPolicy(){
     ['If one family member cancels', 'The same fees apply to their portion, even if the rest of the family keeps the cabin.'],
     ['Fees on your final bill', 'A 15% service charge and 8.3% state and county tax. Credit card payments carry a 3% processing fee; personal checks, Visa, MasterCard, American Express and Discover are accepted.'],
     ['Check-in / check-out', '3:00 pm / 10:00 am'],
-    ['Travel insurance', 'Required for all participants. Travel insurance may cover certain unexpected circumstances that prevent you from attending, subject to the terms, conditions, exclusions and limits of the policy you buy. Participants are responsible for getting and keeping their own coverage. Every Avenue Travel LLC is not the insurer and does not provide insurance advice. Two options many travelers use: <a href="https://jo.my/travelinsurance">SafetyWing</a> and <a href="https://withfaye.pxf.io/aNOqzj">Faye</a>. Every Avenue Travel LLC may receive a referral fee if you buy through these links.'],
+    ['Travel insurance', 'Required for all participants. Travel insurance may cover certain unexpected circumstances that prevent you from attending, subject to the terms, conditions, exclusions and limits of the policy you buy. Participants are responsible for getting and keeping their own coverage. Every Avenue Travel LLC is not the insurer and does not provide insurance advice. Two options many travelers use: <a href="https://jo.my/travelinsurance" target="_blank" rel="noopener">SafetyWing</a> and <a href="https://withfaye.pxf.io/aNOqzj" target="_blank" rel="noopener">Faye</a>. Every Avenue Travel LLC may receive a referral fee if you buy through these links.'],
   ].map(([k, v]) => `<p><strong>${k}:</strong> ${v}</p>`).join('');
   document.querySelectorAll('.faq-policy').forEach(el => el.innerHTML = document.getElementById('payPolicy').innerHTML);
   document.getElementById('legalBody').innerHTML =
@@ -710,7 +710,7 @@ selects.forEach(sel_ => {
     else if(e.key === 'Escape'){ closeCS(); btn.focus(); } });
 });
 document.querySelectorAll('.hp-field').forEach(f => f.addEventListener('click', e => {
-  if(!e.target.closest('.cs-btn') && !e.target.closest('.cs-list')){ e.preventDefault(); f.querySelector('.cs-btn').click(); } }));
+  if(!e.target.closest('.cs-btn') && !e.target.closest('.cs-list')){ e.preventDefault(); e.stopPropagation(); f.querySelector('.cs-btn').click(); } }));
 function syncPickers(){
   selects.forEach(s => { const P = PICKERS[s._kind], opts = P.opts();
     const isOn = o => P.multi ? o.checked : o.v === P.value();
@@ -765,5 +765,6 @@ renderStatic();
 renderSelection();
 </script>
 <script src="/js/nav.js?v=20261013"></script>
+<script src="/js/waitlist.js"></script>
 </body>
 </html>

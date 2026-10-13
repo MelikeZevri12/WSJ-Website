@@ -115,7 +115,7 @@
     <div class="cost-card">
       <div class="trav-row">
         <span class="calc-row-label" style="margin:0;">Travelers</span>
-        <span class="stepper"><button type="button" id="travMinus" aria-label="Fewer travelers">−</button><span id="travCount">4</span><button type="button" id="travPlus" aria-label="More travelers">+</button></span>
+        <span class="stepper"><button type="button" id="travMinus" aria-label="Fewer travelers">−</button><span id="travCount">2</span><button type="button" id="travPlus" aria-label="More travelers">+</button></span>
         <span style="font-size:13px;color:var(--muted);" id="perPersonLabel"></span>
       </div>
       <div class="price-summary">
@@ -249,14 +249,14 @@ const TRIP = {
   },
   food: { notes: [] },
   included: ['Accommodation as specified in the itinerary: 2 nights at Casa Opuntia, 2 nights at Hotel Fiesta and 3 nights at Hotel Albemarle', 'Transfers as specified in the itinerary, including the Lobito bus from Baltra Airport to the Itabaca Canal and the canal ferry', 'Island-hopping flight from Isabela to Baltra', 'Activities according to the itinerary, with a local naturalist guide (English & Spanish speaking)', 'Snorkeling equipment: snorkel, mask, fins and life vest', 'Meals as described in the itinerary', 'Entrance fees as described in the itinerary', '24/7 assistance in English, Spanish and Dutch', 'Company insurance: SGR Guarantee Fund and Dutch Calamity Fund coverage'],
-  notIncluded: ['International flights to and from Ecuador, and any additional domestic flights', 'Galápagos National Park entrance fee ($200 per adult / $100 per child) and Transit Control Card ($20 per person)', 'Small local charges like the Isabela entry fee ($10), Puerto Ayora pier fee ($1) and water taxis ($1 per ride)', 'Extra food, drinks and alcoholic beverages not mentioned in the itinerary', 'Activities and excursions not listed in the itinerary', 'Optional tips for the guide', 'Visa fees (if applicable)', 'Travel insurance (required for all participants), and personal travel and health insurance'],
+  notIncluded: ['International flights to and from Ecuador, and any additional domestic flights', 'Galápagos National Park entrance fee ($200 per adult / $100 per child) and Transit Control Card ($20 per person)', 'Small local charges like the Isabela entry fee ($10), Puerto Ayora pier fee ($1) and water taxis ($1 per ride)', 'Extra food, drinks and alcoholic beverages not mentioned in the itinerary', 'Activities and excursions not listed in the itinerary', 'Optional tips for the guide', 'Visa fees (if applicable)', 'Travel insurance, required for all participants (we recommend <a href="https://www.notion.so/Travel-Insurance-Guide-Faye-vs-SafetyWing-3334ff0a052380f5abedc5605a762ddc?source=copy_link" target="_blank" rel="noopener">SafetyWing or Faye</a>), and personal travel and health insurance'],
   policy: {
     currency: '$', deposit: 1000, depositUnit: 'per person',
-    nonRefundableDays: 150, finalPaymentDays: 120,
-    lines: [['Refunds on the balance', 'More than 120 days before departure: 100% refundable. 91–120 days before: 50% refundable. 61–90 days before: 25% refundable. 30 days or fewer: non-refundable.'],
+    depositNonRefundable: true,   // non-refundable from the day you book (no "becomes non-refundable" date)
+    finalPaymentDays: 120,
+    lines: [['Refunds on the remaining balance', '100–120 days before departure: 50% refundable. 90–100 days before: 30% refundable. Less than 90 days before: non-refundable.'],
             ['Missed payments', 'If the final payment isn’t received within two weeks of the due date, your spots are released and the deposit stays non-refundable.'],
-            ['Booking after the final payment date', 'The full balance is due as soon as we share your quote. The deposit alone doesn’t secure your spots; they’re confirmed once the full payment is received.'],
-            ['Can’t travel?', 'You can transfer your booking to another traveler up to 14 days before departure, as long as any supplier fees for the change are covered in full.']],
+            ['Booking after the final payment date', 'The full balance is due as soon as we share your quote. The deposit alone doesn’t secure your spots; they’re confirmed once the full payment is received.']],
   },
   faq: [],
 };
@@ -429,7 +429,7 @@ const STATUS = {open:'Spots open', few:'Few spots left', soldout:'Sold Out'};
 const ROSTER_MIN_FAMILIES = 3;
 const BOOKABLE = DEPARTURES.filter(d => d.status !== 'past');
 let selIdx = DEPARTURES.indexOf(BOOKABLE.find(d => d.status !== 'soldout') || BOOKABLE[0]);
-let travelers = 4;
+let travelers = 2;
 const dep = () => DEPARTURES[selIdx];
 
 // ---------- itinerary (trip-level, same for every departure) ----------
@@ -490,7 +490,7 @@ function renderStatic(){
   document.getElementById('inclNo').innerHTML = TRIP.notIncluded.map(i => `<li>${i}</li>`).join('');
 
   // shared FAQ (same on every trip) + this trip's own
-  const FAQ_LIST = [{"q": "How do we book?", "a": "Please click the 'Book Now' button right below this section. Here you will be taken to our checkout page to pay the deposit. The deposit reserves your spot.<br><br>You can find our contact information at the bottom of this page if you need help."}, {"q": "Is there an educational component to this trip?", "a": "Every single travel experience is educational. On this trip we will not be sitting in classrooms, or looking at textbooks. We will be exploring, immersing, learning from doing. We will be sharing all the knowledge about the area that we have collected over the years. We will be encouraging kids and adults to break out of their shell and step a little out of their comfort zone and remember what it's like to be a wild child. This might not be in your local school's curriculum but it will be transformational in another way. We hope that you will leave inspired, full of wonder and with your soul well rested."}, {"q": "Do you facilitate group communication?", "a": "Yes, all the families will be added to a WhatsApp group to get to know each other before the trip and discuss the itinerary. We will also use WhatsApp to communicate during the trip."}, {"q": "How do I know if we get along with the other families?", "a": "Most families get along really well if they actually participate in the group and are open to new friends.<br><br>During our past trips, introverts have enjoyed sporadic company of other introverts, while their kids were able to be social and extroverts had fun with the whole group. No matter what you will have the perfect experience for you. The more you put into it the more you will get out of it. Be yourself, be authentic, and make time to connect with others. You'll be so happy you did!<br><br>Find out what others said about our groups: <a href=\"https://www.facebook.com/groups/everyavenuetravel/permalink/2949427278540663/\"><strong>POST</strong></a>"}, {"q": "What is the minimum age for this trip?", "a": "Minimum age is 3 years old."}, {"q": "What's the cancellation policy?", "a": "__POLICY__"}, {"q": "What are some of the extra expenses should I anticipate?", "a": "While most accommodations, guided activities, and meals are included in your tour, there are a few additional costs to plan for during your Galápagos adventure. These include mandatory park fees—such as the Galápagos National Park entrance fee ($200 per adult / $100 per child) and the Transit Control Card ($20 per person)—as well as small local charges, like the Isabela Island entry fee ($10), Puerto Ayora pier fee ($1), and water taxis ($1 per ride).<br><br>If you'd like to rent snorkeling gear or wetsuits for self-guided activities, these are available locally for around $5–$10 per day (cash only). We recommend carrying some small bills in U.S. dollars, as most of these payments are made in person and credit cards are not widely accepted.<br><br>These modest local fees directly support conservation efforts and community infrastructure throughout the Galápagos Islands."}, {"q": "Can you tell me more about your mission and vision?", "a": "Read this post about our mission and vision: <a href=\"https://www.facebook.com/groups/everyavenuetravel/permalink/2836753246474734/\"><strong>POST</strong></a>"}];   // word for word from the live page
+  const FAQ_LIST = [{"q": "How do we book?", "a": "Please click the 'Book Now' button right below this section. Here you will be taken to our checkout page to pay the deposit. The deposit reserves your spot.<br><br>You can find our contact information at the bottom of this page if you need help."}, {"q": "Is there an educational component to this trip?", "a": "Every single travel experience is educational. On this trip we will not be sitting in classrooms, or looking at textbooks. We will be exploring, immersing, learning from doing. We will be sharing all the knowledge about the area that we have collected over the years. We will be encouraging kids and adults to break out of their shell and step a little out of their comfort zone and remember what it's like to be a wild child. This might not be in your local school's curriculum but it will be transformational in another way. We hope that you will leave inspired, full of wonder and with your soul well rested."}, {"q": "Do you facilitate group communication?", "a": "Yes, all the families will be added to a WhatsApp group to get to know each other before the trip and discuss the itinerary. We will also use WhatsApp to communicate during the trip."}, {"q": "How do I know if we get along with the other families?", "a": "Most families get along really well if they actually participate in the group and are open to new friends.<br><br>During our past trips, introverts have enjoyed sporadic company of other introverts, while their kids were able to be social and extroverts had fun with the whole group. No matter what you will have the perfect experience for you. The more you put into it the more you will get out of it. Be yourself, be authentic, and make time to connect with others. You'll be so happy you did!<br><br>Find out what others said about our groups: <a href=\"https://www.facebook.com/groups/everyavenuetravel/permalink/2949427278540663/\" target=\"_blank\" rel=\"noopener\"><strong>POST</strong></a>"}, {"q": "What is the minimum age for this trip?", "a": "Minimum age is 3 years old."}, {"q": "What's the cancellation policy?", "a": "__POLICY__"}, {"q": "What are some of the extra expenses should I anticipate?", "a": "While most accommodations, guided activities, and meals are included in your tour, there are a few additional costs to plan for during your Galápagos adventure. These include mandatory park fees—such as the Galápagos National Park entrance fee ($200 per adult / $100 per child) and the Transit Control Card ($20 per person)—as well as small local charges, like the Isabela Island entry fee ($10), Puerto Ayora pier fee ($1), and water taxis ($1 per ride).<br><br>If you'd like to rent snorkeling gear or wetsuits for self-guided activities, these are available locally for around $5–$10 per day (cash only). We recommend carrying some small bills in U.S. dollars, as most of these payments are made in person and credit cards are not widely accepted.<br><br>These modest local fees directly support conservation efforts and community infrastructure throughout the Galápagos Islands."}, {"q": "Can you tell me more about your mission and vision?", "a": "Read this post about our mission and vision: <a href=\"https://www.facebook.com/groups/everyavenuetravel/permalink/2836753246474734/\" target=\"_blank\" rel=\"noopener\"><strong>POST</strong></a>"}];   // word for word from the live page
   document.getElementById('faqBody').innerHTML = FAQ_LIST.map((f, i) =>
     `<details class="faq-item" ${i === 0 ? 'open' : ''}><summary>${f.q}</summary><div class="faq-a">${f.a === '__POLICY__' ? '<div class="faq-policy"></div>' : '<div class="faq-text">' + f.a.replace('__TWO_SESSIONS__', '<span class=\"faq-two\"></span>') + '</div>'}</div></details>`).join('');
 }
@@ -547,8 +547,8 @@ function renderDeparture(){
   const P = TRIP.policy, start = D(d.start);
   const nonRef = addDays(start, -P.nonRefundableDays), finalPay = addDays(start, -P.finalPaymentDays);
   document.getElementById('payPolicy').innerHTML = [
-    ['Deposit', `${money(P.deposit)} ${P.depositUnit}, paid when you book. It reserves your spot.`],
-    ['Deposit becomes non-refundable', `${fmtD(nonRef)} (${P.nonRefundableDays} days before departure)`],
+    ['Deposit', `${money(P.deposit)} ${P.depositUnit}, paid when you book. It reserves your spot${P.depositNonRefundable ? ' and is non-refundable' : ''}.`],
+    ...(P.nonRefundableDays ? [['Deposit becomes non-refundable', `${fmtD(nonRef)} (${P.nonRefundableDays} days before departure)`]] : []),
     ['Final payment due', `${fmtD(finalPay)} (${P.finalPaymentDays} days before departure)`],
     ...P.lines,
     ['Travel insurance', 'Required for all participants. Travel insurance may cover certain unexpected circumstances that prevent you from attending, subject to the terms, conditions, exclusions and limits of the policy you buy. Participants are responsible for getting and keeping their own coverage. Every Avenue Travel LLC is not the insurer and does not provide insurance advice.'],
@@ -580,7 +580,7 @@ function renderCost(){
   ].map(([k, v, s]) => `<div class="pay-step">${k}<strong>${v}</strong>${s}</div>`).join('');
   const ln = document.getElementById('lateNote');
   ln.style.display = late ? '' : 'none';
-  ln.textContent = late ? `The final payment date for this departure (${fmtD(finalPay)}) has passed, so the full balance is due when we send your quote. Spots are confirmed once it’s paid.` : '';
+  ln.textContent = late ? 'Full balance is due at the time of booking.' : '';
   document.getElementById('sbPrice').innerHTML = `<span>${range(d)}</span>${money(d.price)} / person`;
 }
 
@@ -614,7 +614,7 @@ selects.forEach(sel => {
       if(list.getBoundingClientRect().right > window.innerWidth - 8) wrap.classList.add('flip');
       (list.querySelector('[aria-selected="true"]') || list.firstChild).focus(); } });
   btn.addEventListener('keydown', e => { if(['ArrowDown','Enter',' '].includes(e.key)){ e.preventDefault(); btn.click(); } });
-  list.addEventListener('click', e => { e.stopPropagation(); const li = e.target.closest('.cs-opt'); if(li) choose(li.dataset.v, btn); });
+  list.addEventListener('click', e => { e.stopPropagation(); e.preventDefault(); /* no label re-click */ const li = e.target.closest('.cs-opt'); if(li) choose(li.dataset.v, btn); });
   list.addEventListener('keydown', e => { const items = [...list.children], k = items.indexOf(document.activeElement);
     if(e.key === 'ArrowDown'){ e.preventDefault(); (items[k+1] || items[0]).focus(); }
     else if(e.key === 'ArrowUp'){ e.preventDefault(); (items[k-1] || items[items.length-1]).focus(); }
@@ -622,7 +622,7 @@ selects.forEach(sel => {
     else if(e.key === 'Escape'){ closeCS(); btn.focus(); } });
 });
 document.querySelectorAll('.hp-field, .sb-field').forEach(f => f.addEventListener('click', e => {
-  if(!e.target.closest('.cs-btn') && !e.target.closest('.cs-list')){ e.preventDefault(); f.querySelector('.cs-btn').click(); } }));
+  if(!e.target.closest('.cs-btn') && !e.target.closest('.cs-list')){ e.preventDefault(); e.stopPropagation(); f.querySelector('.cs-btn').click(); } }));
 function syncPickers(){
   selects.forEach(sel => { const c = sel._cs; sel.value = selIdx; c.btn.textContent = sel.selectedOptions[0].text;
     c.list.innerHTML = BOOKABLE.map(x => { const i = DEPARTURES.indexOf(x);
@@ -652,5 +652,6 @@ renderStatic();
 renderDeparture();
 </script>
 <script src="/js/nav.js?v=20261013"></script>
+<script src="/js/waitlist.js"></script>
 </body>
 </html>

@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
 <title>Cruises — Admin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -488,6 +489,7 @@
     <button type="button" class="admin-subnav-btn" data-tab="ports">Ports</button>
     <button type="button" class="admin-subnav-btn" data-tab="ships">Ships</button>
     <button type="button" class="admin-subnav-btn" data-tab="backtoback">Back to Backs</button>
+    <button type="button" class="admin-subnav-btn" data-tab="waitlist">Waitlist</button>
   </div>
 
   <section class="admin-tab-panel" id="tab-cruises">
@@ -646,6 +648,49 @@
         <h3>No Back to Backs yet</h3>
         <p>Group two or more cruises that sail back to back so their pages can advertise each other.</p>
         <button type="button" class="btn btn-primary" id="backToBackEmptyAddBtn">+ Add Back to Back</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="admin-tab-panel" id="tab-waitlist" hidden>
+    <div class="admin-header">
+      <div>
+        <h1>Waitlist</h1>
+        <p>Families who signed up on a land trip page to be notified when it's released (or when a sold-out departure opens up). Tick them off once you've let them know.</p>
+      </div>
+      <button type="button" class="btn btn-primary" id="waitlistCsvBtn">Download CSV</button>
+    </div>
+
+    <div class="cruises-toolbar">
+      <div class="admin-field" style="flex:0 1 320px;margin-bottom:0;">
+        <select id="waitlistTripFilter"><option value="">All trips</option></select>
+      </div>
+      <div class="admin-field" style="flex:1;max-width:360px;margin-bottom:0;">
+        <input id="waitlistSearchInput" type="text" placeholder="Search by name or email...">
+      </div>
+      <label class="attention-toggle" style="flex-shrink:0;">
+        <input type="checkbox" id="waitlistHideNotified">
+        Hide notified
+      </label>
+    </div>
+
+    <div class="admin-card">
+      <table class="cruise-table" id="waitlistTable">
+        <thead>
+          <tr>
+            <th>Signed up</th>
+            <th>Trip</th>
+            <th>Departure</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Notified</th>
+          </tr>
+        </thead>
+        <tbody id="waitlistTableBody"><!-- populated by loadWaitlist() --></tbody>
+      </table>
+      <div class="empty-state" id="waitlistEmptyState" style="display:none;">
+        <h3>No waitlist signups yet</h3>
+        <p>When someone clicks "Join the Waitlist" on a land trip page and leaves their name and email, they'll show up here.</p>
       </div>
     </div>
   </section>
@@ -3430,7 +3475,80 @@ $('deleteBackToBackBtn').addEventListener('click', async () => {
 // created as a side effect of saving a cruise, so the Ports tab's data can
 // go stale the moment a cruise is saved without a page reload - refetch on
 // switch is what keeps it honest.
-const TAB_LOADERS = { cruises: loadCruises, ports: loadPorts, ships: loadShipsTab, backtoback: loadBackToBacks };
+const TAB_LOADERS = { cruises: loadCruises, ports: loadPorts, ships: loadShipsTab, backtoback: loadBackToBacks, waitlist: loadWaitlist };
+
+// ---- Waitlist (land trip "be the first to be notified" signups) ----
+// Saved by the land trip pages' waitlist popup (frontend/js/waitlist.js);
+// the only thing staff change here is the Notified tick.
+let waitlistRows = [];
+async function loadWaitlist() {
+  const body = $('waitlistTableBody');
+  body.innerHTML = '<tr><td colspan="6" style="color:var(--muted);">Loading…</td></tr>';
+  try {
+    const res = await apiFetch(`${API}/trip-waitlist`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    waitlistRows = await res.json();
+  } catch (err) {
+    if (err.message === 'Unauthorized') return;
+    body.innerHTML = `<tr><td colspan="6" style="color:#c14a2f;">Couldn't load the waitlist (${escapeHtml(err.message)}).</td></tr>`;
+    return;
+  }
+  const filter = $('waitlistTripFilter'), keep = filter.value;
+  const trips = [...new Map(waitlistRows.map((r) => [r.tripSlug, r.tripName])).entries()].sort((a, b) => a[1].localeCompare(b[1]));
+  filter.innerHTML = '<option value="">All trips</option>' + trips.map(([slug, name]) => {
+    const n = waitlistRows.filter((r) => r.tripSlug === slug).length;
+    return `<option value="${escapeHtml(slug)}">${escapeHtml(name)} (${n})</option>`;
+  }).join('');
+  filter.value = trips.some(([slug]) => slug === keep) ? keep : '';
+  renderWaitlist();
+}
+function visibleWaitlistRows() {
+  const trip = $('waitlistTripFilter').value, q = $('waitlistSearchInput').value.trim().toLowerCase(), hide = $('waitlistHideNotified').checked;
+  return waitlistRows.filter((r) => (!trip || r.tripSlug === trip) && (!hide || !r.notified)
+    && (!q || r.fullName.toLowerCase().includes(q) || r.email.toLowerCase().includes(q)));
+}
+function renderWaitlist() {
+  const rows = visibleWaitlistRows();
+  $('waitlistEmptyState').style.display = waitlistRows.length ? 'none' : '';
+  $('waitlistTable').style.display = waitlistRows.length ? '' : 'none';
+  const fmt = (iso) => new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  $('waitlistTableBody').innerHTML = rows.length ? rows.map((r) => `
+    <tr>
+      <td>${fmt(r.createdAt)}</td>
+      <td><a href="https://trips.worldschoolingjourneys.com/land-trips/${encodeURIComponent(r.tripSlug)}.html" target="_blank" rel="noopener">${escapeHtml(r.tripName)}</a></td>
+      <td>${escapeHtml(r.detail) || '—'}</td>
+      <td>${escapeHtml(r.fullName)}</td>
+      <td><a href="mailto:${escapeHtml(r.email)}">${escapeHtml(r.email)}</a></td>
+      <td><label class="attention-toggle"><input type="checkbox" data-waitlist-id="${escapeHtml(r.id)}" ${r.notified ? 'checked' : ''}> ${r.notified ? 'Yes' : 'No'}</label></td>
+    </tr>`).join('') : '<tr><td colspan="6" style="color:var(--muted);">No signups match.</td></tr>';
+}
+['waitlistTripFilter', 'waitlistHideNotified'].forEach((id) => $(id).addEventListener('change', renderWaitlist));
+$('waitlistSearchInput').addEventListener('input', renderWaitlist);
+$('waitlistTableBody').addEventListener('change', async (e) => {
+  const box = e.target.closest('input[data-waitlist-id]'); if (!box) return;
+  const row = waitlistRows.find((r) => r.id === box.dataset.waitlistId); if (!row) return;
+  box.disabled = true;
+  try {
+    const res = await apiFetch(`${API}/trip-waitlist/${encodeURIComponent(row.id)}`, {
+      method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ notified: box.checked }),
+    });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    row.notified = box.checked;
+  } catch (err) {
+    box.checked = row.notified;
+    if (err.message !== 'Unauthorized') alert(`Couldn't save that change (${err.message}).`);
+  }
+  renderWaitlist();
+});
+$('waitlistCsvBtn').addEventListener('click', () => {
+  const cell = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const lines = [['Signed up', 'Trip', 'Departure', 'Name', 'Email', 'Notified'].map(cell).join(',')]
+    .concat(visibleWaitlistRows().map((r) => [r.createdAt.slice(0, 10), r.tripName, r.detail, r.fullName, r.email, r.notified ? 'yes' : 'no'].map(cell).join(',')));
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([lines.join('\r\n')], { type: 'text/csv' }));
+  a.download = `waitlist-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click(); URL.revokeObjectURL(a.href);
+});
 document.querySelectorAll('.admin-subnav-btn').forEach((btn) => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.admin-subnav-btn').forEach((b) => b.classList.remove('active'));

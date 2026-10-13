@@ -53,4 +53,4 @@ fingerprint of that file (`?v=...`), so browsers fetch the new version as soon a
 
 - `tools/`: `build.js` (used by `deploy`) and `includes.js` (fills in the markers). Not uploaded.
 - `templates/`: design mockups. Not uploaded.
-- `admin.html`: the admin dashboard. Stays on this PC, never uploaded.
+- `admin.html`: the admin dashboard. Uploaded with the site (trips.worldschoolingjourneys.com/admin.html); everything in it needs the staff password.

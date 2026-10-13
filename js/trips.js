@@ -3,7 +3,7 @@
 // Land trips are static for now (no backend): for each year with an available
 // departure (not past / sold out; waitlist counts), the dates, price and tag a
 // card shows when that year is picked. Prices are in the trip's own terms:
-// per "person" ($) or per "family" (€, the Austria retreats). "param" is how
+// per "person" (the Austria retreats show their cheapest family price split between 2, in €). "param" is how
 // the trip page takes a preselected year in its link (?year= / ?departure=).
 // When a trip page's dates or prices change, update its entry here.
 //
@@ -19,19 +19,19 @@
     {"slug":"morocco","param":"departure","title":"12-day Worldschooling Morocco Family Journey","nights":11,"regions":["Africa"],"per":"person","photo":"/images/land-trips/morocco.webp","photoLabel":"Morocco", "years": {
       2026: {"dates":"Nov 1–12, 2026","sortDate":"2026-11-01","price":"$2,200","tag":"Few spots left","departures":1},
       2027: {"dates":"Mar 19–30 & Nov 1–12, 2027","sortDate":"2027-03-19","price":"$2,300","departures":2} } },
-    {"slug":"austria-winter","param":"year","title":"14-day Worldschooling Austrian Skiing & Christmas Markets Retreat","nights":14,"regions":["Europe"],"per":"family","photo":"/images/land-trips/austria-winter.webp","photoLabel":"Austrian Alps in winter", "years": {
-      2026: {"dates":"Dec 4–18, 2026","sortDate":"2026-12-04","price":"€2,700","tag":"Few spots left","departures":1},
-      2027: {"dates":"Dec 5–19, 2027","sortDate":"2027-12-05","price":"€3,010","departures":1} } },
+    {"slug":"austria-winter","param":"year","title":"14-day Worldschooling Austrian Skiing & Christmas Markets Retreat","nights":14,"regions":["Europe"],"per":"person","photo":"/images/land-trips/austria-winter.webp","photoLabel":"Austrian Alps in winter", "years": {
+      2026: {"dates":"Dec 4–18, 2026","sortDate":"2026-12-04","price":"€1,350","tag":"Few spots left","departures":1},
+      2027: {"dates":"Dec 5–19, 2027","sortDate":"2027-12-05","price":"€1,505","departures":1} } },
     {"slug":"egypt-jordan","param":"departure","title":"15-day Worldschooling Egypt & Jordan Adventure","nights":14,"regions":["Africa","Middle East"],"per":"person","photo":"/images/land-trips/egypt-jordan.webp","photoLabel":"Egypt & Jordan", "years": {
       2027: {"dates":"Jan 25 – Feb 8, 2027","sortDate":"2027-01-25","price":"$2,999","departures":1} } },
-    {"slug":"austria-wellness","param":"year","title":"21-day Worldschooling Austria Health & Wellness Retreat","nights":21,"regions":["Europe"],"per":"family","photo":"/images/land-trips/austria-wellness.webp","photoLabel":"Bad Gastein wellness", "years": {
-      2027: {"dates":"May 4–25, 2027","sortDate":"2027-05-04","price":"€3,604","departures":1} } },
-    {"slug":"austria-summer","param":"year","title":"14-day Worldschooling Austrian Mountain Summer Retreat","nights":14,"regions":["Europe"],"per":"family","photo":"/images/land-trips/austria-summer.webp","photoLabel":"Austrian Alps in summer", "years": {
-      2027: {"dates":"May 30 – Jul 11, 2027 · 3 sessions","sortDate":"2027-05-30","price":"€3,704","departures":3} } },
+    {"slug":"austria-wellness","param":"year","title":"21-day Worldschooling Austria Health & Wellness Retreat","nights":21,"regions":["Europe"],"per":"person","photo":"/images/land-trips/austria-wellness.webp","photoLabel":"Bad Gastein wellness", "years": {
+      2027: {"dates":"May 4–25, 2027","sortDate":"2027-05-04","price":"€1,802","departures":1} } },
+    {"slug":"austria-summer","param":"year","title":"14-day Worldschooling Austrian Mountain Summer Retreat","nights":14,"regions":["Europe"],"per":"person","photo":"/images/land-trips/austria-summer.webp","photoLabel":"Austrian Alps in summer", "years": {
+      2027: {"dates":"May 30 – Jul 11, 2027 · 3 sessions","sortDate":"2027-05-30","price":"€1,852","departures":3} } },
     {"slug":"galapagos","param":"departure","title":"8-day Worldschooling Galápagos Island Hopping Tour","nights":7,"regions":["South America"],"per":"person","photo":"/images/land-trips/galapagos.webp","photoLabel":"Galápagos", "years": {
       2027: {"dates":"Aug 8–15, 2027","sortDate":"2027-08-08","price":"$3,735","departures":1} } },
-    {"slug":"austria-fall","param":"year","title":"14-day Worldschooling Austrian Fall Mountain Retreat","nights":14,"regions":["Europe"],"per":"family","photo":"/images/land-trips/austria-fall.webp","photoLabel":"Austrian Alps in fall", "years": {
-      2027: {"dates":"Sep 5–19, 2027","sortDate":"2027-09-05","price":"€3,480","departures":1} } },
+    {"slug":"austria-fall","param":"year","title":"14-day Worldschooling Austrian Fall Mountain Retreat","nights":14,"regions":["Europe"],"per":"person","photo":"/images/land-trips/austria-fall.webp","photoLabel":"Austrian Alps in fall", "years": {
+      2027: {"dates":"Sep 11–25, 2027","sortDate":"2027-09-11","price":"€1,740","departures":1} } },
     {"slug":"dude-ranch","param":"year","title":"7-day Worldschooling Horseback Riding Dude Ranch Experience","nights":6,"regions":["North America"],"per":"person","photo":"/images/land-trips/dude-ranch.webp","photoLabel":"VeeBar Guest Ranch", "years": {
       2027: {"dates":"Sep 5–11, 2027","sortDate":"2027-09-05","price":"$3,200","departures":1},
       2028: {"dates":"September 2028","sortDate":"2028-09-03","price":null,"tag":"Waitlist open","departures":1} } },

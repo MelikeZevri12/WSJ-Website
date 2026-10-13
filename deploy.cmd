@@ -2,8 +2,9 @@
 rem Uploads the website to the VPS (trips.worldschoolingjourneys.com).
 rem Run from Command Prompt:  deploy
 rem First builds the finished pages (shared navbar/footer filled in, see
-rem tools\build.js), leaving out the admin dashboard (stays on this PC), the
-rem local test server, design mockups, build tools and git/log files.
+rem tools\build.js), leaving out the local test server, design mockups,
+rem build tools and git/log files. The admin dashboard is uploaded too
+rem (admin.html, behind the staff login).
 cd /d "%~dp0"
 set ARCHIVE=%TEMP%\wsj-site.tgz
 set BUILD=%TEMP%\wsj-site-build
