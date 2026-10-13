@@ -174,3 +174,13 @@ body.wl-open{overflow:hidden;}
 .wl-submit, .wl-close-btn{width:100%;justify-content:center;margin-top:4px;}
 .wl-done[hidden], .wl-form[hidden]{display:none;}
 @media (max-width:480px){ .wl-modal{padding:30px 20px 22px;} .wl-modal h3{font-size:21px;} }
+
+/* ITINERARY PHOTOS: the photo fills the space next to the text instead of
+   setting the card's height, so every day card stays the size of its text
+   (at least 180px tall on desktop) whatever the photo's shape. */
+.stop-photo{position:relative;overflow:hidden;}
+.stop-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+#itinBody .stop-photo{min-height:180px;}
+@media (max-width:760px){ #itinBody .stop-photo{min-height:0;aspect-ratio:16/9;} }
+/* the trip photo next to the overview text fills its box */
+.overview-media img{width:100%;height:100%;object-fit:cover;display:block;}
