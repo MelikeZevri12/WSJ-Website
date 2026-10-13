@@ -1,0 +1,55 @@
+/* footer.css: the footer on every page. The markup is in partials/footer.html.
+   Edit here and every page follows. */
+
+/* the footer's own container, same width on every page */
+.nf-wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+/* text basics set here, so a page's own styles can't change the footer */
+.site-footer.nf{text-align:left;font-size:16px;line-height:1.6;}
+.site-footer.nf::before{content:none;display:none;}
+/* FOOTER */
+.site-footer{background:var(--dark);color:#c7ccd1;padding:52px 0 0;}
+.footer-links{display:flex;flex-direction:column;gap:10px;}
+.footer-links a{font-size:13.5px;color:#c7ccd1;text-decoration:none;}
+.footer-links a:hover{color:var(--white);}
+/* ===== New footer ===== */
+.site-footer.nf{background:var(--dark);color:#c7ccd1;padding:0;}
+.nf-grid{display:grid;grid-template-columns:1.4fr 1.4fr 1.1fr .9fr;gap:36px;padding:56px 24px 44px;}
+.nf-logo{display:inline-flex;align-items:baseline;gap:8px;font-size:30px;margin-bottom:14px;}
+.nf-blurb{font-size:14px;line-height:1.6;color:#c3cad1;max-width:300px;margin:0 0 18px;}
+.nf-featured{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#aab4be;}
+.nf-featured a{font-family:'Libre Baskerville',serif;font-size:15px;font-weight:700;letter-spacing:0;text-transform:none;color:var(--white);text-decoration:none;}
+.nf-featured .nf-dot{color:var(--gold);font-size:10px;}
+.nf-featured{flex-direction:column;align-items:flex-start;gap:12px;}
+.nf-featured .press-logo{background:var(--white);opacity:.82;}
+.nf-featured a.press-logo:hover{opacity:1;background:var(--gold);}
+.nf-label{font-family:'Libre Baskerville',serif;font-weight:700;font-size:16px;color:var(--white);margin:6px 0 18px;}
+.nf-social{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+.fs-icon{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--white);
+  border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.04);transition:background .15s ease, border-color .15s ease, transform .15s ease;}
+.fs-icon svg{width:19px;height:19px;}
+.fs-icon:hover{background:var(--green-dark);border-color:var(--green-dark);transform:translateY(-2px);}
+.nf-group{font-size:14px;font-weight:700;color:var(--green);text-decoration:none;}
+.nf-group:hover{color:var(--white);}
+.nf-contact{display:flex;align-items:center;gap:12px;font-size:14.5px;font-weight:600;color:#c7ccd1;text-decoration:none;margin-bottom:14px;}
+.nf-contact:hover{color:var(--white);}
+.nf-ci{width:36px;height:36px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb, var(--green) 18%, transparent);color:var(--green);}
+.nf-ci svg{width:18px;height:18px;}
+.nf-links{display:block;}
+.nf-links a{display:block;font-size:14.5px;margin:0 0 12px;padding:0;color:#c7ccd1;text-decoration:none;}
+.nf-links a:hover{color:var(--white);}
+.nf-bottom{border-top:1px solid rgba(255,255,255,0.12);background:rgba(0,0,0,0.18);}
+.nf-bottom-in{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 24px;padding:18px 24px;font-size:13px;color:#c3cad1;}
+.nf-bottom .mark{color:var(--gold);margin-right:4px;}
+.nf-legal{font-size:12px;color:#aab4be;}
+@media (max-width:900px){
+  .nf-grid{grid-template-columns:1fr 1fr;gap:34px;}
+}
+@media (max-width:560px){
+  .nf-grid{grid-template-columns:1fr;padding:44px 24px 32px;}
+  .nf-bottom-in{flex-direction:column;align-items:flex-start;}
+}
+.nf-blurb{font-size:16px;}
+.nf-featured{font-size:14px;}
+.nf-label{font-size:18px;}
+.nf-group, .nf-contact, .nf-links a{font-size:16px;}
+.nf-bottom-in, .nf-legal{font-size:14px;}

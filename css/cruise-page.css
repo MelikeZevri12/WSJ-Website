@@ -1,0 +1,62 @@
+/* cruise-page.css: shared by cruise and journey pages.
+   Loaded before each page's own <style>; a page can override anything here.
+   Edit here and every page in the family follows. */
+
+/* SOLD OUT STATE */
+/* Hero greyed out like a sold-out cabin tile: photo goes grayscale, accents go neutral, corner ribbon on top */
+.hero.is-soldout{overflow:hidden;}
+.hero.is-soldout::before{
+  content:"";position:absolute;inset:0;z-index:0;
+  background:inherit;background-blend-mode:normal, normal;
+  filter:grayscale(1) brightness(.9);
+  }
+.hero.is-soldout > .wrap{position:relative;z-index:1;}
+
+.hero.is-soldout .eyebrow{color:#b9bec4;}
+.hero.is-soldout h1{color:rgba(255,253,247,.78);}
+.hero.is-soldout .badge{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.28);color:#c3c8cd;}
+.hero-ribbon{
+  position:absolute;top:44px;right:-70px;z-index:2;transform:rotate(45deg);
+  background:var(--sunset-1);color:var(--white);font-family:'Titillium Web',sans-serif;
+  font-size:17px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+  padding:9px 84px;box-shadow:0 2px 8px rgba(0,0,0,0.35);
+  }
+@media (max-width:600px){
+  .hero-ribbon{top:22px;right:-52px;font-size:12.5px;padding:6px 58px;}
+}
+.soldout-pill{display:inline-block;background:var(--sunset-1);color:var(--white);border-radius:4px;padding:2px 12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.sticky-bar .sb-price.sb-soldout{color:var(--sunset-1);text-transform:uppercase;letter-spacing:.04em;}
+/* OTHER DEPARTURES CAROUSEL (replaces Pricing when a cruise is sold out or has set sail) */
+.dep-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-bottom:22px;}
+.dep-tabs{display:flex;flex-wrap:wrap;gap:10px;}
+.dep-tab{border-radius:4px;border:1.5px solid var(--sky-line);background:var(--white);font-family:'Titillium Web',sans-serif;font-weight:700;color:var(--dark);cursor:pointer;transition:background .15s ease, color .15s ease, border-color .15s ease}
+.dep-tab:hover{border-color:var(--dark);}
+.dep-tab.active{background:var(--dark);border-color:var(--dark);color:var(--white);}
+.dep-right{display:flex;align-items:center;gap:18px;}
+.dep-all{font-weight:700;color:var(--green-dark);text-decoration:none;white-space:nowrap}
+.dep-all:hover{color:var(--green-hover);}
+.dep-note{color:var(--muted);margin:-8px 0 16px}
+.dep-track{
+  display:flex;gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;
+  padding:4px 2px 10px;-ms-overflow-style:none;scrollbar-width:none;
+  }
+.dep-track::-webkit-scrollbar{display:none;}
+.dep-card{position:relative;flex:0 0 calc((100% - 36px) / 3);scroll-snap-align:start;border-radius:4px;overflow:hidden;text-decoration:none;color:var(--white);background:linear-gradient(150deg, #1f3a4c 0%, #3f7686 55%, #5b876c 100%);box-shadow:0 8px 22px rgba(21,34,48,0.16);transition:transform .15s ease, box-shadow .15s ease}
+.dep-card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(21,34,48,0.24);}
+.dep-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.dep-card:after{content:"";position:absolute;inset:0}
+
+
+
+.dep-empty{color:var(--muted);padding:20px 0}
+@media (min-width:761px) and (max-width:1000px){
+  .dep-card{flex:0 0 calc((100% - 18px) / 2);}
+}
+@media (max-width:760px){
+  .dep-card{flex:0 0 84%;}
+  .dep-right{width:100%;justify-content:space-between;}
+}
+.overview-media img{width:100%;height:100%;object-fit:cover;display:block;}
+.fact{padding:0 18px;border-left:1px solid var(--line-on-dark);min-width:0;}
+.fact .value{font-weight:700;margin-top:3px;color:var(--white);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.photo-slot.has-image{padding:0;border-style:solid;}

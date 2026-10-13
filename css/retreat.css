@@ -1,0 +1,130 @@
+/* retreat.css: shared by the session-based retreats (the Austria retreats and Dude Ranch).
+   Loaded before each page's own <style>; a page can override anything here.
+   Edit here and every page in the family follows. */
+
+/* ===================== AUSTRIA: year + session switch ===================== */
+.hero-cta.dep-switch .hp-field.hp-year{min-width:150px;}
+.hero-cta.dep-switch .hp-field.hp-sess{min-width:280px;}
+@media (max-width:640px){
+  .hero-cta.dep-switch .hp-field.hp-year, .hero-cta.dep-switch .hp-field.hp-sess{min-width:0;}
+}
+.sess-picker{margin:-14px 0 26px;background:var(--white);border:1.5px solid color-mix(in srgb, var(--gold) 55%, var(--white));border-radius:4px;padding:14px;}
+.sess-picker .mini-picker{margin:0 0 12px;padding:0;border:none;background:none;}
+.sess-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.sess-card{position:relative;text-align:left;cursor:pointer;font-family:'Titillium Web',sans-serif;color:var(--dark);
+  background:var(--white);border:2px solid var(--line);border-radius:4px;padding:10px 14px 10px 38px;transition:border-color .15s ease, background .15s ease;}
+.sess-card:hover{border-color:var(--green);}
+.sess-card:before{content:"";position:absolute;left:12px;top:13px;width:16px;height:16px;border-radius:4px;border:2px solid var(--line);background:var(--white);}
+.sess-card.on{border-color:var(--green-dark);background:var(--green-tint);}
+.sess-card.on:before{background:var(--green-dark);border-color:var(--green-dark);}
+.sess-card.on:after{content:"";position:absolute;left:17px;top:16px;width:5px;height:9px;border:solid var(--white);border-width:0 2px 2px 0;transform:rotate(45deg);}
+.sess-card .sc-name{display:block;font-weight:700;font-size:14.5px;}
+.sess-card .sc-dates{display:block;font-size:13px;color:var(--muted);}
+.sess-card .sc-status{display:block;font-size:11.5px;font-weight:700;margin-top:2px;color:var(--green-dark);}
+.sess-card .sc-status.soldout{color:var(--sunset-1);}
+.sess-card .sc-status.past{color:var(--muted);}
+.sess-hint{color:var(--muted);margin:10px 0 0}
+@media (max-width:640px){
+  .sess-strip{grid-template-columns:1fr;}
+}
+/* one block per selected session in the itinerary */
+.sess-block{border:1px solid var(--line);border-radius:4px;background:var(--white);margin-bottom:14px;}
+.sess-block > summary{list-style:none;cursor:pointer;padding:14px 18px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;}
+.sess-block > summary::-webkit-details-marker{display:none;}
+.sess-block > summary .sb-n{font-family:'Libre Baskerville',serif;font-weight:700;font-size:17px;}
+.sess-block > summary .sb-d{font-size:13.5px;color:var(--muted);font-weight:600;}
+.sess-block > summary:after{content:"+";margin-left:auto;font-weight:700;font-size:20px;color:var(--green-dark);line-height:1;}
+.sess-block[open] > summary:after{content:"–";}
+.sess-block .timeline{padding:4px 18px 18px;}
+.stop-meta .free{color:var(--green-dark);}
+.more-wrap{margin-top:26px;}
+.more-wrap h4{font-size:15px;margin:0 0 10px;}
+.chip-list{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px;}
+.chip-list li{background:var(--white);border:1px solid var(--line);border-radius:4px;padding:6px 13px;font-weight:600}
+.valley-card{display:grid;grid-template-columns:1fr 1.5fr;gap:0;background:var(--white);border:1px solid var(--line);border-radius:4px;overflow:hidden;margin-bottom:22px;}
+.valley-card:empty{display:none;}
+.valley-card .photo-slot{border:none;border-radius:0;min-height:220px;}
+.valley-card .vc-body{padding:20px 24px;}
+.valley-card h4{margin:0 0 8px}
+.valley-card p{font-size:14px;color:#3c4048;margin:0 0 8px;}
+.valley-card p.vc-small{font-size:12.5px;color:var(--muted);margin:0;}
+@media (max-width:760px){
+  .valley-card{grid-template-columns:1fr;}
+  .valley-card .photo-slot{min-height:0;aspect-ratio:16/9;}
+}
+.room-note{font-size:12.5px;color:var(--muted);margin:-12px 0 16px;}
+/* where you'll stay */
+.room-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.room-card{position:relative;background:var(--white);border:1px solid var(--line);border-radius:4px;overflow:hidden;transition:border-color .15s ease, box-shadow .15s ease;}
+.room-card .photo-slot{aspect-ratio:16/10;border:none;border-radius:0;}
+.room-card .rc-body{padding:14px 18px 18px;}
+.room-card h4{margin:0 0 2px}
+.room-card .rc-for{font-size:12.5px;color:var(--muted);margin-bottom:10px;}
+.room-card ul{margin:0;padding-left:18px;font-size:13.5px;color:#3c4048;}
+.room-card ul li{margin-bottom:3px;}
+.room-card.mine{border:2px solid var(--green-dark);box-shadow:0 0 0 3px color-mix(in srgb, var(--green-dark) 15%, transparent);}
+.room-card .rc-mine{display:none;position:absolute;top:10px;right:10px;z-index:1;font-size:11px;font-weight:700;border-radius:4px;padding:3px 10px;background:var(--green-dark);color:var(--white);}
+.room-card.mine .rc-mine{display:block;}
+.amen-wrap{margin-top:26px;background:var(--white);border:1px solid var(--line);border-radius:4px;padding:18px 20px;}
+.amen-wrap h4{font-size:15px;margin:0 0 10px;}
+.amen-list{list-style:none;margin:0;padding:0;columns:3;column-gap:24px;font-size:13.5px;}
+.amen-list li{break-inside:avoid;padding:3px 0 3px 18px;position:relative;}
+.amen-list li:before{content:"✓";position:absolute;left:0;color:var(--green-dark);font-weight:800;}
+@media (max-width:860px){
+  .room-grid{grid-template-columns:1fr;}
+  .amen-list{columns:2;}
+}
+@media (max-width:520px){
+  .amen-list{columns:1;}
+}
+/* what you'll eat */
+.meal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.meal-card{background:var(--white);border:1px solid var(--line);border-radius:4px;overflow:hidden;}
+.meal-card .photo-slot{aspect-ratio:16/9;border:none;border-radius:0;}
+.meal-card .mc-body{padding:14px 18px 18px;}
+.meal-card h4{margin:0 0 4px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.meal-card .mc-tag{font-family:'Titillium Web',sans-serif;font-size:11px;font-weight:700;border-radius:4px;padding:2px 9px;background:var(--green-tint);color:var(--green-dark);}
+.meal-card .mc-tag.off{background:var(--paper);color:var(--muted);}
+.meal-card p{color:#3c4048;margin:0}
+.hb-card{margin-top:20px;display:grid;grid-template-columns:1.4fr 1fr;gap:20px;align-items:center;background:var(--white);border:1.5px solid color-mix(in srgb, var(--gold) 55%, var(--white));border-radius:4px;padding:20px 22px;}
+.hb-card h4{font-size:17px;margin:0 0 6px;}
+.hb-card p{font-size:14px;margin:0 0 6px;color:#3c4048;}
+.hb-prices{display:flex;gap:10px;flex-wrap:wrap;}
+.hb-price{flex:1 1 90px;background:var(--paper);border-radius:4px;padding:10px 12px;font-size:12px;color:var(--muted);}
+.hb-price strong{display:block;font-size:18px;color:var(--dark);}
+@media (max-width:860px){
+  .meal-grid{grid-template-columns:1fr;}
+  .hb-card{grid-template-columns:1fr;}
+}
+/* checkbox rows in the sessions dropdown */
+.cs-opt.cs-check{gap:10px;}
+.cs-opt .cb{flex:0 0 16px;width:16px;height:16px;border-radius:4px;border:2px solid var(--line);background:var(--white);position:relative;}
+.cs-opt.cs-check[aria-selected="true"]{font-weight:600;}
+.cs-opt.cs-check[aria-selected="true"] .cb{background:var(--green-dark);border-color:var(--green-dark);}
+.cs-opt.cs-check[aria-selected="true"] .cb:after{content:"";position:absolute;left:3.5px;top:0.5px;width:4px;height:8px;border:solid var(--white);border-width:0 2px 2px 0;transform:rotate(45deg);}
+.cs-hint{list-style:none;font-size:11.5px;color:var(--muted);padding:6px 10px 4px;border-top:1px solid var(--line);margin-top:4px;white-space:normal;}
+/* calculator */
+.fam-row{display:flex;flex-wrap:wrap;gap:14px 26px;align-items:center;margin-bottom:18px;}
+.fam-row .fr-item{display:flex;align-items:center;gap:10px;}
+.room-line{color:var(--muted);margin:-6px 0 18px}
+.room-line strong{color:var(--dark);}
+.addon-row{display:flex;align-items:flex-start;gap:10px;margin:0 0 18px;font-size:14px;cursor:pointer;}
+.addon-row input{margin-top:4px;accent-color:var(--green-dark);}
+.addon-row small{display:block;color:var(--muted);font-size:12.5px;}
+.cost-lines{color:var(--muted);margin:12px 0 0}
+.cost-lines div{display:flex;justify-content:space-between;gap:12px;padding:4px 0;border-bottom:1px dashed var(--line);}
+.cost-lines div:last-child{border-bottom:none;}
+.past-note{margin-top:14px;font-size:13.5px;background:var(--green-tint);border-radius:4px;padding:10px 14px;color:var(--dark);}
+.past-note a{color:var(--green-dark);font-weight:700;}
+/* testimonials */
+.proof-strip-wrap{margin-top:8px;}
+#community .proof-label{color:var(--gold);}
+.roster-full-card:empty{display:none;}
+#bookCta{padding:0;}
+.photo-strip .photo-slot span{font-size:11px;color:var(--muted);padding:0 10px;text-align:center;}
+.photo-strip .photo-slot{background:var(--sky-tint);}
+.rf-sess-row{font-size:13.5px;padding:3px 0;}
+.rf-sess-row strong{color:var(--dark);}
+
+
+

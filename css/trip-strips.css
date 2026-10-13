@@ -1,0 +1,214 @@
+/* trip-strips.css: shared by Home, About, Contact and Stay Updated (trip carousels, Coming Soon, testimonials).
+   Loaded before each page's own <style>; a page can override anything here.
+   Edit here and every page in the family follows. */
+
+/* FACEBOOK COMMUNITY BANNER — community photo collage as background,
+     dark gradient overlay on top so white text stays readable at any point
+     in the image. Capped at 200px tall, same footprint as the old strip. */
+.fb-banner{position:relative;text-align:center;display:flex;align-items:center;justify-content:center;overflow:hidden;color:var(--white);background-image:
+  linear-gradient(transparent, transparent),
+  url('/images/site/facebook-banner-collage-10d9948ffd.jpg');background-size:cover;background-position:center}
+.spotlight-card.style-photo.has-photo{
+  background-image: linear-gradient(180deg, rgba(21,34,48,0.05) 0%, rgba(13,22,32,0.15) 60%), none;
+  background-size:cover;background-position:center 42%;background-repeat:no-repeat;
+  }
+/* line icons in a soft gold ring - same circle language as the footer contact icons */
+.community-icon{flex:0 0 44px;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  color:var(--gold);background:color-mix(in srgb, var(--gold) 12%, transparent);border:1px solid color-mix(in srgb, var(--gold) 45%, transparent);}
+.community-icon svg{width:22px;height:22px;}
+.community-prop{gap:15px;}
+.community-prop h4{margin-top:2px !important;}
+/* TESTIMONIAL CARDS - photo removed, quote is the hero of the card now */
+.proof-chip{padding:22px 24px 20px;border-radius:4px;}
+.proof-chip > div{display:flex;flex-direction:column;height:100%;width:100%;}
+.proof-chip p{line-height:1.55;margin:0 0 16px}
+.proof-chip .who{margin-top:auto;letter-spacing:.06em}
+.proof-label{white-space:nowrap;}
+@media (max-width:560px){
+  .proof-head-row{flex-wrap:wrap;gap:12px;}
+}
+@media (max-width:640px){
+  .fb-banner .btn{line-height:1.35;padding:13px 20px;font-size:15px;white-space:nowrap;}
+}
+.fb-banner .eyebrow{margin-bottom:8px;}
+.fb-banner h2{margin-bottom:20px;}
+/* FEATURE TAGS - information, not actions, so they're a plain ✦ caption line
+     instead of outlined pills that looked clickable */
+.trip-block-copy{max-width:none;}
+.trip-block-copy h2, .trip-block-intro{max-width:680px;}
+.trip-tags{gap:8px 26px;}
+.trip-tag{padding:0;border:none;border-radius:0;background:none;font-size:16px;font-weight:600;color:var(--dark);}
+.trip-tag::before{content:"\2726";color:var(--gold);font-size:13px;margin-right:9px;}
+@media (max-width:640px){
+  .trip-tags{gap:6px 20px;}
+}
+/* YEAR FILTERS - squared buttons (4px), not pills. Outlined when off,
+     solid navy when on, 44px+ tall so they're easy to tap. */
+.trip-filter-row{gap:8px;}
+.trip-filter-btn{min-height:46px;min-width:76px;padding:0 20px;border-radius:4px;border:1.5px solid var(--sky-line);
+  background:var(--white);color:var(--dark);font-size:16px;letter-spacing:.02em;}
+.trip-filter-btn:hover{border-color:var(--dark);}
+.trip-filter-btn.active{background:var(--dark);border-color:var(--dark);color:var(--white);}
+.trip-filter-btn:focus-visible{outline:none;box-shadow:0 0 0 3px color-mix(in srgb, var(--green) 45%, transparent);}
+.trip-block-actions{gap:14px 22px;}
+@media (max-width:640px){
+  .trip-block-actions{width:100%;}
+  .trip-filter-btn{flex:1;min-width:0;}
+  .trip-filter-row{flex:1 1 100%;}
+}
+/* COMMUNITY - cream panel laid on a thin navy, starry frame */
+section.dark-section.night-sky.framed{padding:34px 0 0;}
+/* the quote sits on the navy below the panel, as its own beat */
+.framed .quote-band{background:none;padding:40px 0 44px;}
+.framed .quote-band blockquote{color:var(--white);}
+.framed .quote-band .attribution{color:var(--green-soft);}
+.community-panel{background:var(--white);border-radius:4px;padding:56px 56px 40px;box-shadow:0 18px 40px rgba(0,0,0,0.28);color:var(--dark);}
+.community-panel h2, .community-panel h4{color:var(--dark) !important;}
+.community-panel .section-head{max-width:none;}
+.community-panel .section-head .eyebrow{color:#a8771f !important;}
+.community-panel .community-prop p{color:#4a4f57;}
+.community-panel .community-icon{color:#a8771f;border-color:color-mix(in srgb, var(--gold) 60%, transparent);}
+.community-panel .proof-strip-wrap{border-top-color:var(--line);}
+.community-panel .proof-label{color:var(--dark);}
+.community-panel .proof-arrow-btn{border-color:var(--sky-line);color:var(--dark);}
+.community-panel .proof-arrow-btn:hover{background:var(--paper);border-color:var(--dark);}
+.community-panel .proof-chip{background:var(--paper);border-color:color-mix(in srgb, var(--green) 35%, transparent);}
+@media (max-width:760px){
+  section.dark-section.night-sky.framed{padding:16px 0 0;}
+  .framed .quote-band{padding:32px 12px 36px;}
+  section.dark-section.night-sky.framed > .wrap{padding:0 12px;}
+  .community-panel{padding:36px 20px 28px;}
+}
+/* COMING SOON - heading on cream, big postcards laid across a narrow navy ribbon */
+.coming-soon{background:var(--dark-soft);color:var(--white);padding:40px 0 36px;}
+.coming-soon h3{color:var(--white);margin-bottom:24px;}
+.cs-band{background:none;}
+.cs-row{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px;overflow:visible;padding:0;}
+.cs-band .wrap{max-width:1260px;}
+.cs-postmark-card{width:auto;flex:none;padding:14px;box-shadow:0 14px 30px rgba(0,0,0,0.35);}
+.cs-postmark-photo{aspect-ratio:4/3.6;}
+.cs-postmark-title{font-size:18px;}
+.coming-soon-cta{color:var(--green-soft);margin-top:26px;}
+@media (max-width:900px){
+  .cs-row{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 0 10px;gap:16px;}
+  .cs-postmark-card{flex:0 0 72%;scroll-snap-align:start;}
+}
+/* FACEBOOK BANNER - photos left almost untouched, text on a solid cream card */
+.fb-banner{padding:44px 0 !important;}
+.fb-banner::before{content:'';position:absolute;inset:0;background:rgba(13,22,32,0.12);pointer-events:none;}
+.fb-banner-inner{background:var(--white);border-radius:4px;padding:30px 40px 34px;max-width:600px;box-shadow:0 16px 36px rgba(13,22,32,0.3);}
+.fb-banner .eyebrow{color:#a8771f;}
+.fb-banner h2{color:var(--dark);text-shadow:none;}
+@media (max-width:640px){
+  .fb-banner{padding:36px 0 !important;}
+  .fb-banner-inner{margin:0 16px;padding:26px 20px 28px;}
+}
+/* TRIP CARD DATES - bigger, brighter, sentence case so they read at a glance */
+.spotlight-card.style-photo .spotlight-dates{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;text-transform:none;letter-spacing:.01em;color:#f6e3b4;margin-bottom:6px;text-shadow:0 1px 8px rgba(0,0,0,0.45);}
+.spotlight-dates svg{width:18px;height:18px;flex:none;fill:none;stroke:var(--gold);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.4));}
+@media (min-width:1001px){
+  /* taller trip cards on desktop so more of the photo shows above the text */
+  .spotlight-card.style-photo{aspect-ratio:4/3.7;}
+}
+/* TRIP CARD SHADING - same soft fade as the hero: darkest behind the text,
+     easing to clear, so the top of the photo stays bright */
+.spotlight-card.style-photo::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:linear-gradient(0deg, rgba(13,22,32,0.88) 0%, rgba(13,22,32,0.74) 30%, rgba(13,22,32,0.3) 56%, rgba(13,22,32,0.04) 100%);}
+.spotlight-card.style-photo .sp-overlay{background:none !important;z-index:1;}
+.spotlight-card.style-photo .sp-caption{z-index:1;}
+/* TRIP CARDS - same layout as the live Land Trips page: tall photo card,
+     date, name, then a footer with the starting price and a Learn More button.
+     Kept: the cream dates with the calendar icon, 4px corners, bigger type. */
+.spotlight-card.style-photo.trip-card{display:flex;flex-direction:column;justify-content:flex-end;border-top:3px solid var(--green)}
+.spotlight-card.style-photo.trip-card .sp-overlay{inset:auto}
+.trip-card .cc-price-label{font-weight:700;text-transform:uppercase;color:#d6dadf}
+.trip-card .cc-price{font-family:'Libre Baskerville',serif;font-weight:700;white-space:nowrap}
+.trip-card .cc-price small{font-family:'Titillium Web',sans-serif;font-weight:600;color:#d6dadf}
+.trip-card .cc-more{font-weight:700;color:var(--white);white-space:nowrap;background:var(--green-dark);transition:background .15s}
+.trip-card:hover .cc-more{background:var(--green-hover);}
+.trip-card .cc-tag{position:absolute;top:12px;right:12px;z-index:2;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;background:var(--gold);color:var(--dark);border-radius:4px;padding:4px 10px;}
+.trip-card.has-photo{border-top-color:var(--green);}
+.trip-card .cc-price-label{white-space:nowrap}
+/* soft rounded trip cards, as on the live Land Trips page */
+.spotlight-card.style-photo.trip-card{border-radius:14px;}
+.trip-card .cc-more{border-radius:6px;}
+/* trip grids: 3 per row, same as the live Land Trips page */
+.spotlight-grid{grid-template-columns:repeat(3,1fr) !important;gap:24px !important;}
+.trip-card .cc-foot{flex-wrap:nowrap !important;}
+@media (max-width:980px){
+  .spotlight-grid{grid-template-columns:1fr 1fr !important;}
+}
+@media (max-width:640px){
+  .spotlight-grid{grid-template-columns:1fr !important;gap:18px !important;}
+}
+/* TRIP CARDS - photo stays clear on top; the text sits at the very bottom on
+     a solid navy band, which fades up into the photo with a soft gradient */
+.spotlight-card.style-photo.trip-card::after{background:none !important;}
+.spotlight-card.style-photo.trip-card .sp-overlay{position:relative;z-index:1;background:#111c28 !important}
+.spotlight-card.style-photo.trip-card .sp-overlay::before{content:'';position:absolute;left:0;right:0;bottom:100%;height:110px;pointer-events:none;
+  background:linear-gradient(180deg, rgba(17,28,40,0) 0%, rgba(17,28,40,0.55) 45%, rgba(17,28,40,0.9) 80%, #111c28 100%);}
+.spotlight-card.style-photo.trip-card .spotlight-dates{text-shadow:none;}
+/* more picture: taller cards, photo anchored to the top so the subject sits above the text band */
+.spotlight-card.style-photo.trip-card{aspect-ratio:4/5 !important;}
+.spotlight-card.style-photo.trip-card.has-photo{background-position:center 18% !important;}
+.spotlight-card.style-photo.trip-card{border-left:0;border-right:0;border-bottom:0;}
+@media (max-width:640px){
+  .spotlight-card.style-photo.trip-card{aspect-ratio:4/4.6 !important;min-height:0;}
+}
+/* TRIP CARDS - two stacked zones: the photo on top (fully visible), the text on a
+     navy band below. Only the photo's bottom edge fades into the navy. */
+.spotlight-card.style-photo.trip-card{background:#111c28 !important;}
+.spotlight-card.style-photo.trip-card .sp-photo{position:relative;flex:1 1 auto;min-height:150px;
+  background:linear-gradient(135deg, var(--dark-soft) 0%, var(--blue) 55%, var(--green-dark) 100%);background-size:cover;background-position:center;}
+.spotlight-card.style-photo.trip-card.has-photo .sp-photo{background:none center 40% / cover no-repeat;}
+.spotlight-card.style-photo.trip-card .sp-photo::after{content:'';position:absolute;left:0;right:0;bottom:0;background:linear-gradient(180deg, rgba(17,28,40,0) 0%, rgba(17,28,40,0.6) 60%, #111c28 100%)}
+.spotlight-card.style-photo.trip-card .sp-overlay{flex:none}
+.spotlight-card.style-photo.trip-card .sp-overlay::before{display:none;}
+.spotlight-card.style-photo.trip-card .sp-caption, .spotlight-card.style-photo.trip-card .cc-tag{z-index:2;}
+/* COMPACT TEXT BAND (~1/4 of the card): dates + price share one line,
+     the name sits under them; the whole card is the link, so the button
+     becomes a small arrow after the name */
+.spotlight-card.style-photo.trip-card .sp-overlay{grid-template-columns:1fr auto;align-items:center;column-gap:12px}
+.spotlight-card.style-photo.trip-card .spotlight-dates{grid-area:date}
+.trip-card .cc-foot, .trip-card .cc-foot > div{display:contents;}
+.trip-card .cc-price-label, .trip-card .cc-more{display:none;}
+.trip-card .cc-price{grid-area:price}
+.spotlight-card.style-photo.trip-card .spotlight-title{grid-area:title;-webkit-box-orient:vertical}
+.spotlight-card.style-photo.trip-card .spotlight-title::after{font-family:'Titillium Web',sans-serif;color:var(--green-soft)}
+.spotlight-card.style-photo.trip-card .sp-photo::after{height:34%;}
+/* TEXT BAND AT ~1/3 OF THE CARD: dates, name, then price + Learn More.
+     A fixed share keeps every card's photo the same height. */
+.spotlight-card.style-photo.trip-card .sp-overlay{grid-template-areas:"date date" "title title" "price more";row-gap:6px;align-content:end}
+.spotlight-card.style-photo.trip-card .spotlight-title::after{content:none;}
+.trip-card .cc-price{align-self:center}
+.trip-card .cc-more{grid-area:more;justify-self:end;align-self:center}
+/* BACK TO THE ORIGINAL CARD LAYOUT (date, name, divider, "Starting from"
+     price + Learn More), just tighter spacing and slightly smaller text */
+.spotlight-card.style-photo.trip-card .sp-overlay{display:block;height:auto;min-height:0;padding:0 18px 14px;}
+.spotlight-card.style-photo.trip-card .spotlight-dates{font-size:15px;gap:7px;margin:0 0 3px;}
+.spotlight-card.style-photo.trip-card .spotlight-dates svg{width:16px;height:16px;}
+.spotlight-card.style-photo.trip-card .spotlight-title{display:block;font-size:17.5px;line-height:1.22;margin:0 0 9px;-webkit-line-clamp:unset;overflow:visible;}
+.trip-card .cc-foot{display:flex !important;align-items:center;justify-content:space-between;gap:10px;padding-top:9px;border-top:1px solid rgba(255,255,255,0.22);}
+.trip-card .cc-foot > div{display:block !important;}
+.trip-card .cc-price-label{display:block;font-size:12px;letter-spacing:.06em;margin-bottom:1px;}
+.trip-card .cc-price{font-size:19px;line-height:1.1;color:var(--white);}
+.trip-card .cc-price small{font-size:13px;}
+.trip-card .cc-more{display:inline-block;padding:7px 12px;font-size:14px;margin-left:auto;}
+/* TRIP STRIPS stay sideways carousels on the live site (js/trip-strips.js): 3 cards per view */
+.trip-strip .spotlight-grid{grid-template-columns:none !important;grid-auto-flow:column;grid-auto-columns:calc((100% - 48px) / 3);gap:24px !important;
+  overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:8px 2px 14px;margin:-8px -2px 0;}
+.trip-strip .spotlight-grid::-webkit-scrollbar{display:none;}
+.trip-strip .spotlight-card{scroll-snap-align:start;}
+.strip-arrows{display:flex;gap:8px;}
+.strip-arrows[hidden]{display:none;}
+.strip-arrow{width:46px;height:46px;border-radius:4px;border:1.5px solid var(--sky-line);background:var(--white);color:var(--dark);font-size:22px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0 0 2px;}
+.strip-arrow:hover:not(:disabled){border-color:var(--dark);}
+.strip-arrow:disabled{opacity:.35;cursor:default;}
+.trip-filter-row[hidden]{display:none;}
+@media (max-width:980px){
+  .trip-strip .spotlight-grid{grid-auto-columns:calc((100% - 24px) / 2);}
+}
+@media (max-width:640px){
+  .trip-strip .spotlight-grid{grid-auto-columns:86%;gap:16px !important;}
+  .strip-arrows{display:none;}
+}

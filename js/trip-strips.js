@@ -18,7 +18,7 @@
   // Two stacked zones: the photo on top (fully visible), the dates, name,
   // price and Learn More on a navy band underneath.
   function cardHTML(c){
-    return `<a href="${esc(c.href)}" class="spotlight-card style-photo trip-card${c.photo ? " has-photo" : ""}">` +
+    return `<a href="${esc(c.href)}" target="_blank" rel="noopener" class="spotlight-card style-photo trip-card${c.photo ? " has-photo" : ""}">` +
       `<div class="sp-photo"${c.photo ? ` style="background-image:url('${esc(c.photo)}')"` : ""}></div>` +
       (c.photo ? "" : `<span class="sp-caption">Photo: ${esc(c.photoLabel)}</span>`) +
       (c.tag ? `<span class="cc-tag">${esc(c.tag)}</span>` : "") +

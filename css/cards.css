@@ -1,0 +1,26 @@
+/* SOFT CARD CORNERS
+   Everything that reads as a card gets the trip card's soft 14px corners.
+   Squared on purpose (paper / postmark feel, not listed here): Coming Soon
+   postcards and the policy pages' document boxes. Buttons and form fields
+   keep their own 4px corners. */
+:root{--card-radius:14px;--card-radius-inner:10px;}
+
+/* Cards and panels */
+.update-card, .contact-form, .fb-banner-inner, .community-panel, .proof-chip,
+.tm-card, .story-media, .overview-media, .faq-ask,
+.stop-card, .amenity-group, .amen-wrap, .cabin-tile, .pricing-card, .addon-card, .addon-toggle,
+.leg-card, .seg-bar, .seg-picker, .dep-picker.mini-picker, .sess-picker, .sess-block, .roster-full-card,
+.hl-card, .cost-card, .pay-step, .price-summary, .late-note, .itin-note, .good-know, .imp-card,
+.room-card, .meal-card, .valley-card, .hb-card, .phase, .pkg-wrap, .pkg,
+.ski-area, .ski-card, .ski-ex, .waitlist-card{border-radius:var(--card-radius) !important;}
+
+/* Cards inside cards: a slightly smaller curve so the edges sit parallel */
+.pricing-card .price-summary, .cost-card .price-summary, .cost-card .pay-step, .pricing-card .pay-step,
+.pkg-wrap .pkg, .hb-card .hb-price, .amen-wrap .amenity-group, .sess-picker .sess-block{border-radius:var(--card-radius-inner) !important;}
+
+/* Cabin photo placeholder's dashed outline follows the tile's top corners */
+.cabin-tile .photo-slot.cabin-photo{border-radius:12px 12px 0 0 !important;}
+
+/* Photos sitting on the edge of a card follow its curve */
+.stop-card, .update-card, .tm-card, .story-media, .overview-media, .cabin-tile, .hb-card, .room-card,
+.meal-card, .valley-card, .ski-card, .ski-area, .leg-card, .waitlist-card{overflow:hidden;}

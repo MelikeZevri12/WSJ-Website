@@ -1,0 +1,29 @@
+<!-- The navbar on every page. Pages include it with include nav active="trips";
+     [[trips]] marks the item that is highlighted on that page (home, trips, about, stay, contact).
+     Styles: css/nav.css. Phone menu behaviour: js/nav.js. -->
+<div class="global-nav">
+  <div class="gn-wrap">
+    <a href="/" class="gn-logo">
+      <span class="gn-script">Worldschooling</span><span class="gn-sans">journeys</span>
+    </a>
+    <button type="button" class="gn-toggle" id="gnToggle" aria-label="Open menu" aria-expanded="false" aria-controls="gnLinks"><span></span><span></span><span></span></button>
+    <div class="gn-links" id="gnLinks">
+      <a href="/" class="gn-link[[home]]">Home</a>
+      <div class="gn-dropdown">
+        <a href="#" class="gn-link[[trips]]">Worldschooling Trips</a>
+        <div class="gn-dropdown-menu">
+          <a href="/cruises.html" class="gn-dropdown-item">Group Cruises</a>
+          <a href="/land-trips.html" class="gn-dropdown-item">Land Trips</a>
+        </div>
+      </div>
+      <div class="gn-dropdown">
+        <a href="/about.html" class="gn-link[[about]]">About Us</a>
+        <div class="gn-dropdown-menu">
+          <a href="/faq.html" class="gn-dropdown-item">FAQ</a>
+        </div>
+      </div>
+      <a href="/stay-updated.html" class="gn-link[[stay]]">Stay Updated</a>
+      <a href="/contact.html" class="gn-link[[contact]]">Contact</a>
+    </div>
+  </div>
+</div>

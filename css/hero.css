@@ -1,0 +1,37 @@
+/* ONE HERO FOR EVERY PAGE
+   Loaded after each page's own styles, so these sizes win everywhere.
+   Change the hero here, not in the pages. */
+
+/* Height: set by the content and padding only, never by the screen */
+body .hero, body .faq-hero{min-height:0;padding:52px 0 48px;}
+@media (min-width:1000px){ body .hero{min-height:0;display:block;} }
+
+/* Small gold line above the title */
+body .hero .eyebrow, body .legal-hero .eyebrow{font-size:14px;letter-spacing:.12em;line-height:1.5;margin-bottom:12px;}
+
+/* Title: one size for every page; long trip names wrap evenly */
+body .hero h1, body .faq-hero h1, body .legal-hero h1{font-size:clamp(30px,3.4vw,44px);line-height:1.15;max-width:780px;text-wrap:balance;}
+
+/* Intro sentence */
+body .hero p.lede{font-size:19px;line-height:1.6;max-width:640px;margin-top:14px;}
+
+/* Trip facts under the title (14 Nights, 5 Ports ...) */
+body .hero .badge-row{margin:16px 0 0;gap:8px 22px;}
+body .hero .badge:not(.addon-hero-toggle){font-size:17px;}
+
+/* Buttons and pickers */
+body .hero .hero-cta{margin-top:26px;}
+body .hero .hero-featured{margin-top:26px;}
+
+/* Phones */
+@media (max-width:640px){
+  body .hero, body .faq-hero{padding:32px 0 30px;}
+  body .hero .eyebrow, body .legal-hero .eyebrow{font-size:13px;letter-spacing:.1em;margin-bottom:10px;}
+  body .hero h1, body .faq-hero h1, body .legal-hero h1{font-size:28px;line-height:1.2;}
+  body .hero p.lede{font-size:17px;margin-top:10px;}
+  body .hero .badge-row{margin-top:12px;gap:6px 18px;}
+  body .hero .badge:not(.addon-hero-toggle){font-size:16px;}
+  body .hero .hero-cta{margin-top:20px;gap:10px;}
+  body .hero .hero-cta > .btn{flex:1 1 auto;justify-content:center;padding-left:16px;padding-right:16px;}
+  body .hero .hero-featured{margin-top:20px;}
+}

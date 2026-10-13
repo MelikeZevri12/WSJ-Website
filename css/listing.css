@@ -1,0 +1,353 @@
+/* listing.css: shared by the Group Cruises and Land Trips listing pages.
+   Loaded before each page's own <style>; a page can override anything here.
+   Edit here and every page in the family follows. */
+
+:root{
+  /* brand green — --green-dark is the requested hex #708F53, used for solid
+  buttons and active states. --green is a lighter tint of that same hue, used
+  for borders/tints/subtle accents and the wordmark; --green-hover is darker
+  still, for :hover on those solid elements. */
+  --green:#A5BD8E;
+  --green-dark:#708F53;
+  --green-hover:#2D3A22;
+  /* pulled straight from the badge's own gradient: night-sky navy at the top,
+  teal-blue sea, warm sunset orange and brick-red, gold script, cream patch backing */
+  --dark:#152230;
+  --dark-soft:#1e3040;
+  --blue:#2f7f8a;
+  --blue-tint:color-mix(in srgb, var(--blue) 22%, white);
+  --blue-line:color-mix(in srgb, var(--blue) 48%, white);
+  --green-tint:color-mix(in srgb, var(--green) 14%, white);
+  --sky-tint:color-mix(in srgb, var(--blue) 16%, var(--white));
+  --sky-line:color-mix(in srgb, var(--blue) 42%, var(--white));
+  --green-line:color-mix(in srgb, var(--green) 42%, white);
+  --green-soft:color-mix(in srgb, var(--green) 55%, white);
+  --white:#fffdf7;
+  --paper:#f4f1e9;
+  --line:rgba(21,34,48,0.16);
+  --line-on-dark:rgba(255,255,255,0.2);
+  --muted:#5a5343;
+  --sunset-1:#c14a2f;
+  --sunset-2:#e0893c;
+  --sunset-tint:color-mix(in srgb, var(--sunset-1) 12%, var(--white));
+  --gold:#d9a441;
+  }
+button{font-family:inherit;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+/* HERO */
+.hero{
+  position:relative;
+  background-color:var(--dark);
+  background-image:
+  linear-gradient(transparent, transparent),
+  url('/images/site/hero-group-photo-656b03e1fc.jpg');
+  background-position:center 60%;
+  background-size:cover;
+  background-repeat:no-repeat;
+  background-blend-mode:normal, normal;
+  color:var(--white);
+  padding:56px 0 40px;
+  }
+.hero .wrap{position:relative;}
+.eyebrow{font-family:'Titillium Web',sans-serif;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.13em;margin-bottom:10px}
+.hero h1{color:var(--white);line-height:1.15;max-width:680px}
+.hero p.lede{max-width:640px;color:#d9dbe0;font-size:16px;margin-top:14px;}
+.hero .hero-cta{margin-top:22px;}
+.btn{display:inline-block;padding:12px 24px;border-radius:4px;font-weight:700;text-decoration:none;letter-spacing:.02em;cursor:pointer;border:2px solid transparent;transition:transform .12s ease, opacity .12s ease}
+.btn-outline{background:var(--white);border-color:var(--line);color:var(--dark);}
+.btn-outline:hover{border-color:var(--green);color:var(--green-dark);}
+.btn-outline-hero{background:transparent;border-color:rgba(255,255,255,.5);color:var(--white);}
+.btn-outline-hero:hover{border-color:var(--white);}
+.btn-sm{padding:9px 18px;font-size:13px;}
+/* AT-A-GLANCE BAR */
+.facts-bar{
+  background:var(--dark-soft);
+  }
+.facts-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding:18px 0;}
+.fact{padding:0 18px;border-left:1px solid var(--line-on-dark);}
+.fact:first-child{border-left:none;}
+.fact .label{text-transform:uppercase;letter-spacing:.08em;color:#b4bdc6;font-weight:700}
+.fact .value{font-weight:700;margin-top:3px;color:var(--white)}
+.fact .value.price{color:var(--gold);}
+/* FILTER BAR — single compact row, labels sit inline with controls */
+.filter-bar{
+  position:sticky;top:0;z-index:50;
+  background:rgba(253,250,242,0.96);backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);padding:10px 0;
+  }
+.filter-bar-inner{display:flex;align-items:center;gap:10px 14px;}
+.filter-bar-controls{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;flex:1 1 auto;min-width:0;}
+.filter-group{display:flex;align-items:center;gap:8px;}
+.filter-label{font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);white-space:nowrap;flex:0 0 auto}
+.lv{color:var(--green-dark);font-weight:700;white-space:nowrap}
+.filter-regions{position:relative;flex:0 0 auto;}
+.filter-dropdown-btn{display:flex;align-items:center;gap:7px;border:1.5px solid var(--line);background:var(--white);font-family:'Titillium Web',sans-serif;font-weight:700;color:var(--dark);cursor:pointer;transition:border-color .12s ease, background .12s ease, color .12s ease}
+.filter-dropdown-btn:hover{border-color:var(--green);}
+.filter-dropdown-btn.has-selection{border-color:var(--green);background:var(--green-tint);color:var(--green-dark);}
+.filter-dropdown-btn .dd-caret{font-size:9px;color:var(--muted);transition:transform .15s ease;}
+.filter-dropdown-btn.has-selection .dd-caret{color:var(--green-dark);}
+.filter-dropdown-btn.open .dd-caret{transform:rotate(180deg);}
+.filter-dropdown-panel{
+  display:none;position:absolute;top:calc(100% + 8px);left:0;z-index:90;
+  background:var(--white);border:1px solid var(--line);border-radius:4px;
+  box-shadow:0 14px 34px rgba(21,34,48,0.2);padding:14px 16px;width:360px;max-width:82vw;
+  }
+.filter-dropdown-panel.open{display:block;}
+.filter-dropdown-panel .pill-row{display:flex;flex-wrap:wrap}
+.filter-dropdown-foot{
+  display:flex;justify-content:space-between;align-items:center;margin-top:12px;
+  padding-top:10px;border-top:1px solid var(--line);
+  }
+.filter-dropdown-foot .dd-count{font-size:11.5px;color:var(--muted);font-weight:600;}
+.filter-dropdown-foot button{
+  background:none;border:none;color:var(--green-dark);font-weight:700;font-size:12px;cursor:pointer;padding:0;
+  }
+.pill-btn{font-family:'Titillium Web',sans-serif;font-weight:700;cursor:pointer;white-space:nowrap;transition:background .12s ease, border-color .12s ease, color .12s ease}
+.pill-btn.active{border-color:var(--green-dark);background:var(--green-dark);color:var(--white);}
+.filter-range{flex:0 0 auto;}
+/* styled to match the roster's age-bracket bars: pale green track, solid green fill */
+.dual-range{position:relative;height:20px;width:80px;flex:0 0 auto;}
+.dual-range input[type=range]{
+  position:absolute;top:7px;left:0;width:100%;margin:0;height:6px;
+  -webkit-appearance:none;appearance:none;background:none;pointer-events:none;
+  }
+.dual-range input[type=range]::-webkit-slider-runnable-track{background:transparent;height:6px;}
+.dual-range input[type=range]::-moz-range-track{background:transparent;height:6px;}
+.dual-range input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;pointer-events:auto;width:13px;height:13px;border-radius:50%;
+  background:var(--green);border:2px solid var(--white);box-shadow:0 1px 2px rgba(21,34,48,.3);cursor:pointer;margin-top:-3.5px;
+  }
+.dual-range input[type=range]::-moz-range-thumb{
+  pointer-events:auto;width:13px;height:13px;border-radius:50%;background:var(--green);
+  border:2px solid var(--white);box-shadow:0 1px 2px rgba(21,34,48,.3);cursor:pointer;
+  }
+.dual-range-track{position:absolute;top:7px;left:0;right:0;height:6px;background:var(--green-tint);border-radius:5px;overflow:hidden;}
+.dual-range-fill{position:absolute;top:7px;height:6px;background:var(--green);border-radius:5px;}
+.filter-sort select{border:1.5px solid var(--line);font-family:'Titillium Web',sans-serif;color:var(--dark);background:var(--white)}
+.filter-toggles{display:flex;align-items:center;gap:12px;}
+.filter-toggle{display:flex;align-items:center;gap:6px;font-weight:600;color:var(--dark);cursor:pointer;white-space:nowrap;flex:0 0 auto}
+.filter-toggle input{accent-color:var(--green)}
+.reset-link{background:none;border:none;color:var(--sunset-1);font-weight:700;cursor:pointer;padding:0;text-decoration:underline;white-space:nowrap;flex:0 0 auto}
+.results-count{color:var(--muted);font-weight:600;white-space:nowrap;flex:0 0 auto}
+.results-count strong{color:var(--dark);}
+/* CRUISE GRID */
+.cruise-grid-section{padding:32px 0 60px;}
+/* Photo cards - see templates/cruise-cards.html. The header image fills
+     the card, with a dark fade at the bottom so the white text always reads;
+     a cruise with no header image yet gets the gradient + a "Photo:" label. */
+.cruise-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+
+
+
+.cc-tag{
+  position:absolute;top:12px;right:14px;z-index:2;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;
+  background:var(--gold);color:var(--dark);border-radius:4px;padding:3px 10px;
+  }
+
+
+.cc-foot{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.22);}
+.cc-price-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#c7ccd1;}
+.cc-price{font-family:'Libre Baskerville',serif;font-weight:700;font-size:22px;line-height:1.1;}
+.cc-price small{font-family:'Titillium Web',sans-serif;font-size:12px;font-weight:600;color:#c7ccd1;}
+.cc-price.cc-price-soon{font-family:'Titillium Web',sans-serif;font-size:15px;text-transform:uppercase;letter-spacing:.05em;}
+.cc-more{font-weight:700;font-size:14px;color:var(--white);white-space:nowrap;padding:8px 14px;border-radius:6px;background:var(--green-dark);transition:background .15s ease;}
+
+/* sold out: same treatment as the sold-out cabin tile and page */
+
+
+.cc-ribbon{
+  position:absolute;top:22px;right:-44px;z-index:3;transform:rotate(45deg);background:var(--sunset-1);color:var(--white);
+  font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:5px 52px;box-shadow:0 2px 6px rgba(0,0,0,0.3);
+  }
+
+.cc-soldout-note{font-size:13px;font-weight:700;color:#f0b9a9;text-transform:uppercase;letter-spacing:.05em;}
+@media (max-width:980px){
+  .cruise-grid{grid-template-columns:1fr 1fr;}
+}
+@media (max-width:640px){
+  .cruise-grid{grid-template-columns:1fr}
+  
+}
+.empty-state{grid-column:1/-1;padding:70px 24px;text-align:center;color:var(--muted);}
+.empty-state h3{color:var(--dark);margin-bottom:8px}
+.empty-state .btn{margin-top:16px;}
+@media (max-width:860px){
+  .facts-grid{grid-template-columns:repeat(2,1fr);row-gap:16px;}
+  .fact:nth-child(3){border-left:none;}
+}
+/* Phones: the filter bar shrinks to one sticky row (Filters button +
+     result count); the controls open as a stacked panel under it. */
+.filter-mobile-toggle,.filter-mobile-done{display:none;}
+@media (max-width:760px){
+  .filter-bar{padding:9px 0;}
+  .filter-bar-inner{flex-wrap:wrap;gap:0;}
+  .filter-mobile-toggle{order:1;display:inline-flex;align-items:center;gap:8px;padding:7px 15px;border:1.5px solid var(--line);background:var(--white);cursor:pointer;font-family:'Titillium Web',sans-serif;font-weight:700;color:var(--dark)}
+  .filter-mobile-toggle.has-active{border-color:var(--green);background:var(--green-tint);color:var(--green-dark);}
+  .fmt-count{
+    min-width:19px;height:19px;padding:0 5px;border-radius:10px;background:var(--green-dark);
+    color:var(--white);font-size:11px;line-height:19px;text-align:center;
+    }
+  .results-count{order:2;margin-left:auto}
+  .filter-bar-controls{
+    order:3;flex:1 1 100%;display:none;flex-direction:column;align-items:stretch;flex-wrap:nowrap;gap:16px;
+    margin-top:10px;padding:16px 2px 6px;border-top:1px solid var(--line);
+    max-height:calc(100vh - 130px);max-height:calc(100dvh - 130px);overflow-y:auto;
+    }
+  .filter-bar.mobile-open .filter-bar-controls{display:flex;}
+  .filter-group{gap:12px;}
+  .filter-label{flex:0 0 70px}
+  .filter-regions{flex-direction:column;align-items:stretch;}
+  .filter-regions .filter-dropdown-btn{justify-content:space-between;padding:10px 16px;font-size:14px;}
+  .filter-dropdown-panel{position:static;width:auto;max-width:none;margin-top:8px;box-shadow:none;}
+  .dual-range{flex:1 1 auto;width:auto;height:26px;}
+  .dual-range input[type=range], .dual-range-track, .dual-range-fill{top:10px;}
+  .dual-range input[type=range]::-webkit-slider-thumb{width:22px;height:22px;margin-top:-8px;}
+  .dual-range input[type=range]::-moz-range-thumb{width:22px;height:22px;}
+  .lv{flex:0 0 104px;text-align:right}
+  .filter-sort select{flex:1 1 auto}
+  .filter-toggles{flex-wrap:wrap;gap:12px 22px;}
+  .reset-link{align-self:center}
+  .filter-mobile-done{display:block;width:100%;padding:13px;border:none;cursor:pointer;background:var(--green-dark);color:var(--white);font-family:'Titillium Web',sans-serif;font-weight:700}
+}
+.filter-dropdown-btn:disabled{opacity:.55;cursor:not-allowed;}
+.dual-range input[type=range]:disabled{cursor:not-allowed;}
+
+/* HERO - dark only behind the text (left), fading to clear over the photo */
+.hero::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:linear-gradient(90deg, rgba(13,22,32,0.86) 0%, rgba(13,22,32,0.72) 34%, rgba(13,22,32,0.28) 60%, rgba(13,22,32,0.04) 100%);}
+.hero > .wrap{position:relative;z-index:1;}
+@media (max-width:760px){
+  .hero::after{background:linear-gradient(180deg, rgba(13,22,32,0.62) 0%, rgba(13,22,32,0.78) 70%, rgba(13,22,32,0.6) 100%);}
+}
+.spotlight-card.style-photo.has-photo{
+  background-image: linear-gradient(180deg, rgba(21,34,48,0.05) 0%, rgba(13,22,32,0.15) 60%), none;
+  background-size:cover;background-position:center 42%;background-repeat:no-repeat;
+  }
+/* TRIP CARD DATES - bigger, brighter, sentence case so they read at a glance */
+.spotlight-card.style-photo .spotlight-dates{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:700;text-transform:none;letter-spacing:.01em;color:#f6e3b4;margin-bottom:6px;text-shadow:0 1px 8px rgba(0,0,0,0.45);}
+.spotlight-dates svg{width:18px;height:18px;flex:none;fill:none;stroke:var(--gold);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 4px rgba(0,0,0,0.4));}
+@media (min-width:1001px){
+  /* taller trip cards on desktop so more of the photo shows above the text */
+  .spotlight-card.style-photo{aspect-ratio:4/3.7;}
+}
+/* TRIP CARD SHADING - same soft fade as the hero: darkest behind the text,
+     easing to clear, so the top of the photo stays bright */
+.spotlight-card.style-photo::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:linear-gradient(0deg, rgba(13,22,32,0.88) 0%, rgba(13,22,32,0.74) 30%, rgba(13,22,32,0.3) 56%, rgba(13,22,32,0.04) 100%);}
+.spotlight-card.style-photo .sp-overlay{background:none !important;z-index:1;}
+.spotlight-card.style-photo .sp-caption{z-index:1;}
+/* TRIP CARDS - same layout as the live Land Trips page: tall photo card,
+     date, name, then a footer with the starting price and a Learn More button.
+     Kept: the cream dates with the calendar icon, 4px corners, bigger type. */
+.spotlight-card.style-photo.trip-card{display:flex;flex-direction:column;justify-content:flex-end;border-top:3px solid var(--green)}
+.spotlight-card.style-photo.trip-card .sp-overlay{inset:auto}
+.trip-card .cc-price-label{font-weight:700;text-transform:uppercase;color:#d6dadf}
+.trip-card .cc-price{font-family:'Libre Baskerville',serif;font-weight:700;white-space:nowrap}
+.trip-card .cc-price small{font-family:'Titillium Web',sans-serif;font-weight:600;color:#d6dadf}
+.trip-card .cc-more{font-weight:700;color:var(--white);white-space:nowrap;background:var(--green-dark);transition:background .15s}
+.trip-card:hover .cc-more{background:var(--green-hover);}
+.trip-card .cc-tag{position:absolute;top:12px;right:12px;z-index:2;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;background:var(--gold);color:var(--dark);border-radius:4px;padding:4px 10px;}
+.trip-card.has-photo{border-top-color:var(--green);}
+.trip-card .cc-price-label{white-space:nowrap}
+/* soft rounded trip cards, as on the live Land Trips page */
+.spotlight-card.style-photo.trip-card{border-radius:14px;}
+.trip-card .cc-more{border-radius:6px;}
+/* trip grids: 3 per row, same as the live Land Trips page */
+.spotlight-grid{grid-template-columns:repeat(3,1fr) !important;gap:24px !important;}
+.trip-card .cc-foot{flex-wrap:nowrap !important;}
+@media (max-width:980px){
+  .spotlight-grid{grid-template-columns:1fr 1fr !important;}
+}
+@media (max-width:640px){
+  .spotlight-grid{grid-template-columns:1fr !important;gap:18px !important;}
+}
+/* TRIP CARDS - photo stays clear on top; the text sits at the very bottom on
+     a solid navy band, which fades up into the photo with a soft gradient */
+.spotlight-card.style-photo.trip-card::after{background:none !important;}
+.spotlight-card.style-photo.trip-card .sp-overlay{position:relative;z-index:1;background:#111c28 !important}
+.spotlight-card.style-photo.trip-card .sp-overlay::before{content:'';position:absolute;left:0;right:0;bottom:100%;height:110px;pointer-events:none;
+  background:linear-gradient(180deg, rgba(17,28,40,0) 0%, rgba(17,28,40,0.55) 45%, rgba(17,28,40,0.9) 80%, #111c28 100%);}
+.spotlight-card.style-photo.trip-card .spotlight-dates{text-shadow:none;}
+/* more picture: taller cards, photo anchored to the top so the subject sits above the text band */
+.spotlight-card.style-photo.trip-card{aspect-ratio:4/5 !important;}
+.spotlight-card.style-photo.trip-card.has-photo{background-position:center 18% !important;}
+.spotlight-card.style-photo.trip-card{border-left:0;border-right:0;border-bottom:0;}
+@media (max-width:640px){
+  .spotlight-card.style-photo.trip-card{aspect-ratio:4/4.6 !important;min-height:0;}
+}
+/* TRIP CARDS - two stacked zones: the photo on top (fully visible), the text on a
+     navy band below. Only the photo's bottom edge fades into the navy. */
+.spotlight-card.style-photo.trip-card{background:#111c28 !important;}
+.spotlight-card.style-photo.trip-card .sp-photo{position:relative;flex:1 1 auto;min-height:150px;
+  background:linear-gradient(135deg, var(--dark-soft) 0%, var(--blue) 55%, var(--green-dark) 100%);background-size:cover;background-position:center;}
+.spotlight-card.style-photo.trip-card.has-photo .sp-photo{background:none center 40% / cover no-repeat;}
+.spotlight-card.style-photo.trip-card .sp-photo::after{content:'';position:absolute;left:0;right:0;bottom:0;background:linear-gradient(180deg, rgba(17,28,40,0) 0%, rgba(17,28,40,0.6) 60%, #111c28 100%)}
+.spotlight-card.style-photo.trip-card .sp-overlay{flex:none}
+.spotlight-card.style-photo.trip-card .sp-overlay::before{display:none;}
+.spotlight-card.style-photo.trip-card .sp-caption, .spotlight-card.style-photo.trip-card .cc-tag{z-index:2;}
+/* COMPACT TEXT BAND (~1/4 of the card): dates + price share one line,
+     the name sits under them; the whole card is the link, so the button
+     becomes a small arrow after the name */
+.spotlight-card.style-photo.trip-card .sp-overlay{grid-template-columns:1fr auto;align-items:center;column-gap:12px}
+.spotlight-card.style-photo.trip-card .spotlight-dates{grid-area:date}
+.trip-card .cc-foot, .trip-card .cc-foot > div{display:contents;}
+.trip-card .cc-price-label, .trip-card .cc-more{display:none;}
+.trip-card .cc-price{grid-area:price}
+.spotlight-card.style-photo.trip-card .spotlight-title{grid-area:title;-webkit-box-orient:vertical}
+.spotlight-card.style-photo.trip-card .spotlight-title::after{font-family:'Titillium Web',sans-serif;color:var(--green-soft)}
+.spotlight-card.style-photo.trip-card .sp-photo::after{height:34%;}
+/* TEXT BAND AT ~1/3 OF THE CARD: dates, name, then price + Learn More.
+     A fixed share keeps every card's photo the same height. */
+.spotlight-card.style-photo.trip-card .sp-overlay{grid-template-areas:"date date" "title title" "price more";row-gap:6px;align-content:end}
+.spotlight-card.style-photo.trip-card .spotlight-title::after{content:none;}
+.trip-card .cc-price{align-self:center}
+.trip-card .cc-more{grid-area:more;justify-self:end;align-self:center}
+/* BACK TO THE ORIGINAL CARD LAYOUT (date, name, divider, "Starting from"
+     price + Learn More), just tighter spacing and slightly smaller text */
+.spotlight-card.style-photo.trip-card .sp-overlay{display:block;height:auto;min-height:0;padding:0 18px 14px;}
+.spotlight-card.style-photo.trip-card .spotlight-dates{font-size:15px;gap:7px;margin:0 0 3px;}
+.spotlight-card.style-photo.trip-card .spotlight-dates svg{width:16px;height:16px;}
+.spotlight-card.style-photo.trip-card .spotlight-title{display:block;font-size:17.5px;line-height:1.22;margin:0 0 9px;-webkit-line-clamp:unset;overflow:visible;}
+.trip-card .cc-foot{display:flex !important;align-items:center;justify-content:space-between;gap:10px;padding-top:9px;border-top:1px solid rgba(255,255,255,0.22);}
+.trip-card .cc-foot > div{display:block !important;}
+.trip-card .cc-price-label{display:block;font-size:12px;letter-spacing:.06em;margin-bottom:1px;}
+.trip-card .cc-price{font-size:19px;line-height:1.1;color:var(--white);}
+.trip-card .cc-price small{font-size:13px;}
+.trip-card .cc-more{display:inline-block;padding:7px 12px;font-size:14px;margin-left:auto;}
+.hero h1{font-size:clamp(32px,4.6vw,52px);}
+.hero p.lede{font-size:20px;max-width:680px;}
+.btn{font-size:16px;}
+.fact .label{font-size:13.5px;}
+.fact .value{font-size:17px;}
+.empty-state h3{font-size:22px;}
+.empty-state p{font-size:18px;line-height:1.7;}
+@media (max-width:640px){
+  .hero p.lede{font-size:18px;}
+  .empty-state p{font-size:17px;}
+}
+/* FILTER BAR - squared 4px controls, 16px text, labels 14px+; slider thumbs stay round */
+.filter-label{font-size:14px;}
+.lv{font-size:15px;}
+.filter-dropdown-btn, .filter-sort select, .filter-mobile-toggle{min-height:46px;font-size:16px;border-radius:4px;}
+.filter-dropdown-btn{padding:0 16px;}
+.filter-sort select{padding:0 12px;}
+.pill-btn{min-height:46px;padding:0 18px;border-radius:4px;font-size:16px;background:var(--white);border:1.5px solid var(--sky-line);color:var(--dark);}
+.pill-btn:hover{border-color:var(--dark);}
+.pill-btn.active{background:var(--dark);border-color:var(--dark);color:var(--white);}
+.filter-dropdown-panel .pill-row{gap:8px;}
+.filter-toggle{font-size:16px;}
+.filter-toggle input{width:18px;height:18px;}
+.reset-link{font-size:15px;}
+.results-count{font-size:15px;}
+.filter-mobile-done{font-size:16px;border-radius:4px;}
+/* LISTING GRID - the homepage trip card, 3 per row */
+.cruise-grid{gap:24px;}
+.trip-card.sold-out .sp-photo{filter:grayscale(1) brightness(.9);}
+.trip-card.sold-out .spotlight-title, .trip-card.sold-out .spotlight-dates{opacity:.8;}
+.trip-card.sold-out .cc-more{background:rgba(255,255,255,0.16);}
+.trip-card .cc-ribbon{z-index:3;font-size:13px;}
+.trip-card .cc-soldout-note{font-size:14px;font-weight:700;color:#f0b9a9;text-transform:uppercase;letter-spacing:.05em;}
+.trip-card .cc-price.cc-price-soon{font-family:'Titillium Web',sans-serif;font-size:17px;text-transform:uppercase;letter-spacing:.05em;}
+.press-logo{display:block;flex:none;background:var(--white);opacity:.82;transition:opacity .2s ease, background-color .2s ease;
+  -webkit-mask-size:contain;mask-size:contain;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;}
+a.press-logo:hover{opacity:1;background:var(--gold);}

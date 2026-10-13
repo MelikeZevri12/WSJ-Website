@@ -1,6 +1,7 @@
 const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
+const { expand } = require('./tools/includes');
 
 const PORT = 5173;
 const ROOT = __dirname;
@@ -57,7 +58,13 @@ const server = http.createServer((req, res) => {
       res.end('Not found');
       return;
     }
-    const contentType = CONTENT_TYPES[path.extname(resolved).toLowerCase()] || 'application/octet-stream';
+    const ext = path.extname(resolved).toLowerCase();
+    const contentType = CONTENT_TYPES[ext] || 'application/octet-stream';
+    // pages: fill in the shared navbar/footer, same as the deploy build does
+    if (ext === '.html') {
+      try { data = expand(data.toString('utf8'), resolved); }
+      catch (e) { res.writeHead(500, { 'Content-Type': 'text/plain' }); res.end(e.message); return; }
+    }
     res.writeHead(200, { 'Content-Type': contentType });
     res.end(data);
   });
