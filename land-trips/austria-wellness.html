@@ -774,7 +774,7 @@ function renderSelection(){
   const joinCopy = past
     ? `${SEASON} ${sel.year} has wrapped up. Come join us next ${SEASON.toLowerCase()}: the deposit holds your place.`
     : `Reserve your spot for ${sessLabel(sel) || SEASON + ' ' + sel.year} (${span(selStart(), selEnd())}). The deposit holds your place, and we’ll take care of the rest.`;
-  document.querySelectorAll('.join-text').forEach(el => el.textContent = joinCopy);
+  document.querySelectorAll('p.join-text').forEach(el => el.textContent = joinCopy);
   const jt = document.getElementById('joinText'); if(jt && !past) jt.textContent = TRIP.finalCta.text;
   const st = comboStatus(sel);
   document.querySelectorAll('.book-btn').forEach(b => b.textContent = past ? `See ${SEASON} ${firstOpenYear} Dates` : st === 'soldout' ? 'Join the Waitlist' : 'Book Your Spot');

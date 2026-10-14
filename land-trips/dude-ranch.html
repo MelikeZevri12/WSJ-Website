@@ -550,7 +550,7 @@ function renderSelection(){
   const joinCopy = isInterest()
     ? `${sel.year} is still taking shape. Join the waitlist and you’ll be first in line when dates and prices are set.`
     : `Reserve your family’s cabin for ${dateText()}. You book directly with the ranch, and the deposit holds your spot.`;
-  document.querySelectorAll('.join-text').forEach(el => el.textContent = joinCopy);
+  document.querySelectorAll('p.join-text').forEach(el => el.textContent = joinCopy);
   document.querySelectorAll('.book-btn').forEach(b => { b.textContent = isInterest() ? `Join the ${sel.year} Waitlist` : 'Book with the Ranch';
     b.href = isInterest() ? TRIP.waitlistUrl : TRIP.bookingUrl; if(!isInterest()) b.target = '_blank'; else b.removeAttribute('target'); });
   syncPickers();

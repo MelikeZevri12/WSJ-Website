@@ -600,7 +600,7 @@ function renderSelection(){
   const joinCopy = past
     ? `Summer ${sel.year} has wrapped up. Come join us next summer: pick your sessions and the deposit holds your place.`
     : `Reserve your spot for ${sessLabel(sel)} (${span(selStart(), selEnd())}). The deposit holds your place, and we’ll take care of the rest.`;
-  document.querySelectorAll('.join-text').forEach(el => el.textContent = joinCopy);
+  document.querySelectorAll('p.join-text').forEach(el => el.textContent = joinCopy);
   const st = comboStatus(sel);
   document.querySelectorAll('.book-btn').forEach(b => b.textContent = past ? `See Summer ${firstOpenYear} Dates` : st === 'soldout' ? 'Join the Waitlist' : 'Book Your Spot');
   syncPickers();
