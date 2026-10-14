@@ -79,7 +79,7 @@
 <section class="overview" id="overview" data-q="overview">
   <div class="wrap">
     <div class="overview-grid">
-      <div class="overview-media"><span>Trip photo</span></div>
+      <div class="overview-media"><img src="/images/land-trips/dude-ranch/riders-in-the-meadow.webp" alt="Families riding through a meadow at the VeeBar"></div>
       <div>
         <div class="eyebrow">Overview</div>
         <h2 style="font-size:28px;line-height:1.25;margin-bottom:14px;" id="ovHeading"></h2>
@@ -194,7 +194,7 @@
 <!-- RESERVE (identical to the join section) -->
 <section id="bookCta">
   <div class="join-split">
-    <div class="photo-slot join-photo"><span style="color:#c7ccd1;padding:0 30px;">Group photo</span></div>
+    <div class="photo-slot join-photo"><img src="/images/land-trips/dude-ranch/family-at-the-ranch.webp" alt="A family laughing together at the ranch" loading="lazy"></div>
     <div class="join-content">
       <div class="join-text"><h2>Ready to join our group?</h2>
       <p class="join-text"></p></div>
@@ -237,7 +237,7 @@
 
 <section id="join">
   <div class="join-split">
-    <div class="photo-slot join-photo"><span style="color:#c7ccd1;padding:0 30px;">Group photo</span></div>
+    <div class="photo-slot join-photo"><img src="/images/land-trips/dude-ranch/riding-at-sunset.webp" alt="Riders crossing the pasture in golden light" loading="lazy"></div>
     <div class="join-content">
       <div class="join-text"><h2>Ready to join our group?</h2>
       <p class="join-text" id="joinText"></p></div>
@@ -386,6 +386,52 @@ const ITINERARIES = {};
 
 
 // ---------- THEMES ----------
+
+// ---------- PHOTOS: photo label (as used in the data above) -> [file in /images/land-trips/dude-ranch/, alt text] ----------
+// Any label not listed here shows the "Photo: …" placeholder instead.
+const PHOTO_DIR = '/images/land-trips/dude-ranch/';
+const PHOTOS = {
+  'Your own horse for the week': ['your-own-horse.webp', 'A wrangler saddling a horse'],
+  'Real cattle work': ['cattle-work.webp', 'Working cattle in the corral'],
+  'A private mile of river': ['private-river-fishing.webp', 'Fishing the ranch’s private stretch of the Little Laramie River'],
+  'Trap shooting & archery': ['trap-shooting.webp', 'Trap shooting with an instructor'],
+  'Hayrides, boot branding & campfires': ['hayride.webp', 'A horse-drawn hayride'],
+  'The whole ranch to ourselves': ['ranch-landscape.webp', 'Riders out on the wide Wyoming ranch land'],
+  'Kids with their horses': ['kid-on-horse-in-river.webp', 'A young rider and horse in the river'],
+  'Wyoming big sky': ['horses-by-the-barn.webp', 'Horses by the barn under a big Wyoming sky'],
+  'Little Laramie River': ['little-laramie-river.webp', 'Families on the Little Laramie River'],
+  'Families on the trail': ['families-on-the-trail.webp', 'Families riding past the lodge'],
+  'Cattle drive': ['cattle-drive.webp', 'A rider watching over the herd'],
+  'Boot branding': ['boot-branding.webp', 'A branding iron in the coals'],
+  'Fly fishing': ['fly-fishing-lesson.webp', 'A fly fishing lesson on the river'],
+  'Campfire s’mores': ['campfire.webp', 'Swings around the campfire'],
+  'Barrel racing': ['barrel-racing.webp', 'Barrel racing in the arena'],
+  'Hayride': ['hayride.webp', 'A horse-drawn hayride'],
+  'Archery': ['archery.webp', 'Learning archery'],
+  'Sunset over the pasture': ['riding-at-sunset.webp', 'Riders crossing the pasture in golden light'],
+  'Cabin in the cottonwoods': ['cabin-living-room.webp', 'Inside a ranch cabin'],
+  'Main lodge dining room': ['breakfast-buffet.webp', 'The lodge buffet'],
+  'Hot tub': ['hot-tub.webp', 'The ranch hot tub'],
+  'John Wayne Saloon': ['saloon-games.webp', 'Card games in the saloon'],
+  'Wranglers bringing the horses in': ['horses-in-the-corral.webp', 'Horses in the corral by the barn'],
+  'Breakfast by the river rock fireplace': ['fresh-bread.webp', 'Fresh-baked bread at breakfast'],
+  'Morning trail ride': ['morning-trail-ride.webp', 'A morning trail ride'],
+  'Cookout on the mountain': ['riding-in-the-hills.webp', 'Riding out into the hills'],
+  'Tubing down the river': ['river-tubing.webp', 'Tubing down the river'],
+  'Games in the saloon': ['saloon-games.webp', 'Card games in the saloon'],
+  'Campfire and s’mores': ['campfire.webp', 'Swings around the campfire'],
+  'Ranch valley': ['riders-in-the-meadow.webp', 'Riders in a meadow at the VeeBar'],
+  'Suite': ['room-suite.webp', 'A lodge suite'],
+  'Cabin': ['room-cabin.webp', 'Inside a ranch cabin'],
+  'Breakfast': ['breakfast-buffet.webp', 'The lodge buffet'],
+  'Lunch': ['lunch-salad.webp', 'A fresh salad'],
+  'Dinner': ['steak-dinner.webp', 'Steak dinner at the lodge'],
+};
+function photoHTML(label){
+  const p = PHOTOS[label];
+  return p ? `<img src="${PHOTO_DIR}${p[0]}" alt="${p[1]}" loading="lazy">` : `<span>Photo: ${label}</span>`;
+}
+
 // ---------- THEMES: every land trip gets its own colors ----------
 // primary = buttons & links · accent = badges, lines, highlights · dark = hero, facts bar, dark sections
 // background/surface = page + cards · highlight = prices, gold details
@@ -487,7 +533,7 @@ function renderStatic(){
   document.getElementById('ovStory').innerHTML = ov.story.map(p => `<p class="lede">${p}</p>`).join('') +
     (ov.hook.length ? `<p class="lede" style="font-style:italic;">${ov.hook.join('<br>')}</p>` : '');
   document.getElementById('highlights').innerHTML = ov.highlights.map(h =>
-    `<div class="hl-card"><div class="photo-slot"><span>Photo: ${h.t}</span></div><h4>${h.t}</h4><p>${h.d}</p></div>`).join('');
+    `<div class="hl-card"><div class="photo-slot">${photoHTML(h.t)}</div><h4>${h.t}</h4><p>${h.d}</p></div>`).join('');
   const C = TRIP.community;
   document.getElementById('leadersText').textContent = C.leaders;
   document.getElementById('pillars').innerHTML = C.pillars.map((p, i) =>
@@ -498,19 +544,19 @@ function renderStatic(){
   document.getElementById('fbJoin').innerHTML = C.facebookGroup ? `<span>Meet other worldschooling families before you go.</span><a class="btn btn-outline" href="${C.facebookGroup}" target="_blank" rel="noopener">Join our Worldschooling Facebook Group</a>` : '';
   document.querySelectorAll('.photo-strip[data-strip]').forEach(el => { const ph = (TRIP.photoStrips || [])[+el.dataset.strip] || [];
     el.style.display = ph.length ? '' : 'none';
-    el.innerHTML = ph.map(x => `<div class="photo-slot">${x.photo ? `<img src="${x.photo}" alt="${x.label}" loading="lazy">` : `<span>Photo: ${x.label}</span>`}</div>`).join(''); });
+    el.innerHTML = ph.map(x => `<div class="photo-slot">${x.photo ? `<img src="${x.photo}" alt="${x.label}" loading="lazy">` : photoHTML(x.label)}</div>`).join(''); });
   const MORE = TRIP.overview.more || [];
   document.getElementById('moreWrap').style.display = MORE.length ? '' : 'none';
   document.getElementById('moreList').innerHTML = MORE.map(m => `<li>${m}</li>`).join('');
   const ST = TRIP.stay;
   const V = ST && ST.valley;
-  document.getElementById('valleyCard').innerHTML = V ? `<div class="photo-slot"><span>Photo: Gastein Valley</span></div><div class="vc-body"><h4>${V.title}</h4>${V.text.map(t => `<p>${t}</p>`).join('')}${V.small ? `<p class="vc-small">${V.small}</p>` : ''}</div>` : '';
+  document.getElementById('valleyCard').innerHTML = V ? `<div class="photo-slot">${photoHTML('Ranch valley')}</div><div class="vc-body"><h4>${V.title}</h4>${V.text.map(t => `<p>${t}</p>`).join('')}${V.small ? `<p class="vc-small">${V.small}</p>` : ''}</div>` : '';
   document.getElementById('stays').dataset.empty = ST ? '' : '1';
   if(ST){
     document.getElementById('staysHeading').textContent = ST.heading;
     document.getElementById('staysIntro').textContent = ST.intro;
     document.getElementById('roomGrid').innerHTML = ST.rooms.map(r => `<div class="room-card" data-room="${r.key}"><span class="rc-mine">Your room</span>
-      <div class="photo-slot"><span>Photo: ${r.name}</span></div><div class="rc-body"><h4>${r.name}</h4><div class="rc-for">${r.fits}</div>
+      <div class="photo-slot">${photoHTML(r.name)}</div><div class="rc-body"><h4>${r.name}</h4><div class="rc-for">${r.fits}</div>
       <ul>${r.features.map(f => `<li>${f}</li>`).join('')}</ul></div></div>`).join('');
     document.getElementById('amenList').innerHTML = ST.amenities.map(a => `<li>${a}</li>`).join('');
   }
@@ -519,7 +565,7 @@ function renderStatic(){
   if(ML){
     document.getElementById('foodHeading').textContent = ML.heading;
     document.getElementById('foodIntro').textContent = ML.intro;
-    document.getElementById('mealGrid').innerHTML = ML.items.map(m => `<div class="meal-card"><div class="photo-slot"><span>Photo: ${m.t}</span></div>
+    document.getElementById('mealGrid').innerHTML = ML.items.map(m => `<div class="meal-card"><div class="photo-slot">${photoHTML(m.t)}</div>
       <div class="mc-body"><h4>${m.t}<span class="mc-tag ${m.tag === 'On your own' ? 'off' : ''}">${m.tag}</span></h4><p>${m.d}</p></div></div>`).join('');
     if(ML.extra){ document.getElementById('hbCard').innerHTML = ML.extra; } else document.getElementById('hbCard').innerHTML = `<div><h4>Half-Board</h4><p>${ML.halfBoardText}</p><p style="color:var(--muted);font-size:13px;">${ML.drinks}</p></div>
       <div class="hb-prices"><div class="hb-price">Adults<strong>${money(HB.adult)}</strong>per day</div><div class="hb-price">Kids 5–14<strong>${money(HB.kid)}</strong>per day</div><div class="hb-price">Kids 4 & under<strong>Free</strong>&nbsp;</div></div>`;
@@ -586,7 +632,7 @@ function renderItinerary(S){
   document.getElementById('itinerary').dataset.empty = TRIP.rhythm && TRIP.rhythm.length ? '' : '1';
   document.getElementById('itinHeading').textContent = 'How your days feel';
   document.getElementById('itinNote').innerHTML = `<div class="itin-note sample"><span class="in-icon">ⓘ</span><span><strong>There’s no fixed itinerary.</strong> You’re living on a working ranch with horses, not following a schedule. This is what a typical day looks like, and you join as much or as little as you want.</span></div>`;
-  document.getElementById('itinBody').innerHTML = '<div class="timeline">' + TRIP.rhythm.map(r => `<div class="stop"><div class="stop-card"><div class="stop-card-inner"><div class="photo-slot stop-photo"><span>Photo: ${r.photo}</span></div><div class="stop-content">
+  document.getElementById('itinBody').innerHTML = '<div class="timeline">' + TRIP.rhythm.map(r => `<div class="stop"><div class="stop-card"><div class="stop-card-inner"><div class="photo-slot stop-photo">${photoHTML(r.photo)}</div><div class="stop-content">
       <div class="stop-day">${r.time}</div><div class="stop-title">${r.title}</div><p class="stop-desc">${r.text}</p></div></div></div></div>`).join('') + '</div>' +
     (TRIP.rhythmWeek ? `<div class="week-wrap"><h4>Sometime during the week</h4><ul class="chip-list">${TRIP.rhythmWeek.map(w => `<li>${w}</li>`).join('')}</ul></div>` : '') +
     (TRIP.goodToKnow ? `<div class="good-know"><h4>Good to know before you saddle up</h4><ul>${TRIP.goodToKnow.map(g => `<li>${g}</li>`).join('')}</ul></div>` : '');
