@@ -2,6 +2,7 @@ const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
 const { expand } = require('./tools/includes');
+const { ENABLED: CLEAN_URLS, cleanLinks, resolvePath } = require('./tools/clean-urls');
 
 const PORT = 5173;
 const ROOT = __dirname;
@@ -30,7 +31,8 @@ const server = http.createServer((req, res) => {
   const filePath = urlPath === '/' ? '/home.html'
     : isCruiseDetailRoute ? '/cruise-detail.html'
     : isJourneyRoute ? '/journey.html'
-    : urlPath;
+    // addresses without .html: /about → about.html, /land-trips/<trip title> → land-trips/<id>.html
+    : resolvePath(urlPath) || urlPath;
   const resolved = path.join(ROOT, filePath);
 
   fs.readFile(resolved, (err, data) => {
@@ -62,7 +64,7 @@ const server = http.createServer((req, res) => {
     const contentType = CONTENT_TYPES[ext] || 'application/octet-stream';
     // pages: fill in the shared navbar/footer, same as the deploy build does
     if (ext === '.html') {
-      try { data = expand(data.toString('utf8'), resolved); }
+      try { data = expand(data.toString('utf8'), resolved); if (CLEAN_URLS) data = cleanLinks(data); }
       catch (e) { res.writeHead(500, { 'Content-Type': 'text/plain' }); res.end(e.message); return; }
     }
     res.writeHead(200, { 'Content-Type': contentType });

@@ -39,6 +39,19 @@
       2027: {"dates":"November 2027","sortDate":"2027-11-01","price":null,"tag":"Waitlist open","departures":1} } }
   ];
 
+  // Page address from the title (the page header), without "N-day Worldschooling":
+  // /land-trips/austrian-fall-mountain-retreat. Same rule as tools/clean-urls.js, which
+  // publishes the pages under these names.
+  // Goes together with ENABLED in tools/clean-urls.js.
+  var CLEAN_LAND_TRIP_URLS = true;
+  function landTripPath(t){
+    if (!CLEAN_LAND_TRIP_URLS) return `/land-trips/${t.slug}.html`;
+    return '/land-trips/' + t.title
+      .replace(/^\s*\d+[\s-]*days?\s+/i, '').replace(/\bworldschooling\b/gi, ' ')
+      .normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .toLowerCase().replace(/&/g, ' ').replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  }
+
   // A land trip's card for one year (or its earliest upcoming year when year
   // is null). Departures that have already started drop off on their own.
   function landTripView(t, year){
@@ -48,7 +61,7 @@
     const v = t.years[key];
     return {
       kind: "land",
-      href: `/land-trips/${t.slug}.html` + (year ? `?${t.param}=${year}` : ""),
+      href: landTripPath(t) + (year ? `?${t.param}=${year}` : ""),
       title: t.title, dates: v.dates, sortDate: v.sortDate, nights: t.nights, regions: t.regions,
       year: Number(key),
       departures: year ? v.departures : upcoming.reduce((n, k) => n + t.years[k].departures, 0),
@@ -85,7 +98,7 @@
   function cruiseCard(c){
     const p = startingPrice(c);
     return {
-      kind: "cruise", href: `/cruises/${c.businessId}`, title: c.title || c.destination, dates: c.sailDates,
+      kind: "cruise", href: `/cruises/${encodeURIComponent(c.slug || c.businessId)}`, title: c.title || c.destination, dates: c.sailDates,
       sortDate: c.departureDate, year: Number(c.departureDate.slice(0, 4)), soldOut: !!c.soldOut,
       price: p != null ? money(p) : null, per: "person",
       photo: c.heroImageUrl ? API + c.heroImageUrl : null, photoLabel: c.destination || (c.ship && c.ship.name) || "",

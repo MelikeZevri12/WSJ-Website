@@ -2862,7 +2862,7 @@ function renderCruiseTable(cruises) {
         <td class="flags-cell">${renderCruiseFlags(cruise)}</td>
         <td>
           <div class="row-actions">
-            <a href="/cruises/${encodeURIComponent(cruise.businessId)}" target="_blank" rel="noopener" class="btn btn-outline btn-sm" data-view-link>View Page</a>
+            <a href="/cruises/${encodeURIComponent(cruise.slug || cruise.businessId)}" target="_blank" rel="noopener" class="btn btn-outline btn-sm" data-view-link>View Page</a>
           </div>
         </td>
       </tr>`).join('');

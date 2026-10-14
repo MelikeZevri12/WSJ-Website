@@ -1216,7 +1216,7 @@ function toLeg(c, families){
     to: ends ? ends[1] : portShortName(c.arrivalPort?.name),
     start, end,
     // Add-ons and Individual cruises are never sold on their own - no page.
-    url: c.isAddOn || c.isIndividual ? null : `/cruises/${encodeURIComponent(c.businessId)}`,
+    url: c.isAddOn || c.isIndividual ? null : `/cruises/${encodeURIComponent(c.slug || c.businessId)}`,
     connector: !!c.isAddOn,
     families,
     photo: c.heroImageUrl ? `${API}${c.heroImageUrl}` : null,
@@ -2389,7 +2389,7 @@ function renderDepartures(view){
   document.getElementById('depNote').textContent = v.note;
   depTrackEl.scrollLeft = 0;
   depTrackEl.innerHTML = v.list.length ? v.list.map((c) => `
-    <a class="dep-card spotlight-card style-photo trip-card${c.heroImageUrl ? ' has-photo' : ''}" href="/cruises/${c.businessId}" target="_blank" rel="noopener">
+    <a class="dep-card spotlight-card style-photo trip-card${c.heroImageUrl ? ' has-photo' : ''}" href="/cruises/${encodeURIComponent(c.slug || c.businessId)}" target="_blank" rel="noopener">
       <div class="sp-photo"${c.heroImageUrl ? ` style="background-image:url('${API}${c.heroImageUrl}')"` : ''}></div>
       ${c.heroImageUrl ? '' : `<span class="sp-caption">Photo: ${escapeHtml(c.ship.name)}</span>`}
       <div class="sp-overlay">

@@ -222,7 +222,7 @@
       // (priced, not sold out - see the dashboards' Pricing tab). Shown as a
       // tag and used by the 5+ filter.
       largeFamilies: (cruise.cabinPrices ?? []).some(row => row.guests >= 5 && row.price != null && !row.soldOut),
-      href: `/cruises/${cruise.businessId}`,
+      href: `/cruises/${encodeURIComponent(cruise.slug || cruise.businessId)}`,
     };
   }
 

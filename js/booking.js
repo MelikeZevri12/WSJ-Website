@@ -21,7 +21,8 @@
   };
   const WETRAVEL_ENV = 'https://everyavenuetravel.wetravel.com', WETRAVEL_UID = '1084781';
 
-  const slug = (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
+  // the trip's ID (its file name, e.g. austria-fall); the address itself is the trip title
+  const slug = document.body.dataset.trip || (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
   const isUrl = (v) => /^https?:\/\//i.test(v || '');
   const isBookLabel = (t) => /^\s*book\b/i.test(t);          // "Book Your Spot", "Book with the Ranch"
 

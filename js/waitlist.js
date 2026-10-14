@@ -55,7 +55,7 @@
 
   // The trip and the departure / year the visitor was looking at
   function currentTrip() {
-    const slug = (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
+    const slug = document.body.dataset.trip || (location.pathname.split('/').pop() || '').replace(/\.html$/, ''); // trip ID, e.g. austria-fall
     const name = (document.querySelector('.hero h1')?.textContent || document.title.split('|')[0]).trim();
     // what the visible hero pickers show, minus prices and status words ("Oct 16 – Nov 3, 2026 · $4,717" -> "Oct 16 – Nov 3, 2026")
     const picked = [...document.querySelectorAll('.hero .hp-field')].filter((f) => f.offsetParent)
