@@ -24,7 +24,7 @@
       2027: {"dates":"Dec 5–19, 2027","sortDate":"2027-12-05","price":"€1,505","departures":1} } },
     {"slug":"egypt-jordan","param":"departure","title":"15-day Worldschooling Egypt & Jordan Adventure","nights":14,"regions":["Africa","Middle East"],"per":"person","photo":"/images/land-trips/egypt-jordan.webp","photoLabel":"Egypt & Jordan", "years": {
       2027: {"dates":"Jan 25 – Feb 8, 2027","sortDate":"2027-01-25","price":"$2,999","departures":1} } },
-    {"slug":"austria-wellness","param":"year","title":"21-day Worldschooling Austria Health & Wellness Retreat","nights":21,"regions":["Europe"],"per":"person","photo":"/images/land-trips/austria-wellness.webp","photoLabel":"Bad Gastein wellness", "years": {
+    {"slug":"austria-wellness","param":"year","title":"21-day Worldschooling Austria Health & Wellness Retreat","nights":21,"regions":["Europe"],"per":"person","photo":"/images/land-trips/austria-wellness.webp","photoLabel":"Salzburgerland wellness", "years": {
       2027: {"dates":"May 4–25, 2027","sortDate":"2027-05-04","price":"€1,802","departures":1} } },
     {"slug":"austria-summer","param":"year","title":"14-day Worldschooling Austrian Mountain Summer Retreat","nights":14,"regions":["Europe"],"per":"person","photo":"/images/land-trips/austria-summer.webp","photoLabel":"Austrian Alps in summer", "years": {
       2027: {"dates":"May 30 – Jul 11, 2027 · 3 sessions","sortDate":"2027-05-30","price":"€1,852","departures":3} } },
