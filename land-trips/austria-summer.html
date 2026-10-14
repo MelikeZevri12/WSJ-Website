@@ -88,7 +88,7 @@
 <section class="overview" id="overview" data-q="overview">
   <div class="wrap">
     <div class="overview-grid">
-      <div class="overview-media"><span>Trip photo</span></div>
+      <div class="overview-media"><img src="/images/land-trips/austria/group-at-mountain-chalet.webp" alt="Our worldschooling group at a mountain chalet"></div>
       <div>
         <div class="eyebrow">Overview</div>
         <h2 style="font-size:28px;line-height:1.25;margin-bottom:14px;" id="ovHeading"></h2>
@@ -200,7 +200,7 @@
 <!-- RESERVE (identical to the join section) -->
 <section id="bookCta">
   <div class="join-split">
-    <div class="photo-slot join-photo"><span style="color:#c7ccd1;padding:0 30px;">Group photo</span></div>
+    <div class="photo-slot join-photo"><img src="/images/land-trips/austria/group-at-gastein-waterfall.webp" alt="Our group at the Gastein Waterfall" loading="lazy"></div>
     <div class="join-content">
       <div class="join-text"><h2>Ready to join our group?</h2>
       <p class="join-text"></p></div>
@@ -243,7 +243,7 @@
 
 <section id="join">
   <div class="join-split">
-    <div class="photo-slot join-photo"><span style="color:#c7ccd1;padding:0 30px;">Group photo</span></div>
+    <div class="photo-slot join-photo"><img src="/images/land-trips/austria/group-on-alm-terrace.webp" alt="Our group on a mountain hut terrace" loading="lazy"></div>
     <div class="join-content">
       <div class="join-text"><h2>Ready to join our group?</h2>
       <p class="join-text" id="joinText"></p></div>
@@ -400,6 +400,60 @@ const ITINERARIES = { 2026: {"1": [{"type": "arrive", "title": "Arrival day & we
 
 
 // ---------- THEMES ----------
+
+// ---------- PHOTOS: photo label (as used in the data above) -> [file in /images/land-trips/austria/, alt text] ----------
+// Any label not listed here shows the "Photo: …" placeholder instead.
+const PHOTO_DIR = '/images/land-trips/austria/';
+const PHOTOS = {
+  'Gastein Waterfall': ['group-at-gastein-waterfall.webp', 'Our group at the Gastein Waterfall'],
+  'Group photo on the peak': ['group-on-the-peak.webp', 'The whole group on a mountain'],
+  'Liechtensteinklamm Gorge': ['liechtensteinklamm-gorge.webp', 'The Liechtensteinklamm gorge'],
+  'Thermal spa': ['felsentherme.webp', 'Felsentherme thermal spa'],
+  'Burg Hohenwerfen': ['group-in-castle-courtyard.webp', 'Our group in a castle courtyard'],
+  'Mountain karts': ['mountain-carts.webp', 'Riding mountain carts downhill'],
+  'Mountain carts': ['mountain-carts.webp', 'Riding mountain carts downhill'],
+  'Resort pool': ['resort-pool.webp', 'The resort’s indoor pool'],
+  'Breakfast buffet': ['restaurant.webp', 'The resort restaurant'],
+  'Sun terrace': ['resort-balcony.webp', 'Looking out from the resort'],
+  'Group dinner': ['group-toast.webp', 'Raising a glass together'],
+  'Gnome hike & river plunge': ['river-rocks.webp', 'Resting on the rocks by a mountain river'],
+  'Geisterberg mountain playground': ['geisterberg-playground.webp', 'Geisterberg mountain playground'],
+  'Stubnerkogel suspension bridge': ['suspension-bridge.webp', 'Our group on the Stubnerkogel suspension bridge'],
+  'Family rafting': ['raft-on-the-lake.webp', 'Families on a raft on a mountain lake'],
+  'Alpentherme Gastein': ['alpentherme.webp', 'Alpentherme Gastein'],
+  'Eisriesenwelt ice caves': ['ice-caves.webp', 'Inside the Eisriesenwelt ice caves'],
+  'Pig roast at Bellevue Alm': ['bellevue-alm-terrace.webp', 'The terrace at Bellevue Alm'],
+  'Zell am See lake': ['swimming-lake.webp', 'A mountain swimming lake'],
+  'Farmhouse donuts': ['farmhouse.webp', 'A traditional Austrian farmhouse'],
+  'Gastein Valley': ['bad-gastein-town.webp', 'Bad Gastein in summer'],
+  'Studio apartment': ['room-studio.webp', 'A studio apartment at the resort'],
+  '1-bedroom apartment': ['room-1-bedroom.webp', 'The bedroom of a 1-bedroom apartment'],
+  '2-bedroom, 2-bath suite': ['room-2-bedroom-suite.webp', 'The kitchen and dining area of a 2-bedroom suite'],
+  'Breakfast': ['breakfast-with-a-view.webp', 'Breakfast by the window'],
+  'Lunch': ['mountain-terrace-lunch.webp', 'Lunch on a mountain terrace'],
+  'Dinner': ['restaurant-bar.webp', 'The resort restaurant and bar'],
+  'Werfen Ice Caves': ['ice-caves.webp', 'Inside the Werfen ice caves'],
+  'Thermal spas': ['alpentherme.webp', 'Alpentherme Gastein'],
+  'Mountain-top playgrounds': ['mountain-top-playground.webp', 'A mountain-top playground'],
+  'Summer solstice': ['solstice-bonfire.webp', 'A solstice bonfire'],
+  'Kids in the flower fields': ['flower-fields.webp', 'A mother and daughter in the flower fields'],
+  'Group hike': ['group-hike.webp', 'The group hiking across alpine meadows'],
+  'Families at the lake': ['wading-in-the-lake.webp', 'Families wading in a mountain lake'],
+  'Ice cave entrance': ['kids-on-cliff-path.webp', 'Kids on a cliffside mountain path'],
+  'Mountain-top playground': ['playground-tower.webp', 'A mountain-top playground tower'],
+  'Paragliding': ['paragliding.webp', 'Tandem paragliding over the valley'],
+  'Welcome dinner': ['group-dinner-cozy.webp', 'Dinner together in a cozy Austrian restaurant'],
+  'Gold panning': ['gold-panning.webp', 'Panning for gold in the river'],
+  'Resort thermal spa': ['resort-spa.webp', 'The resort’s thermal spa'],
+  'Sportgastein valley': ['sportgastein-hike.webp', 'Hiking in the Sportgastein valley'],
+  'Solstice bonfires': ['solstice-bonfire.webp', 'A solstice bonfire'],
+  'Archery at the resort': ['archery.webp', 'Archery'],
+};
+function photoHTML(label){
+  const p = PHOTOS[label];
+  return p ? `<img src="${PHOTO_DIR}${p[0]}" alt="${p[1]}" loading="lazy">` : `<span>Photo: ${label}</span>`;
+}
+
 // ---------- THEMES: every land trip gets its own colors ----------
 // primary = buttons & links · accent = badges, lines, highlights · dark = hero, facts bar, dark sections
 // background/surface = page + cards · highlight = prices, gold details
@@ -484,7 +538,7 @@ function renderStatic(){
   document.getElementById('ovStory').innerHTML = ov.story.map(p => `<p class="lede">${p}</p>`).join('') +
     (ov.hook.length ? `<p class="lede" style="font-style:italic;">${ov.hook.join('<br>')}</p>` : '');
   document.getElementById('highlights').innerHTML = ov.highlights.map(h =>
-    `<div class="hl-card"><div class="photo-slot"><span>Photo: ${h.t}</span></div><h4>${h.t}</h4><p>${h.d}</p></div>`).join('');
+    `<div class="hl-card"><div class="photo-slot">${photoHTML(h.t)}</div><h4>${h.t}</h4><p>${h.d}</p></div>`).join('');
   const C = TRIP.community;
   document.getElementById('leadersText').textContent = C.leaders;
   document.getElementById('pillars').innerHTML = C.pillars.map((p, i) =>
@@ -494,19 +548,19 @@ function renderStatic(){
   document.getElementById('fbJoin').innerHTML = C.facebookGroup ? `<span>Meet other worldschooling families before you go.</span><a class="btn btn-outline" href="${C.facebookGroup}" target="_blank" rel="noopener">Join our Worldschooling Facebook Group</a>` : '';
   document.querySelectorAll('.photo-strip[data-strip]').forEach(el => { const ph = (TRIP.photoStrips || [])[+el.dataset.strip] || [];
     el.style.display = ph.length ? '' : 'none';
-    el.innerHTML = ph.map(x => `<div class="photo-slot">${x.photo ? `<img src="${x.photo}" alt="${x.label}" loading="lazy">` : `<span>Photo: ${x.label}</span>`}</div>`).join(''); });
+    el.innerHTML = ph.map(x => `<div class="photo-slot">${x.photo ? `<img src="${x.photo}" alt="${x.label}" loading="lazy">` : photoHTML(x.label)}</div>`).join(''); });
   const MORE = TRIP.overview.more || [];
   document.getElementById('moreWrap').style.display = MORE.length ? '' : 'none';
   document.getElementById('moreList').innerHTML = MORE.map(m => `<li>${m}</li>`).join('');
   const ST = TRIP.stay;
   const V = ST && ST.valley;
-  document.getElementById('valleyCard').innerHTML = V ? `<div class="photo-slot"><span>Photo: Gastein Valley</span></div><div class="vc-body"><h4>${V.title}</h4>${V.text.map(t => `<p>${t}</p>`).join('')}${V.small ? `<p class="vc-small">${V.small}</p>` : ''}</div>` : '';
+  document.getElementById('valleyCard').innerHTML = V ? `<div class="photo-slot">${photoHTML('Gastein Valley')}</div><div class="vc-body"><h4>${V.title}</h4>${V.text.map(t => `<p>${t}</p>`).join('')}${V.small ? `<p class="vc-small">${V.small}</p>` : ''}</div>` : '';
   document.getElementById('stays').dataset.empty = ST ? '' : '1';
   if(ST){
     document.getElementById('staysHeading').textContent = ST.heading;
     document.getElementById('staysIntro').textContent = ST.intro;
     document.getElementById('roomGrid').innerHTML = ST.rooms.map(r => `<div class="room-card" data-room="${r.key}"><span class="rc-mine">Your room</span>
-      <div class="photo-slot"><span>Photo: ${r.name}</span></div><div class="rc-body"><h4>${r.name}</h4><div class="rc-for">${r.fits}</div>
+      <div class="photo-slot">${photoHTML(r.name)}</div><div class="rc-body"><h4>${r.name}</h4><div class="rc-for">${r.fits}</div>
       <ul>${r.features.map(f => `<li>${f}</li>`).join('')}</ul></div></div>`).join('');
     document.getElementById('amenList').innerHTML = ST.amenities.map(a => `<li>${a}</li>`).join('');
   }
@@ -515,7 +569,7 @@ function renderStatic(){
   if(ML){
     document.getElementById('foodHeading').textContent = ML.heading;
     document.getElementById('foodIntro').textContent = ML.intro;
-    document.getElementById('mealGrid').innerHTML = ML.items.map(m => `<div class="meal-card"><div class="photo-slot"><span>Photo: ${m.t}</span></div>
+    document.getElementById('mealGrid').innerHTML = ML.items.map(m => `<div class="meal-card"><div class="photo-slot">${photoHTML(m.t)}</div>
       <div class="mc-body"><h4>${m.t}<span class="mc-tag ${m.tag === 'On your own' ? 'off' : ''}">${m.tag}</span></h4><p>${m.d}</p></div></div>`).join('');
     document.getElementById('hbCard').innerHTML = `<div><h4>Half-Board</h4><p>${ML.halfBoardText}</p><p style="color:var(--muted);font-size:13px;">${ML.drinks}</p></div>
       <div class="hb-prices"><div class="hb-price">Adults<strong id="hbAdult">${money(HB.adult)}</strong>per day</div><div class="hb-price">Kids 5–14<strong id="hbKid">${money(HB.kid)}</strong>per day</div><div class="hb-price">Kids 4 & under<strong>Free</strong>&nbsp;</div></div>`;
@@ -594,7 +648,7 @@ function renderItinerary(S){
       if(i === last && bi < blocks.length - 1 && type === 'depart'){ title = 'Last day of Session ' + b.s.n; text = text.replace('time for goodbyes', 'goodbyes to the families heading home. You’re staying on'); }
       const date = addDays(start, i);
       const tag = type === 'outing' ? '🚌 Group outing' : type === 'free' ? '<span class="free">☀ Free day</span>' : type === 'arrive' ? '🧳 Arrival day' : '👋 Last day';
-      return `<div class="stop"><div class="stop-card"><div class="stop-card-inner"><div class="photo-slot stop-photo"><span>Photo: ${d.photoLabel}</span></div><div class="stop-content">
+      return `<div class="stop"><div class="stop-card"><div class="stop-card-inner"><div class="photo-slot stop-photo">${photoHTML(d.photoLabel)}</div><div class="stop-content">
         <div class="stop-day">Day ${i + 1} · ${WD[date.getDay()]}, ${short(date)}</div><div class="stop-title">${title}</div>
         <div class="stop-meta"><span>${tag}</span>${change}</div><p class="stop-desc">${text}</p></div></div></div></div>`; }).join('');
     return `<details class="sess-block" ${bi === 0 ? 'open' : ''}><summary><span class="sb-n">Session ${b.s.n}</span><span class="sb-d">${span(b.s.start, b.s.end)} · ${NIGHTS_PER_SESSION} nights</span></summary>
