@@ -3,7 +3,8 @@
 //   - a WeTravel UUID  -> the button opens WeTravel's checkout (embed_checkout.js popup)
 //   - a full https:// link -> the button opens that page in a new tab
 //   - nothing listed   -> the button becomes "Join the Waitlist" (js/waitlist.js popup)
-// To open bookings for a trip/year, add its UUID (or link) below. Nothing else needs changing.
+// To open bookings for a trip/year, add its UUID (or link) below. Nothing else needs changing
+// (every land trip page already loads WeTravel's embed_checkout.js after this file).
 (function () {
   const BOOKING = {
     //  page name        year (or "all" = every departure)
@@ -12,7 +13,9 @@
     'austria-fall':   { 2027: '50555278' },
     'austria-winter': { 2026: '66397481', 2027: '64756176' },
     'dude-ranch':     { 2027: 'https://secure.thinkreservations.com/veebar/reservations/availability?startDate=2027-09-05&endDate=2027-09-11&numberOfAdults=2&numberOfChildren=0&customerGroup=group_block_code&groupBlockCode=WORLDSCHOOL2027' },
-    // Egypt & Jordan, Galápagos, New Zealand, Xcaret, Austria Wellness: no UUIDs yet, so waitlist only
+    'new-zealand':    { 2027: '5999768167' },
+    'galapagos':      { 2027: '8101960041' },
+    // Egypt & Jordan, Xcaret, Austria Wellness: no UUIDs yet, so waitlist only
   };
   const WETRAVEL_ENV = 'https://everyavenuetravel.wetravel.com', WETRAVEL_UID = '1084781';
 

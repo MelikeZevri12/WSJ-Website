@@ -58,7 +58,7 @@
 <section class="overview" id="overview" data-q="overview">
   <div class="wrap">
     <div class="overview-grid">
-      <div class="overview-media"><span>Trip photo</span></div>
+      <div class="overview-media"><img src="/images/land-trips/galapagos/family-with-boobies.webp" alt="A family watching blue-footed boobies by the sea"></div>
       <div>
         <div class="eyebrow">Overview</div>
         <h2 style="font-size:28px;line-height:1.25;margin-bottom:14px;" id="ovHeading"></h2>
@@ -165,7 +165,7 @@
 
 <section id="join">
   <div class="join-split">
-    <div class="photo-slot join-photo"><span style="color:#c7ccd1;padding:0 30px;">Group photo</span></div>
+    <div class="photo-slot join-photo"><img src="/images/land-trips/galapagos/group-on-the-trail.webp" alt="Our group on a Galápagos trail" loading="lazy"></div>
     <div class="join-content">
       <div class="join-text"><h2>Ready to join our group?</h2>
       <p id="joinText"></p></div>
@@ -260,6 +260,46 @@ const TRIP = {
   },
   faq: [],
 };
+
+
+// ---------- PHOTOS: photo label (as used in the data above) -> [file in /images/land-trips/galapagos/, alt text] ----------
+// Any label not listed here shows the "Photo: …" placeholder instead.
+const PHOTO_DIR = '/images/land-trips/galapagos/';
+const PHOTOS = {
+  'A front-row seat to Galápagos wildlife': ['giant-tortoise.webp', 'A giant tortoise'],
+  'Snorkeling in crystal-clear waters': ['snorkeling-with-a-penguin.webp', 'Snorkeling next to a Galápagos penguin'],
+  'Volcanic landscapes beyond imagination': ['volcanic-coast.webp', 'Standing on the volcanic coast'],
+  'Active adventures by land and sea': ['panga-boat.webp', 'Families on a boat trip'],
+  'Encounters beneath the surface': ['turtle-and-snorkeler.webp', 'Snorkeling beside a sea turtle'],
+  'Learning through immersive exploration': ['lava-channel.webp', 'Looking into a lava channel with the naturalist guide'],
+  'Island life & coastal culture': ['sea-lion-in-town.webp', 'A sea lion napping in town'],
+  'Relax, connect & learn together': ['group-on-the-trail.webp', 'Our group on a Galápagos trail'],
+  'Sea lions at La Lobería': ['sea-lion-pup-la-loberia.webp', 'Meeting a sea lion pup on the beach'],
+  'Kicker Rock': ['blue-footed-boobies.webp', 'Blue-footed boobies on the rocks'],
+  'Giant tortoises in the highlands': ['giant-tortoises.webp', 'Giant tortoises'],
+  'Pinnacle Rock, Bartolomé': ['lava-field-view.webp', 'Looking out over a volcanic landscape'],
+  'Kayaks in Tortuga Bay': ['sea-lion-on-the-rocks.webp', 'Relaxing on the rocks beside a sea lion'],
+  'Los Túneles lava arches': ['reef-underwater.webp', 'Snorkeling over the reef'],
+  'Concha y Perla Lagoon': ['concha-y-perla-dock.webp', 'Ready to snorkel at the lagoon dock'],
+  'Aerial view of the islands': ['national-park-sign.webp', 'At the Galápagos National Park sign'],
+  'Sea lion on the beach': ['sea-lion-pup.webp', 'A sea lion pup on the rocks'],
+  'Kids snorkeling': ['snorkeling-with-a-sea-lion.webp', 'Snorkeling with a sea lion'],
+  'Blue-footed booby': ['blue-footed-booby.webp', 'Blue-footed boobies'],
+  'Giant tortoise': ['tortoise-close-up.webp', 'A giant tortoise up close'],
+  'Sea turtle underwater': ['swimming-with-a-turtle.webp', 'Swimming with a sea turtle'],
+  'Marine iguanas': ['marine-iguana.webp', 'A marine iguana by the surf'],
+  'Bartolomé viewpoint': ['sea-lion-and-iguanas.webp', 'A sea lion among marine iguanas'],
+  'Kayaking Tortuga Bay': ['swimming-marine-iguana.webp', 'A marine iguana swimming'],
+  'Galápagos penguin': ['galapagos-penguin.webp', 'A Galápagos penguin'],
+  'Puerto Villamil beach': ['sea-lion-on-a-bench.webp', 'A sea lion asleep on a bench'],
+  'Families on the boat': ['panga-boat.webp', 'Families on a boat trip'],
+  'Sunset on Isabela': ['by-the-sea.webp', 'By the sea with blue-footed boobies'],
+  'Group photo': ['group-on-the-trail.webp', 'Our group on a Galápagos trail'],
+};
+function photoHTML(label){
+  const p = PHOTOS[label];
+  return p ? `<img src="${PHOTO_DIR}${p[0]}" alt="${p[1]}" loading="lazy">` : `<span>Photo: ${label}</span>`;
+}
 
 // ---------- THEMES: every land trip gets its own colors ----------
 // primary = buttons & links · accent = badges, lines, highlights · dark = hero, facts bar, dark sections
@@ -451,7 +491,7 @@ function renderStatic(){
     ov.story.map(p => `<p class="lede">${p}</p>`).join('') +
     (ov.hook.length ? `<p class="lede" style="font-style:italic;">${ov.hook.join('<br>')}</p>` : '');
   document.getElementById('highlights').innerHTML = ov.highlights.map(h =>
-    `<div class="hl-card"><div class="photo-slot"><span>Photo</span></div><h4>${h.t}</h4><p>${h.d}</p></div>`).join('');
+    `<div class="hl-card"><div class="photo-slot">${photoHTML(h.t)}</div><h4>${h.t}</h4><p>${h.d}</p></div>`).join('');
   document.getElementById('leadersText').textContent = TRIP.community.leaders;
   document.getElementById('fbJoin').innerHTML = TRIP.community.facebookGroup ? `<span>Meet other worldschooling families before you go.</span><a class="btn btn-outline" href="${TRIP.community.facebookGroup}" target="_blank" rel="noopener">Join our Worldschooling Facebook Group</a>` : '';
   document.getElementById('pillars').innerHTML = TRIP.community.pillars.map((p, i) =>
@@ -459,7 +499,7 @@ function renderStatic(){
   if(TRIP.learning.length) document.getElementById('learningBody').innerHTML = TRIP.learning.map(c => `<h4>${c.t}</h4><ul>${c.items.map(i => `<li>${i}</li>`).join('')}</ul>`).join('');
   document.querySelectorAll('.photo-strip[data-strip]').forEach(el => { const ph = (TRIP.photoStrips || [])[+el.dataset.strip] || [];
     el.style.display = ph.length ? '' : 'none';
-    el.innerHTML = ph.map(x => `<div class="photo-slot">${x.photo ? `<img src="${x.photo}" alt="${x.label}" loading="lazy">` : `<span>Photo: ${x.label}</span>`}</div>`).join(''); });
+    el.innerHTML = ph.map(x => `<div class="photo-slot">${x.photo ? `<img src="${x.photo}" alt="${x.label}" loading="lazy">` : photoHTML(x.label)}</div>`).join(''); });
   document.getElementById('inclYes').innerHTML = TRIP.included.map(i => `<li>${i}</li>`).join('');
 
   // what you'll do
@@ -475,7 +515,7 @@ function renderStatic(){
     document.getElementById('itinNote').innerHTML = note ? `<div class="itin-note"><span class="in-icon">ⓘ</span><span>${note}</span></div>` : '';
     document.getElementById('itinBody').innerHTML = (it.state === 'final' || it.state === 'sample') ? it.items.map(s => {
       const m = s.meals || {}, ml = s.mealsText ? [s.mealsText] : [m.b && 'Breakfast', m.l && 'Lunch', m.d && 'Dinner'].filter(Boolean);
-      const ph = s.photo ? `<img src="${s.photo}" alt="${s.photoLabel || s.title}" loading="lazy">` : `<span>Photo: ${s.photoLabel || s.title}</span>`;
+      const ph = s.photo ? `<img src="${s.photo}" alt="${s.photoLabel || s.title}" loading="lazy">` : photoHTML(s.photoLabel || s.title);
       return `<div class="stop"><div class="stop-card"><div class="stop-card-inner"><div class="photo-slot stop-photo">${ph}</div><div class="stop-content">
         <div class="stop-day">Day ${s.days}</div><div class="stop-title">${s.title}</div>
         <div class="stop-meta">${s.stay ? `<span>🛏 ${s.stay}</span>` : `<span>🛫 Departure day</span>`}<span>🍽 ${ml.length ? ml.join(', ') + ' included' : 'Meals on your own'}</span></div>
@@ -654,5 +694,6 @@ renderDeparture();
 <script src="/js/nav.js?v=20261013"></script>
 <script src="/js/waitlist.js"></script>
 <script src="/js/booking.js"></script>
+<script src="https://cdn.wetravel.com/widgets/embed_checkout.js"></script>
 </body>
 </html>
