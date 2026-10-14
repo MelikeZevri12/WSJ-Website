@@ -89,9 +89,9 @@ a.press-logo:hover{opacity:1;background:var(--white);}
 .newsletter-form input{font-size:16px;}
 .contact-channel{font-size:18px;}
 .contact-intro{font-size:18px !important;}
-.form-row label{font-size:14px;}
+.form-row label, .form-row legend{font-size:14px;}
 .form-row select, .form-row textarea, .form-row input[type="text"], .form-row input[type="email"]{font-size:16px;}
-.reason-chip{font-size:15px;}
+.reason-chip, .reason-chips .reason-chip{font-size:15px;}
 .faq-category-label{font-size:14px;}
 .faq-item summary{font-size:18px;padding:19px 0;gap:16px;}
 .faq-item summary:after{font-size:24px;}

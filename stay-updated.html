@@ -236,32 +236,36 @@
         <a href="https://app.zipchat.ai/iframe/?widget_token=lbcwQPr6HjDbhwzA3XOo" target="_blank" rel="noopener" class="contact-channel"><span class="cc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span>Connect via ChatBot</a>
       </div>
     </div>
-    <div class="contact-form">
+    <form class="contact-form" novalidate>
       <div class="form-row-split">
         <div class="form-row">
-          <label>Your Name</label>
-          <input type="text" placeholder="Jane Smith">
+          <label for="cf-name">Your Name</label>
+          <input type="text" id="cf-name" name="fullName" placeholder="Jane Smith" autocomplete="name" maxlength="120" required>
         </div>
         <div class="form-row">
-          <label>Your Email</label>
-          <input type="email" placeholder="you@email.com">
+          <label for="cf-email">Your Email</label>
+          <input type="email" id="cf-email" name="email" placeholder="you@email.com" autocomplete="email" maxlength="200" required>
         </div>
       </div>
-      <div class="form-row">
-        <label>Reason for contacting us</label>
+      <fieldset class="form-row">
+        <legend>Reason for contacting us</legend>
         <div class="reason-chips">
-          <button type="button" class="reason-chip active">Booking a Trip</button>
-          <button type="button" class="reason-chip">Partnership</button>
-          <button type="button" class="reason-chip">Press &amp; Media</button>
-          <button type="button" class="reason-chip">General Question</button>
+          <label class="reason-chip"><input type="radio" name="reason" value="cruise" required>Cruise Booking</label>
+          <label class="reason-chip"><input type="radio" name="reason" value="land-trip">Land Trip</label>
+          <label class="reason-chip"><input type="radio" name="reason" value="partner">Partnership</label>
+          <label class="reason-chip"><input type="radio" name="reason" value="press">Press &amp; Media</label>
+          <label class="reason-chip"><input type="radio" name="reason" value="jobs">Work With Us</label>
+          <label class="reason-chip"><input type="radio" name="reason" value="general">General Question</label>
         </div>
-      </div>
+      </fieldset>
       <div class="form-row">
-        <label>Your Message</label>
-        <textarea placeholder="Tell us a bit about what you're looking for..."></textarea>
+        <label for="cf-message">Your Message</label>
+        <textarea id="cf-message" name="message" placeholder="Tell us a bit about what you're looking for..." maxlength="5000" required></textarea>
       </div>
-      <button type="button" class="btn btn-primary">Send A Message</button>
-    </div>
+      <label class="wl-hp" aria-hidden="true">Leave this empty<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+      <button type="submit" class="btn btn-primary">Send A Message</button>
+      <p class="nl-msg cf-msg" role="status"></p>
+    </form>
   </div>
 </section>
 
@@ -291,19 +295,12 @@ document.querySelectorAll('.trip-filter-row').forEach((row) => {
     });
   });
 });
-document.querySelectorAll('.reason-chips').forEach((group) => {
-  group.querySelectorAll('.reason-chip').forEach((chip) => {
-    chip.addEventListener('click', () => {
-      group.querySelectorAll('.reason-chip').forEach((c) => c.classList.remove('active'));
-      chip.classList.add('active');
-    });
-  });
-});
 </script>
 
 <script src="/js/trips.js?v=20261013"></script>
 <script src="/js/trip-strips.js?v=20261013"></script>
 <script src="/js/waitlist.js" defer></script>
+<script src="/js/contact-form.js" defer></script>
 <script src="/js/nav.js?v=20261013"></script>
 </body>
 </html>

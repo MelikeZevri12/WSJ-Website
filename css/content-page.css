@@ -203,7 +203,7 @@ section.dark-section .section-head .eyebrow{color:var(--gold);}
 .contact-channel .cc-icon svg{width:13px;height:13px;}
 .contact-form{background:var(--white);border-radius:4px;border:1px solid var(--line);border-top:4px solid var(--green);padding:32px;box-shadow:0 16px 36px rgba(21,34,48,0.12);}
 .form-row{margin-bottom:16px;}
-.form-row label{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:6px;}
+.form-row label, .form-row legend{display:block;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin-bottom:6px;}
 .form-row select, .form-row textarea, .form-row input[type="text"], .form-row input[type="email"]{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:4px;background:var(--white);font-family:'Titillium Web',sans-serif;font-size:14px;color:var(--dark);box-sizing:border-box;}
 .form-row textarea{min-height:110px;resize:vertical;}
 .form-row-split{display:flex;gap:16px;margin-bottom:16px;}
@@ -212,6 +212,15 @@ section.dark-section .section-head .eyebrow{color:var(--gold);}
 .reason-chip{padding:9px 16px;border-radius:4px;border:1.5px solid var(--line);background:var(--white);font-family:'Titillium Web',sans-serif;font-weight:700;font-size:12.5px;color:var(--dark);cursor:pointer;transition:background .12s ease,border-color .12s ease,color .12s ease;}
 .reason-chip:hover{border-color:var(--green);}
 .reason-chip.active{background:var(--green-dark);border-color:var(--green-dark);color:var(--white);}
+/* Contact form: the chips are radio buttons (one reason = one inbox, see js/contact-form.js) */
+fieldset.form-row{border:0;padding:0;margin:0 0 16px;min-width:0;}
+fieldset.form-row legend{padding:0;}
+.reason-chips .reason-chip{display:inline-block;position:relative;margin:0;text-transform:none;letter-spacing:0;font-size:12.5px;color:var(--dark);}
+.reason-chip input{position:absolute;opacity:0;width:1px;height:1px;margin:0;pointer-events:none;}
+.reason-chips .reason-chip:has(input:checked){background:var(--green-dark);border-color:var(--green-dark);color:var(--white);}
+.reason-chip:has(input:focus-visible){outline:2px solid var(--green);outline-offset:2px;}
+.reason-chips .reason-chip.active{color:var(--white);}
+.contact-form .cf-msg{text-align:left;margin-top:12px;font-size:14.5px;}
 /* FAQ */
 .faq-category-label{font-family:'Titillium Web',sans-serif;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--green-dark);margin:28px 0 6px;}
 .faq-category-label:first-child{margin-top:0;}
