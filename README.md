@@ -14,6 +14,7 @@
 | Land trip booking: WeTravel UUIDs / booking links per trip and year (no UUID = waitlist) | `js/booking.js` |
 | Waitlist popup (land trips) | `js/waitlist.js` |
 | Zipchat chat bubble + "Connect via ChatBot" links (loaded by the footer) | `js/chatbot.js` |
+| Newsletter (Moosend via the Google Apps Script): Sign Up boxes + every form also subscribes (loaded by the footer) | `js/newsletter.js` |
 | "Read More" article on the Cruises / Land Trips pages | `about-our-trips.html` |
 | Roadmap page ("Vote Now" links): ProductLift boards | `roadmap.html` |
 

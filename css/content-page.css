@@ -191,6 +191,10 @@ section.dark-section .section-head .eyebrow{color:var(--gold);}
 .update-card .btn{width:100%;text-align:center;}
 .newsletter-form{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:auto;}
 .newsletter-form input{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:4px;background:var(--white);font-family:'Titillium Web',sans-serif;font-size:13px;text-align:center;box-sizing:border-box;}
+.nl-msg{margin:8px 0 0;font-size:13.5px;line-height:1.4;text-align:center;min-height:0;}
+.nl-msg:empty{display:none;}
+.nl-msg.nl-ok{color:var(--green-dark);font-weight:700;}
+.nl-msg.nl-err{color:var(--sunset-1);}
 /* CONTACT */
 .contact-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:56px;align-items:start;}
 .contact-channels{display:flex;flex-direction:column;gap:16px;margin-top:26px;}
