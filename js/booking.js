@@ -15,7 +15,9 @@
     'dude-ranch':     { 2027: 'https://secure.thinkreservations.com/veebar/reservations/availability?startDate=2027-09-05&endDate=2027-09-11&numberOfAdults=2&numberOfChildren=0&customerGroup=group_block_code&groupBlockCode=WORLDSCHOOL2027' },
     'new-zealand':    { 2027: '5999768167' },
     'galapagos':      { 2027: '8101960041' },
-    // Egypt & Jordan, Xcaret, Austria Wellness: no UUIDs yet, so waitlist only
+    'egypt-jordan':   { 2027: '44398947' },
+    'austria-wellness': { 2027: '21359722' },
+    // Xcaret: no UUID yet, so waitlist only
   };
   const WETRAVEL_ENV = 'https://everyavenuetravel.wetravel.com', WETRAVEL_UID = '1084781';
 

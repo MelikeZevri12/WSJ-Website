@@ -49,7 +49,7 @@
 <section class="overview" id="overview" data-q="overview">
   <div class="wrap">
     <div class="overview-grid">
-      <div class="overview-media"><span>Trip photo</span></div>
+      <div class="overview-media"><img src="/images/land-trips/egypt-jordan/sphinx-and-pyramids.webp" alt="The Sphinx and the Pyramids of Giza"></div>
       <div>
         <div class="eyebrow">Overview</div>
         <h2 style="font-size:28px;line-height:1.25;margin-bottom:14px;" id="ovHeading"></h2>
@@ -153,7 +153,7 @@
 
 <section id="join">
   <div class="join-split">
-    <div class="photo-slot join-photo"><span style="color:#c7ccd1;padding:0 30px;">Group photo</span></div>
+    <div class="photo-slot join-photo"><img src="/images/land-trips/egypt-jordan/amman-citadel.webp" alt="A group at the Amman Citadel" loading="lazy"></div>
     <div class="join-content">
       <div class="join-text"><h2>Ready to join our group?</h2>
       <p id="joinText"></p></div>
@@ -242,6 +242,41 @@ const TRIP = {
   },
   faq: [],
 };
+
+
+// ---------- PHOTOS: photo label (as used on this page) -> [file in /images/land-trips/egypt-jordan/, alt text] ----------
+// Any label not listed here shows the "Photo: …" placeholder instead.
+const PHOTO_DIR = '/images/land-trips/egypt-jordan/';
+const PHOTOS = {
+  'Giza Pyramids & the Sphinx': ['giza-pyramid.webp', 'Smiling in front of a pyramid at Giza'],
+  'Overnight sleeper train': ['sleeper-train.webp', 'Kids playing cards in a sleeper train cabin'],
+  'Aswan & Nubian culture': ['aswan-market-street.webp', 'A colorful market street in Aswan'],
+  'Three nights on the Nile': ['felucca-on-the-nile.webp', 'Relaxing on a felucca on the Nile'],
+  'Luxor & the Valley of the Kings': ['hatshepsut-temple.webp', 'Walking through Hatshepsut’s Temple in Luxor'],
+  'Petra & Wadi Rum': ['petra-monastery-group.webp', 'A group in front of the Monastery at Petra'],
+  'Travel with built-in friends': ['temple-visit.webp', 'Friends exploring an Egyptian temple'],
+  'Two countries, zero logistics': ['airport.webp', 'A bright airport departure hall'],
+  'Your family, your pace': ['aswan-nile-view.webp', 'A view over the Nile in Aswan'],
+  'Cairo at dusk': ['cairo-citadel-mosque.webp', 'The Muhammad Ali Mosque in Cairo'],
+  'The Pyramids of Giza': ['pyramids-of-giza.webp', 'Standing between the Pyramids of Giza'],
+  'Khan el-Khalili Bazaar': ['aswan-market-street.webp', 'A colorful market street'],
+  'Philae Temple': ['philae-temple.webp', 'Walking through Philae Temple'],
+  'Felucca on the Nile': ['felucca-on-the-nile.webp', 'Relaxing on a felucca on the Nile'],
+  'Kom Ombo Temple': ['kom-ombo-temple.webp', 'Kom Ombo Temple'],
+  'Karnak Temple': ['karnak-temple.webp', 'The giant columns of Karnak Temple'],
+  'Valley of the Kings': ['hatshepsut-temple.webp', 'Hatshepsut’s Temple on Luxor’s West Bank'],
+  'Home-cooked Egyptian meal': ['nubian-home-meal.webp', 'Sharing a home-cooked meal with a local family'],
+  'Amman skyline': ['downtown-amman.webp', 'Downtown Amman'],
+  'Amman Citadel': ['amman-citadel.webp', 'A group at the Amman Citadel'],
+  'Mount Nebo': ['dana-canyon-steps.webp', 'Climbing steps through a sandstone canyon'],
+  'The Treasury, Petra': ['petra-monastery-group.webp', 'A group in front of the Monastery at Petra'],
+  'Jeep in Wadi Rum': ['wadi-rum-dunes.webp', 'Footprints across the red dunes of Wadi Rum'],
+  'Farewell': ['great-pyramid.webp', 'One last look at the Great Pyramid'],
+};
+function photoHTML(label){
+  const p = PHOTOS[label];
+  return p ? `<img src="${PHOTO_DIR}${p[0]}" alt="${p[1]}" loading="lazy">` : `<span>Photo: ${label}</span>`;
+}
 
 // ---------- THEMES: every land trip gets its own colors ----------
 // primary = buttons & links · accent = badges, lines, highlights · dark = hero, facts bar, dark sections
@@ -341,7 +376,7 @@ function renderStatic(){
     ov.story.map(p => `<p class="lede">${p}</p>`).join('') +
     (ov.hook.length ? `<p class="lede" style="font-style:italic;">${ov.hook.join('<br>')}</p>` : '');
   document.getElementById('highlights').innerHTML = ov.highlights.map(h =>
-    `<div class="hl-card"><div class="photo-slot"><span>Photo</span></div><h4>${h.t}</h4><p>${h.d}</p></div>`).join('');
+    `<div class="hl-card"><div class="photo-slot">${photoHTML(h.t)}</div><h4>${h.t}</h4><p>${h.d}</p></div>`).join('');
   document.getElementById('leadersText').textContent = TRIP.community.leaders;
   document.getElementById('fbJoin').innerHTML = TRIP.community.facebookGroup ? `<span>Meet other worldschooling families before you go.</span><a class="btn btn-outline" href="${TRIP.community.facebookGroup}" target="_blank" rel="noopener">Join our Worldschooling Facebook Group</a>` : '';
   document.getElementById('pillars').innerHTML = TRIP.community.pillars.map((p, i) =>
@@ -362,7 +397,7 @@ function renderStatic(){
     document.getElementById('itinNote').innerHTML = note ? `<div class="itin-note"><span class="in-icon">ⓘ</span><span>${note}</span></div>` : '';
     document.getElementById('itinBody').innerHTML = (it.state === 'final' || it.state === 'sample') ? it.items.map(s => {
       const m = s.meals || {}, ml = [m.b && 'Breakfast', m.l && 'Lunch', m.d && 'Dinner'].filter(Boolean);
-      const ph = s.photo ? `<img src="${s.photo}" alt="${s.photoLabel || s.title}" loading="lazy">` : `<span>Photo: ${s.photoLabel || s.title}</span>`;
+      const ph = s.photo ? `<img src="${s.photo}" alt="${s.photoLabel || s.title}" loading="lazy">` : photoHTML(s.photoLabel || s.title);
       return `<div class="stop"><div class="stop-card"><div class="stop-card-inner"><div class="photo-slot stop-photo">${ph}</div><div class="stop-content">
         <div class="stop-day">Day ${s.days}</div><div class="stop-title">${s.title}</div>
         <div class="stop-meta">${s.stay ? `<span>🛏 ${s.stay}</span>` : `<span>🛫 Departure day</span>`}<span>🍽 ${ml.length ? ml.join(', ') + ' included' : 'Meals on your own'}</span></div>

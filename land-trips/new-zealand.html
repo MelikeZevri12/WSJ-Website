@@ -98,6 +98,29 @@
     <div class="dep-picker mini-picker"><span class="mp-label">Showing:</span><select class="dep-select" aria-label="Choose your departure"></select></div>
     <div id="itinNote"></div>
     <div class="timeline" id="itinBody"></div>
+    <details class="photo-credits"><summary>Photo credits</summary><p>Some itinerary photos are from Wikimedia Commons, used under their free licenses:</p><ul>
+      <li>Auckland harbour: <a href="https://commons.wikimedia.org/wiki/File:Auckland_CBD_skyline_from_Waitemata_Harbour_entrance.jpg" target="_blank" rel="noopener">Pseudopanax at English Wikipedia</a>, Public domain</li>
+      <li>Hobbiton Movie Set: <a href="https://commons.wikimedia.org/wiki/File:Hobbit_Hole_--_Hobbiton_Movie_Set,_Matamata,_New_Zealand_2016_(50797357522).jpg" target="_blank" rel="noopener">Joe Ross from Lansing, Michigan</a>, CC BY-SA 2.0</li>
+      <li>Surf lesson at the Mount: <a href="https://commons.wikimedia.org/wiki/File:Mount_Maunganui_beach_06.jpg" target="_blank" rel="noopener">Panamitsu</a>, CC BY-SA 4.0</li>
+      <li>Redwood Forest: <a href="https://commons.wikimedia.org/wiki/File:Redwoods_Forest_Rotorua_12.jpg" target="_blank" rel="noopener">Panamitsu</a>, CC BY-SA 4.0</li>
+      <li>Pohutu Geyser: <a href="https://commons.wikimedia.org/wiki/File:Pohutu_Geyser,_New_Zealand.jpg" target="_blank" rel="noopener">DestinationFearFan</a>, CC BY-SA 4.0</li>
+      <li>Huka Falls: <a href="https://commons.wikimedia.org/wiki/File:Waikato_River_at_Huka_Falls_Bridge_(2026.02).jpg" target="_blank" rel="noopener">TNLHK</a>, CC BY-SA 4.0</li>
+      <li>Mount Victoria lookout: <a href="https://commons.wikimedia.org/wiki/File:Wellington.JPG" target="_blank" rel="noopener">Mandy Simpson</a>, CC BY-SA 3.0</li>
+      <li>Te Papa Museum: <a href="https://commons.wikimedia.org/wiki/File:Museum_of_New_Zealand_Te_Papa_Tongarewa_-_Wellington,_NZ_-_DSC09540-001.jpg" target="_blank" rel="noopener">Daderot</a>, CC0</li>
+      <li>Ferry through the Marlborough Sounds: <a href="https://commons.wikimedia.org/wiki/File:Picton_Harbour,_Marlborough_Sounds.jpg" target="_blank" rel="noopener">AnnWoolliams</a>, CC BY-SA 4.0</li>
+      <li>Abel Tasman coast: <a href="https://commons.wikimedia.org/wiki/File:Abel_Tasman_National_Park_beach_autumn.jpg" target="_blank" rel="noopener">Hector Garcia from Barcelona, Catalonia, Spain</a>, CC BY-SA 2.0</li>
+      <li>Punakaiki Pancake Rocks: <a href="https://commons.wikimedia.org/wiki/File:PancakeRocks_MC.jpg" target="_blank" rel="noopener">Christian Mehlführer</a>, CC BY-SA 3.0</li>
+      <li>Skyline gondola: <a href="https://commons.wikimedia.org/wiki/File:Skyline_Queenstown_Gondola.jpg" target="_blank" rel="noopener">Skyline Enterprises NZ</a>, CC BY-SA 4.0</li>
+      <li>Church of the Good Shepherd: <a href="https://commons.wikimedia.org/wiki/File:Church_of_the_Good_Shepherd,_Lake_Tekapo,_New_Zealand.jpg" target="_blank" rel="noopener">Jillianalma</a>, CC BY-SA 4.0</li>
+      <li>Christchurch Botanic Gardens: <a href="https://commons.wikimedia.org/wiki/File:Avon_River_-_Christchurch_Botanic_Gardens_-_Christchurch,_NZ_-_DSC00960.jpg" target="_blank" rel="noopener">Daderot</a>, CC0</li>
+      <li>Farewell: <a href="https://commons.wikimedia.org/wiki/File:Lake_Pukaki_20.jpg" target="_blank" rel="noopener">Krzysztof Golik</a>, CC BY-SA 4.0</li>
+      <li>Christchurch: <a href="https://commons.wikimedia.org/wiki/File:Tram,_Worcester_Street,outside_the_Christchurch_Art_Centre,_Christchurch.jpg" target="_blank" rel="noopener">AnnWoolliams</a>, CC BY-SA 4.0</li>
+      <li>Arrowtown: <a href="https://commons.wikimedia.org/wiki/File:St_Paul%27s,_Arrowtown,_Otago,_New_Zealand.jpg" target="_blank" rel="noopener">Bernard Spragg. NZ from Christchurch, New Zealand</a>, Public domain</li>
+      <li>Wellington cable car: <a href="https://commons.wikimedia.org/wiki/File:Car_2_Wellington_Cable_Car,_2013_(01).jpg" target="_blank" rel="noopener">Bahnfrend</a>, CC BY-SA 4.0</li>
+      <li>Farm-to-table dinner: <a href="https://commons.wikimedia.org/wiki/File:Wairau_Valley_vineyards_in_the_Marlborough_wine_region,_New_Zealand.jpg" target="_blank" rel="noopener">Jonathan Harker</a>, CC BY 4.0</li>
+      <li>Rotorua geothermal park: <a href="https://commons.wikimedia.org/wiki/File:ChampagnePool-Wai-O-Tapu_rotated_MC.jpg" target="_blank" rel="noopener">Christian Mehlführer, User:Chmehl</a>, CC BY 2.5</li>
+      <li>Bay of Plenty beach: <a href="https://commons.wikimedia.org/wiki/File:Mount_Maunganui_beach_09.jpg" target="_blank" rel="noopener">Panamitsu</a>, CC BY-SA 4.0</li>
+    </ul></details>
   </div>
 </section>
 
@@ -264,6 +287,28 @@ const PHOTOS = {
   'Seal colony at Tauranga Bay': ['gannet-colony.webp', 'A seabird colony on the coast'],
   'Lake Wakatipu': ['hikers-above-a-lake.webp', 'Hikers looking out over a lake'],
   'Franz Josef Glacier': ['ridge-hike.webp', 'Hiking a mountain ridge'],
+  // stock photos from Wikimedia Commons (credits listed under the itinerary)
+  'Auckland harbour': ['auckland-harbour.webp', 'Auckland’s skyline across the harbour'],
+  'Hobbiton Movie Set': ['hobbiton.webp', 'A hobbit hole with a round yellow door at Hobbiton'],
+  'Surf lesson at the Mount': ['mount-maunganui-beach.webp', 'The beach below Mount Maunganui'],
+  'Redwood Forest': ['redwood-treewalk.webp', 'A giant redwood beside the Redwoods Treewalk in Rotorua'],
+  'Pohutu Geyser': ['pohutu-geyser.webp', 'Pōhutu Geyser erupting at Te Puia'],
+  'Huka Falls': ['huka-falls.webp', 'The blue water of Huka Falls'],
+  'Mount Victoria lookout': ['mount-victoria-lookout.webp', 'Wellington harbour from the Mount Victoria lookout'],
+  'Te Papa Museum': ['te-papa.webp', 'Te Papa Museum in Wellington'],
+  'Ferry through the Marlborough Sounds': ['interislander-ferry.webp', 'The ferry crossing the Marlborough Sounds'],
+  'Abel Tasman coast': ['abel-tasman-coast.webp', 'A golden beach in Abel Tasman National Park'],
+  'Punakaiki Pancake Rocks': ['pancake-rocks.webp', 'A blowhole at the Pancake Rocks in Punakaiki'],
+  'Skyline gondola': ['skyline-gondola.webp', 'The Skyline gondola above Queenstown'],
+  'Church of the Good Shepherd': ['church-of-the-good-shepherd.webp', 'The Church of the Good Shepherd at Lake Tekapo'],
+  'Christchurch Botanic Gardens': ['christchurch-botanic-gardens.webp', 'Punting on the Avon River by the Christchurch Botanic Gardens'],
+  'Farewell': ['lake-pukaki.webp', 'Lake Pukaki with Aoraki / Mount Cook behind'],
+  'Christchurch': ['christchurch-tram.webp', 'A heritage tram in central Christchurch'],
+  'Arrowtown': ['arrowtown-autumn.webp', 'Autumn colours in Arrowtown'],
+  'Wellington cable car': ['wellington-cable-car.webp', 'The Wellington Cable Car above the city'],
+  'Farm-to-table dinner': ['vineyard.webp', 'Vineyards below the mountains'],
+  'Rotorua geothermal park': ['champagne-pool.webp', 'The steaming Champagne Pool near Rotorua'],
+  'Bay of Plenty beach': ['bay-of-plenty-beach.webp', 'A Bay of Plenty beach'],
 };
 function photoHTML(label){
   const p = PHOTOS[label];
