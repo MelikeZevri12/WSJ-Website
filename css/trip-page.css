@@ -568,6 +568,10 @@ section.dark-section.night-sky.framed{padding:34px 0;}
 .community-panel .proof-label{color:var(--dark) !important;}
 .community-panel .proof-arrow-btn{background:var(--white);border-color:var(--sky-line);color:var(--dark);}
 .community-panel .proof-arrow-btn:hover{background:var(--paper);border-color:var(--dark);}
+.community-panel .section-head p{color:#4a4f57 !important;}
+.community-panel .fb-join{color:#4a4f57;}
+.community-panel .fb-join .btn-outline{border-color:var(--dark);color:var(--dark);}
+.community-panel .fb-join .btn-outline:hover{background:var(--dark);color:var(--white);}
 .value-props{gap:28px;margin:4px 0 32px;}
 .value-prop{gap:15px;}
 .value-prop h4{margin-top:2px;}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Roadmap — Worldschooling Journeys</title>
+<meta name="description" content="Vote on trip ideas, see what's on our roadmap, and tell us where you'd love to travel next.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/nav.css">
+<link rel="stylesheet" href="/css/footer.css">
+<link rel="stylesheet" href="/css/site.css">
+<link rel="stylesheet" href="/css/content-page.css">
+<link rel="stylesheet" href="/css/policy.css">
+<style>
+/* the policy page header; its tabs switch the ProductLift boards below */
+.legal-hero .lh-meta{max-width:720px;font-size:18px;line-height:1.6;color:#d8dde2;}
+.legal-tabs button{font:inherit;font-weight:700;border:0;cursor:pointer;color:#c7ccd1;border-radius:4px 4px 0 0;background:rgba(255,255,255,0.06);padding:12px 18px;}
+.legal-tabs button:hover{color:var(--white);background:rgba(255,255,255,0.12);}
+.legal-tabs button.on{background:var(--paper);color:var(--dark);}
+@media (max-width:640px){ .legal-tabs button{white-space:nowrap;flex:none;padding:10px 14px;} }
+.board{display:none;padding:28px 0 60px;}
+.board.on{display:block;}
+.board iframe{display:block;width:100%;height:1500px;border:0;background:var(--white);border-radius:6px;}
+</style>
+</head>
+<body id="top">
+
+<!-- GLOBAL NAV -->
+<!-- include nav active="stay" -->
+
+<header class="legal-hero"><div class="wrap">
+  <div class="eyebrow" style="color:var(--green);">Roadmap</div>
+  <h1>Help us plan what's next</h1>
+  <p class="lh-meta">Vote on trip ideas, see what's coming, or tell us where you'd love to travel with us.</p>
+  <nav class="legal-tabs" role="tablist" aria-label="Roadmap boards">
+    <button type="button" role="tab" class="on" aria-selected="true" data-board="wishlist">Your Wishlist</button>
+    <button type="button" role="tab" aria-selected="false" data-board="roadmap">2027/28 Roadmap</button>
+    <button type="button" role="tab" aria-selected="false" data-board="trips">2026 Trips</button>
+    <button type="button" role="tab" aria-selected="false" data-board="features">Request a Feature</button>
+  </nav>
+</div></header>
+<div class="legal-body"><div class="wrap">
+  <!-- ProductLift boards; only the open one loads, the rest load the first time their tab is clicked -->
+  <div class="board on" id="wishlist" role="tabpanel"><iframe title="Your Wishlist" src="https://everyavenue.productlift.dev/t/wish-list?widget_id=4eee1a59-0390-49b6-8650-c965c43a418e"></iframe></div>
+  <div class="board" id="roadmap" role="tabpanel"><iframe title="2027/28 Roadmap" data-src="https://everyavenue.productlift.dev/t/roadmap?widget_id=dea3315a-26e6-4638-b260-6aebc9399a41"></iframe></div>
+  <div class="board" id="trips" role="tabpanel"><iframe title="2026 Trips" data-src="https://everyavenue.productlift.dev/t/2026updates?widget_id=4d2f8945-fa08-4199-bc8d-e8de900f4c03"></iframe></div>
+  <div class="board" id="features" role="tabpanel"><iframe title="Request a Feature" data-src="https://everyavenue.productlift.dev/t/features?widget_id=7c917b57-ff58-487f-b2e9-411b7acc48ae"></iframe></div>
+</div></div>
+<script>
+// tabs: show one board; a link like /roadmap.html#roadmap opens that tab directly
+(function(){
+  var tabs = document.querySelectorAll('.legal-tabs button');
+  function open(id){
+    var board = document.getElementById(id); if (!board || !board.classList.contains('board')) return;
+    tabs.forEach(function(t){ var on = t.dataset.board === id; t.classList.toggle('on', on); t.setAttribute('aria-selected', on); });
+    document.querySelectorAll('.board').forEach(function(b){ b.classList.toggle('on', b === board); });
+    var f = board.querySelector('iframe[data-src]'); if (f) { f.src = f.dataset.src; f.removeAttribute('data-src'); }
+  }
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ open(t.dataset.board); history.replaceState(null, '', '#' + t.dataset.board); }); });
+  if (location.hash) open(location.hash.slice(1));
+})();
+</script>
+<div class="brand-stripe"></div>
+<!-- include footer -->
+
+<script src="/js/nav.js"></script>
+</body>
+</html>
