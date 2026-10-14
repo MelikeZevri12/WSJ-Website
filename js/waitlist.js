@@ -1,7 +1,9 @@
-// Waitlist popup for the land trip pages: every "Join the Waitlist" button
+// Waitlist popup. On the land trip pages every "Join the Waitlist" button
 // (sold-out departures, trips not released yet, years still being planned)
-// opens this instead of following its link. Signups are saved by the backend
-// and show up on the admin dashboard's Waitlist tab.
+// opens this instead of following its link. The Coming Soon cards
+// (.cs-postmark-card[data-idea]) open it too, with "idea stage" wording.
+// Signups are saved by the backend and show up on the admin dashboard's
+// Waitlist tab (and js/newsletter.js adds the email to the newsletter).
 (function () {
   const API = 'https://api.worldschoolingjourneys.com';
   const isWaitlistButton = (el) => el && /waitlist/i.test(el.textContent);
@@ -14,9 +16,9 @@
       <button type="button" class="wl-close" aria-label="Close">×</button>
       <form class="wl-form" novalidate>
         <div class="eyebrow wl-trip"></div>
-        <h3 id="wlTitle">Be the first to be notified!</h3>
-        <p>We're still finalizing all the details. In the meantime, you can sign up now and we'll notify you as soon as the trip is released.</p>
-        <p class="wl-urgent">Don't miss out! Spots are limited, so act fast!</p>
+        <h3 id="wlTitle"></h3>
+        <p class="wl-text"></p>
+        <p class="wl-urgent"></p>
         <label class="wl-field"><span>Name</span><input type="text" name="fullName" autocomplete="name" required maxlength="120"></label>
         <label class="wl-field"><span>Email</span><input type="email" name="email" autocomplete="email" required maxlength="200"></label>
         <label class="wl-hp" aria-hidden="true">Leave this empty<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
@@ -25,7 +27,7 @@
       </form>
       <div class="wl-done" hidden>
         <h3>You're on the list!</h3>
-        <p>Thank you! We'll email you as soon as the trip is released.</p>
+        <p class="wl-done-text"></p>
         <button type="button" class="btn btn-primary wl-close-btn">Close</button>
       </div>
     </div>`;
@@ -34,6 +36,22 @@
   const form = modal.querySelector('.wl-form'), done = modal.querySelector('.wl-done'), err = modal.querySelector('.wl-error');
   const submitBtn = modal.querySelector('.wl-submit');
   let trip = null, lastFocus = null;
+
+  // Wording: trips being released (default) vs. ideas on the roadmap
+  const COPY = {
+    trip: {
+      title: 'Be the first to be notified!',
+      text: "We're still finalizing all the details. In the meantime, you can sign up now and we'll notify you as soon as the trip is released.",
+      urgent: "Don't miss out! Spots are limited, so act fast!",
+      done: "Thank you! We'll email you as soon as the trip is released.",
+    },
+    idea: {
+      title: 'This trip is just an idea for now',
+      text: "It's still in the idea stage. Leave your email so we know you're interested, and we'll let you know if it becomes a real trip.",
+      urgent: '',
+      done: "Thank you! Your interest helps us decide which trips to plan next. We'll email you if this one goes ahead.",
+    },
+  };
 
   // The trip and the departure / year the visitor was looking at
   function currentTrip() {
@@ -46,10 +64,17 @@
     return { tripSlug: slug, tripName: name, detail: picked.join(' · ').slice(0, 160) || null };
   }
 
-  function open() {
-    trip = currentTrip();
+  // given = {tripSlug, tripName} for a Coming Soon idea; otherwise the land trip page itself
+  function open(given) {
+    trip = given || currentTrip();
+    const copy = given ? COPY.idea : COPY.trip;
+    modal.querySelector('#wlTitle').textContent = copy.title;
+    modal.querySelector('.wl-text').textContent = copy.text;
+    modal.querySelector('.wl-urgent').textContent = copy.urgent;
+    modal.querySelector('.wl-urgent').hidden = !copy.urgent;
+    modal.querySelector('.wl-done-text').textContent = copy.done;
     lastFocus = document.activeElement;
-    modal.querySelector('.wl-trip').textContent = trip.tripName + (trip.detail ? ' · ' + trip.detail : '');
+    modal.querySelector('.wl-trip').textContent = given ? 'Coming Soon · ' + trip.tripName : trip.tripName + (trip.detail ? ' · ' + trip.detail : '');
     form.hidden = false; done.hidden = true; err.textContent = ''; submitBtn.disabled = false; submitBtn.textContent = 'Notify Me';
     modal.hidden = false; document.body.classList.add('wl-open');
     setTimeout(() => form.elements.fullName.focus(), 30);
@@ -58,6 +83,17 @@
     modal.hidden = true; document.body.classList.remove('wl-open');
     if (lastFocus) lastFocus.focus();
   }
+
+  // Coming Soon cards: click or Enter/Space
+  const ideaOf = (card) => ({ tripSlug: card.dataset.idea, tripName: card.querySelector('.cs-postmark-title').textContent.trim(), detail: 'Coming Soon idea' });
+  document.addEventListener('click', (e) => {
+    const card = e.target.closest('.cs-postmark-card[data-idea]');
+    if (card) open(ideaOf(card));
+  });
+  document.addEventListener('keydown', (e) => {
+    const card = e.target.closest && e.target.closest('.cs-postmark-card[data-idea]');
+    if (card && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); open(ideaOf(card)); }
+  });
 
   // Capture phase, so the page's own button handlers never see the click
   document.addEventListener('click', (e) => {

@@ -248,3 +248,12 @@ section.dark-section .section-head .eyebrow{color:var(--gold);}
 .proof-chip .who .who-trip{font-weight:600;color:var(--muted);text-transform:none;letter-spacing:0;margin-left:6px;}
 .proof-chip .who .who-trip:before{content:"· ";}
 .coming-soon .eyebrow{color:var(--gold);}
+
+/* COMING SOON cards open the "idea stage" interest popup (js/waitlist.js) */
+.cs-postmark-card[data-idea]{cursor:pointer;transition:transform .15s ease;}
+.cs-postmark-card[data-idea]:hover{transform:translateY(-3px);}
+.cs-postmark-card[data-idea]:focus-visible{outline:3px solid var(--gold);outline-offset:4px;}
+.cs-credits{margin-top:14px;font-size:11.5px;color:rgba(255,255,255,0.55);}
+.cs-credits summary{cursor:pointer;display:inline-block;}
+.cs-credits p{margin:6px 0 0;line-height:1.6;max-width:760px;}
+.cs-credits a{color:inherit;}
