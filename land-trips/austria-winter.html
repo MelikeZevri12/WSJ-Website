@@ -330,8 +330,8 @@ const TRIP = {
   season: 'Winter',
   eyebrow: 'Worldschooling Winter Retreat · For Homeschool Families',
   badges: ['Ski & Snowboard', 'Christmas Markets', 'Krampus Parade', 'Winter Adventure'],
-  destination: 'Bad Gastein, Salzburgerland',
-  minAge: 'All ages, babies welcome',
+  destination: 'Salzburgerland',
+  minAge: 'All Ages',
   theme: 'winter',
   overview: {
     heading: 'A snowy wonderland, together',
@@ -676,7 +676,7 @@ function renderStatic(){
 function renderSelection(){
   const S = sessionsOf(sel), past = isPast(), k = selCount();
   const nights = k * NIGHTS_PER_SESSION;
-  const facts = [['Destination', TRIP.destination], ['Dates', span(selStart(), selEnd())], ['Duration', SINGLE ? `${nights} nights` : `${nights} nights · ${k} session${k > 1 ? 's' : ''}`],
+  const facts = [['Destination', TRIP.destination], ['Dates', span(selStart(), selEnd())], ['Duration', k > 1 ? `${nights} nights · ${k} sessions` : `${nights} nights`],
                  ['Ages', TRIP.minAge], ['Price', `From ${money(minFamilyPrice() * k / 2)} <span style="font-weight:600;font-size:12px;color:#9aa4ae;">/ person</span>`]];
   document.getElementById('factsGrid').innerHTML = facts.map(f =>
     `<div class="fact"><div class="label">${f[0]}</div><div class="value ${f[0]==='Price'?'price':''}">${f[1]}</div></div>`).join('');

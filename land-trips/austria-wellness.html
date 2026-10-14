@@ -500,7 +500,7 @@ const TRIP = {
   season: 'Wellness',
   eyebrow: 'Worldschooling Healing Caves Retreat',
   badges: [],
-  destination: 'Bad Gastein, Salzburgerland',
+  destination: 'Salzburgerland',
   minAge: 'All ages · Kids Club 3+',
   theme: 'wellness',
   galleryNote: 'The Healing Gallery is a central part of why we created this retreat, but the treatment itself is arranged directly with the Healing Gallery and is not included in the retreat package. Their medical team will assess whether the therapy is appropriate for you and guide you through the treatment process.',
@@ -580,7 +580,7 @@ const TRIP = {
 const MODES = {
   gen: {
     title: '21-day Worldschooling Austria Health & Wellness Retreat',
-    theme: 'Family Wellness & Healing',
+    theme: 'Family Wellness',
     eyebrow: 'Worldschooling Healing Caves Retreat',
     heading: 'A natural approach to lasting pain relief',
     story: ['You will discover a unique healing climate that has been supporting health and wellbeing since 1952. At the Gastein Healing Gallery, the healing gallery sessions form the central part of a broader, holistic therapy concept designed to support pain relief, anti-inflammatory effects, and immune system stabilization.',
@@ -590,7 +590,7 @@ const MODES = {
   },
   ai: {
     title: '21-day Worldschooling Autoimmune & Inflammatory Wellness Retreat',
-    theme: 'Autoimmune Wellness & Recovery',
+    theme: 'Autoimmune Recovery',
     eyebrow: 'Worldschooling Healing Caves Retreat',
     heading: 'Three weeks where your health doesn’t have to come last',
     story: ['A family retreat for people living with autoimmune conditions, chronic inflammation, and ongoing pain, built around access to the unique Healing Gallery therapy. Alongside the treatments, families have time to rest, enjoy the thermal waters, slow down, and connect with others in a supportive setting.',
@@ -810,7 +810,7 @@ function renderStatic(){
 function renderSelection(){
   const S = sessionsOf(sel), past = isPast(), k = selCount();
   const nights = k * NIGHTS_PER_SESSION;
-  const facts = [['Destination', TRIP.destination], ['Dates', span(selStart(), selEnd())], ['Duration', SINGLE ? `${nights} nights` : `${nights} nights · ${k} session${k > 1 ? 's' : ''}`],
+  const facts = [['Destination', TRIP.destination], ['Dates', span(selStart(), selEnd())], ['Duration', k > 1 ? `${nights} nights · ${k} sessions` : `${nights} nights`],
                  ['Theme', MODES[mode].theme], ['Price', `From ${money(minFamilyPrice() * k / 2)} <span style="font-weight:600;font-size:12px;color:#9aa4ae;">/ person</span>`]];
   document.getElementById('factsGrid').innerHTML = facts.map(f =>
     `<div class="fact"><div class="label">${f[0]}</div><div class="value ${f[0]==='Price'?'price':''}">${f[1]}</div></div>`).join('');
