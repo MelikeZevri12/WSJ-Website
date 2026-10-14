@@ -72,7 +72,7 @@
 <section class="overview" id="overview" data-q="overview">
   <div class="wrap">
     <div class="overview-grid">
-      <div class="overview-media"><span>Trip photo</span></div>
+      <div class="overview-media"><img src="/images/land-trips/xcaret/cenote-pool.webp" alt="A cenote pool in the jungle at Xcaret"></div>
       <div>
         <div class="eyebrow">Overview</div>
         <h2 style="font-size:28px;line-height:1.25;margin-bottom:14px;" id="ovHeading"></h2>
@@ -186,7 +186,7 @@
 
 <section id="join">
   <div class="join-split">
-    <div class="photo-slot join-photo"><span style="color:#c7ccd1;padding:0 30px;">Group photo</span></div>
+    <div class="photo-slot join-photo"><img src="/images/land-trips/xcaret/mangrove-tubing.webp" alt="Tubing through the mangroves together" loading="lazy"></div>
     <div class="join-content">
       <div class="join-text"><h2>Ready to join our group?</h2>
       <p id="joinText"></p></div>
@@ -265,6 +265,37 @@ const TRIP = {
   policy: { currency: '$', deposit: 0, depositUnit: 'per person', nonRefundableDays: 150, finalPaymentDays: 120, lines: [] },
   faq: [],
 };
+
+
+// ---------- PHOTOS: photo label (as used on this page) -> [file in /images/land-trips/xcaret/, alt text] ----------
+// Any label not listed here shows the "Photo: …" placeholder instead.
+const PHOTO_DIR = '/images/land-trips/xcaret/';
+const PHOTOS = {
+  'Xenses': ['xenses-upside-down-house.webp', 'The upside-down house at Xenses'],
+  'Xcaret Plus': ['xcaret-sign.webp', 'The Xcaret sign'],
+  'Xel-Há': ['xel-ha-lagoon.webp', 'The Xel-Há lagoon'],
+  'Xplor': ['zip-line.webp', 'Flying down a zip line'],
+  'Turquoise Caribbean water': ['caribbean-shore.webp', 'Families on the Caribbean shore at Xcaret'],
+  'Kids on the zip line': ['zip-line-over-water.webp', 'A zip line over the water'],
+  'Underground river': ['underground-river.webp', 'Swimming an underground river'],
+  'Cenote jump': ['cenote-pool.webp', 'A cenote pool in the jungle'],
+  'Xenses optical illusions': ['xenses-hammocks.webp', 'Hammocks in the Xenses illusion courtyard'],
+  'Butterfly pavilion': ['colorful-wings.webp', 'Colorful wings at Xcaret'],
+  'Snorkeling at Xel-Há': ['snorkeling-together.webp', 'Swimming together in life vests'],
+  'Amphibious vehicles at Xplor': ['mangrove-tubing.webp', 'Tubing through the mangroves'],
+  'Mayan ruins': ['stone-archway.webp', 'A stone archway in the park'],
+  'Families tubing': ['families-tubing.webp', 'Families tubing down the river'],
+  'Jungle trail by bike': ['floating-the-lagoon.webp', 'Floating on the lagoon'],
+  'Xcaret evening show': ['mexican-village-street.webp', 'A Mexican village street at Xcaret'],
+  'Sunset over the Riviera Maya': ['mexican-folk-art.webp', 'Mexican folk art in the park'],
+  'Families together': ['families-at-xcaret.webp', 'A family at a hacienda doorway'],
+  'Coral reef aquarium': ['flamingos.webp', 'Flamingos at Xcaret'],
+  'Group photo': ['family-at-the-hacienda.webp', 'Relaxing at a hacienda window'],
+};
+function photoHTML(label){
+  const p = PHOTOS[label];
+  return p ? `<img src="${PHOTO_DIR}${p[0]}" alt="${p[1]}" loading="lazy">` : `<span>Photo: ${label}</span>`;
+}
 
 // ---------- THEMES: every land trip gets its own colors ----------
 // primary = buttons & links · accent = badges, lines, highlights · dark = hero, facts bar, dark sections
@@ -354,7 +385,7 @@ function renderStatic(){
     ov.story.map(p => `<p class="lede">${p}</p>`).join('') +
     (ov.hook.length ? `<p class="lede" style="font-style:italic;">${ov.hook.join('<br>')}</p>` : '');
   document.getElementById('highlights').innerHTML = ov.highlights.map(h =>
-    `<div class="hl-card"><div class="photo-slot"><span>Photo</span></div><h4>${h.t}</h4><p>${h.d}</p></div>`).join('');
+    `<div class="hl-card"><div class="photo-slot">${photoHTML(h.t)}</div><h4>${h.t}</h4><p>${h.d}</p></div>`).join('');
   document.getElementById('leadersText').textContent = TRIP.community.leaders;
   document.getElementById('fbJoin').innerHTML = TRIP.community.facebookGroup ? `<span>Meet other worldschooling families before you go.</span><a class="btn btn-outline" href="${TRIP.community.facebookGroup}" target="_blank" rel="noopener">Join our Worldschooling Facebook Group</a>` : '';
   document.getElementById('pillars').innerHTML = TRIP.community.pillars.map((p, i) =>
@@ -362,7 +393,7 @@ function renderStatic(){
   if(TRIP.learning.length) document.getElementById('learningBody').innerHTML = TRIP.learning.map(c => `<h4>${c.t}</h4><ul>${c.items.map(i => `<li>${i}</li>`).join('')}</ul>`).join('');
   document.querySelectorAll('.photo-strip[data-strip]').forEach(el => { const ph = (TRIP.photoStrips || [])[+el.dataset.strip] || [];
     el.style.display = ph.length ? '' : 'none';
-    el.innerHTML = ph.map(x => `<div class="photo-slot">${x.photo ? `<img src="${x.photo}" alt="${x.label}" loading="lazy">` : `<span>Photo: ${x.label}</span>`}</div>`).join(''); });
+    el.innerHTML = ph.map(x => `<div class="photo-slot">${x.photo ? `<img src="${x.photo}" alt="${x.label}" loading="lazy">` : photoHTML(x.label)}</div>`).join(''); });
   document.getElementById('inclYes').innerHTML = TRIP.included.map(i => `<li>${i}</li>`).join('');
 
   // what you'll do
@@ -378,7 +409,7 @@ function renderStatic(){
     document.getElementById('itinNote').innerHTML = note ? `<div class="itin-note"><span class="in-icon">ⓘ</span><span>${note}</span></div>` : '';
     document.getElementById('itinBody').innerHTML = (it.state === 'final' || it.state === 'sample') ? it.items.map(s => {
       const m = s.meals || {}, ml = [m.b && 'Breakfast', m.l && 'Lunch', m.d && 'Dinner'].filter(Boolean);
-      const ph = s.photo ? `<img src="${s.photo}" alt="${s.photoLabel || s.title}" loading="lazy">` : `<span>Photo: ${s.photoLabel || s.title}</span>`;
+      const ph = s.photo ? `<img src="${s.photo}" alt="${s.photoLabel || s.title}" loading="lazy">` : photoHTML(s.photoLabel || s.title);
       return `<div class="stop"><div class="stop-card"><div class="stop-card-inner"><div class="photo-slot stop-photo">${ph}</div><div class="stop-content">
         <div class="stop-day">Day ${s.days}</div><div class="stop-title">${s.title}</div>
         <div class="stop-meta"><span>🛏 ${s.stay}</span><span>🍽 ${ml.length ? ml.join(', ') + ' included' : 'Meals on your own'}</span></div>

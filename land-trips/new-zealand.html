@@ -65,7 +65,7 @@
 <section class="overview" id="overview" data-q="overview">
   <div class="wrap">
     <div class="overview-grid">
-      <div class="overview-media"><span>Trip photo</span></div>
+      <div class="overview-media"><img src="/images/land-trips/new-zealand/hikers-above-a-lake.webp" alt="Hikers looking out over a New Zealand lake"></div>
       <div>
         <div class="eyebrow">Overview</div>
         <h2 style="font-size:28px;line-height:1.25;margin-bottom:14px;" id="ovHeading"></h2>
@@ -166,7 +166,7 @@
 
 <section id="join">
   <div class="join-split">
-    <div class="photo-slot join-photo"><span style="color:#c7ccd1;padding:0 30px;">Group photo</span></div>
+    <div class="photo-slot join-photo"><img src="/images/land-trips/new-zealand/family-at-the-blue-pools.webp" alt="A family at the Blue Pools" loading="lazy"></div>
     <div class="join-content">
       <div class="join-text"><h2>Ready to join our group?</h2>
       <p id="joinText"></p></div>
@@ -246,6 +246,29 @@ const TRIP = {
   },
   faq: [],
 };
+
+
+// ---------- PHOTOS: photo label (as used on this page) -> [file in /images/land-trips/new-zealand/, alt text] ----------
+// Any label not listed here shows the "Photo: …" placeholder instead.
+const PHOTO_DIR = '/images/land-trips/new-zealand/';
+const PHOTOS = {
+  'Both islands, end to end': ['road-to-mount-cook.webp', 'The road to Aoraki / Mount Cook'],
+  'Glaciers, lakes & national parks': ['milford-sound.webp', 'Milford Sound at sunrise'],
+  'Māori culture & heritage': ['maori-culture.webp', 'A Māori cultural welcome'],
+  'Hobbiton & Middle-earth': ['open-road.webp', 'The open road through New Zealand’s volcanic plateau'],
+  'Free days built in': ['canoeing-a-glacier-river.webp', 'Canoeing a glacier-blue river'],
+  'Travel with a community of families': ['family-at-the-blue-pools.webp', 'A family at the Blue Pools'],
+  'The Blue Pools': ['family-at-the-blue-pools.webp', 'A family at the Blue Pools'],
+  'Alpine road': ['road-to-mount-cook.webp', 'The road to Aoraki / Mount Cook'],
+  'Kayaks in Abel Tasman': ['canoeing-a-glacier-river.webp', 'Canoeing a glacier-blue river'],
+  'Seal colony at Tauranga Bay': ['gannet-colony.webp', 'A seabird colony on the coast'],
+  'Lake Wakatipu': ['hikers-above-a-lake.webp', 'Hikers looking out over a lake'],
+  'Franz Josef Glacier': ['ridge-hike.webp', 'Hiking a mountain ridge'],
+};
+function photoHTML(label){
+  const p = PHOTOS[label];
+  return p ? `<img src="${PHOTO_DIR}${p[0]}" alt="${p[1]}" loading="lazy">` : `<span>Photo: ${label}</span>`;
+}
 
 // ---------- THEMES: every land trip gets its own colors ----------
 // primary = buttons & links · accent = badges, lines, highlights · dark = hero, facts bar, dark sections
@@ -731,7 +754,7 @@ function renderStatic(){
     ov.story.map(p => `<p class="lede">${p}</p>`).join('') +
     (ov.hook.length ? `<p class="lede" style="font-style:italic;">${ov.hook.join('<br>')}</p>` : '');
   document.getElementById('highlights').innerHTML = ov.highlights.map(h =>
-    `<div class="hl-card"><div class="photo-slot"><span>Photo</span></div><h4>${h.t}</h4><p>${h.d}</p></div>`).join('');
+    `<div class="hl-card"><div class="photo-slot">${photoHTML(h.t)}</div><h4>${h.t}</h4><p>${h.d}</p></div>`).join('');
   document.getElementById('leadersText').textContent = TRIP.community.leaders;
   document.getElementById('fbJoin').innerHTML = TRIP.community.facebookGroup ? `<span>Meet other worldschooling families before you go.</span><a class="btn btn-outline" href="${TRIP.community.facebookGroup}" target="_blank" rel="noopener">Join our Worldschooling Facebook Group</a>` : '';
   document.getElementById('pillars').innerHTML = TRIP.community.pillars.map((p, i) =>
@@ -766,7 +789,7 @@ function renderItin(){
     document.getElementById('itinNote').innerHTML = note ? `<div class="itin-note"><span class="in-icon">ⓘ</span><span>${note}</span></div>` : '';
     document.getElementById('itinBody').innerHTML = (it.state === 'final' || it.state === 'sample') ? it.items.map(s => {
       const m = s.meals || {}, ml = [m.b && 'Breakfast', m.l && 'Lunch', m.d && 'Dinner'].filter(Boolean);
-      const ph = s.photo ? `<img src="${s.photo}" alt="${s.photoLabel || s.title}" loading="lazy">` : `<span>Photo: ${s.photoLabel || s.title}</span>`;
+      const ph = s.photo ? `<img src="${s.photo}" alt="${s.photoLabel || s.title}" loading="lazy">` : photoHTML(s.photoLabel || s.title);
       return `<div class="stop"><div class="stop-card"><div class="stop-card-inner"><div class="photo-slot stop-photo">${ph}</div><div class="stop-content">
         <div class="stop-day">Day ${s.days}</div><div class="stop-title">${s.title}</div>
         <div class="stop-meta">${s.stay ? `<span>🛏 ${s.stay}</span>` : `<span>🛫 Departure day</span>`}<span>🍽 ${ml.length ? ml.join(', ') + ' included' : 'Meals on your own'}</span></div>
