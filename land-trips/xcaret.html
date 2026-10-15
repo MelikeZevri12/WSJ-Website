@@ -495,7 +495,7 @@ function renderDeparture(){
   const P = TRIP.policy, start = D(d.start);
   const nonRef = addDays(start, -P.nonRefundableDays), finalPay = addDays(start, -P.finalPaymentDays);
   document.getElementById('payPolicy').innerHTML = [
-    ['Deposit', `${money(P.deposit)} ${P.depositUnit}, paid when you book. It reserves your spot.`],
+    ['Deposit', `${money(P.deposit)} ${P.depositUnit}, paid when you book. The deposit alone doesn’t secure your spot; your booking is secured once the full payment is received.`],
     ['Deposit becomes non-refundable', `${fmtD(nonRef)} (${P.nonRefundableDays} days before departure)`],
     ['Final payment due', `${fmtD(finalPay)} (${P.finalPaymentDays} days before departure)`],
     ...P.lines,
@@ -507,7 +507,7 @@ function renderDeparture(){
     '<p><strong>Terms and Conditions:</strong> The full terms that apply when you book this trip with us. <a href="/terms-and-conditions.html" target="_blank" rel="noopener">View Our Terms and Conditions</a></p>' +
     '<p>Every Avenue Travel, LLC is registered with the State of Florida as a Seller of Travel. Registration No. ST45213.</p>';
 
-  document.getElementById('joinText').textContent = isWL(d) ? `Dates, hotel and price for ${range(d)} are still being set. Join the waitlist and you’ll be the first to hear when bookings open.` : `Reserve your spot on the ${range(d)} departure. The deposit holds your place, and we’ll take care of the rest.`;
+  document.getElementById('joinText').textContent = isWL(d) ? `Dates, hotel and price for ${range(d)} are still being set. Join the waitlist and you’ll be the first to hear when bookings open.` : `Book your spot on the ${range(d)} departure. Pay the deposit to get started; your spots are secured once the trip is paid in full.`;
   document.body.classList.toggle('is-waitlist', isWL(d));
   document.querySelectorAll('.book-btn').forEach(b => { b.textContent = (d.status === 'soldout' || isWL(d)) ? 'Join the Waitlist' : 'Book Your Spot'; if(isWL(d)) b.href = TRIP.waitlistUrl; });
   syncPickers();
