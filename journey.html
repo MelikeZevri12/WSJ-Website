@@ -905,7 +905,6 @@
   <div class="modal-inner">
     <div class="booking-form-wrap" id="booking-form">
       <button type="button" class="modal-close" id="modalCloseBtn" aria-label="Close">×</button>
-      <div class="form-demo-flag">Prototype form — nothing is sent</div>
       <div class="booking-intro">
         <h3>So happy you decided to join us!</h3>
         <p>A few quick questions and we'll follow up with current pricing within 24–48 hours.</p>
@@ -998,8 +997,8 @@
 
     <div class="form-success" id="formSuccess" style="display:none;">
       <button type="button" class="modal-close" id="modalCloseBtn2" aria-label="Close">×</button>
-      <h3>This is a prototype — nothing was sent</h3>
-      <p>In the live version, this is where we'd confirm your inquiry landed and follow up with pricing within 24–48 hours.</p>
+      <h3>Thanks — your inquiry is in!</h3>
+      <p>We've got your details and will follow up with current pricing within 24–48 hours.</p>
       <button type="button" class="back-link" id="resetFormBtn">Start over</button>
     </div>
   </div>
@@ -1010,7 +1009,6 @@
   <div class="modal-inner">
     <div class="booking-form-wrap" id="quote-form-wrap">
       <button type="button" class="modal-close" id="quoteModalCloseBtn" aria-label="Close">×</button>
-      <div class="form-demo-flag">Prototype form — nothing is sent</div>
       <div class="booking-intro">
         <h3>Let's get your group a custom quote</h3>
         <p>Traveling with 5 or more usually means splitting across cabins. Tell us how you'd like to divide up, and we'll follow up with pricing within 24–48 hours.</p>
@@ -1046,6 +1044,7 @@
           <div class="review-box" id="quoteReviewBox"></div>
         </div>
 
+        <div class="quote-error" id="quoteSendError"></div>
         <div class="form-nav">
           <button type="button" class="back-link" id="quotePrevStepBtn">← Back</button>
           <button type="button" class="btn btn-primary btn-sm" id="quoteNextStepBtn">Next</button>
@@ -1056,8 +1055,8 @@
 
     <div class="form-success" id="quoteFormSuccess" style="display:none;">
       <button type="button" class="modal-close" id="quoteModalCloseBtn2" aria-label="Close">×</button>
-      <h3>This is a prototype — nothing was sent</h3>
-      <p>In the live version, this is where we'd confirm your group quote request landed and follow up with pricing within 24–48 hours.</p>
+      <h3>Thanks — your group quote request is in!</h3>
+      <p>We'll follow up with pricing within 24–48 hours. Please add booking@everyavenue.com to your approved senders and check your spam folder.</p>
       <button type="button" class="back-link" id="quoteResetFormBtn">Start over</button>
     </div>
   </div>
@@ -1068,7 +1067,6 @@
   <div class="modal-inner">
     <div class="booking-form-wrap" id="flights-form-wrap">
       <button type="button" class="modal-close" id="flightsModalCloseBtn" aria-label="Close">×</button>
-      <div class="form-demo-flag">Prototype form — nothing is sent</div>
       <div class="booking-intro">
         <h3>Let's find you a good flight</h3>
         <p>Tell us where you're flying from and we'll track down affordable options into <span class="fly-in-name">Tokyo</span> and home from <span class="fly-out-name">Auckland</span> — free of charge, no obligation.</p>
@@ -1099,6 +1097,7 @@
           <div class="review-box" id="flightsReviewBox"></div>
         </div>
 
+        <div class="quote-error" id="flightsSendError"></div>
         <div class="form-nav">
           <button type="button" class="back-link" id="flightsPrevStepBtn">← Back</button>
           <button type="button" class="btn btn-primary btn-sm" id="flightsNextStepBtn">Next</button>
@@ -1109,8 +1108,8 @@
 
     <div class="form-success" id="flightsFormSuccess" style="display:none;">
       <button type="button" class="modal-close" id="flightsModalCloseBtn2" aria-label="Close">×</button>
-      <h3>This is a prototype — nothing was sent</h3>
-      <p>In the live version, this is where we'd confirm your flight search request landed and follow up with options within a few days.</p>
+      <h3>Thanks — we've got your flight request!</h3>
+      <p>We'll follow up with flight options within a few days. Please add booking@everyavenue.com to your approved senders and check your spam folder.</p>
       <button type="button" class="back-link" id="flightsResetFormBtn">Start over</button>
     </div>
   </div>
@@ -2060,8 +2059,47 @@ function renderQuoteReview(){
   `;
 }
 
-quoteForm.addEventListener('submit', (e) => {
+
+// Group quote / flight help requests are emailed to the booking inbox by the API
+// (see the backend's CruiseInquiryController). Nothing is saved anywhere else, so
+// unlike the booking form a failure is shown and the visitor can try again.
+async function sendCruiseInquiry(btn, errorEl, payload){
+  const label = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+  errorEl.classList.remove('show');
+  try {
+    const res = await fetch(`${API}/cruise-inquiries`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    if (res.ok) return true;
+    errorEl.textContent = res.status === 429
+      ? 'Too many requests in a short time. Please try again later, or email us at booking@everyavenue.com.'
+      : 'Something went wrong sending your request. Please try again, or email us at booking@everyavenue.com.';
+  } catch (e) {
+    errorEl.textContent = 'Could not reach our server. Please check your connection and try again, or email us at booking@everyavenue.com.';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = label;
+  }
+  errorEl.classList.add('show');
+  return false;
+}
+
+quoteForm.addEventListener('submit', async (e) => {
   e.preventDefault();
+  const sent = await sendCruiseInquiry(document.getElementById('quoteSubmitBtn'), document.getElementById('quoteSendError'), {
+    type: 'quote',
+    cruiseIds: (legsIn(formSel()).length ? legsIn(formSel()) : LEGS).map(l => l.id),
+    journeyTitle: JOURNEY && JOURNEY.title,
+    email: document.getElementById('quoteEmail').value.trim(),
+    totalGuests: document.getElementById('quoteTotalGuests').value,
+    cabins: quoteCabins,
+    comments: document.getElementById('quoteComments').value.trim(),
+  });
+  if (!sent) return;
   quoteFormWrap.style.display = 'none';
   document.getElementById('quoteFormSuccess').style.display = 'block';
 });
@@ -2172,8 +2210,19 @@ function renderFlightsReview(){
   `;
 }
 
-flightsForm.addEventListener('submit', (e) => {
+flightsForm.addEventListener('submit', async (e) => {
   e.preventDefault();
+  const sent = await sendCruiseInquiry(document.getElementById('flightsSubmitBtn'), document.getElementById('flightsSendError'), {
+    type: 'flights',
+    cruiseIds: (legsIn(formSel()).length ? legsIn(formSel()) : LEGS).map(l => l.id),
+    journeyTitle: JOURNEY && JOURNEY.title,
+    email: flightsFieldValue('flightsEmail').trim(),
+    departureCity: flightsFieldValue('flightsDepartureCity').trim(),
+    travelers: flightsFieldValue('flightsTravelers'),
+    flexible: flightsFieldValue('flightsFlexible') === 'yes',
+    comments: flightsFieldValue('flightsComments').trim(),
+  });
+  if (!sent) return;
   flightsFormWrap.style.display = 'none';
   document.getElementById('flightsFormSuccess').style.display = 'block';
 });
@@ -2360,7 +2409,7 @@ waitlistForm.addEventListener('submit', async (e) => {
   const wantsSimilar = document.getElementById('wlSimilar').checked;
   const comments = `Waitlist signup - ${JOURNEY.title || 'back-to-back journey'} (the whole journey) - party of ${guests}.${wantsSimilar ? ' Also wants to hear about similar cruises.' : ''}`;
   try {
-    await submitBookingGroup(LEGS.map(l => l.id), { fullName: document.getElementById('wlName').value, email: document.getElementById('wlEmail').value, comments });
+    await submitBookingGroup(LEGS.map(l => l.id), { fullName: document.getElementById('wlName').value, email: document.getElementById('wlEmail').value, comments, requestType: 'waitlist' });
   } catch (err) {
     // Same as the booking form - show success regardless, we follow up manually if it never landed.
   }
