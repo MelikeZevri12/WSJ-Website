@@ -1,0 +1,416 @@
+# Old WordPress addresses (worldschoolingjourneys.com before the move) → new pages, 301.
+# Imported by the worldschoolingjourneys.com site block (see server/Caddyfile.site). Copy to the VPS:
+#   scp server\old-site-redirects.caddy melike@178.105.202.222:~/   then on the VPS: sudo cp ~/old-site-redirects.caddy /etc/caddy/
+# Cruise targets use the booking code: the cruise page switches the address to its current name.
+# Made 2026-10-14 from the old site's sitemap (203 addresses; each listed with and without the trailing slash).
+map {path} {old_site_target} {
+        /trips/                                                                    /cruises                                               # no certain match
+        /trips                                                                     /cruises
+        /trips/december-panama-canal-cruise/                                       /cruises/PC-03DEC2026-LOS-FOR                          # booking code on old page
+        /trips/december-panama-canal-cruise                                        /cruises/PC-03DEC2026-LOS-FOR
+        /trips/september-singapore-to-australia/                                   /cruises/PC-28SEP2027-SIN-PER                          # booking code on old page
+        /trips/september-singapore-to-australia                                    /cruises/PC-28SEP2027-SIN-PER
+        /trips/november-transatlantic-barcelona-to-fort-lauderdale/                /cruises/PC-07NOV2027-BAR-FOR                          # booking code on old page
+        /trips/november-transatlantic-barcelona-to-fort-lauderdale                 /cruises/PC-07NOV2027-BAR-FOR
+        /trips/october-transatlantic-barcelona-to-fort-lauderdale/                 /cruises/RC-31OCT2027-BAR-FOR                          # booking code on old page
+        /trips/october-transatlantic-barcelona-to-fort-lauderdale                  /cruises/RC-31OCT2027-BAR-FOR
+        /trips/october-mediterranean-italy-greece-spain-cruise/                    /cruises/PC-24OCT2027-ROM-BAR                          # booking code on old page
+        /trips/october-mediterranean-italy-greece-spain-cruise                     /cruises/PC-24OCT2027-ROM-BAR
+        /trips/july-greece-turkey-cruise/                                          /cruises/RC-09JUL2027-ATH-ATH                          # booking code on old page
+        /trips/july-greece-turkey-cruise                                           /cruises/RC-09JUL2027-ATH-ATH
+        /trips/march-caribbean-spring-break/                                       /cruises/CA-13MAR2027-MIA-MIA                          # booking code on old page
+        /trips/march-caribbean-spring-break                                        /cruises/CA-13MAR2027-MIA-MIA
+        /trips/april-alaska-cruise-from-vancouver/                                 /cruises/PC-30APR2027-VAN-SEA                          # booking code on old page
+        /trips/april-alaska-cruise-from-vancouver                                  /cruises/PC-30APR2027-VAN-SEA
+        /trips/april-spain-italy-france/                                           /cruises/PC-11APR2027-BAR-ROM                          # booking code on old page
+        /trips/april-spain-italy-france                                            /cruises/PC-11APR2027-BAR-ROM
+        /trips/december-panama-canal-black-heritage-voyage/                        /cruises/NC-10DEC2026-MIA-MIA                          # booking code on old page
+        /trips/december-panama-canal-black-heritage-voyage                         /cruises/NC-10DEC2026-MIA-MIA
+        /trips/september-alaska-cruise-roundtrip-from-vancouver/                   /cruises/RC-17SEP2027-VAN-VAN                          # booking code on old page
+        /trips/september-alaska-cruise-roundtrip-from-vancouver                    /cruises/RC-17SEP2027-VAN-VAN
+        /trips/september-tokyo-roundtrip-cruise/                                   /cruises/PC-05SEP2027-TOK-TOK                          # booking code on old page
+        /trips/september-tokyo-roundtrip-cruise                                    /cruises/PC-05SEP2027-TOK-TOK
+        /trips/march-transatlantic-florida-to-barcelona/                           /cruises/PC-28MAR2027-FOR-BAR                          # booking code on old page
+        /trips/march-transatlantic-florida-to-barcelona                            /cruises/PC-28MAR2027-FOR-BAR
+        /trips/november-transpacific-auckland-to-la-cruise/                        /cruises/PC-09NOV2026-AUC-LOS                          # date + place
+        /trips/november-transpacific-auckland-to-la-cruise                         /cruises/PC-09NOV2026-AUC-LOS
+        /trips/december-caribbean-cruise-for-neurodivergent-families/              /cruises/CA-05DEC2026-MIA-MIA                          # booking code on old page
+        /trips/december-caribbean-cruise-for-neurodivergent-families               /cruises/CA-05DEC2026-MIA-MIA
+        /trips/november-south-america-cruise/                                      /cruises/PC-19NOV2026-FOR-BUE                          # booking code on old page
+        /trips/november-south-america-cruise                                       /cruises/PC-19NOV2026-FOR-BUE
+        /trips/october-mediterranean-italy-france-cruise/                          /cruises/RC-24OCT2026-RAV-BAR                          # booking code on old page
+        /trips/october-mediterranean-italy-france-cruise                           /cruises/RC-24OCT2026-RAV-BAR
+        /trips/december-south-america-cruise/                                      /cruises                                               # no certain match
+        /trips/december-south-america-cruise                                       /cruises
+        /trips/march-japan-korea-cruise-2/                                         /cruises/PC-29MAR2027-TOK2-TOK2                        # booking code on old page
+        /trips/march-japan-korea-cruise-2                                          /cruises/PC-29MAR2027-TOK2-TOK2
+        /trips/october-mediterranean-greece-italy-spain/                           /cruises/PC-31OCT2027-ATH-BAR                          # booking code on old page
+        /trips/october-mediterranean-greece-italy-spain                            /cruises/PC-31OCT2027-ATH-BAR
+        /trips/jun-iceland-norway-cruise/                                          /cruises/PC-26JUN2027-SOU-SOU                          # booking code on old page
+        /trips/jun-iceland-norway-cruise                                           /cruises/PC-26JUN2027-SOU-SOU
+        /trips/may-austria-wellness-retreat/                                       /land-trips/austria-health-wellness-retreat            # land trip
+        /trips/may-austria-wellness-retreat                                        /land-trips/austria-health-wellness-retreat
+        /trips/september-horseback-riding-dude-ranch-experience-2027/              /land-trips/horseback-riding-dude-ranch-experience     # land trip
+        /trips/september-horseback-riding-dude-ranch-experience-2027               /land-trips/horseback-riding-dude-ranch-experience
+        /trips/november-xcaret-parks-2027/                                         /land-trips/xcaret-family-adventure                    # land trip
+        /trips/november-xcaret-parks-2027                                          /land-trips/xcaret-family-adventure
+        /trips/september-horseback-riding-dude-ranch-2026/                         /land-trips/horseback-riding-dude-ranch-experience     # land trip
+        /trips/september-horseback-riding-dude-ranch-2026                          /land-trips/horseback-riding-dude-ranch-experience
+        /trips/april-transatlantic-florida-to-barcelona/                           /cruises/RC-25APR2027-FOR-BAR                          # booking code on old page
+        /trips/april-transatlantic-florida-to-barcelona                            /cruises/RC-25APR2027-FOR-BAR
+        /trips/november-exotic-caribbean-cruise/                                   /cruises/PC-15NOV2027-FOR-FOR                          # booking code on old page
+        /trips/november-exotic-caribbean-cruise                                    /cruises/PC-15NOV2027-FOR-FOR
+        /trips/january-egypt-jordan-adventure/                                     /land-trips/egypt-jordan-adventure                     # land trip
+        /trips/january-egypt-jordan-adventure                                      /land-trips/egypt-jordan-adventure
+        /trips/new-zealand-roadtrip/                                               /land-trips/new-zealand-roadtrip                       # land trip
+        /trips/new-zealand-roadtrip                                                /land-trips/new-zealand-roadtrip
+        /trips/sep-11-2027-austrian-mountain-fall-retreat/                         /land-trips/austrian-fall-mountain-retreat             # land trip
+        /trips/sep-11-2027-austrian-mountain-fall-retreat                          /land-trips/austrian-fall-mountain-retreat
+        /trips/january-panama-canal/                                               /cruises/PC-06JAN2027-FOR-LOS                          # booking code on old page
+        /trips/january-panama-canal                                                /cruises/PC-06JAN2027-FOR-LOS
+        /trips/mar-28-transatlantic-mediterranean-fort-lauderdale-to-athens/       /cruises/PC-28MAR2027-FOR-BAR                          # date + place
+        /trips/mar-28-transatlantic-mediterranean-fort-lauderdale-to-athens        /cruises/PC-28MAR2027-FOR-BAR
+        /trips/mar-28-transatlantic-mediterranean-fort-lauderdale-to-rome/         /cruises/PC-28MAR2027-FOR-BAR                          # date + place
+        /trips/mar-28-transatlantic-mediterranean-fort-lauderdale-to-rome          /cruises/PC-28MAR2027-FOR-BAR
+        /trips/october-mediterranean-atlantic-cruise/                              /cruises/CE-15OCT2026-ATH-ATH                          # date + place
+        /trips/october-mediterranean-atlantic-cruise                               /cruises/CE-15OCT2026-ATH-ATH
+        /trips/october-classic-greece-turkey-cruise/                               /cruises/CE-15OCT2026-ATH-ATH                          # date + place
+        /trips/october-classic-greece-turkey-cruise                                /cruises/CE-15OCT2026-ATH-ATH
+        /trips/april-tokyo-to-vancouver/                                           /cruises/PC-23APR2027-TOK2-VAN                         # booking code on old page
+        /trips/april-tokyo-to-vancouver                                            /cruises/PC-23APR2027-TOK2-VAN
+        /trips/november-transpacific-sydney-to-la-cruise/                          /cruises/PC-04NOV2026-SYD-LOS                          # date + place
+        /trips/november-transpacific-sydney-to-la-cruise                           /cruises/PC-04NOV2026-SYD-LOS
+        /trips/october-mexico-coastal-cruise/                                      /cruises/RC-08OCT2026-LOS-LOS                          # booking code on old page
+        /trips/october-mexico-coastal-cruise                                       /cruises/RC-08OCT2026-LOS-LOS
+        /trips/september-hawaii-south-pacific-cruise-to-new-zealand/               /cruises                                               # no certain match
+        /trips/september-hawaii-south-pacific-cruise-to-new-zealand                /cruises
+        /trips/august-british-isles-france/                                        /cruises/PC-29AUG2027-SOU-SOU                          # booking code on old page
+        /trips/august-british-isles-france                                         /cruises/PC-29AUG2027-SOU-SOU
+        /trips/october-australia-roundtrip-cruise/                                 /cruises                                               # no certain match
+        /trips/october-australia-roundtrip-cruise                                  /cruises
+        /trips/october-tokyo-to-la/                                                /cruises/RC-27OCT2027-TOK-LOS                          # booking code on old page
+        /trips/october-tokyo-to-la                                                 /cruises/RC-27OCT2027-TOK-LOS
+        /trips/may-tokyo-to-la-cruise/                                             /cruises/RC-27OCT2027-TOK-LOS                          # booking code on old page
+        /trips/may-tokyo-to-la-cruise                                              /cruises/RC-27OCT2027-TOK-LOS
+        /trips/april-baltic-scandinavia-cruise/                                    /cruises/PC-24APR2027-SOU-SOU                          # booking code on old page
+        /trips/april-baltic-scandinavia-cruise                                     /cruises/PC-24APR2027-SOU-SOU
+        /trips/sep-horseback-riding-dude-ranch-experience-2028/                    /land-trips/horseback-riding-dude-ranch-experience     # land trip
+        /trips/sep-horseback-riding-dude-ranch-experience-2028                     /land-trips/horseback-riding-dude-ranch-experience
+        /trips/june-july-austrian-mountain-summer-retreat-2027/                    /land-trips/austrian-mountain-summer-retreat           # land trip
+        /trips/june-july-austrian-mountain-summer-retreat-2027                     /land-trips/austrian-mountain-summer-retreat
+        /trips/december-austrian-skiing-christmas-markets-retreat-2027/            /land-trips/austrian-skiing-christmas-markets-retreat  # land trip
+        /trips/december-austrian-skiing-christmas-markets-retreat-2027             /land-trips/austrian-skiing-christmas-markets-retreat
+        /trips/december-austrian-skiing-christmas-markets-retreat/                 /land-trips/austrian-skiing-christmas-markets-retreat  # land trip
+        /trips/december-austrian-skiing-christmas-markets-retreat                  /land-trips/austrian-skiing-christmas-markets-retreat
+        /trips/september-icon-of-the-seas-caribbean-roundtrip-cruise/              /cruises/RC-19SEP2026-MIA-MIA                          # booking code on old page
+        /trips/september-icon-of-the-seas-caribbean-roundtrip-cruise               /cruises/RC-19SEP2026-MIA-MIA
+        /trips/march-japan-korea-cruise/                                           /cruises                                               # no certain match
+        /trips/march-japan-korea-cruise                                            /cruises
+        /trips/february-western-caribbean-cruise/                                  /cruises                                               # no certain match
+        /trips/february-western-caribbean-cruise                                   /cruises
+        /trips/february-hawaii-mexico-cruise/                                      /cruises                                               # no certain match
+        /trips/february-hawaii-mexico-cruise                                       /cruises
+        /trips/march-transatlantic-florida-to-spain-cruise/                        /cruises                                               # no certain match
+        /trips/march-transatlantic-florida-to-spain-cruise                         /cruises
+        /trips/march-mythology-greece-turkey-cruise/                               /cruises                                               # no certain match
+        /trips/march-mythology-greece-turkey-cruise                                /cruises
+        /trips/april-spain-to-florida-cruise/                                      /cruises                                               # no certain match
+        /trips/april-spain-to-florida-cruise                                       /cruises
+        /trips/march-spain-to-texas-cruise/                                        /cruises                                               # no certain match
+        /trips/march-spain-to-texas-cruise                                         /cruises
+        /trips/april-southern-caribbean-cruise/                                    /cruises                                               # no certain match
+        /trips/april-southern-caribbean-cruise                                     /cruises
+        /trips/april-baltic-scandinavian-cruise/                                   /cruises                                               # no certain match
+        /trips/april-baltic-scandinavian-cruise                                    /cruises
+        /trips/may-alaska-roundtrip-from-vancouver/                                /cruises                                               # no certain match
+        /trips/may-alaska-roundtrip-from-vancouver                                 /cruises
+        /trips/may-british-isles-france-cruise/                                    /cruises                                               # no certain match
+        /trips/may-british-isles-france-cruise                                     /cruises
+        /trips/august-florida-to-barcelona-cruise/                                 /cruises                                               # no certain match
+        /trips/august-florida-to-barcelona-cruise                                  /cruises
+        /trips/august-japan-roundtrip-cruise/                                      /cruises                                               # no certain match
+        /trips/august-japan-roundtrip-cruise                                       /cruises
+        /trips/august-northern-europe-iceland-cruise/                              /cruises                                               # no certain match
+        /trips/august-northern-europe-iceland-cruise                               /cruises
+        /trips/october-transpacific-japan-cruise/                                  /cruises/RC-02OCT2026-LOS-TOK                          # date + place
+        /trips/october-transpacific-japan-cruise                                   /cruises/RC-02OCT2026-LOS-TOK
+        /trips/october-japan-taiwan-china-cruise/                                  /journeys/BB-CE-29OCT2026-TOK-BEN                      # date + place
+        /trips/october-japan-taiwan-china-cruise                                   /journeys/BB-CE-29OCT2026-TOK-BEN
+        /trips/october-transatlantic-barcelona-to-port-canaveral-cruise/           /cruises                                               # no certain match
+        /trips/october-transatlantic-barcelona-to-port-canaveral-cruise            /cruises
+        /trips/november-southeast-asia-cruise/                                     /cruises/CE-12NOV2026-HON2-SIN                         # date + place
+        /trips/november-southeast-asia-cruise                                      /cruises/CE-12NOV2026-HON2-SIN
+        /trips/november-singapore-to-bali-cruise/                                  /cruises/CE-26NOV2026-SIN-BEN                          # date + place
+        /trips/november-singapore-to-bali-cruise                                   /cruises/CE-26NOV2026-SIN-BEN
+        /trips/november-morocco-family-journey/                                    /land-trips/morocco-family-journey                     # land trip
+        /trips/november-morocco-family-journey                                     /land-trips/morocco-family-journey
+        /trips/september-austrian-mountain-fall-retreat/                           /land-trips/austrian-fall-mountain-retreat             # land trip
+        /trips/september-austrian-mountain-fall-retreat                            /land-trips/austrian-fall-mountain-retreat
+        /trips/january-teen-caribbean-cruise/                                      /cruises/NC-09JAN2027-MIA-MIA                          # booking code on old page
+        /trips/january-teen-caribbean-cruise                                       /cruises/NC-09JAN2027-MIA-MIA
+        /trips/april-mediterranean-greece-italy-turkey/                            /cruises/PC-11APR2027-BAR-ATH                          # booking code on old page
+        /trips/april-mediterranean-greece-italy-turkey                             /cruises/PC-11APR2027-BAR-ATH
+        /trips/april-mini-worldschooling-cruise/                                   /cruises/RC-23APR2027-FOR-FOR                          # booking code on old page
+        /trips/april-mini-worldschooling-cruise                                    /cruises/RC-23APR2027-FOR-FOR
+        /trips/september-greece-turkey-cruise/                                     /cruises                                               # no certain match
+        /trips/september-greece-turkey-cruise                                      /cruises
+        /trips/september-tokyo-to-singapore/                                       /cruises/PC-14SEP2027-TOK2-SIN                         # booking code on old page
+        /trips/september-tokyo-to-singapore                                        /cruises/PC-14SEP2027-TOK2-SIN
+        /trips/october-sydney-to-auckland/                                         /cruises/PC-26OCT2027-SYD-AUC                          # booking code on old page
+        /trips/october-sydney-to-auckland                                          /cruises/PC-26OCT2027-SYD-AUC
+        /trips/september-vancouver-to-hawaii-cruise/                               /cruises/CE-20SEP2026-VAN-HON                          # booking code on old page
+        /trips/september-vancouver-to-hawaii-cruise                                /cruises/CE-20SEP2026-VAN-HON
+        /trips/march-mexico-cruise-roundtrip-from-la/                              /cruises                                               # no certain match
+        /trips/march-mexico-cruise-roundtrip-from-la                               /cruises
+        /trips/september-transpacific-la-to-auckland/                              /cruises                                               # no certain match
+        /trips/september-transpacific-la-to-auckland                               /cruises
+        /trips/october-south-korea-japan/                                          /cruises                                               # no certain match
+        /trips/october-south-korea-japan                                           /cruises
+        /trips/galapagos-island-hopping-tour-2027/                                 /land-trips/galapagos-island-hopping-tour              # land trip
+        /trips/galapagos-island-hopping-tour-2027                                  /land-trips/galapagos-island-hopping-tour
+        /trips/apr-29-east-asia-transpacific-cruise/                               /cruises                                               # no certain match
+        /trips/apr-29-east-asia-transpacific-cruise                                /cruises
+        /trips/april-singapore-to-tokyo/                                           /cruises                                               # no certain match
+        /trips/april-singapore-to-tokyo                                            /cruises
+        /trips/cherry-blossoms-japan-retreat/                                      /roadmap                                               # Coming Soon idea
+        /trips/cherry-blossoms-japan-retreat                                       /roadmap
+        /trips/november-southern-caribbean-cruise/                                 /cruises                                               # no certain match
+        /trips/november-southern-caribbean-cruise                                  /cruises
+        /trips/nov-19-dec-22-south-america/                                        /cruises/PC-19NOV2026-FOR-BUE                          # date + place
+        /trips/nov-19-dec-22-south-america                                         /cruises/PC-19NOV2026-FOR-BUE
+        /trips/october-asia-extravaganza/                                          /cruises/RC-02OCT2026-LOS-TOK                          # date + place
+        /trips/october-asia-extravaganza                                           /cruises/RC-02OCT2026-LOS-TOK
+        /trips/january-may-grand-circle-world-cruise/                              /journeys/BB-PC-06JAN2027-FOR-LOS                      # date + place
+        /trips/january-may-grand-circle-world-cruise                               /journeys/BB-PC-06JAN2027-FOR-LOS
+        /trips/sep-14-asia-australia-new-zealand/                                  /journeys/BB-PC-14SEP2027-TOK2-AUC                     # date + place
+        /trips/sep-14-asia-australia-new-zealand                                   /journeys/BB-PC-14SEP2027-TOK2-AUC
+        /trips/oct-24-mediterranean-transatlantic-from-rome-to-fort-lauderdale/    /cruises                                               # no certain match
+        /trips/oct-24-mediterranean-transatlantic-from-rome-to-fort-lauderdale     /cruises
+        /trips/october-2-leg-transatlantic-caribbean/                              /cruises                                               # no certain match
+        /trips/october-2-leg-transatlantic-caribbean                               /cruises
+        /trips/oct-31-mediterranean-transatlantic-from-athens-to-fort-lauderdale/  /cruises                                               # no certain match
+        /trips/oct-31-mediterranean-transatlantic-from-athens-to-fort-lauderdale   /cruises
+        /trips/september-hawaii-tahiti-fiji-new-zealand-cruise/                    /cruises/CE-20SEP2026-VAN-HON                          # date + place
+        /trips/september-hawaii-tahiti-fiji-new-zealand-cruise                     /cruises/CE-20SEP2026-VAN-HON
+        /trips/european-river/                                                     /roadmap                                               # Coming Soon idea
+        /trips/european-river                                                      /roadmap
+        /trips/march-morocco-family-journey/                                       /land-trips/morocco-family-journey                     # land trip
+        /trips/march-morocco-family-journey                                        /land-trips/morocco-family-journey
+        /trips/january-singapore-to-tokyo/                                         /cruises                                               # no certain match
+        /trips/january-singapore-to-tokyo                                          /cruises
+        /trips/february-singapore-roundtrip-cruise/                                /cruises                                               # no certain match
+        /trips/february-singapore-roundtrip-cruise                                 /cruises
+        /trips/january-tokyo-to-singapore/                                         /cruises                                               # no certain match
+        /trips/january-tokyo-to-singapore                                          /cruises
+        /trips/antarctica-expedition/                                              /roadmap                                               # Coming Soon idea
+        /trips/antarctica-expedition                                               /roadmap
+        /trips/greece-family-learn-to-sail/                                        /roadmap                                               # Coming Soon idea
+        /trips/greece-family-learn-to-sail                                         /roadmap
+        /trips/december-panama-holiday-cruise/                                     /cruises                                               # no certain match
+        /trips/december-panama-holiday-cruise                                      /cruises
+        /trips/december-singapore-to-brisbane-cruise/                              /cruises                                               # no certain match
+        /trips/december-singapore-to-brisbane-cruise                               /cruises
+        /trips/arctic-expedition/                                                  /roadmap                                               # Coming Soon idea
+        /trips/arctic-expedition                                                   /roadmap
+        /trips/october-italy-greece-turkey-cruise/                                 /cruises                                               # no certain match
+        /trips/october-italy-greece-turkey-cruise                                  /cruises
+        /trips/october-barcelona-roundtrip-cruise/                                 /cruises                                               # no certain match
+        /trips/october-barcelona-roundtrip-cruise                                  /cruises
+        /trips/november-cape-town-to-singapore-cruise/                             /cruises                                               # no certain match
+        /trips/november-cape-town-to-singapore-cruise                              /cruises
+        /excursion/apr-11-barcelona-to-florida/                                    /cruises                                               # no certain match
+        /excursion/apr-11-barcelona-to-florida                                     /cruises
+        /excursion/apr-18-southern-caribbean/                                      /cruises                                               # no certain match
+        /excursion/apr-18-southern-caribbean                                       /cruises
+        /excursion/apr-25-baltic-scandinavia/                                      /cruises                                               # no certain match
+        /excursion/apr-25-baltic-scandinavia                                       /cruises
+        /excursion/aug-18-transatlantic-3/                                         /cruises                                               # no certain match
+        /excursion/aug-18-transatlantic-3                                          /cruises
+        /excursion/aug-18-transatlantic/                                           /cruises                                               # no certain match
+        /excursion/aug-18-transatlantic                                            /cruises
+        /excursion/aug-26-japan/                                                   /cruises                                               # no certain match
+        /excursion/aug-26-japan                                                    /cruises
+        /excursion/aug-29-northern-europe/                                         /cruises                                               # no certain match
+        /excursion/aug-29-northern-europe                                          /cruises
+        /excursion/feb-4-hawaii-mexico/                                            /cruises                                               # no certain match
+        /excursion/feb-4-hawaii-mexico                                             /cruises
+        /excursion/mar-17-japan-korea/                                             /cruises                                               # no certain match
+        /excursion/mar-17-japan-korea                                              /cruises
+        /excursion/mar-20-greece-turkey/                                           /cruises                                               # no certain match
+        /excursion/mar-20-greece-turkey                                            /cruises
+        /excursion/mar-21-barcelona-to-texas/                                      /cruises                                               # no certain match
+        /excursion/mar-21-barcelona-to-texas                                       /cruises
+        /excursion/mar-5-florida-to-spain/                                         /cruises                                               # no certain match
+        /excursion/mar-5-florida-to-spain                                          /cruises
+        /excursion/may-10-british-islands/                                         /cruises                                               # no certain match
+        /excursion/may-10-british-islands                                          /cruises
+        /excursion/may-6-alaska/                                                   /cruises                                               # no certain match
+        /excursion/may-6-alaska                                                    /cruises
+        /excursion/nov-12-sea/                                                     /cruises/CE-12NOV2026-HON2-SIN                         # excursions of this sailing
+        /excursion/nov-12-sea                                                      /cruises/CE-12NOV2026-HON2-SIN
+        /excursion/nov-19-latam/                                                   /cruises/PC-19NOV2026-FOR-BUE                          # excursions of this sailing
+        /excursion/nov-19-latam                                                    /cruises/PC-19NOV2026-FOR-BUE
+        /excursion/nov-26-sea/                                                     /cruises/CE-26NOV2026-SIN-BEN                          # excursions of this sailing
+        /excursion/nov-26-sea                                                      /cruises/CE-26NOV2026-SIN-BEN
+        /excursion/nov-4-nov-9-transpacific/                                       /cruises                                               # no certain match
+        /excursion/nov-4-nov-9-transpacific                                        /cruises
+        /excursion/oct-15-greece/                                                  /cruises/CE-15OCT2026-ATH-ATH                          # excursions of this sailing
+        /excursion/oct-15-greece                                                   /cruises/CE-15OCT2026-ATH-ATH
+        /excursion/oct-2-la-to-tokyo/                                              /cruises/RC-02OCT2026-LOS-TOK                          # excursions of this sailing
+        /excursion/oct-2-la-to-tokyo                                               /cruises/RC-02OCT2026-LOS-TOK
+        /excursion/oct-24-mediterranean/                                           /cruises/RC-24OCT2026-RAV-BAR                          # excursions of this sailing
+        /excursion/oct-24-mediterranean                                            /cruises/RC-24OCT2026-RAV-BAR
+        /excursion/oct-29-southeast-asia/                                          /cruises/CE-29OCT2026-TOK-HON2                         # excursions of this sailing
+        /excursion/oct-29-southeast-asia                                           /cruises/CE-29OCT2026-TOK-HON2
+        /excursion/oct-31-transatlantic/                                           /cruises                                               # no certain match
+        /excursion/oct-31-transatlantic                                            /cruises
+        /excursion/oct-8-mexico/                                                   /cruises/RC-08OCT2026-LOS-LOS                          # excursions of this sailing
+        /excursion/oct-8-mexico                                                    /cruises/RC-08OCT2026-LOS-LOS
+        /excursion/sept-19-caribbean/                                              /cruises/RC-19SEP2026-MIA-MIA                          # excursions of this sailing
+        /excursion/sept-19-caribbean                                               /cruises/RC-19SEP2026-MIA-MIA
+        /category/2025/                                                            /cruises                                               # category
+        /category/2025                                                             /cruises
+        /category/2026/                                                            /cruises                                               # category
+        /category/2026                                                             /cruises
+        /category/2027/                                                            /cruises                                               # category
+        /category/2027                                                             /cruises
+        /category/5-person-families/                                               /cruises                                               # category
+        /category/5-person-families                                                /cruises
+        /category/add-on/                                                          /cruises                                               # category
+        /category/add-on                                                           /cruises
+        /category/africa/                                                          /cruises                                               # category
+        /category/africa                                                           /cruises
+        /category/all-transatlantics/                                              /cruises                                               # category
+        /category/all-transatlantics                                               /cruises
+        /category/all-transpacifics/                                               /cruises                                               # category
+        /category/all-transpacifics                                                /cruises
+        /category/almost-sold-out/                                                 /cruises                                               # category
+        /category/almost-sold-out                                                  /cruises
+        /category/article/                                                         /about-our-trips                                       # category
+        /category/article                                                          /about-our-trips
+        /category/asia/                                                            /cruises                                               # category
+        /category/asia                                                             /cruises
+        /category/australia-new-zealand/                                           /cruises                                               # category
+        /category/australia-new-zealand                                            /cruises
+        /category/austria/                                                         /land-trips                                            # category
+        /category/austria                                                          /land-trips
+        /category/back-to-back/                                                    /cruises                                               # category
+        /category/back-to-back                                                     /cruises
+        /category/canada/                                                          /cruises                                               # category
+        /category/canada                                                           /cruises
+        /category/cancelled/                                                       /cruises                                               # category
+        /category/cancelled                                                        /cruises
+        /category/caribbean-mexico/                                                /cruises                                               # category
+        /category/caribbean-mexico                                                 /cruises
+        /category/carnival-cruises/                                                /cruises                                               # category
+        /category/carnival-cruises                                                 /cruises
+        /category/celebrity-cruises/                                               /cruises                                               # category
+        /category/celebrity-cruises                                                /cruises
+        /category/cheapest/                                                        /cruises                                               # category
+        /category/cheapest                                                         /cruises
+        /category/cold-climates/                                                   /cruises                                               # category
+        /category/cold-climates                                                    /cruises
+        /category/coming-soon/                                                     /roadmap                                               # category
+        /category/coming-soon                                                      /roadmap
+        /category/cruises/                                                         /cruises                                               # category
+        /category/cruises                                                          /cruises
+        /category/europe/                                                          /cruises                                               # category
+        /category/europe                                                           /cruises
+        /category/fall-cruises/                                                    /cruises                                               # category
+        /category/fall-cruises                                                     /cruises
+        /category/land-trips-2027/                                                 /land-trips                                            # category
+        /category/land-trips-2027                                                  /land-trips
+        /category/land-trips/                                                      /land-trips                                            # category
+        /category/land-trips                                                       /land-trips
+        /category/leg/                                                             /cruises                                               # category
+        /category/leg                                                              /cruises
+        /category/mediterranean/                                                   /cruises                                               # category
+        /category/mediterranean                                                    /cruises
+        /category/new/                                                             /cruises                                               # category
+        /category/new                                                              /cruises
+        /category/norwegian-cruise-line/                                           /cruises                                               # category
+        /category/norwegian-cruise-line                                            /cruises
+        /category/port-excursions/                                                 /cruises                                               # category
+        /category/port-excursions                                                  /cruises
+        /category/princess-cruises/                                                /cruises                                               # category
+        /category/princess-cruises                                                 /cruises
+        /category/quick-to-sell-out/                                               /cruises                                               # category
+        /category/quick-to-sell-out                                                /cruises
+        /category/roundtrip/                                                       /cruises                                               # category
+        /category/roundtrip                                                        /cruises
+        /category/royal-caribbean/                                                 /cruises                                               # category
+        /category/royal-caribbean                                                  /cruises
+        /category/set-sail/                                                        /cruises                                               # category
+        /category/set-sail                                                         /cruises
+        /category/sold-out/                                                        /cruises                                               # category
+        /category/sold-out                                                         /cruises
+        /category/south-america/                                                   /cruises                                               # category
+        /category/south-america                                                    /cruises
+        /category/spring-cruises/                                                  /cruises                                               # category
+        /category/spring-cruises                                                   /cruises
+        /category/summer-cruises/                                                  /cruises                                               # category
+        /category/summer-cruises                                                   /cruises
+        /category/trips/                                                           /cruises                                               # category
+        /category/trips                                                            /cruises
+        /category/tropical/                                                        /cruises                                               # category
+        /category/tropical                                                         /cruises
+        /category/united-states/                                                   /cruises                                               # category
+        /category/united-states                                                    /cruises
+        /category/winter-cruises/                                                  /cruises                                               # category
+        /category/winter-cruises                                                   /cruises
+        /group-cruises/                                                            /cruises                                               # page
+        /group-cruises                                                             /cruises
+        /our-trips/                                                                /cruises                                               # page
+        /our-trips                                                                 /cruises
+        /worldschooling-trips-2026/                                                /cruises                                               # page
+        /worldschooling-trips-2026                                                 /cruises
+        /worldschooling-trips-2027/                                                /cruises                                               # page
+        /worldschooling-trips-2027                                                 /cruises
+        /austria-retreats/                                                         /land-trips                                            # page
+        /austria-retreats                                                          /land-trips
+        /cancellation-refund-policy/                                               /cancellation-policy                                   # page
+        /cancellation-refund-policy                                                /cancellation-policy
+        /testimonials/                                                             /about                                                 # page
+        /testimonials                                                              /about
+        /press/                                                                    /about                                                 # page
+        /press                                                                     /about
+        /waitlist/                                                                 /stay-updated                                          # page
+        /waitlist                                                                  /stay-updated
+        /booking/                                                                  /contact                                               # page
+        /booking                                                                   /contact
+        /group-cruise-intake/                                                      /contact                                               # page
+        /group-cruise-intake                                                       /contact
+        /individual-cruise-form/                                                   /contact                                               # page
+        /individual-cruise-form                                                    /contact
+        /blog/                                                                     /about-our-trips                                       # page
+        /blog                                                                      /about-our-trips
+        /a-day-in-the-life-on-a-worldschooling-cruise-what-families-actually-do/   /about-our-trips                                       # blog article
+        /a-day-in-the-life-on-a-worldschooling-cruise-what-families-actually-do    /about-our-trips
+        /are-homeschool-cruises-worth-it-what-homeschoolers-need-to-know/          /about-our-trips                                       # blog article
+        /are-homeschool-cruises-worth-it-what-homeschoolers-need-to-know           /about-our-trips
+        /educational-benefits-of-worldschooling-cruises-for-homeschoolers/         /about-our-trips                                       # blog article
+        /educational-benefits-of-worldschooling-cruises-for-homeschoolers          /about-our-trips
+        /how-cruises-support-unschoolers-homeschoolers-and-worldschoolers-alike/   /about-our-trips                                       # blog article
+        /how-cruises-support-unschoolers-homeschoolers-and-worldschoolers-alike    /about-our-trips
+        /how-to-plan-your-first-worldschooling-or-homeschool-cruise/               /about-our-trips                                       # blog article
+        /how-to-plan-your-first-worldschooling-or-homeschool-cruise                /about-our-trips
+        /the-best-cruises-for-homeschoolers-how-to-pick-the-right-one/             /about-our-trips                                       # blog article
+        /the-best-cruises-for-homeschoolers-how-to-pick-the-right-one              /about-our-trips
+        /the-best-destinations-for-homeschool-families-on-worldschooling-cruises/  /about-our-trips                                       # blog article
+        /the-best-destinations-for-homeschool-families-on-worldschooling-cruises   /about-our-trips
+        /the-rise-of-homeschool-group-travel-why-cruises-are-leading-the-trend/    /about-our-trips                                       # blog article
+        /the-rise-of-homeschool-group-travel-why-cruises-are-leading-the-trend     /about-our-trips
+        /the-ultimate-guide-to-worldschooling-cruises-for-families/                /about-our-trips                                       # blog article
+        /the-ultimate-guide-to-worldschooling-cruises-for-families                 /about-our-trips
+        /why-homeschool-parents-love-traveling-by-cruise-a-deep-dive/              /about-our-trips                                       # blog article
+        /why-homeschool-parents-love-traveling-by-cruise-a-deep-dive               /about-our-trips
+        /why-worldschooling-cruises-are-the-future-of-homeschool-group-travel/     /about-our-trips                                       # blog article
+        /why-worldschooling-cruises-are-the-future-of-homeschool-group-travel      /about-our-trips
+        /worldschooling-cruises-vs-homeschool-cruises-whats-the-difference/        /about-our-trips                                       # blog article
+        /worldschooling-cruises-vs-homeschool-cruises-whats-the-difference         /about-our-trips
+        /worldschooling-trips-that-transform-learning-why-we-chose-cruises/        /about-our-trips                                       # blog article
+        /worldschooling-trips-that-transform-learning-why-we-chose-cruises         /about-our-trips
+        default                                    ""
+}
+@oldSite expression {old_site_target} != ""
+redir @oldSite {old_site_target} 301

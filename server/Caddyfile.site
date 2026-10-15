@@ -1,0 +1,71 @@
+# The website's Caddy config. On the VPS this file is /etc/caddy/wsj-site.caddy, pulled into /etc/caddy/Caddyfile
+# by the line: import wsj-site.caddy   (other services keep their own blocks there; don't touch them).
+# To change it: edit here, then from this folder (cmd):
+#   scp server\Caddyfile.site melike@178.105.202.222:~/wsj-site.caddy
+# and on the VPS:
+#   sudo cp ~/wsj-site.caddy /etc/caddy/wsj-site.caddy && sudo caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile && sudo systemctl reload caddy
+
+# Everything the website needs, used by the site block(s) below.
+(wsj_site) {
+    root * /home/melike/apps/website
+
+    # Same page routes as the local server.js: one template per page type
+    @cruise path_regexp ^/cruises/[^/]+/?$
+    @journey path_regexp ^/journeys/[^/]+/?$
+    # Old addresses: /about.html -> /about, /about/ -> /about (a ?year=... part is kept)
+    @html path_regexp html ^(/.+)\.html$
+    @slash path_regexp slash ^(/.+)/$
+    @hasQuery expression {query} != ""
+    # Addresses without .html: /about -> about.html, /land-trips/<trip> -> land-trips/<trip>.html
+    @page {
+        not path /
+        file {path}.html
+    }
+    # Booking-form links: /RC-19SEP2026-MIA-MIA (a cruise's booking code)
+    @booking path_regexp ^/[A-Z]{2}-\d{2}[A-Z]{3}\d{4}-[A-Z0-9]+-[A-Z0-9]+$
+    route {
+        redir /home.html / 301
+        route @hasQuery {
+            redir @html {re.html.1}?{query} 301
+            redir @slash {re.slash.1}?{query} 301
+        }
+        redir @html {re.html.1} 301
+        redir @slash {re.slash.1} 301
+        rewrite / /home.html
+        rewrite @cruise /cruise-detail.html
+        rewrite @journey /journey.html
+        rewrite @page {path}.html
+        rewrite @booking /booking-form.html
+        file_server
+    }
+    # Any address that doesn't exist: our "Page not found" page (with a real 404 status)
+    handle_errors {
+        @notFound expression {err.status_code} == 404
+        handle @notFound {
+            rewrite * /404.html
+            file_server
+        }
+    }
+
+    header {
+        Strict-Transport-Security "max-age=63072000; includeSubDomains"
+        X-Content-Type-Options    "nosniff"
+        X-Frame-Options           "DENY"
+        Referrer-Policy           "strict-origin-when-cross-origin"
+        -Server
+    }
+}
+
+# The site lives on the main domain (since the move from trips.worldschoolingjourneys.com, October 2026).
+# old-site-redirects.caddy (next to this file in /etc/caddy/) sends the old WordPress addresses to the new pages.
+worldschoolingjourneys.com {
+    import old-site-redirects.caddy
+    import wsj_site
+}
+# www and the old placeholder subdomain forward to the main domain, keeping the rest of the address
+www.worldschoolingjourneys.com {
+    redir https://worldschoolingjourneys.com{uri} 301
+}
+trips.worldschoolingjourneys.com {
+    redir https://worldschoolingjourneys.com{uri} 301
+}

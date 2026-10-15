@@ -74,7 +74,7 @@ function resolvePath(urlPath, map = landTripSlugs()) {
 function redirectPage(to) {
   return `<!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><title>Moved</title>
-<meta name="robots" content="noindex"><link rel="canonical" href="https://trips.worldschoolingjourneys.com${to}">
+<meta name="robots" content="noindex"><link rel="canonical" href="${to}">
 <script>location.replace(${JSON.stringify(to)} + location.search + location.hash);</script>
 <meta http-equiv="refresh" content="0; url=${to}">
 </head><body><p>This trip has moved to <a href="${to}">${to}</a>.</p></body></html>

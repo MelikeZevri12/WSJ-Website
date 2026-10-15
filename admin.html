@@ -3515,7 +3515,7 @@ function renderWaitlist() {
   $('waitlistTableBody').innerHTML = rows.length ? rows.map((r) => `
     <tr>
       <td>${fmt(r.createdAt)}</td>
-      <td><a href="https://trips.worldschoolingjourneys.com/land-trips/${encodeURIComponent(r.tripSlug)}.html" target="_blank" rel="noopener">${escapeHtml(r.tripName)}</a></td>
+      <td><a href="/land-trips/${encodeURIComponent(r.tripSlug)}.html" target="_blank" rel="noopener">${escapeHtml(r.tripName)}</a></td>
       <td>${escapeHtml(r.detail) || '—'}</td>
       <td>${escapeHtml(r.fullName)}</td>
       <td><a href="mailto:${escapeHtml(r.email)}">${escapeHtml(r.email)}</a></td>

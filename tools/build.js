@@ -11,9 +11,9 @@ const ROOT = path.join(__dirname, '..');
 const OUT = process.argv[2];
 if (!OUT) { console.error('usage: node tools/build.js <outputFolder>'); process.exit(1); }
 
-// stays on this PC: local test server, design mockups, build tools, logs
-// (the admin dashboard IS uploaded: trips.worldschoolingjourneys.com/admin, behind the staff login)
-const SKIP = new Set(['.git', '.github', 'server.js', 'templates', 'partials', 'tools', 'deploy.cmd',
+// stays on this PC: local test server, design mockups, build tools, logs, the Caddy config copy (server/)
+// (the admin dashboard IS uploaded: <site>/admin, behind the staff login)
+const SKIP = new Set(['.git', '.github', 'server.js', 'server', 'templates', 'partials', 'tools', 'deploy.cmd',
   'desktop.ini', '.gitignore', '.gitattributes', '.htaccess', 'node_modules', 'README.md', 'CLAUDE.md']);
 
 // Links to our own .css/.js files get ?v=<fingerprint of the file>, so a
@@ -59,3 +59,6 @@ const leftover = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((
 const bad = leftover(OUT);
 if (bad.length) { console.error('Include not filled in: ' + bad.join(', ')); process.exit(1); }
 console.log(`Built ${pages} pages + ${files} other files into ${OUT}`);
+
+// sitemap.xml + robots.txt (tools/sitemap.js)
+if (CLEAN_URLS) require('./sitemap').writeSitemap(OUT).then((info) => console.log(`Sitemap: ${info}`));

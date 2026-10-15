@@ -1627,6 +1627,11 @@ async function loadCruise(){
     if(!res.ok) throw new Error('not found');
     const cruise = await res.json();
     if (cruise.slug && cruise.slug !== slug) history.replaceState(null, '', `/cruises/${encodeURIComponent(cruise.slug)}${location.search}${location.hash}`);
+    // tell search engines the slug address is the real one (old business-id links show the same page)
+    if (cruise.slug) {
+      const canonical = document.querySelector('link[rel="canonical"]') || document.head.appendChild(Object.assign(document.createElement('link'), { rel: 'canonical' }));
+      canonical.href = `${location.origin}/cruises/${encodeURIComponent(cruise.slug)}`;
+    }
 
     // An add-on is never sold on its own, so it has no page of its own -
     // send anyone who lands here (old link, search result) to where it IS
