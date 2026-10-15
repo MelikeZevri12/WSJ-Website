@@ -121,6 +121,14 @@
 #community .proof-label{color:var(--gold);}
 .roster-full-card:empty{display:none;}
 #bookCta{padding:0;}
+/* Austria: "extra nights before/after the retreat" notes (booking boxes + price calculator) */
+.join-content p.extra-nights-note{font-size:14px;margin-top:8px;opacity:.9;}
+.extra-nights-note.calc{font-size:13.5px;color:var(--muted);margin:0 0 16px;padding:10px 12px;border-left:3px solid var(--accent, var(--line));background:var(--tint, transparent);border-radius:4px;}
+.extra-nights-note.calc strong{color:var(--dark);}
+/* the booking boxes have a fixed height (css/trip-page.css); room for the extra line */
+.join-split:has(.extra-nights-note){height:215px;}
+@media (max-width:1000px) and (min-width:761px){ .join-split:has(.extra-nights-note){height:260px;} }
+@media (max-width:760px){ .join-split:has(.extra-nights-note){height:auto;} }
 .photo-strip .photo-slot span{font-size:11px;color:var(--muted);padding:0 10px;text-align:center;}
 .photo-strip .photo-slot{background:var(--sky-tint);}
 .rf-sess-row{font-size:13.5px;padding:3px 0;}
