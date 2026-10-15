@@ -218,56 +218,6 @@ map {path} {old_site_target} {
         /trips/october-barcelona-roundtrip-cruise                                  /cruises
         /trips/november-cape-town-to-singapore-cruise/                             /cruises                                               # no certain match
         /trips/november-cape-town-to-singapore-cruise                              /cruises
-        /excursion/apr-11-barcelona-to-florida/                                    /cruises                                               # no certain match
-        /excursion/apr-11-barcelona-to-florida                                     /cruises
-        /excursion/apr-18-southern-caribbean/                                      /cruises                                               # no certain match
-        /excursion/apr-18-southern-caribbean                                       /cruises
-        /excursion/apr-25-baltic-scandinavia/                                      /cruises                                               # no certain match
-        /excursion/apr-25-baltic-scandinavia                                       /cruises
-        /excursion/aug-18-transatlantic-3/                                         /cruises                                               # no certain match
-        /excursion/aug-18-transatlantic-3                                          /cruises
-        /excursion/aug-18-transatlantic/                                           /cruises                                               # no certain match
-        /excursion/aug-18-transatlantic                                            /cruises
-        /excursion/aug-26-japan/                                                   /cruises                                               # no certain match
-        /excursion/aug-26-japan                                                    /cruises
-        /excursion/aug-29-northern-europe/                                         /cruises                                               # no certain match
-        /excursion/aug-29-northern-europe                                          /cruises
-        /excursion/feb-4-hawaii-mexico/                                            /cruises                                               # no certain match
-        /excursion/feb-4-hawaii-mexico                                             /cruises
-        /excursion/mar-17-japan-korea/                                             /cruises                                               # no certain match
-        /excursion/mar-17-japan-korea                                              /cruises
-        /excursion/mar-20-greece-turkey/                                           /cruises                                               # no certain match
-        /excursion/mar-20-greece-turkey                                            /cruises
-        /excursion/mar-21-barcelona-to-texas/                                      /cruises                                               # no certain match
-        /excursion/mar-21-barcelona-to-texas                                       /cruises
-        /excursion/mar-5-florida-to-spain/                                         /cruises                                               # no certain match
-        /excursion/mar-5-florida-to-spain                                          /cruises
-        /excursion/may-10-british-islands/                                         /cruises                                               # no certain match
-        /excursion/may-10-british-islands                                          /cruises
-        /excursion/may-6-alaska/                                                   /cruises                                               # no certain match
-        /excursion/may-6-alaska                                                    /cruises
-        /excursion/nov-12-sea/                                                     /cruises/CE-12NOV2026-HON2-SIN                         # excursions of this sailing
-        /excursion/nov-12-sea                                                      /cruises/CE-12NOV2026-HON2-SIN
-        /excursion/nov-19-latam/                                                   /cruises/PC-19NOV2026-FOR-BUE                          # excursions of this sailing
-        /excursion/nov-19-latam                                                    /cruises/PC-19NOV2026-FOR-BUE
-        /excursion/nov-26-sea/                                                     /cruises/CE-26NOV2026-SIN-BEN                          # excursions of this sailing
-        /excursion/nov-26-sea                                                      /cruises/CE-26NOV2026-SIN-BEN
-        /excursion/nov-4-nov-9-transpacific/                                       /cruises                                               # no certain match
-        /excursion/nov-4-nov-9-transpacific                                        /cruises
-        /excursion/oct-15-greece/                                                  /cruises/CE-15OCT2026-ATH-ATH                          # excursions of this sailing
-        /excursion/oct-15-greece                                                   /cruises/CE-15OCT2026-ATH-ATH
-        /excursion/oct-2-la-to-tokyo/                                              /cruises/RC-02OCT2026-LOS-TOK                          # excursions of this sailing
-        /excursion/oct-2-la-to-tokyo                                               /cruises/RC-02OCT2026-LOS-TOK
-        /excursion/oct-24-mediterranean/                                           /cruises/RC-24OCT2026-RAV-BAR                          # excursions of this sailing
-        /excursion/oct-24-mediterranean                                            /cruises/RC-24OCT2026-RAV-BAR
-        /excursion/oct-29-southeast-asia/                                          /cruises/CE-29OCT2026-TOK-HON2                         # excursions of this sailing
-        /excursion/oct-29-southeast-asia                                           /cruises/CE-29OCT2026-TOK-HON2
-        /excursion/oct-31-transatlantic/                                           /cruises                                               # no certain match
-        /excursion/oct-31-transatlantic                                            /cruises
-        /excursion/oct-8-mexico/                                                   /cruises/RC-08OCT2026-LOS-LOS                          # excursions of this sailing
-        /excursion/oct-8-mexico                                                    /cruises/RC-08OCT2026-LOS-LOS
-        /excursion/sept-19-caribbean/                                              /cruises/RC-19SEP2026-MIA-MIA                          # excursions of this sailing
-        /excursion/sept-19-caribbean                                               /cruises/RC-19SEP2026-MIA-MIA
         /category/2025/                                                            /cruises                                               # category
         /category/2025                                                             /cruises
         /category/2026/                                                            /cruises                                               # category
@@ -414,3 +364,30 @@ map {path} {old_site_target} {
 }
 @oldSite expression {old_site_target} != ""
 redir @oldSite {old_site_target} 301
+
+# The old WordPress also answered under /travel/... (its install folder): /travel/excursion/x/ -> /excursion/x/,
+# which the list above then sends on to the new page. /travel itself -> home page.
+@oldTravel {
+    path_regexp travel ^/travel(/.+)$
+    not path /travel/doc/* /travel/excursion/* /travel/wp-content/* /travel/wp-includes/* /travel/wp-admin/* /travel/wp-json/* /travel/wp-login.php /travel/wp-cron.php
+}
+redir @oldTravel {re.travel.1} 301
+redir /travel / 301
+redir /travel/ / 301
+
+# ---------- Still served by the old WordPress (cPanel host 107.155.113.78) ----------
+# The doc and excursion pages (with their forms and rosters) stay on WordPress, at the same addresses.
+# Their own redirects (/doc/x -> /travel/doc/x, /excursion/x -> /travel/excursion/x) keep working too,
+# and so do WordPress's files, the form endpoint (wp-admin/admin-ajax.php), the admin and the login.
+# Needs the cPanel hosting to stay active. The connection to WordPress is HTTPS with the normal certificate
+# check. So cPanel can keep renewing that certificate (AutoSSL) after the domain points here, its domain
+# checks under /.well-known/ are passed through as well (Caddy answers its own certificate checks first).
+@wordpress path /travel/doc/* /travel/excursion/* /doc/* /excursion/* /travel/wp-content/* /travel/wp-includes/* /travel/wp-admin/* /travel/wp-json/* /travel/wp-login.php /travel/wp-cron.php /.well-known/pki-validation/* /.well-known/acme-challenge/*
+handle @wordpress {
+    reverse_proxy https://107.155.113.78 {
+        header_up Host worldschoolingjourneys.com
+        transport http {
+            tls_server_name worldschoolingjourneys.com
+        }
+    }
+}
