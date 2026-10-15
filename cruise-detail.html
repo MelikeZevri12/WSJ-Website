@@ -2335,13 +2335,14 @@ bookingForm.addEventListener('submit', async (e) => {
         comments: fieldValue('comments'),
         passengers,
       };
-      if (addOnChosen && addOnIsBackToBack) {
-        // Back to back: a linked request on BOTH cruises, in sailing order,
-        // each noting the pairing they chose.
+      if (addOnChosen) {
+        // Back to back or add-on: a linked request on BOTH cruises, in
+        // sailing order, each noting the pairing they chose - so the family
+        // shows up on the main cruise's and the add-on's roster.
         const ids = [currentCruiseId, currentAddOn.id];
         if (currentAddOn.departureDate < addOnMainCruise.departureDate) ids.reverse();
-        const note = `Back to back: ${addOnMainCruise.destination || 'this cruise'} (${formatSailingRange(addOnMainCruise.departureDate, addOnMainCruise.nights)}) + ${currentAddOnLabel}`;
-        await submitBookingGroup(ids, { ...payload, comments: [payload.comments, note].filter(Boolean).join('\n\n') });
+        const note = `${addOnIsBackToBack ? 'Back to back' : 'With add-on'}: ${addOnMainCruise.destination || 'this cruise'} (${formatSailingRange(addOnMainCruise.departureDate, addOnMainCruise.nights)}) + ${currentAddOnLabel}`;
+        await submitBookingGroup(ids, { ...payload, comments: [payload.comments, note].filter(Boolean).join('\n\n'), addOnRequested: !addOnIsBackToBack });
       } else {
         await fetch(`${API}/cruises/${currentCruiseId}/booking-requests`, {
           method: 'POST',
