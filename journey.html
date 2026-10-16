@@ -693,9 +693,9 @@
     <div class="flight-cta">
       <div>
         <h4>Need help finding flights?</h4>
-        <p>As a courtesy for families sailing with us, our team helps you track down affordable flight options free of charge.</p>
+        <p>As a courtesy for families sailing with us, our team helps you track down affordable flight options free of charge. Message us on WhatsApp and we'll help.</p>
       </div>
-      <a href="#" class="btn btn-primary open-flights-btn">Ask Us About Flights</a>
+      <a href="https://wa.me/40733449977" class="btn btn-primary open-flights-btn" target="_blank" rel="noopener">Ask Us About Flights on WhatsApp</a>
     </div>
   </div>
 </section>
@@ -1058,59 +1058,6 @@
       <h3>Thanks — your group quote request is in!</h3>
       <p>We'll follow up with pricing within 24–48 hours. Please add booking@everyavenue.com to your approved senders and check your spam folder.</p>
       <button type="button" class="back-link" id="quoteResetFormBtn">Start over</button>
-    </div>
-  </div>
-</div>
-
-<!-- FLIGHT HELP MODAL -->
-<div class="modal-overlay" id="flightsModalOverlay">
-  <div class="modal-inner">
-    <div class="booking-form-wrap" id="flights-form-wrap">
-      <button type="button" class="modal-close" id="flightsModalCloseBtn" aria-label="Close">×</button>
-      <div class="booking-intro">
-        <h3>Let's find you a good flight</h3>
-        <p>Tell us where you're flying from and we'll track down affordable options into <span class="fly-in-name">Tokyo</span> and home from <span class="fly-out-name">Auckland</span> — free of charge, no obligation.</p>
-      </div>
-
-      <div class="form-progress-bar"><div class="form-progress-fill" id="flightsProgressFill"></div></div>
-      <div class="form-progress-text" id="flightsProgressText">Step 1 of 3</div>
-
-      <form id="flightsForm" novalidate>
-        <div class="flights-step" data-step="1">
-          <div class="field"><label for="flightsEmail">Email Address</label><input required type="email" id="flightsEmail" name="flightsEmail" placeholder="you@email.com"></div>
-          <div class="field"><label for="flightsDepartureCity">Departure City or Airport</label><input required type="text" id="flightsDepartureCity" name="flightsDepartureCity" placeholder="e.g. Denver, CO or DEN"></div>
-        </div>
-
-        <div class="flights-step" data-step="2" style="display:none;">
-          <div class="field"><label for="flightsTravelers">Number of Travelers</label><input required type="number" id="flightsTravelers" name="flightsTravelers" min="1" step="1" placeholder="e.g. 4"></div>
-          <div class="field">
-            <label>Are your travel dates flexible?</label>
-            <div class="radio-row">
-              <label class="radio-opt"><input type="radio" name="flightsFlexible" value="yes" checked> Yes, within a few days either way</label>
-              <label class="radio-opt"><input type="radio" name="flightsFlexible" value="no"> No, we need the cruise dates exactly</label>
-            </div>
-          </div>
-        </div>
-
-        <div class="flights-step" data-step="3" style="display:none;">
-          <div class="field"><label for="flightsComments">Anything else that would help us search?</label><textarea id="flightsComments" name="flightsComments" rows="3" placeholder="Optional — preferred airline, budget range, layover preferences, etc."></textarea></div>
-          <div class="review-box" id="flightsReviewBox"></div>
-        </div>
-
-        <div class="quote-error" id="flightsSendError"></div>
-        <div class="form-nav">
-          <button type="button" class="back-link" id="flightsPrevStepBtn">← Back</button>
-          <button type="button" class="btn btn-primary btn-sm" id="flightsNextStepBtn">Next</button>
-          <button type="submit" class="btn btn-primary btn-sm" id="flightsSubmitBtn" style="display:none;">Send Request</button>
-        </div>
-      </form>
-    </div>
-
-    <div class="form-success" id="flightsFormSuccess" style="display:none;">
-      <button type="button" class="modal-close" id="flightsModalCloseBtn2" aria-label="Close">×</button>
-      <h3>Thanks — we've got your flight request!</h3>
-      <p>We'll follow up with flight options within a few days. Please add booking@everyavenue.com to your approved senders and check your spam folder.</p>
-      <button type="button" class="back-link" id="flightsResetFormBtn">Start over</button>
     </div>
   </div>
 </div>
@@ -2144,128 +2091,17 @@ document.addEventListener('keydown', (e) => {
   if(e.key === 'Escape' && quoteModalOverlay.classList.contains('open')) closeQuoteModal();
 });
 
-// ---------- FLIGHT HELP FORM ----------
-const flightsForm = document.getElementById('flightsForm');
-const flightsFormWrap = document.getElementById('flights-form-wrap');
-const flightsTotalSteps = document.querySelectorAll('.flights-step').length;
-let flightsCurrentStep = 1;
-
-function showFlightsStep(n){
-  flightsCurrentStep = n;
-  document.querySelectorAll('.flights-step').forEach(el => {
-    el.style.display = (parseInt(el.dataset.step, 10) === n) ? '' : 'none';
-  });
-  document.getElementById('flightsPrevStepBtn').style.visibility = n === 1 ? 'hidden' : 'visible';
-  document.getElementById('flightsNextStepBtn').style.display = n < flightsTotalSteps ? 'inline-block' : 'none';
-  document.getElementById('flightsSubmitBtn').style.display = n === flightsTotalSteps ? 'inline-block' : 'none';
-  document.getElementById('flightsProgressFill').style.width = Math.round((n / flightsTotalSteps) * 100) + '%';
-  document.getElementById('flightsProgressText').textContent = `Step ${n} of ${flightsTotalSteps}`;
-  if(n === flightsTotalSteps) renderFlightsReview();
-}
-
-function flightsStepFieldsValid(n){
-  const stepEl = document.querySelector(`.flights-step[data-step="${n}"]`);
-  let valid = true;
-  stepEl.querySelectorAll('input, select, textarea').forEach(f => {
-    if(!f.reportValidity()) valid = false;
-  });
-  return valid;
-}
-
-document.getElementById('flightsNextStepBtn').addEventListener('click', () => {
-  if(!flightsStepFieldsValid(flightsCurrentStep)) return;
-  if(flightsCurrentStep < flightsTotalSteps) showFlightsStep(flightsCurrentStep + 1);
-});
-document.getElementById('flightsPrevStepBtn').addEventListener('click', () => {
-  if(flightsCurrentStep > 1) showFlightsStep(flightsCurrentStep - 1);
-});
-flightsForm.addEventListener('keydown', (e) => {
-  if(e.key === 'Enter' && e.target.tagName !== 'TEXTAREA'){
-    e.preventDefault();
-  }
-});
-
-function flightsFieldValue(name){
-  const el = flightsForm.elements[name];
-  if(!el) return '';
-  if(el.length && el[0]){
-    if(el[0].type === 'radio'){
-      for(const r of el){ if(r.checked) return r.value; }
-      return '';
-    }
-  }
-  return el.value || '';
-}
-
-function renderFlightsReview(){
-  const rows = [
-    ['Email', flightsFieldValue('flightsEmail')],
-    ['Departure city/airport', flightsFieldValue('flightsDepartureCity')],
-    ['Travelers', flightsFieldValue('flightsTravelers')],
-    ['Flexible dates', flightsFieldValue('flightsFlexible') === 'yes' ? 'Yes' : 'No'],
-  ];
-  document.getElementById('flightsReviewBox').innerHTML = `
-    <h4>Quick review before sending</h4>
-    ${rows.map(([k, v]) => `<div class="review-row"><span class="k">${k}</span><span class="v">${v || '—'}</span></div>`).join('')}
-  `;
-}
-
-flightsForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const sent = await sendCruiseInquiry(document.getElementById('flightsSubmitBtn'), document.getElementById('flightsSendError'), {
-    type: 'flights',
-    cruiseIds: (legsIn(formSel()).length ? legsIn(formSel()) : LEGS).map(l => l.id),
-    journeyTitle: JOURNEY && JOURNEY.title,
-    email: flightsFieldValue('flightsEmail').trim(),
-    departureCity: flightsFieldValue('flightsDepartureCity').trim(),
-    travelers: flightsFieldValue('flightsTravelers'),
-    flexible: flightsFieldValue('flightsFlexible') === 'yes',
-    comments: flightsFieldValue('flightsComments').trim(),
-  });
-  if (!sent) return;
-  flightsFormWrap.style.display = 'none';
-  document.getElementById('flightsFormSuccess').style.display = 'block';
-});
-
-document.getElementById('flightsResetFormBtn').addEventListener('click', () => {
-  flightsForm.reset();
-  flightsFormWrap.style.display = '';
-  document.getElementById('flightsFormSuccess').style.display = 'none';
-  showFlightsStep(1);
-});
-
-showFlightsStep(1);
-
-// ---------- FLIGHT HELP MODAL open/close ----------
-const flightsModalOverlay = document.getElementById('flightsModalOverlay');
-
-function openFlightsModal(){
-  flightsModalOverlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeFlightsModal(){
-  flightsModalOverlay.classList.remove('open');
-  document.body.style.overflow = '';
-}
-
+// ---------- FLIGHT HELP: WhatsApp chat ----------
+// "Ask Us About Flights" opens a WhatsApp chat with the team (+40 733 449 977),
+// with a first message naming this trip and its page so they know which one.
+const FLIGHTS_WHATSAPP = 'https://wa.me/40733449977';
 document.querySelectorAll('.open-flights-btn').forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    e.preventDefault();
-    openFlightsModal();
+  btn.addEventListener('click', () => {
+    const trip = document.getElementById('heroTitle').textContent.trim();
+    const text = `Hi! I'd like help finding flights for ${trip || 'this trip'}: ${location.origin}${location.pathname}`;
+    btn.href = `${FLIGHTS_WHATSAPP}?text=${encodeURIComponent(text)}`;
   });
 });
-
-document.getElementById('flightsModalCloseBtn').addEventListener('click', closeFlightsModal);
-document.getElementById('flightsModalCloseBtn2').addEventListener('click', closeFlightsModal);
-
-flightsModalOverlay.addEventListener('click', (e) => {
-  if(e.target === flightsModalOverlay) closeFlightsModal();
-});
-
-document.addEventListener('keydown', (e) => {
-  if(e.key === 'Escape' && flightsModalOverlay.classList.contains('open')) closeFlightsModal();
-});
-
 
 // ---------- IN-PAGE LINKS (scroll, never navigate) ----------
 document.addEventListener('click', (e) => {
