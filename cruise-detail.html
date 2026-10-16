@@ -444,8 +444,8 @@
 
       <div class="contact-quote" id="contactQuote">
         <h3>Traveling with <span class="quote-min-guests">5</span> or more?</h3>
-        <p>Larger families usually need a second connecting cabin. Send us your party size and we'll get you an accurate quote fast.</p>
-        <a href="#" class="btn btn-primary open-quote-btn">Get a Custom Quote</a>
+        <p>Larger families usually need a second connecting cabin. Send us a booking request with everyone in your party, tell us in the comments how you'd like to split into cabins, and we'll get back to you with pricing.</p>
+        <a href="#" class="btn btn-primary open-booking-btn">Send a Booking Request</a>
       </div>
 
       <details class="terms">
@@ -877,64 +877,6 @@
       <h3>You're on the list!</h3>
       <p>If a cabin opens up on this cruise, we'll reach out with the details.</p>
       <button type="button" class="back-link" id="waitlistResetBtn">Start over</button>
-    </div>
-  </div>
-</div>
-
-<!-- CUSTOM GROUP QUOTE MODAL (5+ guests) -->
-<div class="modal-overlay" id="quoteModalOverlay">
-  <div class="modal-inner">
-    <div class="booking-form-wrap" id="quote-form-wrap">
-      <button type="button" class="modal-close" id="quoteModalCloseBtn" aria-label="Close">×</button>
-      <div class="booking-intro">
-        <h3>Let's get your group a custom quote</h3>
-        <p>Traveling with <span class="quote-min-guests">5</span> or more usually means splitting across cabins. Tell us how you'd like to divide up, and we'll follow up with pricing within 24–48 hours.</p>
-      </div>
-
-      <div class="form-progress-bar"><div class="form-progress-fill" id="quoteProgressFill"></div></div>
-      <div class="form-progress-text" id="quoteProgressText">Step 1 of 4</div>
-
-      <form id="quoteForm" novalidate>
-        <div class="quote-step" data-step="1">
-          <div class="field"><label for="quoteEmail">Email Address</label><input required type="email" id="quoteEmail" name="quoteEmail" placeholder="you@email.com"></div>
-        </div>
-
-        <div class="quote-step" data-step="2" style="display:none;">
-          <div class="field">
-            <label for="quoteTotalGuests">Total Number of Guests</label>
-            <input required type="number" id="quoteTotalGuests" name="quoteTotalGuests" min="5" step="1" placeholder="e.g. 6">
-          </div>
-          <div class="field-hint">This custom quote path is for parties of <span class="quote-min-guests">5</span> or more.</div>
-        </div>
-
-        <div class="quote-step" data-step="3" style="display:none;">
-          <div class="field-hint">Split your group across cabins however works best — for example, 6 guests could be one cabin of 4 and one of 2, or two cabins of 3.</div>
-          <div class="field-hint"><strong>Each cabin needs to be booked under one adult (18+)</strong> as the primary guest — you can't book a cabin specifically for kids. Your group can sort out who actually stays where once you're booked.</div>
-          <div class="quote-tally" id="quoteTally"></div>
-          <div id="quoteCabinBlocks"></div>
-          <button type="button" class="add-passenger-btn" id="addCabinBtn">+ Add another cabin</button>
-          <div class="quote-error" id="quoteError">The guests assigned across cabins need to add up to your total party size before moving on.</div>
-        </div>
-
-        <div class="quote-step" data-step="4" style="display:none;">
-          <div class="field"><label for="quoteComments">Anything else we should know?</label><textarea id="quoteComments" name="quoteComments" rows="3" placeholder="Optional"></textarea></div>
-          <div class="review-box" id="quoteReviewBox"></div>
-        </div>
-
-        <div class="quote-error" id="quoteSendError"></div>
-        <div class="form-nav">
-          <button type="button" class="back-link" id="quotePrevStepBtn">← Back</button>
-          <button type="button" class="btn btn-primary btn-sm" id="quoteNextStepBtn">Next</button>
-          <button type="submit" class="btn btn-primary btn-sm" id="quoteSubmitBtn" style="display:none;">Send Inquiry</button>
-        </div>
-      </form>
-    </div>
-
-    <div class="form-success" id="quoteFormSuccess" style="display:none;">
-      <button type="button" class="modal-close" id="quoteModalCloseBtn2" aria-label="Close">×</button>
-      <h3>Thanks — your group quote request is in!</h3>
-      <p>We'll follow up with pricing within 24–48 hours. Please add booking@everyavenue.com to your approved senders and check your spam folder.</p>
-      <button type="button" class="back-link" id="quoteResetFormBtn">Start over</button>
     </div>
   </div>
 </div>
@@ -1949,7 +1891,6 @@ function setupLargeCabins(cruise){
   quoteBtn.textContent = `${quoteFrom}+ Guests`;
   // Same number everywhere the custom quote mentions it.
   document.querySelectorAll('.quote-min-guests').forEach((el) => { el.textContent = String(quoteFrom); });
-  document.getElementById('quoteTotalGuests').min = String(quoteFrom);
   // Booking form: let them ask for these cabins by name.
   const names = [...new Set((cruise.cabinPrices ?? []).filter((r) => r.guests >= 5).map((r) => r.category))];
   document.getElementById('largeCabinChoices').innerHTML = names.map((n) =>
@@ -2262,10 +2203,6 @@ function chosenCruiseIds(){
 function pairingNote(){
   return `${addOnIsBackToBack ? 'Back to back' : 'With add-on'}: ${addOnMainCruise.destination || 'this cruise'} (${formatSailingRange(addOnMainCruise.departureDate, addOnMainCruise.nights)}) + ${currentAddOnLabel}`;
 }
-function chosenCruisesLabel(){
-  return `This cruise + ${currentAddOnLabel}`;
-}
-
 async function submitBookingGroup(cruiseIds, payload){
   try {
     const res = await fetch(`${API}/booking-requests/group`, {
@@ -2663,213 +2600,6 @@ function applySetSailState(cruise){
   flightsSection.hidden = true;
   flightsSubnavLink.hidden = true;
 }
-
-// ---------- CUSTOM GROUP QUOTE FORM (5+ guests) ----------
-const quoteForm = document.getElementById('quoteForm');
-const quoteFormWrap = document.getElementById('quote-form-wrap');
-const quoteTotalSteps = document.querySelectorAll('.quote-step').length;
-let quoteCurrentStep = 1;
-let quoteCabins = []; // {guests, category}
-
-function showQuoteStep(n){
-  quoteCurrentStep = n;
-  document.querySelectorAll('.quote-step').forEach(el => {
-    el.style.display = (parseInt(el.dataset.step, 10) === n) ? '' : 'none';
-  });
-  document.getElementById('quotePrevStepBtn').style.visibility = n === 1 ? 'hidden' : 'visible';
-  document.getElementById('quoteNextStepBtn').style.display = n < quoteTotalSteps ? 'inline-block' : 'none';
-  document.getElementById('quoteSubmitBtn').style.display = n === quoteTotalSteps ? 'inline-block' : 'none';
-  document.getElementById('quoteProgressFill').style.width = Math.round((n / quoteTotalSteps) * 100) + '%';
-  document.getElementById('quoteProgressText').textContent = `Step ${n} of ${quoteTotalSteps}`;
-  document.getElementById('quoteError').classList.remove('show');
-
-  if(n === 3 && quoteCabins.length === 0){
-    const startingGuests = parseInt(document.getElementById('quoteTotalGuests').value, 10) || 5;
-    quoteCabins.push({guests: startingGuests, category: ''});
-    renderQuoteCabins();
-  }
-  if(n === quoteTotalSteps) renderQuoteReview();
-}
-
-function quoteAssignedTotal(){
-  return quoteCabins.reduce((sum, c) => sum + (parseInt(c.guests, 10) || 0), 0);
-}
-
-function updateQuoteTally(){
-  const target = parseInt(document.getElementById('quoteTotalGuests').value, 10) || 0;
-  const assigned = quoteAssignedTotal();
-  const tallyEl = document.getElementById('quoteTally');
-  tallyEl.textContent = `${assigned} of ${target} guests assigned across ${quoteCabins.length} cabin${quoteCabins.length === 1 ? '' : 's'}`;
-  tallyEl.classList.toggle('mismatch', assigned !== target);
-}
-
-function renderQuoteCabins(){
-  const wrap = document.getElementById('quoteCabinBlocks');
-  wrap.innerHTML = quoteCabins.map((c, i) => `
-    <div class="passenger-block">
-      <div class="passenger-block-head">
-        <h5>Cabin ${i + 1}</h5>
-        ${quoteCabins.length > 1 ? `<button type="button" class="remove-passenger" data-remove="${i}">Remove</button>` : ''}
-      </div>
-      <div class="passenger-field-grid">
-        <div class="field"><label>Guests in this Cabin</label><input required type="number" min="1" data-field="guests" data-idx="${i}" value="${c.guests || ''}"></div>
-        <div class="field"><label>Cabin Category</label>
-          <select required data-field="category" data-idx="${i}">
-            <option value="">Select</option>
-            ${['Interior','Oceanview','Balcony','Suite'].map(cat => `<option ${c.category === cat ? 'selected' : ''}>${cat}</option>`).join('')}
-          </select>
-        </div>
-      </div>
-    </div>`).join('');
-
-  wrap.querySelectorAll('input, select').forEach(el => {
-    el.addEventListener('input', (e) => {
-      const idx = parseInt(e.target.dataset.idx, 10);
-      quoteCabins[idx][e.target.dataset.field] = e.target.value;
-      updateQuoteTally();
-    });
-  });
-  wrap.querySelectorAll('[data-remove]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      quoteCabins.splice(parseInt(e.target.dataset.remove, 10), 1);
-      renderQuoteCabins();
-      updateQuoteTally();
-    });
-  });
-  updateQuoteTally();
-}
-
-document.getElementById('addCabinBtn').addEventListener('click', () => {
-  if(quoteCabins.length >= 6) return;
-  quoteCabins.push({guests: '', category: ''});
-  renderQuoteCabins();
-});
-
-document.getElementById('quoteTotalGuests').addEventListener('input', updateQuoteTally);
-
-function quoteStepFieldsValid(n){
-  const stepEl = document.querySelector(`.quote-step[data-step="${n}"]`);
-  let valid = true;
-  stepEl.querySelectorAll('input, select, textarea').forEach(f => {
-    if(!f.reportValidity()) valid = false;
-  });
-  return valid;
-}
-
-document.getElementById('quoteNextStepBtn').addEventListener('click', () => {
-  if(!quoteStepFieldsValid(quoteCurrentStep)) return;
-  if(quoteCurrentStep === 3 && quoteAssignedTotal() !== (parseInt(document.getElementById('quoteTotalGuests').value, 10) || 0)){
-    document.getElementById('quoteError').classList.add('show');
-    return;
-  }
-  if(quoteCurrentStep < quoteTotalSteps) showQuoteStep(quoteCurrentStep + 1);
-});
-document.getElementById('quotePrevStepBtn').addEventListener('click', () => {
-  if(quoteCurrentStep > 1) showQuoteStep(quoteCurrentStep - 1);
-});
-quoteForm.addEventListener('keydown', (e) => {
-  if(e.key === 'Enter' && e.target.tagName !== 'TEXTAREA'){
-    e.preventDefault();
-  }
-});
-
-function renderQuoteReview(){
-  const cabinSummary = quoteCabins.map((c, i) => `Cabin ${i + 1}: ${c.guests || '—'} guests, ${c.category || 'no category selected'}`).join(' · ');
-  const rows = [
-    ...(bothCruisesChosen() ? [['Cruises', chosenCruisesLabel()]] : []),
-    ['Email', document.getElementById('quoteEmail').value],
-    ['Total guests', document.getElementById('quoteTotalGuests').value],
-    ['Cabins', cabinSummary],
-  ];
-  document.getElementById('quoteReviewBox').innerHTML = `
-    <h4>Quick review before sending</h4>
-    ${rows.map(([k, v]) => `<div class="review-row"><span class="k">${k}</span><span class="v">${v || '—'}</span></div>`).join('')}
-  `;
-}
-
-
-// Group quote / flight help requests are emailed to the booking inbox by the API
-// (see the backend's CruiseInquiryController). Nothing is saved anywhere else, so
-// unlike the booking form a failure is shown and the visitor can try again.
-async function sendCruiseInquiry(btn, errorEl, payload){
-  const label = btn.textContent;
-  btn.disabled = true;
-  btn.textContent = 'Sending...';
-  errorEl.classList.remove('show');
-  try {
-    const res = await fetch(`${API}/cruise-inquiries`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    if (res.ok) return true;
-    errorEl.textContent = res.status === 429
-      ? 'Too many requests in a short time. Please try again later, or email us at booking@everyavenue.com.'
-      : 'Something went wrong sending your request. Please try again, or email us at booking@everyavenue.com.';
-  } catch (e) {
-    errorEl.textContent = 'Could not reach our server. Please check your connection and try again, or email us at booking@everyavenue.com.';
-  } finally {
-    btn.disabled = false;
-    btn.textContent = label;
-  }
-  errorEl.classList.add('show');
-  return false;
-}
-
-quoteForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const sent = await sendCruiseInquiry(document.getElementById('quoteSubmitBtn'), document.getElementById('quoteSendError'), {
-    type: 'quote',
-    cruiseIds: chosenCruiseIds(),
-    email: document.getElementById('quoteEmail').value.trim(),
-    totalGuests: document.getElementById('quoteTotalGuests').value,
-    cabins: quoteCabins,
-    comments: document.getElementById('quoteComments').value.trim(),
-  });
-  if (!sent) return;
-  quoteFormWrap.style.display = 'none';
-  document.getElementById('quoteFormSuccess').style.display = 'block';
-});
-
-document.getElementById('quoteResetFormBtn').addEventListener('click', () => {
-  quoteForm.reset();
-  quoteCabins = [];
-  quoteFormWrap.style.display = '';
-  document.getElementById('quoteFormSuccess').style.display = 'none';
-  showQuoteStep(1);
-});
-
-showQuoteStep(1);
-
-// ---------- CUSTOM GROUP QUOTE MODAL open/close ----------
-const quoteModalOverlay = document.getElementById('quoteModalOverlay');
-
-function openQuoteModal(){
-  quoteModalOverlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeQuoteModal(){
-  quoteModalOverlay.classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-document.querySelectorAll('.open-quote-btn').forEach(btn => {
-  btn.addEventListener('click', (e) => {
-    e.preventDefault();
-    openQuoteModal();
-  });
-});
-
-document.getElementById('quoteModalCloseBtn').addEventListener('click', closeQuoteModal);
-document.getElementById('quoteModalCloseBtn2').addEventListener('click', closeQuoteModal);
-
-quoteModalOverlay.addEventListener('click', (e) => {
-  if(e.target === quoteModalOverlay) closeQuoteModal();
-});
-
-document.addEventListener('keydown', (e) => {
-  if(e.key === 'Escape' && quoteModalOverlay.classList.contains('open')) closeQuoteModal();
-});
 
 // ---------- FLIGHT HELP: WhatsApp chat ----------
 // "Ask Us About Flights" opens a WhatsApp chat with the team (+40 733 449 977),
