@@ -5,7 +5,7 @@
 # The old site's pages live at /travel/... on the old WordPress (cPanel host 107.155.113.78), which stays online.
 #   - An old page with a real equivalent on the new site (the same trip, a cruise/trip listing, a page with the same name
 #     like /travel/about/ -> /about) redirects there (301).
-#   - Every other old page (testimonials, press, blog, past trips, categories, forms, Coming Soon ideas...) keeps showing
+#   - Every other old page (press, blog, past trips, categories, forms, Coming Soon ideas...) keeps showing
 #     from the old WordPress at its usual /travel/... address. So do the doc and excursion pages and their forms.
 #   - /travel itself -> the new home page.
 # Made 2026-10-14 from the old site's sitemap; changed 2026-10-16 to redirect only real equivalents.
@@ -18,6 +18,7 @@ map {path} {old_path} {
 # Old pages with a real equivalent on the new site. Cruise targets use the booking code: the cruise page switches the
 # address to its current name.
 map {old_path} {old_site_target} {
+        /testimonials/                                                             /testimonials                                          # page (new testimonials page)
         /trips/                                                                    /cruises                                               # no certain match
         /trips                                                                     /cruises
         /trips/december-panama-canal-cruise/                                       /cruises/PC-03DEC2026-LOS-FOR                          # booking code on old page
@@ -359,8 +360,6 @@ map {path} {old_wp_page} {
         /category/united-states                                                    /travel/category/united-states/
         /category/winter-cruises/                                                  /travel/category/winter-cruises/                       # category
         /category/winter-cruises                                                   /travel/category/winter-cruises/
-        /testimonials/                                                             /travel/testimonials/                                  # page
-        /testimonials                                                              /travel/testimonials/
         /press/                                                                    /travel/press/                                         # page
         /press                                                                     /travel/press/
         /waitlist/                                                                 /travel/waitlist/                                      # page
