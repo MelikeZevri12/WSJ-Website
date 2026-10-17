@@ -1,10 +1,10 @@
 // "Book Your Spot" on the land trip pages, the same way the old WordPress
 // [wetravel_button] shortcode worked:
-//   - a WeTravel UUID  -> the button opens WeTravel's checkout (embed_checkout.js popup)
+//   - a WeTravel UUID  -> the button opens WeTravel's checkout in a NEW TAB, so the trip page stays open
+//     (WeTravel's own embed_checkout.js popup covered the whole page on phones with no way back)
 //   - a full https:// link -> the button opens that page in a new tab
 //   - nothing listed   -> the button becomes "Join the Waitlist" (js/waitlist.js popup)
-// To open bookings for a trip/year, add its UUID (or link) below. Nothing else needs changing
-// (every land trip page already loads WeTravel's embed_checkout.js after this file).
+// To open bookings for a trip/year, add its UUID (or link) below. Nothing else needs changing.
 (function () {
   const BOOKING = {
     //  page name        year (or "all" = every departure)
@@ -19,7 +19,7 @@
     'austria-wellness': { 2027: '21359722' },
     // Xcaret: no UUID yet, so waitlist only
   };
-  const WETRAVEL_ENV = 'https://everyavenuetravel.wetravel.com', WETRAVEL_UID = '1084781';
+  const WETRAVEL_ENV = 'https://everyavenuetravel.wetravel.com';
 
   // the trip's ID (its file name, e.g. austria-fall); the address itself is the trip title
   const slug = document.body.dataset.trip || (location.pathname.split('/').pop() || '').replace(/\.html$/, '');
@@ -32,23 +32,13 @@
     try { if (typeof dep === 'function' && dep()) return dep().start.slice(0, 4); } catch (e) {}
     return null;
   }
+  // the page the booking button opens: an external link as is, a WeTravel UUID -> WeTravel's checkout page
   function currentBooking() {
     const trip = BOOKING[slug];
-    if (!trip) return null;
-    return trip.all || trip[selectedYear()] || null;
+    const booking = trip && (trip.all || trip[selectedYear()]);
+    if (!booking) return null;
+    return isUrl(booking) ? booking : `${WETRAVEL_ENV}/checkout_embed?uuid=${encodeURIComponent(booking)}&source=widget_book_now`;
   }
-
-  // WeTravel's own script (loaded on the page after this one) opens its checkout
-  // when a ".wtrvl-checkout_button" is clicked; this hidden one is pointed at the
-  // right trip and clicked whenever a "Book Your Spot" button is used.
-  const checkoutBtn = document.createElement('button');
-  checkoutBtn.type = 'button';
-  checkoutBtn.className = 'wtrvl-checkout_button';
-  checkoutBtn.hidden = true;
-  checkoutBtn.dataset.env = WETRAVEL_ENV;
-  checkoutBtn.dataset.version = 'v0.4';
-  checkoutBtn.dataset.uid = WETRAVEL_UID;
-  document.body.appendChild(checkoutBtn);
 
   // Keep every booking button's label/link in step with what's bookable for the
   // selected year (the page re-renders its buttons whenever the year changes).
@@ -57,7 +47,7 @@
     document.querySelectorAll('.book-btn').forEach((b) => {
       if (!booking) {
         if (isBookLabel(b.textContent)) b.textContent = 'Join the Waitlist';
-      } else if (isUrl(booking) && isBookLabel(b.textContent)) {
+      } else if (isBookLabel(b.textContent)) {
         if (b.getAttribute('href') !== booking) { b.setAttribute('href', booking); b.target = '_blank'; b.rel = 'noopener'; }
       }
     });
@@ -76,9 +66,6 @@
     const booking = currentBooking();
     if (!booking) return;
     e.preventDefault(); e.stopPropagation();
-    if (isUrl(booking)) { window.open(booking, '_blank', 'noopener'); return; }
-    checkoutBtn.dataset.uuid = booking;
-    checkoutBtn.setAttribute('href', `${WETRAVEL_ENV}/checkout_embed?uuid=${encodeURIComponent(booking)}`);
-    checkoutBtn.click();
+    window.open(booking, '_blank', 'noopener');
   }, true);
 })();
