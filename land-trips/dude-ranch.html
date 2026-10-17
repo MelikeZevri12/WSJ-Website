@@ -609,7 +609,7 @@ function renderSelection(){
   document.querySelectorAll('.subnav-dep .dep-text').forEach(el => el.textContent = label);
   const joinCopy = isInterest()
     ? `${sel.year} is still taking shape. Join the waitlist and you’ll be first in line when dates and prices are set.`
-    : `Reserve your family’s cabin for ${dateText()}. You book directly with the ranch, under the ranch’s own booking policy.`;
+    : `Reserve your family’s cabin for ${dateText()}.`;
   document.querySelectorAll('p.join-text').forEach(el => el.textContent = joinCopy);
   document.querySelectorAll('.book-btn').forEach(b => { b.textContent = isInterest() ? `Join the ${sel.year} Waitlist` : 'Book with the Ranch';
     b.href = isInterest() ? TRIP.waitlistUrl : TRIP.bookingUrl; if(!isInterest()) b.target = '_blank'; else b.removeAttribute('target'); });
@@ -705,7 +705,6 @@ function renderPolicy(){
   }
   const P = TRIP.policy, start = D(selStart()), finalPay = addDays(start, -P.finalPaymentDays);
   document.getElementById('payPolicy').innerHTML = [
-    ['You book directly with the ranch', 'Your reservation is with VeeBar Guest Ranch, so the ranch’s booking and cancellation policy applies.'],
     ['Deposit', 'A non-refundable deposit of 30% of your reservation is due when you book. Your reservation is firm once the deposit is received.'],
     ['Full payment', `Due ${fmtD(finalPay)}, 120 days before arrival, and charged to the card on file unless other arrangements are made.`],
     ['Cancellation 61–120 days before', 'Your deposit plus an additional 40% of your reservation.'],
