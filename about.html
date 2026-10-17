@@ -26,8 +26,8 @@
   .tm-head p{color:#3c4048;font-size:18px;line-height:1.7;margin:0 0 12px;}
   .tm-head .tm-meet{font-family:'Libre Baskerville',serif;font-weight:700;font-size:20px;color:var(--dark);margin-top:18px;}
   .tm-grid{display:grid;grid-template-columns:1fr;gap:24px;}
-  /* Team cards: headshot with name + role under it on the left, bio on the right */
-  .tm-card{display:grid;grid-template-columns:1fr 2fr;gap:34px;align-items:start;padding:30px 34px;background:var(--white);border:1px solid var(--line);border-radius:4px;}
+  /* Team cards: headshot with name + role under it on the left (between a quarter and a third of the card), bio on the right */
+  .tm-card{display:grid;grid-template-columns:2fr 5fr;gap:34px;align-items:start;padding:30px 34px;background:var(--white);border:1px solid var(--line);border-radius:4px;}
   .tm-photo{aspect-ratio:1/1;border-radius:4px;overflow:hidden;background:var(--sky-tint);display:flex;align-items:center;justify-content:center;text-align:center;font-size:14px;font-weight:700;color:var(--muted);}
   .tm-photo img{display:block;width:100%;height:100%;object-fit:cover;}
   .tm-side h3{font-size:26px;margin:18px 0 6px;}
@@ -35,7 +35,7 @@
   .tm-body p{font-size:18px;line-height:1.7;color:#3c4048;margin:0;}
   .tm-card.tm-lead{border-top:3px solid var(--gold);}
   @media (max-width:820px){
-    .tm-card{grid-template-columns:1fr 2fr;gap:26px;padding:24px;}
+    .tm-card{grid-template-columns:2fr 5fr;gap:26px;padding:24px;}
   }
   @media (max-width:640px){
     .tm-head p, .tm-body p{font-size:17px;}

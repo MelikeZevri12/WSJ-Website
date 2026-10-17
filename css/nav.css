@@ -2,13 +2,15 @@
    The markup is in partials/nav.html. Edit here and every page follows. */
 
 /* GLOBAL NAV */
-.global-nav{background:var(--dark-soft);border-bottom:1px solid var(--line-on-dark);}
+.global-nav{background:var(--dark-soft);border-bottom:1px solid var(--line-on-dark);line-height:1.6;} /* own line height: same bar on pages with other text settings (admin) */
 .global-nav .gn-wrap{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:12px 24px;gap:16px;flex-wrap:wrap;}
 .gn-logo{display:flex;align-items:baseline;gap:8px;text-decoration:none;}
-.gn-logo .gn-script{font-family:'Caveat',cursive;font-weight:700;font-size:26px;color:var(--gold);line-height:1;}
-.gn-logo .gn-sans{font-family:'Titillium Web',sans-serif;font-weight:600;font-size:14px;color:var(--green);letter-spacing:.02em;}
+/* Logo: both words in the script font at the same size, "Worldschooling" gold, "Journeys" green (footer too) */
+.gn-logo .gn-script, .gn-logo .gn-sans{font-family:'Caveat',cursive;font-weight:700;font-size:26px;line-height:1;}
+.gn-logo .gn-script{color:var(--gold);}
+.gn-logo .gn-sans{color:var(--green);}
 .gn-links{display:flex;gap:26px;}
-.gn-link{padding:4px 0;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:14px;text-decoration:none;color:#c7ccd1;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;transition:color .15s ease;}
+.gn-link{padding:4px 0;font-family:'Titillium Web',sans-serif;font-weight:600;font-size:14px;text-decoration:none;color:#c7ccd1;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;transition:color .15s ease;}
 .gn-link:hover{color:var(--white);}
 .gn-link.active{color:var(--green);}
 @media (max-width:640px){
@@ -18,7 +20,6 @@
      Audience is mostly 40+, so body copy is 18px, nothing people actually read
      goes below 16px, and small uppercase labels bottom out at 14px. Kept as one
      block at the end so the whole scale lives in one place. */
-.gn-logo .gn-sans{font-size:15px;}
 .gn-link{font-size:16px;}
 /* MOBILE NAVBAR - on phones only the logo + a menu button show; the links
      open in a drawer that slides in from the left over the page (the page
@@ -80,7 +81,6 @@
 .gn-dropdown-item:hover{background:rgba(255,255,255,0.08);color:var(--white);}
 .gn-link{text-transform:uppercase;letter-spacing:.08em;white-space:nowrap;font-size:16px;}
 .gn-dropdown-item{text-transform:uppercase;letter-spacing:.08em;font-size:14.5px;}
-.gn-logo .gn-sans{font-size:15px;}
 @media (max-width:1100px) and (min-width:761px){
   .gn-links{gap:8px 18px;}
   .gn-link{font-size:14.5px;letter-spacing:.06em;}
@@ -96,11 +96,11 @@
 @media (max-width:760px){
   .global-nav > .wrap, .global-nav > .gn-wrap{position:relative;min-height:66px;padding-left:16px;padding-right:16px;}
   .global-nav > .wrap > .gn-logo, .global-nav > .gn-wrap > .gn-logo{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);gap:7px;white-space:nowrap;}
-  .global-nav > .wrap > .gn-logo .gn-script, .global-nav > .gn-wrap > .gn-logo .gn-script{font-size:clamp(28px,8.4vw,34px);}
-  .global-nav > .wrap > .gn-logo .gn-sans, .global-nav > .gn-wrap > .gn-logo .gn-sans{font-size:clamp(16px,4.7vw,19px);}
+  .global-nav > .wrap > .gn-logo .gn-script, .global-nav > .gn-wrap > .gn-logo .gn-script,
+  .global-nav > .wrap > .gn-logo .gn-sans, .global-nav > .gn-wrap > .gn-logo .gn-sans{font-size:clamp(26px,7.4vw,32px);}
 }
 /* Smallest phones: a little smaller so it never touches the menu button */
 @media (max-width:374px){
-  .global-nav > .wrap > .gn-logo .gn-script, .global-nav > .gn-wrap > .gn-logo .gn-script{font-size:25px;}
-  .global-nav > .wrap > .gn-logo .gn-sans, .global-nav > .gn-wrap > .gn-logo .gn-sans{font-size:14.5px;}
+  .global-nav > .wrap > .gn-logo .gn-script, .global-nav > .gn-wrap > .gn-logo .gn-script,
+  .global-nav > .wrap > .gn-logo .gn-sans, .global-nav > .gn-wrap > .gn-logo .gn-sans{font-size:23px;}
 }
