@@ -75,15 +75,16 @@
   const landYears = () => [...new Set(LAND_TRIPS.flatMap(t => Object.keys(t.years).filter(k => t.years[k].sortDate >= todayStr)))].map(Number).sort();
 
   // ---- cruises (same rules as the Group Cruises page) ----
-  const perPerson = (twoGuestPrice) => Math.round(twoGuestPrice / 2);
+  const PARTY_SIZES = [2, 3, 4];   // the cruise page calculator's party sizes
   function isPublishable(c){
     if (c.isAddOn || c.addOnForCruiseId || c.isIndividual) return false;
     if (c.departureDate.slice(0, 10) < todayStr) return false;
     return Boolean(c.destination && c.sailDates && c.nights != null);
   }
+  // per person: cheapest cabin price / its guests, over every bookable 2-4 guest cabin
   function startingPrice(c){
-    const prices = (c.cabinPrices || []).filter(r => r.guests === 2 && !r.soldOut && r.price != null).map(r => r.price);
-    return prices.length ? perPerson(Math.min(...prices)) : null;
+    const prices = (c.cabinPrices || []).filter(r => PARTY_SIZES.includes(r.guests) && !r.soldOut && r.price != null).map(r => r.price / r.guests);
+    return prices.length ? Math.round(Math.min(...prices)) : null;
   }
   function formatRange(startIso, endIso){
     const d = (iso) => new Date(`${iso.slice(0,10)}T00:00:00Z`);
@@ -101,39 +102,49 @@
       kind: "cruise", href: `/cruises/${encodeURIComponent(c.slug || c.businessId)}`, title: c.title || c.destination, dates: c.sailDates,
       sortDate: c.departureDate, year: Number(c.departureDate.slice(0, 4)), soldOut: !!c.soldOut,
       price: p != null ? money(p) : null, per: "person",
-      photo: c.heroImageUrl ? API + c.heroImageUrl : null, photoLabel: c.destination || (c.ship && c.ship.name) || "",
+      photo: c.heroImageUrl ? pictureUrl(c.heroImageUrl) : null, photoLabel: c.destination || (c.ship && c.ship.name) || "",
+      shipLine: [c.cruiseLine && c.cruiseLine.name, c.ship && c.ship.name].filter(Boolean).join(" · "),
     };
   }
-  // 3+ cruise journey: each cabin category's 2-guest prices added up over every
-  // cruise (categories all cruises offer, not sold out), cheapest, per person.
-  function journeyCard(j){
-    const legs = j.cruises, first = legs[0], last = legs[legs.length - 1];
+  // 3+ cruise journey: each cabin category + party size (2-4) added up over every
+  // cruise (when all cruises offer it, not sold out), per person, cheapest.
+  // fullCruises: "date|destination" -> that cruise from /cruises (the journeys endpoint only sends 2-guest prices, no ship)
+  function journeyCard(j, fullCruises){
+    const full = j.cruises.map(l => fullCruises[`${l.departureDate.slice(0, 10)}|${l.destination}`]).filter(Boolean);
+    const legs = j.cruises.map(l => { const f = fullCruises[`${l.departureDate.slice(0, 10)}|${l.destination}`]; return { ...l, cabinPrices: f ? f.cabinPrices || [] : l.cabinPrices }; });
+    const ships = [...new Set(full.map(c => c.ship && c.ship.name).filter(Boolean))];
+    const line = full.length && full[0].cruiseLine ? full[0].cruiseLine.name : null;
+    const first = legs[0], last = legs[legs.length - 1];
     const endIso = new Date(Date.parse(`${last.departureDate.slice(0,10)}T00:00:00Z`) + (last.nights || 0) * 86400000).toISOString();
     const cats = new Set(legs.flatMap(l => l.cabinPrices.map(p => p.category)));
-    const totals = [...cats].map(cat => {
+    const perPersonTotals = [...cats].flatMap(cat => PARTY_SIZES.map(guests => {
       let total = 0;
       for (const l of legs) {
-        const row = l.cabinPrices.find(p => p.category === cat && p.guests === 2);
+        const row = l.cabinPrices.find(p => p.category === cat && p.guests === guests);
         if (l.soldOut || !row || row.soldOut || row.price == null) return null;
         total += row.price;
       }
-      return total;
-    }).filter(t => t != null);
+      return total / guests;
+    })).filter(t => t != null);
     return {
       kind: "journey", href: `/journeys/${j.slug}`, title: j.title || `${legs.length}-Cruise Back-to-Back Journey`,
       dates: formatRange(first.departureDate, endIso), sortDate: first.departureDate, year: Number(first.departureDate.slice(0, 4)),
-      soldOut: legs.some(l => l.soldOut), price: totals.length ? money(perPerson(Math.min(...totals))) : null, per: "person",
-      photo: j.heroImageUrl ? API + j.heroImageUrl : null, photoLabel: "Back-to-back journey",
+      soldOut: legs.some(l => l.soldOut), price: perPersonTotals.length ? money(Math.round(Math.min(...perPersonTotals))) : null, per: "person",
+      photo: j.heroImageUrl ? pictureUrl(j.heroImageUrl) : null, photoLabel: "Back-to-back journey",
+      shipLine: [line, ships.length === 1 ? ships[0] : ships.length > 1 ? `${ships.length} ships` : null].filter(Boolean).join(" · "),
     };
   }
   async function loadCruiseCards(){
     const res = await fetch(`${API}/cruises`);
     if (!res.ok) throw new Error("cruises " + res.status);
-    const cruises = (await res.json()).filter(isPublishable).map(cruiseCard);
+    const all = await res.json();
+    const cruises = all.filter(isPublishable).map(cruiseCard);
+    const fullCruises = {};
+    all.forEach(c => { fullCruises[`${c.departureDate.slice(0, 10)}|${c.destination}`] = c; });
     let journeys = [];
     try {
       const r = await fetch(`${API}/back-to-backs/journeys`);
-      if (r.ok) journeys = (await r.json()).filter(j => j.slug && j.cruises.length >= 3 && j.cruises[0].departureDate.slice(0, 10) >= todayStr).map(journeyCard);
+      if (r.ok) journeys = (await r.json()).filter(j => j.slug && j.cruises.length >= 3 && j.cruises[0].departureDate.slice(0, 10) >= todayStr).map(j => journeyCard(j, fullCruises));
     } catch (e) { /* cruises alone is fine */ }
     return { cruises, journeys };
   }

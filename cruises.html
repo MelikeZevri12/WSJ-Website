@@ -11,7 +11,22 @@
 <link rel="stylesheet" href="/css/site.css?v=20261013">
 <link rel="stylesheet" href="/css/listing.css?v=20261013">
 <style>
-
+.year-pills{display:flex;gap:6px;flex-wrap:wrap;}
+/* Big screens: the filters are one row that wraps when there are too many. Only the first row shows;
+   its last button, "Show More Filters", opens the other rows (layoutFilterRows() below). */
+.filter-more-btn{display:none;}
+@media (min-width:1240px){
+  .filter-bar-inner{align-items:flex-start;}
+  .filter-bar-controls{flex:1 1 auto;flex-wrap:wrap;row-gap:5px;column-gap:10px;}
+  .filter-toggles{display:contents;}   /* each checkbox wraps on its own */
+  .filter-range{flex:1 1 auto;}
+  .filter-range .dual-range{flex:1 1 auto;min-width:64px;}
+  .filter-more-btn:not([hidden]){display:flex;}
+  .filter-more-btn .dd-caret{transition:transform .15s ease;}
+  .filter-more-btn.open .dd-caret{transform:rotate(180deg);}
+  .filter-bar-controls .fb-hidden{display:none !important;}
+  .results-count{line-height:42px;}
+}
 </style>
 <link rel="stylesheet" href="/css/hero.css?v=20261012">
 <link rel="stylesheet" href="/css/cards.css?v=20261012">
@@ -63,6 +78,22 @@
         </div>
       </div>
     </div>
+    <div class="filter-group filter-lines">
+      <button type="button" class="filter-dropdown-btn" id="lineDropdownBtn">
+        <span id="lineDropdownLabel">All Cruise Lines</span><span class="dd-caret">▾</span>
+      </button>
+      <div class="filter-dropdown-panel" id="lineDropdownPanel">
+        <div class="pill-row" id="linePillRow"><!-- populated by init() with only the cruise lines actually in use --></div>
+        <div class="filter-dropdown-foot">
+          <span class="dd-count" id="lineDropdownCount">All cruise lines</span>
+          <button type="button" id="lineClearBtn">Clear</button>
+        </div>
+      </div>
+    </div>
+    <div class="filter-group filter-years" id="yearFilter">
+      <div class="filter-label">Year</div>
+      <div class="year-pills" id="yearPills"><!-- built by init() from the departure years of the listed cruises --></div>
+    </div>
     <div class="filter-group filter-range">
       <div class="filter-label">Duration</div>
       <div class="dual-range">
@@ -98,6 +129,7 @@
       <label class="filter-toggle"><input type="checkbox" id="hideSoldOut"> Hide sold out</label>
     </div>
     <button type="button" class="reset-link" id="resetFiltersBtn">Reset</button>
+    <button type="button" class="filter-dropdown-btn filter-more-btn" id="filterMoreBtn" hidden><span id="filterMoreLabel">Show More Filters</span><span class="dd-caret">▾</span></button>
     <button type="button" class="filter-mobile-done" id="filterMobileDone">Show results</button>
     </div>
     <div class="results-count" id="resultsCount"><strong>0</strong> cruises</div>
@@ -128,6 +160,7 @@
     document.getElementById('gnLinks').prepend(adminLink);
   }
 </script>
+<script src="/js/picture-url.js"></script>
 <script>
 (function(){
   const API = 'https://api.worldschoolingjourneys.com';
@@ -152,7 +185,9 @@
     largeFamiliesOnly: false,
     priceMin: 0, priceMax: 0, priceFull: true, // per-person starting price range; priceFull = slider untouched
     sort: "date",
-    regions: [] // empty = no filter, every region shows
+    regions: [], // empty = no filter, every region shows
+    lines: [], // cruise line names; empty = every cruise line shows
+    year: null // "2027"; null = any year
   };
 
   let cruises = []; // card-shaped models, built from real Cruise records after fetch (see init())
@@ -164,22 +199,23 @@
   }
 
   function fmt(n){ return "$" + n.toLocaleString("en-US"); }
-  function perPerson(twoGuestPrice){ return Math.round(twoGuestPrice / 2); }
+  // Party sizes the cruise page's price calculator offers (5+ is a quote).
+  const PARTY_SIZES = [2, 3, 4];
 
-  // Starting prices are shown per person: the cheapest 2-guest cabin price
-  // split between its 2 guests (perPerson below).
-  // Cheapest 2-guest price across every cabin category that isn't sold out
-  // specifically for 2 guests - same basis as the "Starting At" badge on the
-  // cruise detail page (see cruise-detail.html's computeStartingAtPrice).
+  // Starting prices are shown per person: the cheapest cabin price divided by
+  // its number of guests, over every bookable cabin for 2, 3 or 4 guests (a
+  // 4-person cabin is often cheaper per person than a 2-person one). Same
+  // basis as the "Starting At" badge on the cruise detail page (see
+  // cruise-detail.html's startingAtPrice).
   // A cruise with no cabinPrices rows yet (pricing not entered) or where
-  // every category is sold out for 2 guests returns null - "Coming soon"
-  // and a real "sold out for 2" are different states, but neither has a
-  // number to show here, so both fall back the same way.
+  // every cabin is sold out returns null - "Coming soon" and a real "sold
+  // out" are different states, but neither has a number to show here, so
+  // both fall back the same way.
   function computeStartingPrice(cruise){
     const prices = (cruise.cabinPrices ?? [])
-      .filter(row => row.guests === 2 && !row.soldOut && row.price != null)
-      .map(row => row.price);
-    return prices.length ? perPerson(Math.min(...prices)) : null;
+      .filter(row => PARTY_SIZES.includes(row.guests) && !row.soldOut && row.price != null)
+      .map(row => row.price / row.guests);
+    return prices.length ? Math.round(Math.min(...prices)) : null;
   }
 
   function formatDateShort(iso){
@@ -218,6 +254,8 @@
       photoLabel: cruise.destination || cruise.ship.name,
       heroImageUrl: cruise.heroImageUrl || null,
       regions: cruise.region ? [cruise.region] : [],
+      cruiseLine: cruise.cruiseLine ? cruise.cruiseLine.name : null,
+      ship: cruise.ship ? cruise.ship.name : null,
       // Large Family Cabins - a 5 or 6 guest cabin that can still be booked
       // (priced, not sold out - see the dashboards' Pricing tab). Shown as a
       // tag and used by the 5+ filter.
@@ -240,24 +278,30 @@
 
   // A 3+ cruise back-to-back journey (GET /back-to-backs/journeys) as a card.
   // Starting price works like journey.html's whole-journey price: for each
-  // cabin category, the 2-guest prices of every cruise in it added up (only
-  // categories every cruise offers, not sold out), cheapest of those, per
-  // person. Sold out if any of its cruises is.
-  function toJourneyCardModel(j){
-    const legs = j.cruises;
+  // cabin category and party size (2-4), the prices of every cruise in it
+  // added up (only when every cruise offers it, not sold out), divided by the
+  // guests, cheapest of those. Sold out if any of its cruises is.
+  // The journeys endpoint doesn't send the cruise line, but the journey's
+  // code starts with it ("BB-PC-..." = Princess), same code as cruiseLine.code.
+  // The journeys endpoint only sends the 2-guest prices (and no ship), so each
+  // cruise's full record comes from /cruises (fullCruises: "date|destination" -> cruise).
+  function toJourneyCardModel(j, lineNameByCode, fullCruises){
+    const full = j.cruises.map(l => fullCruises[`${l.departureDate.slice(0, 10)}|${l.destination}`]);
+    const legs = j.cruises.map((l, i) => ({ ...l, cabinPrices: full[i] ? full[i].cabinPrices || [] : l.cabinPrices }));
+    const ships = [...new Set(full.filter(Boolean).map(c => c.ship && c.ship.name).filter(Boolean))];
     const first = legs[0], last = legs[legs.length - 1];
     const dayMs = 24 * 60 * 60 * 1000;
     const endIso = new Date(Date.parse(`${last.departureDate.slice(0,10)}T00:00:00Z`) + (last.nights || 0) * dayMs).toISOString();
     const categories = new Set(legs.flatMap(l => l.cabinPrices.map(p => p.category)));
-    const totals = [...categories].map(cat => {
+    const perPersonTotals = [...categories].flatMap(cat => PARTY_SIZES.map(guests => {
       let total = 0;
       for (const l of legs) {
-        const row = l.cabinPrices.find(p => p.category === cat && p.guests === 2);
+        const row = l.cabinPrices.find(p => p.category === cat && p.guests === guests);
         if (l.soldOut || !row || row.soldOut || row.price == null) return null;
         total += row.price;
       }
-      return total;
-    }).filter(t => t != null);
+      return total / guests;
+    })).filter(t => t != null);
     return {
       id: j.id,
       title: j.title || `${legs.length}-Cruise Back-to-Back Journey`,
@@ -265,11 +309,13 @@
       nights: legs.reduce((sum, l) => sum + (l.nights || 0), 0),
       sortDate: first.departureDate,
       soldOut: legs.some(l => l.soldOut),
-      startingPrice: totals.length ? perPerson(Math.min(...totals)) : null,
+      startingPrice: perPersonTotals.length ? Math.round(Math.min(...perPersonTotals)) : null,
       // "Tokyo → Benoa": where the first cruise leaves from and the last one ends.
       photoLabel: (first.destination && last.destination) ? `${first.destination.split(" → ")[0]} → ${last.destination.split(" → ").pop()}` : "Back-to-back journey",
       heroImageUrl: j.heroImageUrl || null,
       regions: [...new Set(legs.map(l => l.region).filter(Boolean))],
+      cruiseLine: lineNameByCode[(j.slug.split("-")[1] || "").toUpperCase()] || null,
+      ship: ships.length === 1 ? ships[0] : ships.length > 1 ? `${ships.length} ships` : null,
       href: `/journeys/${j.slug}`,
       tag: `${legs.length} cruises · back to back`,
     };
@@ -278,13 +324,15 @@
   const CALENDAR = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>';
   // The homepage trip card: photo on top (fully visible), dates, name, price
   // and Learn More on a navy band underneath. Sold out keeps its ribbon.
+  // "Princess Cruises · Coral Princess" (small line under the name)
+  const shipLine = (c) => [c.cruiseLine, c.ship].filter(Boolean).join(" · ");
   function cardHTML(c){
     const price = c.priceText != null ? c.priceText : (c.startingPrice != null ? `${fmt(c.startingPrice)} <small>/ person</small>` : null);
     const foot = c.soldOut
       ? `<div><div class="cc-soldout-note">No cabins left</div></div><span class="cc-more">See Details</span>`
       : `<div>${price ? `<div class="cc-price-label">Starting from</div><div class="cc-price">${price}</div>` : `<div class="cc-price cc-price-soon">Coming soon</div>`}</div><span class="cc-more">Learn More</span>`;
     const tag = c.soldOut ? "" : (c.tag || (c.largeFamilies ? "Cabins for 5–6" : ""));
-    const photo = c.heroImageUrl ? (c.heroImageUrl.startsWith("/uploads/") ? API + c.heroImageUrl : c.heroImageUrl) : null;
+    const photo = c.heroImageUrl ? pictureUrl(c.heroImageUrl) : null;
     return `
     <a class="spotlight-card style-photo trip-card${photo ? " has-photo" : ""}${c.soldOut ? " sold-out" : ""}" href="${c.href}" target="_blank" rel="noopener">
       <div class="sp-photo"${photo ? ` style="background-image:url('${photo}')"` : ""}></div>
@@ -293,6 +341,7 @@
       <div class="sp-overlay">
         <div class="spotlight-dates">${CALENDAR}<span>${escapeHtml(c.dates)}</span></div>
         <div class="spotlight-title">${escapeHtml(c.title)}</div>
+        ${shipLine(c) ? `<div class="cc-ship">${escapeHtml(shipLine(c))}</div>` : ""}
         <div class="cc-foot">${foot}</div>
       </div>
     </a>`;
@@ -307,6 +356,8 @@
       // (an unpriced "Coming soon" cruise can't be placed in a range).
       if(!state.priceFull && (c.startingPrice == null || c.startingPrice < state.priceMin || c.startingPrice > state.priceMax)) return false;
       if(state.regions.length && !c.regions.some(r => state.regions.includes(r))) return false;
+      if(state.lines.length && !state.lines.includes(c.cruiseLine)) return false;
+      if(state.year && c.sortDate.slice(0, 4) !== state.year) return false;   // the year it sets sail
       return true;
     });
 
@@ -421,6 +472,48 @@
     render();
   });
 
+  /* ---- CRUISE LINE FILTER (same multi-select dropdown as Regions, a pill per cruise line that has a cruise listed) ---- */
+  const lineDropdownBtn = document.getElementById("lineDropdownBtn");
+  const lineDropdownPanel = document.getElementById("lineDropdownPanel");
+  const linePillRow = document.getElementById("linePillRow");
+
+  function updateLineDropdownUI(){
+    const n = state.lines.length;
+    document.getElementById("lineDropdownLabel").textContent = n === 0 ? "All Cruise Lines" : n === 1 ? state.lines[0] : `${n} Cruise Lines`;
+    document.getElementById("lineDropdownCount").textContent = n === 0 ? "All cruise lines" : `${n} selected`;
+    lineDropdownBtn.classList.toggle("has-selection", n > 0);
+    linePillRow.querySelectorAll("[data-line]").forEach(btn => {
+      btn.classList.toggle("active", state.lines.includes(btn.dataset.line));
+    });
+  }
+
+  function toggleLine(line){
+    const idx = state.lines.indexOf(line);
+    if(idx === -1) state.lines.push(line); else state.lines.splice(idx, 1);
+    updateLineDropdownUI();
+    render();
+  }
+  lineDropdownBtn.addEventListener("click", () => {
+    const isOpen = lineDropdownPanel.classList.toggle("open");
+    lineDropdownBtn.classList.toggle("open", isOpen);
+  });
+  document.addEventListener("click", (e) => {
+    if(!lineDropdownBtn.contains(e.target) && !lineDropdownPanel.contains(e.target)){
+      lineDropdownPanel.classList.remove("open");
+      lineDropdownBtn.classList.remove("open");
+    }
+  });
+  document.getElementById("lineClearBtn").addEventListener("click", () => {
+    state.lines = [];
+    updateLineDropdownUI();
+    render();
+  });
+
+  /* ---- YEAR FILTER (same as the Land Trips page: one year at a time, click it again for any year) ---- */
+  function updateYearPills(){
+    document.querySelectorAll("#yearPills [data-year]").forEach(b => b.classList.toggle("active", b.dataset.year === state.year));
+  }
+
   /* ---- PHONE FILTER PANEL: one "Filters" button opens the controls; it shows
      how many filters are on, and "Show N cruises" closes the panel ---- */
   const filterMobileToggle = document.getElementById("filterMobileToggle");
@@ -432,6 +525,8 @@
     const durMin = document.getElementById("durationMin"), durMax = document.getElementById("durationMax");
     const active = [
       state.regions.length > 0,
+      state.lines.length > 0,
+      state.year != null,
       state.durationMin > Number(durMin.min) || state.durationMax < Number(durMax.max),
       !state.priceFull,
       state.hideSoldOut,
@@ -466,8 +561,51 @@
     document.getElementById("largeFamiliesOnly").checked = false;
     state.regions = [];
     updateRegionDropdownUI();
+    state.lines = [];
+    updateLineDropdownUI();
+    state.year = null;
+    updateYearPills();
     render();
   });
+
+  /* ---- BIG SCREENS: show the first row of filters only, "Show More Filters" opens the rest ---- */
+  const filterControls = document.getElementById("filterBarControls");
+  const filterMoreBtn = document.getElementById("filterMoreBtn");
+  let filtersExpanded = false;
+  function layoutFilterRows(){
+    // every filter on its own (the two checkboxes count separately), in order
+    const items = [...filterControls.children]
+      .flatMap(el => el.classList.contains("filter-toggles") ? [...el.children] : [el])
+      .filter(el => el !== filterMoreBtn && el.id !== "filterMobileDone");
+    items.forEach(el => el.classList.remove("fb-hidden"));
+    filterMoreBtn.hidden = true;
+    if (window.matchMedia("(max-width:1239px)").matches) return;   // phones/tablets: the Filters panel shows everything
+    const shown = items.filter(el => el.getClientRects().length);    // skips filters hidden for lack of data
+    if (!shown.length) return;
+    const rowOneBottom = () => shown[0].getBoundingClientRect().bottom;
+    const onRowOne = (el) => el.getBoundingClientRect().top < rowOneBottom();
+    if (shown.every(onRowOne)) return;                                // all fits on one row: no button
+    filterMoreBtn.hidden = false;
+    filterMoreBtn.classList.toggle("open", filtersExpanded);
+    document.getElementById("filterMoreLabel").textContent = filtersExpanded ? "Show Fewer Filters" : "Show More Filters";
+    if (filtersExpanded) return;
+    const later = shown.filter(el => !onRowOne(el));
+    later.forEach(el => el.classList.add("fb-hidden"));
+    // make room for the button at the end of the first row
+    const rowOne = shown.filter(el => !later.includes(el));
+    while (!onRowOne(filterMoreBtn) && rowOne.length > 1) rowOne.pop().classList.add("fb-hidden");
+    // a filter that's switched on but tucked away: "Show More Filters (1)"
+    const hiddenOn = items.filter(el => el.classList.contains("fb-hidden") &&
+      (el.querySelector("input:checked, .pill-btn.active, .has-selection") || el.matches(".has-selection") || [...el.querySelectorAll("select")].some(x => x.selectedIndex > 0))).length;
+    if (hiddenOn) document.getElementById("filterMoreLabel").textContent = `Show More Filters (${hiddenOn})`;
+  }
+  filterMoreBtn.addEventListener("click", () => { filtersExpanded = !filtersExpanded; layoutFilterRows(); });
+  let layoutQueued = false;
+  window.addEventListener("resize", () => {
+    if (layoutQueued) return; layoutQueued = true;
+    requestAnimationFrame(() => { layoutQueued = false; layoutFilterRows(); });
+  });
+  if (document.fonts) document.fonts.ready.then(layoutFilterRows);
 
   async function init(){
     let allCruises = [];
@@ -498,7 +636,11 @@
       return;
     }
 
-    cruises = [...publishable.map(toCardModel), ...journeys.map(toJourneyCardModel)];
+    const lineNameByCode = {};
+    allCruises.forEach(c => { if (c.cruiseLine) lineNameByCode[c.cruiseLine.code] = c.cruiseLine.name; });
+    const fullCruises = {};
+    allCruises.forEach(c => { fullCruises[`${c.departureDate.slice(0, 10)}|${c.destination}`] = c; });
+    cruises = [...publishable.map(toCardModel), ...journeys.map(j => toJourneyCardModel(j, lineNameByCode, fullCruises))];
 
     factDepartures.textContent = String(cruises.length);
     const earliest = cruises.map(c => c.sortDate).sort()[0];
@@ -522,6 +664,31 @@
       document.querySelector(".filter-regions").style.display = "none";
     }
 
+    // Cruise lines A–Z, only the ones with a cruise or journey listed.
+    const presentLines = [...new Set(cruises.map(c => c.cruiseLine).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+    if(presentLines.length > 1){
+      linePillRow.innerHTML = presentLines.map(l =>
+        `<button type="button" class="pill-btn" data-line="${escapeHtml(l)}">${escapeHtml(l)}</button>`
+      ).join("");
+      linePillRow.querySelectorAll("[data-line]").forEach(btn => {
+        btn.addEventListener("click", () => toggleLine(btn.dataset.line));
+      });
+    } else {
+      document.querySelector(".filter-lines").style.display = "none"; // nothing to choose between
+    }
+
+    // Year pills: every year a listed cruise or journey sets sail in, so 2028 shows up
+    // by itself once 2028 cruises are added (and a year drops off once it has all sailed)
+    const yearsAvailable = [...new Set(cruises.map(c => c.sortDate.slice(0, 4)))].sort();
+    const yearPills = document.getElementById("yearPills");
+    yearPills.innerHTML = yearsAvailable.map(y => `<button type="button" class="pill-btn" data-year="${y}">${y}</button>`).join("");
+    yearPills.querySelectorAll("[data-year]").forEach(btn => btn.addEventListener("click", () => {
+      state.year = state.year === btn.dataset.year ? null : btn.dataset.year; // click again for any year
+      updateYearPills();
+      render();
+    }));
+    if (yearsAvailable.length < 2) document.getElementById("yearFilter").style.display = "none";
+
     const nightsValues = cruises.map(c => c.nights);
     const minNights = Math.min(...nightsValues);
     const maxNights = Math.max(...nightsValues);
@@ -544,6 +711,7 @@
     }
     // Only offer the 5+ filter when at least one cruise has those cabins.
     if (!cruises.some(c => c.largeFamilies)) document.getElementById("largeFamiliesToggle").style.display = "none";
+    layoutFilterRows();
 
     render();
   }

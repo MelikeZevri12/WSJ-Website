@@ -101,7 +101,7 @@
       <div class="field-grid">
         <div class="field"><label for="leadDob">Date of Birth</label><input type="date" id="leadDob"></div>
         <div class="field"><label for="leadGender">Gender</label>
-          <select id="leadGender"><option value="">Select</option><option>Female</option><option>Male</option><option>Non-binary</option><option>Prefer not to say</option><option>Other</option></select>
+          <select id="leadGender"><option value="">Select</option><option>Female</option><option>Male</option><option>Prefer not to say</option><option>Other</option></select>
         </div>
       </div>
       <div class="field"><label for="leadCitizenship">Citizenship</label><input type="text" id="leadCitizenship" placeholder="e.g. United States"></div>
@@ -189,7 +189,7 @@ function renderPassengers(){
         <div class="field"><label>Gender</label>
           <select data-field="gender" data-idx="${i}">
             <option value="">Select</option>
-            ${['Female','Male','Non-binary','Prefer not to say','Other'].map((g) => `<option ${p.gender === g ? 'selected' : ''}>${g}</option>`).join('')}
+            ${['Female','Male','Prefer not to say','Other'].map((g) => `<option ${p.gender === g ? 'selected' : ''}>${g}</option>`).join('')}
           </select>
         </div>
         <div class="field"><label>Citizenship</label><input type="text" data-field="citizenship" data-idx="${i}" value="${escapeHtml(p.citizenship)}"></div>

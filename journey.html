@@ -929,7 +929,7 @@
         <div class="form-step" data-step="3" style="display:none;">
           <div class="field"><label for="dob">Your DOB</label><input type="date" id="dob" name="dob"></div>
           <div class="field"><label for="gender">Your Gender</label>
-            <select id="gender" name="gender"><option value="">Select</option><option>Female</option><option>Male</option><option>Non-binary</option><option>Prefer not to say</option><option>Other</option></select>
+            <select id="gender" name="gender"><option value="">Select</option><option>Female</option><option>Male</option><option>Prefer not to say</option><option>Other</option></select>
           </div>
         </div>
 
@@ -1046,6 +1046,7 @@
   <a href="#segment" class="btn btn-primary" id="stickyBarLink">Change Segment</a>
 </div>
 
+<script src="/js/picture-url.js"></script>
 <script>
 // =====================================================================
 // JOURNEY DATA (see templates/page-template-b2b-4.html / -b2b-8.html)
@@ -1120,7 +1121,7 @@ function toLeg(c, families){
     url: c.isAddOn || c.isIndividual ? null : `/cruises/${encodeURIComponent(c.slug || c.businessId)}`,
     connector: !!c.isAddOn,
     families,
-    photo: c.heroImageUrl ? `${API}${c.heroImageUrl}` : null,
+    photo: c.heroImageUrl ? pictureUrl(c.heroImageUrl) : null,
     photoLabel: name,
     pricing,
     soldOut,
@@ -1197,7 +1198,15 @@ function noPriceLabel(s, g){
   const unpriced = legsIn(s).some(l => CABINS.every(c => l.pricing[g]?.[c.key] == null && !l.soldOut[g]?.[c.key]));
   return unpriced ? 'Price coming soon' : 'Waitlist';
 }
-function legFrom(l){ const v = Object.values(l.pricing[2]).filter(p => p != null); return v.length ? Math.min(...v) : null; }
+// cheapest per person over every party size (a 4-guest cabin is often cheaper per person than a 2-guest one)
+function cheapestPerPerson(s){
+  const opts = [2, 3, 4].map(g => { const c = cheapest(s, g); return c != null ? c / g : null; }).filter(p => p != null);
+  return opts.length ? Math.round(Math.min(...opts)) : null;
+}
+function legFrom(l){
+  const v = [2, 3, 4].flatMap(g => Object.values(l.pricing[g]).filter(p => p != null).map(p => p / g));
+  return v.length ? Math.round(Math.min(...v)) : null;
+}
 
 // ---------- pickers (hero, main section, itinerary, pricing, flights all share one selection) ----------
 const pickers = [...document.querySelectorAll('.seg-picker')];
@@ -1233,7 +1242,7 @@ function renderPicker(){
         <span class="sl-num">Cruise ${i+1} · ${fmtRange(l.start, l.end)}</span>
         <span class="sl-name" style="display:block">${l.name}</span>
         <span class="sl-meta" style="display:block">${l.from} → ${l.to} · ${nightsOf(l)} nights</span>
-        ${from != null ? `<span class="sl-price" style="display:block">From ${fmt(Math.round(from / 2))} / person</span>` : ''}
+        ${from != null ? `<span class="sl-price" style="display:block">From ${fmt(from)} / person</span>` : ''}
       </span>
     </button>`;
   }).join('');
@@ -1304,8 +1313,8 @@ function renderHeroAndFacts(){
   document.getElementById('factRoute').textContent = segLabel(sel);
   document.getElementById('factDates').textContent = fmtRange(st.start, st.end);
   document.getElementById('factMinAge').textContent = segmentMinAge();
-  const c = cheapest(sel, 2);
-  document.getElementById('factPrice').textContent = c != null ? `${fmt(Math.round(c / 2))} / person` : noPriceLabel(sel, 2);
+  const c = cheapestPerPerson(sel);
+  document.getElementById('factPrice').textContent = c != null ? `${fmt(c)} / person` : noPriceLabel(sel, 2);
   document.getElementById('ssRoute').textContent = isFull(sel) ? 'The whole journey' : `${plural(sel.end - sel.start + 1,'cruise','cruises')}`;
   document.getElementById('ssMeta').textContent =
     `${fmtRange(st.start, st.end)} · ${plural(st.nights,'night','nights')}`;
@@ -1397,7 +1406,7 @@ function renderPricing(){
     const blockedLeg = p == null ? legsIn(sel).find(l => !(l.pricing[guests] && l.pricing[guests][c.key] != null)) : null;
     return `<div class="cabin-tile ${c.key === cabin ? 'active' : ''} ${p == null ? 'sold-out' : ''}" data-cabin="${escapeHtml(c.key)}">
       ${p == null && blockedLeg.soldOut[guests][c.key] ? '<div class="sold-out-ribbon">Waitlist</div>' : ''}
-      ${c.photo ? `<div class="photo-slot cabin-photo has-image"><img src="${API}${c.photo}" alt="${escapeHtml(c.name)} cabin"></div>` : `<div class="photo-slot cabin-photo"><span>${escapeHtml(c.name)} photo</span></div>`}
+      ${c.photo ? `<div class="photo-slot cabin-photo has-image"><img src="${pictureUrl(c.photo)}" alt="${escapeHtml(c.name)} cabin"></div>` : `<div class="photo-slot cabin-photo"><span>${escapeHtml(c.name)} photo</span></div>`}
       <div class="cname">${escapeHtml(c.name)}</div>
       ${p == null ? `<div class="cprice-wait">${blockedLeg.soldOut[guests][c.key] ? 'Waitlisted' : 'Price coming soon'} on ${blockedLeg.from} → ${blockedLeg.to}</div>`
                   : `<div class="cprice">${fmt(p)} <small>/ family</small></div>`}
@@ -1673,7 +1682,7 @@ function renderPassengers(){
         <div class="field"><label>Gender</label>
           <select data-field="gender" data-idx="${i}">
             <option value="">Select</option>
-            ${['Female','Male','Non-binary','Prefer not to say','Other'].map(g => `<option ${p.gender === g ? 'selected' : ''}>${g}</option>`).join('')}
+            ${['Female','Male','Prefer not to say','Other'].map(g => `<option ${p.gender === g ? 'selected' : ''}>${g}</option>`).join('')}
           </select>
         </div>
         <div class="field"><label>Citizenship</label><input type="text" data-field="citizenship" data-idx="${i}" value="${p.citizenship || ''}"></div>
@@ -1895,7 +1904,7 @@ function renderJourneyText(){
   document.getElementById('heroTitle').textContent = title;
   if(JOURNEY.heroImageUrl){
     const hero = document.getElementById('heroSection');
-    hero.style.backgroundImage = `${HERO_GRADIENT}, url('${API}${JOURNEY.heroImageUrl}')`;
+    hero.style.backgroundImage = `${HERO_GRADIENT}, url('${pictureUrl(JOURNEY.heroImageUrl)}')`;
     hero.style.backgroundBlendMode = 'multiply, normal';
   }
 
@@ -2009,10 +2018,10 @@ function fmtDepRange(isoStart, nights){
   const f = (d) => d.toLocaleDateString('en-US', { month:'short', day:'numeric', timeZone:'UTC' });
   return `${f(start)} – ${f(end)}, ${end.getUTCFullYear()}`;
 }
-// Cheapest 2-guest price, per person - same basis as the cruises page cards.
+// Cheapest price per person (cabin price / guests, 2-4 guests) - same basis as the cruises page cards.
 function depStartingPrice(cruise){
-  const prices = (cruise.cabinPrices ?? []).filter((row) => row.guests === 2 && !row.soldOut && row.price != null).map((row) => row.price);
-  return prices.length ? Math.round(Math.min(...prices) / 2) : null;
+  const prices = (cruise.cabinPrices ?? []).filter((row) => [2, 3, 4].includes(row.guests) && !row.soldOut && row.price != null).map((row) => row.price / row.guests);
+  return prices.length ? Math.round(Math.min(...prices)) : null;
 }
 let depViews = null;
 let depTrackEl = null;
@@ -2023,11 +2032,12 @@ function renderDepartures(view){
   depTrackEl.scrollLeft = 0;
   depTrackEl.innerHTML = v.list.length ? v.list.map((c) => `
     <a class="dep-card spotlight-card style-photo trip-card${c.heroImageUrl ? ' has-photo' : ''}" href="/cruises/${encodeURIComponent(c.slug || c.businessId)}" target="_blank" rel="noopener">
-      <div class="sp-photo"${c.heroImageUrl ? ` style="background-image:url('${API}${c.heroImageUrl}')"` : ''}></div>
+      <div class="sp-photo"${c.heroImageUrl ? ` style="background-image:url('${pictureUrl(c.heroImageUrl)}')"` : ''}></div>
       ${c.heroImageUrl ? '' : `<span class="sp-caption">Photo: ${escapeHtml(c.ship.name)}</span>`}
       <div class="sp-overlay">
         <div class="spotlight-dates"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>${fmtDepRange(c.departureDate, c.nights)}</span></div>
         <div class="spotlight-title">${escapeHtml(c.title || c.destination)}</div>
+        ${c.cruiseLine || c.ship ? `<div class="cc-ship">${escapeHtml([c.cruiseLine && c.cruiseLine.name, c.ship && c.ship.name].filter(Boolean).join(' · '))}</div>` : ''}
         <div class="cc-foot"><div>${c.fromPrice != null ? `<div class="cc-price-label">Starting from</div><div class="cc-price">${fmtDepMoney(c.fromPrice)} <small>/ person</small></div>` : `<div class="cc-price-label">${escapeHtml(c.region || '')}</div>`}</div><span class="cc-more">Learn More</span></div>
       </div>
     </a>`).join('') : '<div class="dep-empty">Nothing in this group right now. Try another tab or see all cruises.</div>';
@@ -2046,12 +2056,12 @@ async function loadDepartures(){
   const ownIds = new Set(LEGS.map(l => l.id));
   const regions = new Set(JOURNEY.cruises.map(c => c.region).filter(Boolean));
   const totalNights = JOURNEY.cruises.reduce((a, c) => a + (c.nights || 0), 0);
-  // Every cruise is sold out, so use each one's cheapest listed 2-guest price.
+  // Every cruise is sold out, so use each one's cheapest listed price per person (2-4 guests).
   const listed = JOURNEY.cruises.map(c => {
-    const p = (c.cabinPrices || []).filter(r => r.guests === 2 && r.price != null).map(r => r.price);
+    const p = (c.cabinPrices || []).filter(r => [2, 3, 4].includes(r.guests) && r.price != null).map(r => r.price / r.guests);
     return p.length ? Math.min(...p) : null;
   });
-  const perNight = listed.every(p => p != null) && totalNights ? listed.reduce((a, p) => a + p, 0) / 2 / totalNights : null;
+  const perNight = listed.every(p => p != null) && totalNights ? listed.reduce((a, p) => a + p, 0) / totalNights : null;
   const upcoming = others
     .filter((c) => !ownIds.has(c.id) && isPublishableCruise(c) && !c.soldOut && c.departureDate.slice(0, 10) >= todayStr)
     .map((c) => ({ ...c, fromPrice: depStartingPrice(c) }))
@@ -2206,6 +2216,9 @@ async function loadJourney(){
     for(const row of c.cabinPrices || []) if(!photos.has(row.category)) photos.set(row.category, null);
     for(const cat of c.cruiseLine?.cabinCategories ?? []) if(photos.has(cat.name) && cat.imageUrl && !photos.get(cat.name)) photos.set(cat.name, cat.imageUrl);
   }
+  // A cabin type without its own photo borrows the closest standard one (same rule as the API): suites/balconies -> Balcony.
+  const baseCabin = (n) => /balcony|suite/i.test(n) ? 'Balcony' : /ocean ?view|oceanview/i.test(n) ? 'Ocean View' : /interior|inside/i.test(n) ? 'Interior' : null;
+  for(const [name, url] of photos) if(!url && photos.get(baseCabin(name))) photos.set(name, photos.get(baseCabin(name)));
   const rank = (n) => { const i = CABIN_ORDER.indexOf(n); return i === -1 ? CABIN_ORDER.length : i; };
   CABINS = [...photos.keys()].sort((a, b) => rank(a) - rank(b)).map(name => ({ key: name, name, photo: photos.get(name) }));
 

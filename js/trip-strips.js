@@ -24,6 +24,7 @@
       (c.tag ? `<span class="cc-tag">${esc(c.tag)}</span>` : "") +
       `<div class="sp-overlay"><div class="spotlight-dates">${CALENDAR}<span>${esc(c.dates)}</span></div>` +
       `<div class="spotlight-title">${esc(shortTitle(c.title))}</div>` +
+      (c.shipLine ? `<div class="cc-ship">${esc(c.shipLine)}</div>` : "") +
       `<div class="cc-foot">${priceHTML(c)}<span class="cc-more">Learn More</span></div></div></a>`;
   }
 

@@ -159,8 +159,8 @@ map {old_path} {old_site_target} {
         /worldschooling-trips-2026                                                 /cruises
         /worldschooling-trips-2027/                                                /cruises                                               # page
         /worldschooling-trips-2027                                                 /cruises
-        /austria-retreats/                                                         /land-trips                                            # page
-        /austria-retreats                                                          /land-trips
+        /austria-retreats/                                                         /land-trips?filter=austria-retreats                 # page (Austria Retreats filter)
+        /austria-retreats                                                          /land-trips?filter=austria-retreats
         /cancellation-refund-policy/                                               /cancellation-policy                                   # page
         /cancellation-refund-policy                                                /cancellation-policy
         default                                    ""

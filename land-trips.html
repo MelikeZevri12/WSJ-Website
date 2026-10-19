@@ -27,7 +27,7 @@
 <header class="hero">
   <div class="wrap">
     <div class="eyebrow">Worldschooling Land Trips · For Homeschool Families</div>
-    <h1>Guided Land Trips for Worldschooling Families</h1>
+    <h1 id="heroTitle">Guided Land Trips for Worldschooling Families</h1>
     <p class="lede">Land trips are guided, immersive trips with a busy schedule of activities, designed to not just see the destination, but to truly feel it.</p>
     <div class="hero-cta">
       <a href="/about-our-trips.html" class="btn btn-outline-hero">Read More</a>
@@ -53,6 +53,9 @@
       Filters <span class="fmt-count" id="filterActiveCount" hidden></span>
     </button>
     <div class="filter-bar-controls" id="filterBarControls">
+    <div class="filter-group filter-collection" id="collectionFilter">
+      <button type="button" class="pill-btn" id="austriaRetreatsBtn" aria-pressed="false">Austria Retreats</button>
+    </div>
     <div class="filter-group filter-regions">
       <button type="button" class="filter-dropdown-btn" id="regionDropdownBtn">
         <span id="regionDropdownLabel">All Regions</span><span class="dd-caret">▾</span>
@@ -132,6 +135,7 @@
     document.getElementById('gnLinks').prepend(adminLink);
   }
 </script>
+<script src="/js/picture-url.js"></script>
 <script src="/js/trips.js?v=20261013"></script>
 <script>
 (function(){
@@ -158,8 +162,15 @@
     priceMin: 0, priceMax: 0, priceFull: true, // per-person starting price range; priceFull = slider untouched
     sort: "date",
     regions: [], // empty = no filter, every region shows
-    year: null // null = any year
+    year: null, // null = any year
+    collection: null // "austria-retreats" = only the Austria trips (address /land-trips?filter=austria-retreats)
   };
+
+  // Trip groups with their own address (the old site's /austria-retreats page redirects here).
+  const COLLECTIONS = {
+    "austria-retreats": { match: (t) => t.slug.startsWith("austria-"), heading: "Austria Retreats for Worldschooling Families", title: "Austria Retreats — Worldschooling Journeys" },
+  };
+  const DEFAULT_HEADING = document.getElementById("heroTitle").textContent, DEFAULT_TITLE = document.title;
 
 
   // Trip data + card builder are shared with the Home and About pages (js/trips.js).
@@ -294,7 +305,7 @@
       ? `<div><div class="cc-soldout-note">No cabins left</div></div><span class="cc-more">See Details</span>`
       : `<div>${price ? `<div class="cc-price-label">Starting from</div><div class="cc-price">${price}</div>` : `<div class="cc-price cc-price-soon">Coming soon</div>`}</div><span class="cc-more">Learn More</span>`;
     const tag = c.soldOut ? "" : (c.tag || (c.largeFamilies ? "Cabins for 5–6" : ""));
-    const photo = c.heroImageUrl ? (c.heroImageUrl.startsWith("/uploads/") ? API + c.heroImageUrl : c.heroImageUrl) : null;
+    const photo = c.heroImageUrl ? pictureUrl(c.heroImageUrl) : null;
     return `
     <a class="spotlight-card style-photo trip-card${photo ? " has-photo" : ""}${c.soldOut ? " sold-out" : ""}" href="${c.href}" target="_blank" rel="noopener">
       <div class="sp-photo"${photo ? ` style="background-image:url('${photo}')"` : ""}></div>
@@ -310,7 +321,8 @@
 
   function render(){
     // a picked year swaps in that year's cards (dates, price, link with the year)
-    let list = (state.year ? LAND_TRIPS.map(t => tripView(t, state.year)).filter(Boolean) : cruises).filter(c => {
+    const trips = state.collection ? LAND_TRIPS.filter(COLLECTIONS[state.collection].match) : LAND_TRIPS;
+    let list = trips.map(t => tripView(t, state.year)).filter(Boolean).filter(c => {
       if(c.nights < state.durationMin || c.nights > state.durationMax) return false;
       if(state.hideSoldOut && c.soldOut) return false;
       if(state.largeFamiliesOnly && !c.largeFamilies) return false;
@@ -432,6 +444,35 @@
     render();
   });
 
+  // Facts bar: the trips on show (all of them, or just the Austria Retreats).
+  function updateFacts(){
+    const shown = LAND_TRIPS.filter(state.collection ? COLLECTIONS[state.collection].match : () => true).map(t => tripView(t, null)).filter(Boolean);
+    factStartingFrom.textContent = String(shown.length);
+    factDepartures.textContent = String(shown.reduce((n, c) => n + c.departures, 0));
+    factNextDeparture.textContent = formatDateShort(shown.map(c => c.sortDate).sort()[0]);
+    const regions = ALL_REGIONS.filter(r => shown.some(c => c.regions.includes(r)));
+    factRegions.textContent = regions.length ? String(regions.length) : "Coming soon";
+  }
+
+  // Austria Retreats: its own address, heading and tab title while it's on.
+  function updateCollection(){
+    updateFacts();
+    const col = state.collection && COLLECTIONS[state.collection];
+    const btn = document.getElementById("austriaRetreatsBtn");
+    btn.classList.toggle("active", state.collection === "austria-retreats");
+    btn.setAttribute("aria-pressed", state.collection === "austria-retreats");
+    document.getElementById("heroTitle").textContent = col ? col.heading : DEFAULT_HEADING;
+    document.title = col ? col.title : DEFAULT_TITLE;
+    const url = new URL(location.href);
+    if (state.collection) url.searchParams.set("filter", state.collection); else url.searchParams.delete("filter");
+    history.replaceState(history.state, "", url.pathname + url.search + url.hash);
+  }
+  document.getElementById("austriaRetreatsBtn").addEventListener("click", () => {
+    state.collection = state.collection === "austria-retreats" ? null : "austria-retreats";
+    updateCollection();
+    render();
+  });
+
   function updateYearPills(){
     document.querySelectorAll("#yearPills [data-year]").forEach(b => b.classList.toggle("active", b.dataset.year === state.year));
   }
@@ -452,6 +493,7 @@
       state.hideSoldOut,
       state.largeFamiliesOnly,
       state.year != null,
+      state.collection != null,
     ].filter(Boolean).length;
     const badge = document.getElementById("filterActiveCount");
     badge.textContent = active;
@@ -484,23 +526,21 @@
     updateYearPills();
     state.regions = [];
     updateRegionDropdownUI();
+    state.collection = null;
+    updateCollection();
     render();
   });
 
   async function init(){
+    const wanted = new URLSearchParams(location.search).get("filter");
+    if (COLLECTIONS[wanted]) { state.collection = wanted; updateCollection(); }
     cruises = LAND_TRIPS.map(t => tripView(t, null)).filter(Boolean);
-
-    factDepartures.textContent = String(cruises.reduce((n, c) => n + c.departures, 0));
-    const earliest = cruises.map(c => c.sortDate).sort()[0];
-    factNextDeparture.textContent = formatDateShort(earliest);
-    const startingPrices = cruises.map(c => c.startingPrice).filter(p => p != null);
-    factStartingFrom.textContent = String(cruises.length);
+    updateFacts();
 
     // Only regions that actually have a classified cruise get a pill - the
     // dashboards let an admin leave region unset, so an empty pill for a
     // region nothing is tagged with yet would just be dead UI.
     const presentRegions = ALL_REGIONS.filter(r => cruises.some(c => c.regions.includes(r)));
-    factRegions.textContent = presentRegions.length ? String(presentRegions.length) : "Coming soon";
     if(presentRegions.length){
       regionPillRow.innerHTML = presentRegions.map(r =>
         `<button type="button" class="pill-btn" data-region="${escapeHtml(r)}">${escapeHtml(r)}</button>`

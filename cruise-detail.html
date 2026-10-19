@@ -776,7 +776,7 @@
         <div class="form-step" data-step="3" style="display:none;">
           <div class="field"><label for="dob">Your DOB</label><input type="date" id="dob" name="dob"></div>
           <div class="field"><label for="gender">Your Gender</label>
-            <select id="gender" name="gender"><option value="">Select</option><option>Female</option><option>Male</option><option>Non-binary</option><option>Prefer not to say</option><option>Other</option></select>
+            <select id="gender" name="gender"><option value="">Select</option><option>Female</option><option>Male</option><option>Prefer not to say</option><option>Other</option></select>
           </div>
         </div>
 
@@ -890,6 +890,7 @@
   <a href="#pricing" class="btn btn-primary" id="stickyBarLink">View Pricing</a>
 </div>
 
+<script src="/js/picture-url.js"></script>
 <script>
 const API = 'https://api.worldschoolingjourneys.com';
 const PORT_GENERIC_IMAGE = '/images/port-generic.webp'; // itinerary fallback when a port has no picture
@@ -944,7 +945,7 @@ function renderTimeline(stops, targetEl = timelineEl, idPrefix = 'ex'){
     // Ports without their own picture get the generic at-sea one (sea days stay blank)
     const heroImageUrl = s.libraryPort?.heroImageUrl;
     const photoEl = s.port
-      ? `<div class="photo-slot stop-photo has-image"><img src="${heroImageUrl ? API + heroImageUrl : PORT_GENERIC_IMAGE}" alt="${escapeHtml(s.port)}"></div>`
+      ? `<div class="photo-slot stop-photo has-image"><img src="${heroImageUrl ? pictureUrl(heroImageUrl) : PORT_GENERIC_IMAGE}" alt="${escapeHtml(s.port)}"></div>`
       : '';
     // One excursion, picked at random - re-rolled on every page load, not a
     // fixed "the" excursion for this port. Only ever pulled from this
@@ -1078,15 +1079,17 @@ function addOnPriceFor(categoryName, guestCount){
   return cat.prices[guestCount] ?? null;
 }
 
-// Cheapest 2-guest price across bookable categories, with or without the
-// add-on - same "starting at" logic computeStartingAtPrice already uses,
-// except with the add-on on, only categories the add-on also offers count.
+// "Starting At", per person: the cheapest cabin price divided by its guests,
+// over every bookable category for 2, 3 or 4 guests (the calculator's party
+// sizes; a 4-guest cabin is often cheaper per person than a 2-guest one).
+// With the add-on on, only cabins the add-on also offers for that party size
+// count, and its price is added.
 function startingAtPrice(withAddon){
-  const prices = cruiseCabinCategories
-    .filter((c) => !c.soldOut[2] && c.prices[2] != null)
-    .filter((c) => !withAddon || addOnPriceFor(c.name, 2) != null)
-    .map((c) => c.prices[2] + (withAddon ? addOnPriceFor(c.name, 2) : 0));
-  return prices.length ? Math.min(...prices) : null;
+  const prices = cruiseCabinCategories.flatMap((c) => [2, 3, 4]
+    .filter((g) => !c.soldOut[g] && c.prices[g] != null)
+    .filter((g) => !withAddon || addOnPriceFor(c.name, g) != null)
+    .map((g) => (c.prices[g] + (withAddon ? addOnPriceFor(c.name, g) : 0)) / g));
+  return prices.length ? Math.round(Math.min(...prices)) : null;
 }
 
 // Each port counts once, however many times the ship calls there - a
@@ -1134,8 +1137,8 @@ function renderHeroStats(){
   }
   const price = startingAtPrice(on);
   const startingAtEl = document.getElementById('factStartingAt');
-  // Per person: the cheapest 2-guest total (with the add-on, if on) split between its 2 guests.
-  startingAtEl.textContent = price != null ? `${fmt(Math.round(price / 2))} / person` : '';
+  // already per person (with the add-on, if on)
+  startingAtEl.textContent = price != null ? `${fmt(price)} / person` : '';
   startingAtEl.classList.toggle('addon-changed', on);
   document.getElementById('factStartingAtLabel').innerHTML = on ? `<span class="addon-tag">${addOnIsBackToBack ? 'Both Cruises' : 'With Add-On'}</span>` : 'Starting At';
   if (currentAddOn) document.getElementById('addonHeroToggle').setAttribute('aria-checked', on ? 'true' : 'false');
@@ -1589,7 +1592,7 @@ async function loadCruise(){
     // the same gradient layered over the real photo, matching the original
     // mockup's two-layer treatment.
     if (cruise.heroImageUrl) {
-      heroEl.style.backgroundImage = `${HERO_GRADIENT}, url('${API}${cruise.heroImageUrl}')`;
+      heroEl.style.backgroundImage = `${HERO_GRADIENT}, url('${pictureUrl(cruise.heroImageUrl)}')`;
       heroEl.style.backgroundBlendMode = 'multiply, normal';
     }
 
@@ -1735,8 +1738,18 @@ let selectedCabin = null; // category name, set once real data loads
 // routinely sells out for one party size (e.g. Interior for 2 guests)
 // while staying bookable for others, matching the admin's per-cell
 // checkboxes (see index.html's renderCabinPricing).
+// A cabin type without its own photo borrows the closest standard one
+// (same rule as the API's baseCabinCategoryFor): suites/balconies -> Balcony.
+function baseCabinCategory(name) {
+  const n = name.toLowerCase();
+  if (/balcony|suite/.test(n)) return 'Balcony';
+  if (/ocean ?view|oceanview/.test(n)) return 'Ocean View';
+  if (/interior|inside/.test(n)) return 'Interior';
+  return null;
+}
+
 function buildCabinCategories(cruise) {
-  const imageByName = new Map((cruise.cruiseLine.cabinCategories ?? []).map((c) => [c.name, c.imageUrl]));
+  const imageByName = new Map((cruise.cruiseLine.cabinCategories ?? []).filter((c) => c.imageUrl).map((c) => [c.name, c.imageUrl]));
   const byName = new Map();
   for (const row of cruise.cabinPrices ?? []) {
     if (!byName.has(row.category)) byName.set(row.category, { name: row.category, prices: {}, soldOut: {} });
@@ -1751,17 +1764,9 @@ function buildCabinCategories(cruise) {
   const rank = (name) => { const i = standard.indexOf(name); return i === -1 ? standard.length : i; };
   return [...byName.values()]
     .sort((a, b) => rank(a.name) - rank(b.name))
-    .map((c) => ({ ...c, imageUrl: imageByName.get(c.name) ?? null }));
+    .map((c) => ({ ...c, imageUrl: imageByName.get(c.name) ?? imageByName.get(baseCabinCategory(c.name)) ?? null }));
 }
 
-// "Starting At" fact badge - cheapest 2-guest price across every category
-// that isn't sold out specifically for 2 guests, since that's the
-// smallest party size the calculator supports and therefore always the
-// lowest total.
-function computeStartingAtPrice(categories) {
-  const prices = categories.filter((c) => !c.soldOut[2] && c.prices[2] != null).map((c) => c.prices[2]);
-  return prices.length ? `${fmt(Math.round(Math.min(...prices) / 2))} / person` : '';
-}
 
 // Deposit/final-payment terms (see project notes) - each half renders only
 // if its own data is set, so a cruise with just one of the two still shows
@@ -1805,7 +1810,7 @@ function renderCabins(){
     const blocked = !isCabinBookable(c, guests);
     const active = (c.name === selectedCabin && !blocked) ? 'active' : '';
     const photoEl = c.imageUrl
-      ? `<div class="photo-slot cabin-photo has-image"><img src="${API}${c.imageUrl}" alt="${escapeHtml(c.name)} cabin"></div>`
+      ? `<div class="photo-slot cabin-photo has-image"><img src="${pictureUrl(c.imageUrl)}" alt="${escapeHtml(c.name)} cabin"></div>`
       : `<div class="photo-slot cabin-photo"><span>${escapeHtml(c.name)} photo</span></div>`;
     return `
       <div class="cabin-tile ${active} ${blocked ? 'sold-out' : ''}" data-cabin="${escapeHtml(c.name)}">
@@ -2124,7 +2129,7 @@ function renderPassengers(){
         <div class="field"><label>Gender</label>
           <select data-field="gender" data-idx="${i}">
             <option value="">Select</option>
-            ${['Female','Male','Non-binary','Prefer not to say','Other'].map(g => `<option ${p.gender === g ? 'selected' : ''}>${g}</option>`).join('')}
+            ${['Female','Male','Prefer not to say','Other'].map(g => `<option ${p.gender === g ? 'selected' : ''}>${g}</option>`).join('')}
           </select>
         </div>
         <div class="field"><label>Citizenship</label><input type="text" data-field="citizenship" data-idx="${i}" value="${p.citizenship || ''}"></div>
@@ -2393,14 +2398,13 @@ function fmtDepRange(isoStart, nights){
   return `${fmt(start)} – ${fmt(end)}, ${year}`;
 }
 
-// Cheapest 2-guest price across every non-sold-out category, per person
-// (split between the 2 guests) - same basis as this page's own "Starting
-// At" fact.
+// Cheapest price per person (cabin price / guests) over every bookable
+// cabin for 2, 3 or 4 guests - same basis as this page's own "Starting At".
 function depStartingPrice(cruise){
   const prices = (cruise.cabinPrices ?? [])
-    .filter((row) => row.guests === 2 && !row.soldOut && row.price != null)
-    .map((row) => row.price);
-  return prices.length ? Math.round(Math.min(...prices) / 2) : null;
+    .filter((row) => [2, 3, 4].includes(row.guests) && !row.soldOut && row.price != null)
+    .map((row) => row.price / row.guests);
+  return prices.length ? Math.round(Math.min(...prices)) : null;
 }
 
 let depViews = null;
@@ -2412,11 +2416,12 @@ function renderDepartures(view){
   depTrackEl.scrollLeft = 0;
   depTrackEl.innerHTML = v.list.length ? v.list.map((c) => `
     <a class="dep-card spotlight-card style-photo trip-card${c.heroImageUrl ? ' has-photo' : ''}" href="/cruises/${encodeURIComponent(c.slug || c.businessId)}" target="_blank" rel="noopener">
-      <div class="sp-photo"${c.heroImageUrl ? ` style="background-image:url('${API}${c.heroImageUrl}')"` : ''}></div>
+      <div class="sp-photo"${c.heroImageUrl ? ` style="background-image:url('${pictureUrl(c.heroImageUrl)}')"` : ''}></div>
       ${c.heroImageUrl ? '' : `<span class="sp-caption">Photo: ${escapeHtml(c.ship.name)}</span>`}
       <div class="sp-overlay">
         <div class="spotlight-dates"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>${fmtDepRange(c.departureDate, c.nights)}</span></div>
         <div class="spotlight-title">${escapeHtml(c.title || c.destination)}</div>
+        ${c.cruiseLine || c.ship ? `<div class="cc-ship">${escapeHtml([c.cruiseLine && c.cruiseLine.name, c.ship && c.ship.name].filter(Boolean).join(' · '))}</div>` : ''}
         <div class="cc-foot"><div>${c.fromPrice != null ? `<div class="cc-price-label">Starting from</div><div class="cc-price">${fmtDepMoney(c.fromPrice)} <small>/ person</small></div>` : `<div class="cc-price-label">${escapeHtml(c.region || '')}</div>`}</div><span class="cc-more">Learn More</span></div>
       </div>
     </a>`).join('') : '<div class="dep-empty">Nothing in this group right now. Try another tab or see all cruises.</div>';

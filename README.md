@@ -13,6 +13,7 @@
 | Rounded card corners | `css/cards.css` |
 | Land trip booking: WeTravel UUIDs / booking links per trip and year (no UUID = waitlist) | `js/booking.js` |
 | Waitlist popup (land trips + Coming Soon idea cards) | `js/waitlist.js`, `css/waitlist.css` |
+| Where cruise/journey/port/cabin pictures load from (API `/uploads/...` or this site): used by every page that shows them | `js/picture-url.js` |
 | Zipchat chat bubble + "Connect via ChatBot" links (loaded by the footer) | `js/chatbot.js` |
 | Contact form "Send A Message" (Home, About, Contact, Stay Updated): one inbox per reason (sending not set up yet) | `js/contact-form.js` |
 | Page addresses without .html (a land trip's address comes from its title in `js/trips.js`) | `tools/clean-urls.js` |
@@ -20,6 +21,7 @@
 | Server routing (Caddy) copy + old WordPress redirects | `server/Caddyfile.site`, `server/old-site-redirects.caddy` |
 | sitemap.xml / robots.txt (made at every deploy) | `tools/sitemap.js` |
 | Newsletter (Moosend via the Google Apps Script): Sign Up boxes + every form also subscribes (loaded by the footer) | `js/newsletter.js` |
+| Phones/tablets: trip cards open in the same tab + "Back to ..." buttons on trip pages (loaded by the footer) | `js/trip-links.js` |
 | "Read More" article on the Cruises / Land Trips pages | `about-our-trips.html` |
 | Roadmap page ("Vote Now" links): ProductLift boards | `roadmap.html` |
 
