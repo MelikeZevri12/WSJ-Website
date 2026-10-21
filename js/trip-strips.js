@@ -90,7 +90,7 @@
     try {
       data = await W.loadCruiseCards();
     } catch (e) {
-      if (cruiseGrid) cruiseGrid.outerHTML = '<p class="trip-empty-note">Cruises couldn’t be loaded right now. <a href="/cruises">See all cruises</a></p>';
+      if (cruiseGrid) cruiseGrid.outerHTML = '<p class="trip-empty-note">Cruises couldn’t be loaded right now. <a href="/worldschooling-trips#cruises">See all cruises</a></p>';
       if (soon) soon.innerHTML = W.landTrips().sort(bySoonest).slice(0, 3).map(cardHTML).join("");
       return;
     }

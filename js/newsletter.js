@@ -28,17 +28,24 @@
     var input = box.querySelector('input[type="email"]'), btn = box.querySelector('button');
     if (!input || !btn) return;
     input.setAttribute('aria-label', 'Email address'); input.autocomplete = 'email';
+    // The message sits on top of the email box + button (position:absolute in
+    // content-page.css), so the card never changes size. Errors go away after a
+    // few seconds or on a click, so they can try again; "subscribed" stays.
     var msg = document.createElement('p'); msg.className = 'nl-msg'; msg.setAttribute('role', 'status');
-    box.insertAdjacentElement('afterend', msg);
+    box.appendChild(msg);
+    var hideTimer;
+    function clearMsg() { clearTimeout(hideTimer); msg.textContent = ''; msg.classList.remove('nl-ok', 'nl-err'); }
+    function showError(text) { msg.textContent = text; msg.classList.add('nl-err'); hideTimer = setTimeout(function () { clearMsg(); input.focus(); }, 3500); }
+    msg.addEventListener('click', function () { if (msg.classList.contains('nl-err')) { clearMsg(); input.focus(); } });
     function send() {
       var email = input.value.trim();
-      msg.classList.remove('nl-ok', 'nl-err');
-      if (!EMAIL_RE.test(email)) { msg.textContent = 'Please enter a valid email address.'; msg.classList.add('nl-err'); input.focus(); return; }
+      clearMsg();
+      if (!EMAIL_RE.test(email)) { showError('Please enter a valid email address.'); return; }
       btn.disabled = true; var label = btn.textContent; btn.textContent = 'Signing up…'; msg.textContent = '';
       subscribe(email, '').then(function (ok) {
         btn.disabled = false; btn.textContent = label;
         if (ok) { msg.textContent = 'You’re subscribed! Watch your inbox for trip news.'; msg.classList.add('nl-ok'); input.value = ''; }
-        else { msg.textContent = 'Sorry, that didn’t go through. Please try again in a moment.'; msg.classList.add('nl-err'); }
+        else showError('Sorry, that didn’t go through. Please try again in a moment.');
       });
     }
     btn.addEventListener('click', send);

@@ -60,14 +60,16 @@
 
   var label, href;
   if (from) {
-    var fp = clean(new URL(from).pathname);
+    var fu = new URL(from), fp = clean(fu.pathname);
     var names = { '/': 'Home', '/home': 'Home', '/cruises': 'Group Cruises', '/land-trips': 'Land Trips', '/about': 'About Us',
-      '/contact': 'Contact', '/stay-updated': 'Stay Updated', '/testimonials': 'Testimonials', '/faq': 'FAQ' };
+      '/contact': 'Contact', '/stay-updated': 'Stay Updated', '/testimonials': 'Testimonials', '/faq': 'FAQ',
+      // one page, two views: the # says which
+      '/worldschooling-trips': fu.hash === '#landtrips' ? 'Land Trips' : fu.hash === '#cruises' ? 'Group Cruises' : 'Worldschooling Trips' };
     label = 'Back to ' + (names[fp] || (tripKind(fp) ? 'Previous Trip' : 'Previous Page'));
     href = from;
   } else {
     label = kind === 'land' ? 'See All Land Trips' : 'See All Group Cruises';
-    href = kind === 'land' ? '/land-trips' : '/cruises';
+    href = kind === 'land' ? '/worldschooling-trips#landtrips' : '/worldschooling-trips#cruises';
   }
 
   // history.back() keeps the previous page exactly as it was, but only if this page added no history entries (#section links do)

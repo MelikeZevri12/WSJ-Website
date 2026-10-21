@@ -545,6 +545,9 @@ details.terms .terms-body{font-size:15.5px;}
 .review-row{font-size:15px;}
 .form-success h3{font-size:20px;}
 .form-success p{font-size:15.5px;}
+.form-success .form-success-note{font-size:14px;line-height:1.5;background:var(--paper);border-radius:4px;padding:12px 14px;max-width:400px;}
+.form-success .form-success-note strong{color:var(--dark);word-break:break-word;}
+.form-success .form-success-note a{color:var(--green-dark);font-weight:700;}
 .modal-inner{max-width:480px;}
 .sticky-bar .sb-price{font-size:18px;}
 .sticky-bar .sb-price span{font-size:13px;}

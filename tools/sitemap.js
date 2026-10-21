@@ -9,7 +9,7 @@ const SITE = 'https://worldschoolingjourneys.com';
 const API = 'https://api.worldschoolingjourneys.com';
 const ROOT = path.join(__dirname, '..');
 // templates and private pages: never listed
-const NOT_LISTED = new Set(['home', 'admin', '404', 'booking-form', 'cruise-detail', 'journey']);
+const NOT_LISTED = new Set(['home', 'admin', '404', 'booking-form', 'cruise-detail', 'journey', 'cruises', 'land-trips']); // the last two forward to /worldschooling-trips
 
 async function getJson(url) {
   const res = await fetch(url, { signal: AbortSignal.timeout(15000) });

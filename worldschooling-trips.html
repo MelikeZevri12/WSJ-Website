@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Community Cruises — Worldschooling Journeys</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/nav.css?v=20261013">
+<link rel="stylesheet" href="/css/footer.css?v=20261013">
+<link rel="stylesheet" href="/css/site.css?v=20261013">
+<link rel="stylesheet" href="/css/listing.css?v=20261013">
+<style>
+/* Worldschooling Trips: one page, two views (Community Cruises #cruises, Land Trips #landtrips),
+   picked with the "Showing" dropdown in the hero. Only the chosen view is shown. */
+.trips-view[hidden]{display:none !important;}
+.year-pills{display:flex;gap:6px;flex-wrap:wrap;}
+
+/* Hero dropdown: same look as the departure picker on the land trip pages (css/land-trip.css) */
+.hero-cta.dep-switch{display:flex;flex-wrap:wrap;align-items:stretch;gap:10px;margin-top:28px;}
+.hero-cta.dep-switch .hp-field{flex:0 0 auto;min-width:260px;}
+.hp-field{position:relative;display:flex;flex-direction:column;justify-content:center;min-width:250px;
+  padding:6px 38px 6px 14px;border:1.5px solid rgba(255,255,255,0.4);border-radius:4px;
+  background:rgba(21,34,48,0.42);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);cursor:pointer;}
+.hp-field:hover{border-color:var(--white);}
+.hp-field:after{content:"";position:absolute;right:15px;top:50%;margin-top:-2px;pointer-events:none;
+  border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid rgba(255,255,255,0.75);}
+.hp-label{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--gold);line-height:1.3;}
+.hero-cta .btn{display:inline-flex;align-items:center;}
+.cs{position:relative;display:block;min-width:0;}
+.cs-btn{all:unset;box-sizing:border-box;display:block;width:100%;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  font-family:'Titillium Web',sans-serif;font-weight:700;font-size:16px;color:var(--white);line-height:1.35;}
+.cs-list{display:none;position:absolute;z-index:400;left:-15px;top:calc(100% + 8px);min-width:270px;margin:0;padding:4px;list-style:none;
+  background:var(--white);border:1px solid var(--line);border-radius:4px;box-shadow:0 8px 24px rgba(10,18,26,0.18);}
+.cs.open .cs-list{display:block;}
+.cs-host-open{position:relative;z-index:500 !important;}
+.cs-opt{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:4px;cursor:pointer;outline:none;
+  font-family:'Titillium Web',sans-serif;font-weight:600;font-size:16px;color:var(--dark);white-space:nowrap;}
+.cs-opt:hover, .cs-opt:focus{background:var(--paper);}
+.cs-opt[aria-selected="true"]{font-weight:700;}
+.cs-opt .o-status{margin-left:auto;font-size:12.5px;font-weight:700;color:var(--muted);}
+@media (max-width:640px){
+  .hp-field, .hero-cta.dep-switch .hp-field{flex:1 1 100%;min-width:0;}
+  .hero-cta.dep-switch .btn{flex:1 1 100%;justify-content:center;}
+}
+
+/* Community Cruises, big screens: the filters are one row that wraps when there are too many. Only the first row shows;
+   its last button, "Show More Filters", opens the other rows (layoutFilterRows() below). */
+.filter-more-btn{display:none;}
+@media (min-width:1240px){
+  #cruisesView .filter-bar-inner{align-items:flex-start;}
+  #cruisesView .filter-bar-controls{flex:1 1 auto;flex-wrap:wrap;row-gap:5px;column-gap:10px;}
+  #cruisesView .filter-toggles{display:contents;}   /* each checkbox wraps on its own */
+  #cruisesView .filter-range{flex:1 1 auto;}
+  #cruisesView .filter-range .dual-range{flex:1 1 auto;min-width:64px;}
+  .filter-more-btn:not([hidden]){display:flex;}
+  .filter-more-btn .dd-caret{transition:transform .15s ease;}
+  .filter-more-btn.open .dd-caret{transform:rotate(180deg);}
+  #cruisesView .filter-bar-controls .fb-hidden{display:none !important;}
+  #cruisesView .results-count{line-height:42px;}
+}
+</style>
+<link rel="stylesheet" href="/css/hero.css?v=20261012">
+<link rel="stylesheet" href="/css/cards.css?v=20261012">
+</head>
+<body>
+
+<!-- GLOBAL NAV -->
+<!-- include nav active="trips" -->
+
+<!-- HERO (texts swap with the view, see TripsPage below) -->
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow" id="heroEyebrow">Worldschooling Trips · For Homeschool Families</div>
+    <h1 id="heroTitle">Worldschooling Trips for Homeschool Families</h1>
+    <p class="lede" id="heroLede">Community cruises and guided land trips for homeschooling families, all in one place, soonest first.</p>
+    <div class="hero-cta dep-switch">
+      <div class="hp-field" id="viewField"><span class="hp-label">Showing</span>
+        <span class="cs" id="viewPicker">
+          <button type="button" class="cs-btn" id="viewBtn" aria-haspopup="listbox" aria-expanded="false" aria-label="Choose the type of trip">All Trips</button>
+          <ul class="cs-list" id="viewList" role="listbox" aria-label="Type of trip">
+            <li class="cs-opt" role="option" tabindex="-1" data-v="all" aria-selected="true">All Trips<span class="o-status" id="viewCountAll"></span></li>
+            <li class="cs-opt" role="option" tabindex="-1" data-v="cruises" aria-selected="false">Group Cruises<span class="o-status" id="viewCountCruises"></span></li>
+            <li class="cs-opt" role="option" tabindex="-1" data-v="landtrips" aria-selected="false">Land Trips<span class="o-status" id="viewCountLand"></span></li>
+          </ul>
+        </span>
+      </div>
+      <a href="/about-our-trips.html" class="btn btn-outline-hero">Read More</a>
+    </div>
+  </div>
+</header>
+
+<!-- ========== ALL TRIPS (plain /worldschooling-trips, no #): cruises, journeys and land trips by date; Year + Sort only.
+     Element ids start with "all-". The cards come from the two views below (TripsPage.setItems). ========== -->
+<div class="trips-view" id="allView">
+<div class="facts-bar">
+  <div class="wrap facts-grid">
+    <div class="fact"><div class="label">Trips</div><div class="value price" id="all-factTrips">—</div></div>
+    <div class="fact"><div class="label">Community Cruises</div><div class="value" id="all-factCruises">—</div></div>
+    <div class="fact"><div class="label">Land Trips</div><div class="value" id="all-factLand">—</div></div>
+    <div class="fact"><div class="label">Next Departure</div><div class="value" id="all-factNext">—</div></div>
+  </div>
+</div>
+<div class="filter-bar" id="all-filterBar">
+  <div class="wrap filter-bar-inner">
+    <button type="button" class="filter-mobile-toggle" id="all-filterMobileToggle" aria-expanded="false" aria-controls="all-filterBarControls">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h7M13 4h1M2 12h1M7 12h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="11" cy="4" r="1.9" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="5" cy="12" r="1.9" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      Filters <span class="fmt-count" id="all-filterActiveCount" hidden></span>
+    </button>
+    <div class="filter-bar-controls" id="all-filterBarControls">
+    <div class="filter-group filter-years" id="all-yearFilter">
+      <div class="filter-label">Year</div>
+      <div class="year-pills" id="all-yearPills"><!-- every year a trip departs in --></div>
+    </div>
+    <div class="filter-group filter-sort">
+      <div class="filter-label">Sort</div>
+      <select id="all-sortSelect" aria-label="Sort">
+        <option value="date">Date: Soonest First</option>
+        <option value="date-desc">Date: Latest First</option>
+        <option value="duration-asc">Duration: Shortest First</option>
+        <option value="duration-desc">Duration: Longest First</option>
+      </select>
+    </div>
+    <button type="button" class="filter-mobile-done" id="all-filterMobileDone">Show results</button>
+    </div>
+    <div class="results-count" id="all-resultsCount"><strong>0</strong> trips</div>
+  </div>
+</div>
+<section class="cruise-grid-section">
+  <div class="wrap">
+    <div class="cruise-grid" id="all-grid"><div class="empty-state"><h3>Loading trips…</h3></div></div>
+  </div>
+</section>
+</div>
+
+<!-- ========== COMMUNITY CRUISES (#cruises) ========== -->
+<div class="trips-view" id="cruisesView" hidden>
+<!-- QUICK STATS -->
+<div class="facts-bar" id="factsBar">
+  <div class="wrap facts-grid">
+    <div class="fact"><div class="label">Starting From</div><div class="value price" id="factStartingFrom">Coming soon</div></div>
+    <div class="fact"><div class="label">Departures</div><div class="value" id="factDepartures">—</div></div>
+    <div class="fact"><div class="label">Regions</div><div class="value" id="factRegions">—</div></div>
+    <div class="fact"><div class="label">Next Departure</div><div class="value" id="factNextDeparture">—</div></div>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar" id="filterBar">
+  <div class="wrap filter-bar-inner">
+    <button type="button" class="filter-mobile-toggle" id="filterMobileToggle" aria-expanded="false" aria-controls="filterBarControls">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h7M13 4h1M2 12h1M7 12h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="11" cy="4" r="1.9" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="5" cy="12" r="1.9" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      Filters <span class="fmt-count" id="filterActiveCount" hidden></span>
+    </button>
+    <div class="filter-bar-controls" id="filterBarControls">
+    <div class="filter-group filter-regions">
+      <button type="button" class="filter-dropdown-btn" id="regionDropdownBtn">
+        <span id="regionDropdownLabel">All Regions</span><span class="dd-caret">▾</span>
+      </button>
+      <div class="filter-dropdown-panel" id="regionDropdownPanel">
+        <div class="pill-row" id="regionPillRow"><!-- populated by init() with only the regions actually in use --></div>
+        <div class="filter-dropdown-foot">
+          <span class="dd-count" id="regionDropdownCount">All regions</span>
+          <button type="button" id="regionClearBtn">Clear</button>
+        </div>
+      </div>
+    </div>
+    <div class="filter-group filter-lines">
+      <button type="button" class="filter-dropdown-btn" id="lineDropdownBtn">
+        <span id="lineDropdownLabel">All Cruise Lines</span><span class="dd-caret">▾</span>
+      </button>
+      <div class="filter-dropdown-panel" id="lineDropdownPanel">
+        <div class="pill-row" id="linePillRow"><!-- populated by init() with only the cruise lines actually in use --></div>
+        <div class="filter-dropdown-foot">
+          <span class="dd-count" id="lineDropdownCount">All cruise lines</span>
+          <button type="button" id="lineClearBtn">Clear</button>
+        </div>
+      </div>
+    </div>
+    <div class="filter-group filter-years" id="yearFilter">
+      <div class="filter-label">Year</div>
+      <div class="year-pills" id="yearPills"><!-- built by init() from the departure years of the listed cruises --></div>
+    </div>
+    <div class="filter-group filter-range">
+      <div class="filter-label">Duration</div>
+      <div class="dual-range">
+        <div class="dual-range-track"></div>
+        <div class="dual-range-fill" id="durationFill"></div>
+        <input type="range" id="durationMin" min="0" max="1" step="1" value="0">
+        <input type="range" id="durationMax" min="0" max="1" step="1" value="1">
+      </div>
+      <span class="lv" id="durationLabel">—</span>
+    </div>
+    <div class="filter-group filter-range">
+      <div class="filter-label">Price</div>
+      <div class="dual-range">
+        <div class="dual-range-track"></div>
+        <div class="dual-range-fill" id="priceFill"></div>
+        <input type="range" id="priceMin" min="0" max="1" step="50" value="0">
+        <input type="range" id="priceMax" min="0" max="1" step="50" value="1">
+      </div>
+      <span class="lv" id="priceLabel">—</span>
+    </div>
+    <div class="filter-group filter-sort">
+      <div class="filter-label">Sort</div>
+      <select id="sortSelect" aria-label="Sort">
+        <option value="date">Date: Soonest First</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="duration-asc">Duration: Shortest First</option>
+        <option value="duration-desc">Duration: Longest First</option>
+      </select>
+    </div>
+    <div class="filter-toggles">
+      <label class="filter-toggle" id="largeFamiliesToggle"><input type="checkbox" id="largeFamiliesOnly"> 5+ person families</label>
+      <label class="filter-toggle"><input type="checkbox" id="hideSoldOut"> Hide sold out</label>
+    </div>
+    <button type="button" class="reset-link" id="resetFiltersBtn">Reset</button>
+    <button type="button" class="filter-dropdown-btn filter-more-btn" id="filterMoreBtn" hidden><span id="filterMoreLabel">Show More Filters</span><span class="dd-caret">▾</span></button>
+    <button type="button" class="filter-mobile-done" id="filterMobileDone">Show results</button>
+    </div>
+    <div class="results-count" id="resultsCount"><strong>0</strong> cruises</div>
+  </div>
+</div>
+
+<!-- CRUISE GRID -->
+<section class="cruise-grid-section">
+  <div class="wrap">
+    <div class="cruise-grid" id="cruiseGrid"><!-- populated by JS --></div>
+  </div>
+</section>
+</div>
+
+<!-- ========== LAND TRIPS (#landtrips); element ids start with "lt-" ========== -->
+<div class="trips-view" id="landView" hidden>
+<!-- QUICK STATS -->
+<div class="facts-bar" id="lt-factsBar">
+  <div class="wrap facts-grid">
+    <div class="fact"><div class="label">Trips</div><div class="value price" id="lt-factStartingFrom">—</div></div>
+    <div class="fact"><div class="label">Departures</div><div class="value" id="lt-factDepartures">—</div></div>
+    <div class="fact"><div class="label">Regions</div><div class="value" id="lt-factRegions">—</div></div>
+    <div class="fact"><div class="label">Next Departure</div><div class="value" id="lt-factNextDeparture">—</div></div>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar" id="lt-filterBar">
+  <div class="wrap filter-bar-inner">
+    <button type="button" class="filter-mobile-toggle" id="lt-filterMobileToggle" aria-expanded="false" aria-controls="lt-filterBarControls">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h7M13 4h1M2 12h1M7 12h7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="11" cy="4" r="1.9" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="5" cy="12" r="1.9" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+      Filters <span class="fmt-count" id="lt-filterActiveCount" hidden></span>
+    </button>
+    <div class="filter-bar-controls" id="lt-filterBarControls">
+    <div class="filter-group filter-regions">
+      <button type="button" class="filter-dropdown-btn" id="lt-regionDropdownBtn">
+        <span id="lt-regionDropdownLabel">All Regions</span><span class="dd-caret">▾</span>
+      </button>
+      <div class="filter-dropdown-panel" id="lt-regionDropdownPanel">
+        <div class="pill-row" id="lt-regionPillRow"><!-- populated by init() with only the regions actually in use --></div>
+        <div class="filter-dropdown-foot">
+          <span class="dd-count" id="lt-regionDropdownCount">All regions</span>
+          <button type="button" id="lt-regionClearBtn">Clear</button>
+        </div>
+      </div>
+    </div>
+    <div class="filter-group filter-collection" id="lt-collectionFilter">
+      <button type="button" class="pill-btn" id="lt-austriaRetreatsBtn" aria-pressed="false">Austria Retreats</button>
+    </div>
+    <div class="filter-group filter-years" id="lt-yearFilter">
+      <div class="filter-label">Year</div>
+      <div class="year-pills" id="lt-yearPills"><!-- built by init() from the years with departures --></div>
+    </div>
+    <div class="filter-group filter-range">
+      <div class="filter-label">Duration</div>
+      <div class="dual-range">
+        <div class="dual-range-track"></div>
+        <div class="dual-range-fill" id="lt-durationFill"></div>
+        <input type="range" id="lt-durationMin" min="0" max="1" step="1" value="0">
+        <input type="range" id="lt-durationMax" min="0" max="1" step="1" value="1">
+      </div>
+      <span class="lv" id="lt-durationLabel">—</span>
+    </div>
+    <div class="filter-group filter-range">
+      <div class="filter-label">Price</div>
+      <div class="dual-range">
+        <div class="dual-range-track"></div>
+        <div class="dual-range-fill" id="lt-priceFill"></div>
+        <input type="range" id="lt-priceMin" min="0" max="1" step="50" value="0">
+        <input type="range" id="lt-priceMax" min="0" max="1" step="50" value="1">
+      </div>
+      <span class="lv" id="lt-priceLabel">—</span>
+    </div>
+    <div class="filter-group filter-sort">
+      <div class="filter-label">Sort</div>
+      <select id="lt-sortSelect" aria-label="Sort">
+        <option value="date">Date: Soonest First</option>
+        <option value="duration-asc">Duration: Shortest First</option>
+        <option value="duration-desc">Duration: Longest First</option>
+      </select>
+    </div>
+    <div class="filter-toggles">
+      <label class="filter-toggle" id="lt-largeFamiliesToggle"><input type="checkbox" id="lt-largeFamiliesOnly"> 5+ person families</label>
+      <label class="filter-toggle"><input type="checkbox" id="lt-hideSoldOut"> Hide sold out</label>
+    </div>
+    <button type="button" class="reset-link" id="lt-resetFiltersBtn">Reset</button>
+    <button type="button" class="filter-mobile-done" id="lt-filterMobileDone">Show results</button>
+    </div>
+    <div class="results-count" id="lt-resultsCount"><strong>0</strong> cruises</div>
+  </div>
+</div>
+
+<!-- CRUISE GRID -->
+<section class="cruise-grid-section">
+  <div class="wrap">
+    <div class="cruise-grid" id="lt-cruiseGrid"><!-- populated by JS --></div>
+  </div>
+</section>
+</div>
+
+<div class="brand-stripe"></div>
+<!-- include footer -->
+
+<script>
+  // Once logged into the admin tool (admin.html stores its JWT under this
+  // same key - see AUTH_TOKEN_KEY there), show a nav shortcut back to it
+  // instead of making them retype the secret combo every visit. Just a
+  // convenience - admin.html's own login gate is still the real boundary,
+  // so a stale/expired token here just bounces them back to that login.
+  if (localStorage.getItem('cruiseAdminAuthToken')) {
+    const adminLink = document.createElement('a');
+    adminLink.href = '/admin.html';
+    adminLink.className = 'gn-link';
+    adminLink.textContent = 'Admin';
+    document.getElementById('gnLinks').prepend(adminLink);
+  }
+</script>
+<script src="/js/picture-url.js"></script>
+<script src="/js/trips.js?v=20261013"></script>
+<script>
+// ---------- which view is showing: /worldschooling-trips (All Trips), #cruises or #landtrips ----------
+// The navbar's Group Cruises / Land Trips links and the old /cruises and /land-trips addresses
+// come here with #cruises / #landtrips. No #: All Trips, unless ?filter= is a land trip group
+// (/worldschooling-trips?filter=austria-retreats, the old /austria-retreats page).
+window.TripsPage = (function(){
+  const VIEWS = {
+    all: {
+      label: "All Trips",
+      eyebrow: "Worldschooling Trips · For Homeschool Families",
+      title: "Worldschooling Trips for Homeschool Families",
+      lede: "Community cruises and guided land trips for homeschooling families, all in one place, soonest first.",
+      docTitle: "Worldschooling Trips — Worldschooling Journeys",
+    },
+    cruises: {
+      label: "Group Cruises", // the dropdown's name for it (same as the navbar)
+      eyebrow: "Worldschooling Group Cruise · For Homeschool Families",
+      title: "Worldschooling Community Cruises",
+      lede: "These trips are a way for homeschooling families to see the world without a huge cost or commitment, alongside a group of fun, inclusive, like-minded families.",
+      docTitle: "Community Cruises — Worldschooling Journeys",
+    },
+    landtrips: {
+      label: "Land Trips",
+      eyebrow: "Worldschooling Land Trips · For Homeschool Families",
+      title: "Guided Land Trips for Worldschooling Families",
+      lede: "Land trips are guided, immersive trips with a busy schedule of activities, designed to not just see the destination, but to truly feel it.",
+      docTitle: "Land Trips — Worldschooling Journeys",
+    },
+  };
+  const el = (id) => document.getElementById(id);
+  const page = { view: null, landHero: null, onLandShown: null,
+    // All Trips gets its cards from the other two views: items.cruises = the cruise view's card list
+    // (once the API answers), items.land = (year) => the land trip cards for that year (null = soonest).
+    items: { cruises: null, land: null }, onItems: null, cardHTML: null };
+
+  function viewFromUrl(){
+    const h = location.hash.slice(1).toLowerCase();
+    if (VIEWS[h]) return h;
+    return new URLSearchParams(location.search).get("filter") === "austria-retreats" ? "landtrips" : "all";
+  }
+  function applyHero(){
+    const h = page.view === "landtrips" && page.landHero ? { ...VIEWS.landtrips, ...page.landHero } : VIEWS[page.view];
+    el("heroEyebrow").textContent = h.eyebrow;
+    el("heroTitle").textContent = h.title;
+    el("heroLede").textContent = h.lede;
+    document.title = h.docTitle;
+    el("viewBtn").textContent = VIEWS[page.view].label;
+    el("viewList").querySelectorAll(".cs-opt").forEach(li => li.setAttribute("aria-selected", li.dataset.v === page.view));
+  }
+  // Austria Retreats (Land Trips) sets its own heading and tab title
+  page.setLandHero = (hero) => { page.landHero = hero; if (page.view === "landtrips") applyHero(); };
+  page.show = function(view){
+    page.view = view;
+    el("allView").hidden = view !== "all";
+    el("cruisesView").hidden = view !== "cruises";
+    el("landView").hidden = view !== "landtrips";
+    const url = new URL(location.href);
+    url.hash = view === "all" ? "" : view; // All Trips is the plain /worldschooling-trips
+    if (view !== "landtrips") url.searchParams.delete("filter");
+    history.replaceState(history.state, "", url.pathname + url.search + url.hash);
+    applyHero();
+    if (view === "landtrips" && page.onLandShown) page.onLandShown();
+    window.dispatchEvent(new Event("resize")); // lays out the filter bar that just appeared
+  };
+  // "x cruises" / "y trips" next to each choice, filled in by the views once they're loaded
+  page.setCount = (view, text) => { const s = el({ all: "viewCountAll", cruises: "viewCountCruises", landtrips: "viewCountLand" }[view]); if (s) s.textContent = text; };
+  page.setItems = (kind, value) => { page.items[kind] = value; if (page.onItems) page.onItems(); };
+
+  // the hero dropdown (same behaviour as the departure picker on land trip pages)
+  const picker = el("viewPicker"), btn = el("viewBtn"), list = el("viewList"), field = el("viewField");
+  function setOpen(open){
+    picker.classList.toggle("open", open); field.classList.toggle("cs-host-open", open);
+    btn.setAttribute("aria-expanded", open);
+    if (open) (list.querySelector('[aria-selected="true"]') || list.firstElementChild).focus();
+  }
+  function choose(view){ setOpen(false); if (view !== page.view) page.show(view); btn.focus(); }
+  btn.addEventListener("click", (e) => { e.stopPropagation(); setOpen(!picker.classList.contains("open")); });
+  field.addEventListener("click", (e) => { if (!e.target.closest(".cs-btn, .cs-list")) { e.stopPropagation(); setOpen(!picker.classList.contains("open")); } });
+  btn.addEventListener("keydown", (e) => { if (["ArrowDown", "Enter", " "].includes(e.key)) { e.preventDefault(); setOpen(true); } });
+  list.addEventListener("click", (e) => { e.stopPropagation(); const li = e.target.closest(".cs-opt"); if (li) choose(li.dataset.v); });
+  list.addEventListener("keydown", (e) => {
+    const items = [...list.children], k = items.indexOf(document.activeElement);
+    if (e.key === "ArrowDown") { e.preventDefault(); (items[k + 1] || items[0]).focus(); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); (items[k - 1] || items[items.length - 1]).focus(); }
+    else if (e.key === "Enter" || e.key === " ") { e.preventDefault(); if (items[k]) choose(items[k].dataset.v); }
+    else if (e.key === "Escape") { setOpen(false); btn.focus(); }
+  });
+  document.addEventListener("click", () => setOpen(false));
+
+  // a navbar link to the other view while already on this page only changes the #
+  window.addEventListener("hashchange", () => {
+    const view = viewFromUrl();
+    if (view !== page.view) page.show(view);
+    window.scrollTo({ top: 0 });
+  });
+
+  page.show(viewFromUrl());
+  return page;
+})();
+</script>
+<script>
+(function(){
+  const API = 'https://api.worldschoolingjourneys.com';
+  const cruisesView = document.getElementById("cruisesView");
+
+  const grid = document.getElementById("cruiseGrid");
+  const resultsCount = document.getElementById("resultsCount");
+  const factsBar = document.getElementById("factsBar");
+  const filterBar = document.getElementById("filterBar");
+  const factDepartures = document.getElementById("factDepartures");
+  const factNextDeparture = document.getElementById("factNextDeparture");
+  const factStartingFrom = document.getElementById("factStartingFrom");
+  const factRegions = document.getElementById("factRegions");
+
+  // Fixed list, same order/spelling as the backend's CRUISE_REGIONS (see
+  // domain/cruise-region.util.ts) - kept here too since this page has no
+  // server-rendering step to share it from directly.
+  const ALL_REGIONS = ["Transpacific", "Transatlantic", "Mediterranean", "Caribbean & Mexico", "East Asia", "Southeast Asia", "Australia & New Zealand", "South America", "Alaska", "Hawaii", "Baltic & Scandinavia", "British Isles"];
+
+  const state = {
+    durationMin: 0, durationMax: 0,
+    hideSoldOut: false,
+    largeFamiliesOnly: false,
+    priceMin: 0, priceMax: 0, priceFull: true, // per-person starting price range; priceFull = slider untouched
+    sort: "date",
+    regions: [], // empty = no filter, every region shows
+    lines: [], // cruise line names; empty = every cruise line shows
+    year: null // "2027"; null = any year
+  };
+
+  let cruises = []; // card-shaped models, built from real Cruise records after fetch (see init())
+
+  function escapeHtml(value){
+    const div = document.createElement("div");
+    div.textContent = value ?? "";
+    return div.innerHTML;
+  }
+
+  function fmt(n){ return "$" + n.toLocaleString("en-US"); }
+  // Party sizes the cruise page's price calculator offers (5+ is a quote).
+  const PARTY_SIZES = [2, 3, 4];
+
+  // Starting prices are shown per person: the cheapest cabin price divided by
+  // its number of guests, over every bookable cabin for 2, 3 or 4 guests (a
+  // 4-person cabin is often cheaper per person than a 2-person one). Same
+  // basis as the "Starting At" badge on the cruise detail page (see
+  // cruise-detail.html's startingAtPrice).
+  // A cruise with no cabinPrices rows yet (pricing not entered) or where
+  // every cabin is sold out returns null - "Coming soon" and a real "sold
+  // out" are different states, but neither has a number to show here, so
+  // both fall back the same way.
+  function computeStartingPrice(cruise){
+    const prices = (cruise.cabinPrices ?? [])
+      .filter(row => PARTY_SIZES.includes(row.guests) && !row.soldOut && row.price != null)
+      .map(row => row.price / row.guests);
+    return prices.length ? Math.round(Math.min(...prices)) : null;
+  }
+
+  function formatDateShort(iso){
+    if(!iso) return "";
+    const dt = new Date(`${iso.slice(0,10)}T00:00:00Z`);
+    return dt.toLocaleDateString("en-US", {month:"short", day:"numeric", year:"numeric", timeZone:"UTC"});
+  }
+
+  // A cruise that has already set sail (departure date before today - same
+  // rule as cruise-detail.html's isSetSail) is no longer listed; its own
+  // page still works for anyone with the link.
+  const todayStr = new Date().toISOString().slice(0, 10);
+
+  // Only cruises that have been through Enrich Cruise (destination/sailDates/
+  // nights set) are ready to show publicly - anything still in admin draft
+  // state would render a card with blank dates/nights, so it's excluded here
+  // rather than in the API response (the admin list intentionally shows
+  // everything, enriched or not). Add On and Individual cruises are internal
+  // only - never listed publicly (an add-on is shown on its main cruise's
+  // page instead).
+  function isPublishable(cruise){
+    if (cruise.isAddOn || cruise.addOnForCruiseId || cruise.isIndividual) return false;
+    if (cruise.departureDate.slice(0, 10) < todayStr) return false;
+    return Boolean(cruise.destination && cruise.sailDates && cruise.nights != null);
+  }
+
+  function toCardModel(cruise){
+    return {
+      id: cruise.id,
+      title: cruise.title || cruise.destination,
+      dates: cruise.sailDates,
+      nights: cruise.nights,
+      sortDate: cruise.departureDate,
+      soldOut: !!cruise.soldOut,
+      startingPrice: computeStartingPrice(cruise),
+      photoLabel: cruise.destination || cruise.ship.name,
+      heroImageUrl: cruise.heroImageUrl || null,
+      regions: cruise.region ? [cruise.region] : [],
+      cruiseLine: cruise.cruiseLine ? cruise.cruiseLine.name : null,
+      ship: cruise.ship ? cruise.ship.name : null,
+      // Large Family Cabins - a 5 or 6 guest cabin that can still be booked
+      // (priced, not sold out - see the dashboards' Pricing tab). Shown as a
+      // tag and used by the 5+ filter.
+      largeFamilies: (cruise.cabinPrices ?? []).some(row => row.guests >= 5 && row.price != null && !row.soldOut),
+      href: `/cruises/${encodeURIComponent(cruise.slug || cruise.businessId)}`,
+    };
+  }
+
+  // "Oct 24–31, 2026" / "Nov 19 – Dec 7, 2026" / "Dec 20, 2026 – Jan 5, 2027",
+  // same style as a cruise's own Sail Dates.
+  function formatRange(startIso, endIso){
+    const d = (iso) => new Date(`${iso.slice(0,10)}T00:00:00Z`);
+    const a = d(startIso), b = d(endIso);
+    const md = (x) => x.toLocaleDateString("en-US", {month:"short", day:"numeric", timeZone:"UTC"});
+    const y = (x) => x.getUTCFullYear();
+    if (y(a) !== y(b)) return `${md(a)}, ${y(a)} – ${md(b)}, ${y(b)}`;
+    if (a.getUTCMonth() === b.getUTCMonth()) return `${md(a)}–${b.getUTCDate()}, ${y(b)}`;
+    return `${md(a)} – ${md(b)}, ${y(b)}`;
+  }
+
+  // A 3+ cruise back-to-back journey (GET /back-to-backs/journeys) as a card.
+  // Starting price works like journey.html's whole-journey price: for each
+  // cabin category and party size (2-4), the prices of every cruise in it
+  // added up (only when every cruise offers it, not sold out), divided by the
+  // guests, cheapest of those. Sold out if any of its cruises is.
+  // The journeys endpoint doesn't send the cruise line, but the journey's
+  // code starts with it ("BB-PC-..." = Princess), same code as cruiseLine.code.
+  // The journeys endpoint only sends the 2-guest prices (and no ship), so each
+  // cruise's full record comes from /cruises (fullCruises: "date|destination" -> cruise).
+  function toJourneyCardModel(j, lineNameByCode, fullCruises){
+    const full = j.cruises.map(l => fullCruises[`${l.departureDate.slice(0, 10)}|${l.destination}`]);
+    const legs = j.cruises.map((l, i) => ({ ...l, cabinPrices: full[i] ? full[i].cabinPrices || [] : l.cabinPrices }));
+    const ships = [...new Set(full.filter(Boolean).map(c => c.ship && c.ship.name).filter(Boolean))];
+    const first = legs[0], last = legs[legs.length - 1];
+    const dayMs = 24 * 60 * 60 * 1000;
+    const endIso = new Date(Date.parse(`${last.departureDate.slice(0,10)}T00:00:00Z`) + (last.nights || 0) * dayMs).toISOString();
+    const categories = new Set(legs.flatMap(l => l.cabinPrices.map(p => p.category)));
+    const perPersonTotals = [...categories].flatMap(cat => PARTY_SIZES.map(guests => {
+      let total = 0;
+      for (const l of legs) {
+        const row = l.cabinPrices.find(p => p.category === cat && p.guests === guests);
+        if (l.soldOut || !row || row.soldOut || row.price == null) return null;
+        total += row.price;
+      }
+      return total / guests;
+    })).filter(t => t != null);
+    return {
+      id: j.id,
+      title: j.title || `${legs.length}-Cruise Back-to-Back Journey`,
+      dates: formatRange(first.departureDate, endIso),
+      nights: legs.reduce((sum, l) => sum + (l.nights || 0), 0),
+      sortDate: first.departureDate,
+      soldOut: legs.some(l => l.soldOut),
+      startingPrice: perPersonTotals.length ? Math.round(Math.min(...perPersonTotals)) : null,
+      // "Tokyo → Benoa": where the first cruise leaves from and the last one ends.
+      photoLabel: (first.destination && last.destination) ? `${first.destination.split(" → ")[0]} → ${last.destination.split(" → ").pop()}` : "Back-to-back journey",
+      heroImageUrl: j.heroImageUrl || null,
+      regions: [...new Set(legs.map(l => l.region).filter(Boolean))],
+      cruiseLine: lineNameByCode[(j.slug.split("-")[1] || "").toUpperCase()] || null,
+      ship: ships.length === 1 ? ships[0] : ships.length > 1 ? `${ships.length} ships` : null,
+      href: `/journeys/${j.slug}`,
+      tag: `${legs.length} cruises · back to back`,
+    };
+  }
+
+  const CALENDAR = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>';
+  // The homepage trip card: photo on top (fully visible), dates, name, price
+  // and Learn More on a navy band underneath. Sold out keeps its ribbon.
+  // "Princess Cruises · Coral Princess" (small line under the name)
+  const shipLine = (c) => [c.cruiseLine, c.ship].filter(Boolean).join(" · ");
+  function cardHTML(c){
+    const price = c.priceText != null ? c.priceText : (c.startingPrice != null ? `${fmt(c.startingPrice)} <small>/ person</small>` : null);
+    const foot = c.soldOut
+      ? `<div><div class="cc-soldout-note">No cabins left</div></div><span class="cc-more">See Details</span>`
+      : `<div>${price ? `<div class="cc-price-label">Starting from</div><div class="cc-price">${price}</div>` : `<div class="cc-price cc-price-soon">Coming soon</div>`}</div><span class="cc-more">Learn More</span>`;
+    const tag = c.soldOut ? "" : (c.tag || (c.largeFamilies ? "Cabins for 5–6" : ""));
+    const photo = c.heroImageUrl ? pictureUrl(c.heroImageUrl) : null;
+    return `
+    <a class="spotlight-card style-photo trip-card${photo ? " has-photo" : ""}${c.soldOut ? " sold-out" : ""}" href="${c.href}" target="_blank" rel="noopener">
+      <div class="sp-photo"${photo ? ` style="background-image:url('${photo}')"` : ""}></div>
+      ${photo ? "" : `<span class="sp-caption">Photo: ${escapeHtml(c.photoLabel)}</span>`}
+      ${c.soldOut ? '<span class="cc-ribbon">Sold Out</span>' : (tag ? `<span class="cc-tag">${escapeHtml(tag)}</span>` : "")}
+      <div class="sp-overlay">
+        <div class="spotlight-dates">${CALENDAR}<span>${escapeHtml(c.dates)}</span></div>
+        <div class="spotlight-title">${escapeHtml(c.title)}</div>
+        ${shipLine(c) ? `<div class="cc-ship">${escapeHtml(shipLine(c))}</div>` : ""}
+        <div class="cc-foot">${foot}</div>
+      </div>
+    </a>`;
+  }
+
+  function render(){
+    let list = cruises.filter(c => {
+      if(c.nights < state.durationMin || c.nights > state.durationMax) return false;
+      if(state.hideSoldOut && c.soldOut) return false;
+      if(state.largeFamiliesOnly && !c.largeFamilies) return false;
+      // Once the price slider is moved, only cruises with a price inside it
+      // (an unpriced "Coming soon" cruise can't be placed in a range).
+      if(!state.priceFull && (c.startingPrice == null || c.startingPrice < state.priceMin || c.startingPrice > state.priceMax)) return false;
+      if(state.regions.length && !c.regions.some(r => state.regions.includes(r))) return false;
+      if(state.lines.length && !state.lines.includes(c.cruiseLine)) return false;
+      if(state.year && c.sortDate.slice(0, 4) !== state.year) return false;   // the year it sets sail
+      return true;
+    });
+
+    list.sort((a,b) => {
+      if(a.soldOut !== b.soldOut) return a.soldOut ? 1 : -1;
+      switch(state.sort){
+        case "duration-asc": return a.nights - b.nights;
+        case "duration-desc": return b.nights - a.nights;
+        // Cruises with no price yet (null) sort to the end regardless of
+        // direction, same reasoning as sold-out sorting last above - an
+        // unpriced cruise isn't "cheapest", it's just not comparable yet.
+        case "price-asc": return (a.startingPrice ?? Infinity) - (b.startingPrice ?? Infinity);
+        case "price-desc": return (b.startingPrice ?? -Infinity) - (a.startingPrice ?? -Infinity);
+        default: return new Date(a.sortDate) - new Date(b.sortDate);
+      }
+    });
+
+    resultsCount.innerHTML = `<strong>${list.length}</strong> cruise${list.length === 1 ? "" : "s"}`;
+    updateMobileFilterButton(list.length);
+
+    if(!list.length){
+      grid.innerHTML = `<div class="empty-state"><h3>No cruises match those filters</h3><p>Try widening your duration range, or clearing the sold-out filter.</p></div>`;
+      return;
+    }
+    grid.innerHTML = list.map(cardHTML).join("");
+  }
+
+  /* ---- DUAL RANGE SLIDERS (Duration, and Price - per-person starting price, same number as the cards) ---- */
+  function setupDualRange(minEl, maxEl, fillEl, onChange, formatFn){
+    function update(){
+      let lo = parseInt(minEl.value, 10);
+      let hi = parseInt(maxEl.value, 10);
+      if(lo > hi){
+        if(document.activeElement === minEl){ hi = lo; maxEl.value = hi; }
+        else { lo = hi; minEl.value = lo; }
+      }
+      const range = parseInt(minEl.max,10) - parseInt(minEl.min,10);
+      const loPct = range ? ((lo - parseInt(minEl.min,10)) / range) * 100 : 0;
+      const hiPct = range ? ((hi - parseInt(minEl.min,10)) / range) * 100 : 100;
+      fillEl.style.left = loPct + "%";
+      fillEl.style.width = (hiPct - loPct) + "%";
+      onChange(lo, hi);
+    }
+    minEl.addEventListener("input", update);
+    maxEl.addEventListener("input", update);
+    update();
+    return update;
+  }
+
+  const durationLabel = document.getElementById("durationLabel");
+  const durationMinEl = document.getElementById("durationMin");
+  const durationMaxEl = document.getElementById("durationMax");
+  const updateDuration = setupDualRange(
+    durationMinEl, durationMaxEl, document.getElementById("durationFill"),
+    (lo, hi) => { state.durationMin = lo; state.durationMax = hi; durationLabel.textContent = `${lo}–${hi} nights`; render(); }
+  );
+
+  const priceLabel = document.getElementById("priceLabel");
+  const priceMinEl = document.getElementById("priceMin");
+  const priceMaxEl = document.getElementById("priceMax");
+  const updatePrice = setupDualRange(
+    priceMinEl, priceMaxEl, document.getElementById("priceFill"),
+    (lo, hi) => {
+      state.priceMin = lo; state.priceMax = hi;
+      state.priceFull = lo <= parseInt(priceMinEl.min, 10) && hi >= parseInt(priceMaxEl.max, 10);
+      priceLabel.textContent = priceMaxEl.max === "1" ? "—" : `${fmt(lo)}–${fmt(hi)}`;
+      render();
+    }
+  );
+
+  document.getElementById("sortSelect").addEventListener("change", e => { state.sort = e.target.value; render(); });
+  document.getElementById("hideSoldOut").addEventListener("change", e => { state.hideSoldOut = e.target.checked; render(); });
+  document.getElementById("largeFamiliesOnly").addEventListener("change", e => { state.largeFamiliesOnly = e.target.checked; render(); });
+
+  /* ---- REGION FILTER (multi-select dropdown, pills for whichever regions actually have a classified cruise) ---- */
+  const regionDropdownBtn = document.getElementById("regionDropdownBtn");
+  const regionDropdownPanel = document.getElementById("regionDropdownPanel");
+  const regionPillRow = document.getElementById("regionPillRow");
+  const regionDropdownLabel = document.getElementById("regionDropdownLabel");
+  const regionDropdownCount = document.getElementById("regionDropdownCount");
+
+  function updateRegionDropdownUI(){
+    const n = state.regions.length;
+    regionDropdownLabel.textContent = n === 0 ? "All Regions" : n === 1 ? state.regions[0] : `${n} Regions`;
+    regionDropdownCount.textContent = n === 0 ? "All regions" : `${n} selected`;
+    regionDropdownBtn.classList.toggle("has-selection", n > 0);
+    regionPillRow.querySelectorAll("[data-region]").forEach(btn => {
+      btn.classList.toggle("active", state.regions.includes(btn.dataset.region));
+    });
+  }
+
+  function toggleRegion(region){
+    const idx = state.regions.indexOf(region);
+    if(idx === -1) state.regions.push(region); else state.regions.splice(idx, 1);
+    updateRegionDropdownUI();
+    render();
+  }
+
+  regionDropdownBtn.addEventListener("click", () => {
+    const isOpen = regionDropdownPanel.classList.toggle("open");
+    regionDropdownBtn.classList.toggle("open", isOpen);
+  });
+  document.addEventListener("click", (e) => {
+    if(!regionDropdownBtn.contains(e.target) && !regionDropdownPanel.contains(e.target)){
+      regionDropdownPanel.classList.remove("open");
+      regionDropdownBtn.classList.remove("open");
+    }
+  });
+  document.getElementById("regionClearBtn").addEventListener("click", () => {
+    state.regions = [];
+    updateRegionDropdownUI();
+    render();
+  });
+
+  /* ---- CRUISE LINE FILTER (same multi-select dropdown as Regions, a pill per cruise line that has a cruise listed) ---- */
+  const lineDropdownBtn = document.getElementById("lineDropdownBtn");
+  const lineDropdownPanel = document.getElementById("lineDropdownPanel");
+  const linePillRow = document.getElementById("linePillRow");
+
+  function updateLineDropdownUI(){
+    const n = state.lines.length;
+    document.getElementById("lineDropdownLabel").textContent = n === 0 ? "All Cruise Lines" : n === 1 ? state.lines[0] : `${n} Cruise Lines`;
+    document.getElementById("lineDropdownCount").textContent = n === 0 ? "All cruise lines" : `${n} selected`;
+    lineDropdownBtn.classList.toggle("has-selection", n > 0);
+    linePillRow.querySelectorAll("[data-line]").forEach(btn => {
+      btn.classList.toggle("active", state.lines.includes(btn.dataset.line));
+    });
+  }
+
+  function toggleLine(line){
+    const idx = state.lines.indexOf(line);
+    if(idx === -1) state.lines.push(line); else state.lines.splice(idx, 1);
+    updateLineDropdownUI();
+    render();
+  }
+  lineDropdownBtn.addEventListener("click", () => {
+    const isOpen = lineDropdownPanel.classList.toggle("open");
+    lineDropdownBtn.classList.toggle("open", isOpen);
+  });
+  document.addEventListener("click", (e) => {
+    if(!lineDropdownBtn.contains(e.target) && !lineDropdownPanel.contains(e.target)){
+      lineDropdownPanel.classList.remove("open");
+      lineDropdownBtn.classList.remove("open");
+    }
+  });
+  document.getElementById("lineClearBtn").addEventListener("click", () => {
+    state.lines = [];
+    updateLineDropdownUI();
+    render();
+  });
+
+  /* ---- YEAR FILTER (same as the Land Trips page: one year at a time, click it again for any year) ---- */
+  function updateYearPills(){
+    document.querySelectorAll("#yearPills [data-year]").forEach(b => b.classList.toggle("active", b.dataset.year === state.year));
+  }
+
+  /* ---- PHONE FILTER PANEL: one "Filters" button opens the controls; it shows
+     how many filters are on, and "Show N cruises" closes the panel ---- */
+  const filterMobileToggle = document.getElementById("filterMobileToggle");
+  function setMobileFiltersOpen(open){
+    filterBar.classList.toggle("mobile-open", open);
+    filterMobileToggle.setAttribute("aria-expanded", open);
+  }
+  function updateMobileFilterButton(shown){
+    const durMin = document.getElementById("durationMin"), durMax = document.getElementById("durationMax");
+    const active = [
+      state.regions.length > 0,
+      state.lines.length > 0,
+      state.year != null,
+      state.durationMin > Number(durMin.min) || state.durationMax < Number(durMax.max),
+      !state.priceFull,
+      state.hideSoldOut,
+      state.largeFamiliesOnly,
+    ].filter(Boolean).length;
+    const badge = document.getElementById("filterActiveCount");
+    badge.textContent = active;
+    badge.hidden = active === 0;
+    document.getElementById("filterMobileToggle").classList.toggle("has-active", active > 0);
+    document.getElementById("filterMobileDone").textContent = `Show ${shown} cruise${shown === 1 ? "" : "s"}`;
+  }
+  filterMobileToggle.addEventListener("click", () => setMobileFiltersOpen(!filterBar.classList.contains("mobile-open")));
+  document.getElementById("filterMobileDone").addEventListener("click", () => {
+    setMobileFiltersOpen(false);
+    const top = cruisesView.querySelector(".cruise-grid-section").getBoundingClientRect().top + scrollY - filterBar.offsetHeight;
+    if(scrollY > top) window.scrollTo({ top, behavior: "smooth" });
+  });
+
+  document.getElementById("resetFiltersBtn").addEventListener("click", () => {
+    state.hideSoldOut = false;
+    document.getElementById("hideSoldOut").checked = false;
+    document.getElementById("sortSelect").value = "date";
+    state.sort = "date";
+    durationMinEl.value = durationMinEl.min;
+    durationMaxEl.value = durationMaxEl.max;
+    updateDuration();
+    priceMinEl.value = priceMinEl.min;
+    priceMaxEl.value = priceMaxEl.max;
+    updatePrice();
+    if (document.getElementById("priceLabel").closest(".filter-group").style.display === "none") state.priceFull = true; // hidden slider never filters
+    state.largeFamiliesOnly = false;
+    document.getElementById("largeFamiliesOnly").checked = false;
+    state.regions = [];
+    updateRegionDropdownUI();
+    state.lines = [];
+    updateLineDropdownUI();
+    state.year = null;
+    updateYearPills();
+    render();
+  });
+
+  /* ---- BIG SCREENS: show the first row of filters only, "Show More Filters" opens the rest ---- */
+  const filterControls = document.getElementById("filterBarControls");
+  const filterMoreBtn = document.getElementById("filterMoreBtn");
+  let filtersExpanded = false;
+  function layoutFilterRows(){
+    // every filter on its own (the two checkboxes count separately), in order
+    const items = [...filterControls.children]
+      .flatMap(el => el.classList.contains("filter-toggles") ? [...el.children] : [el])
+      .filter(el => el !== filterMoreBtn && el.id !== "filterMobileDone");
+    items.forEach(el => el.classList.remove("fb-hidden"));
+    filterMoreBtn.hidden = true;
+    if (window.matchMedia("(max-width:1239px)").matches) return;   // phones/tablets: the Filters panel shows everything
+    const shown = items.filter(el => el.getClientRects().length);    // skips filters hidden for lack of data
+    if (!shown.length) return;
+    const rowOneBottom = () => shown[0].getBoundingClientRect().bottom;
+    const onRowOne = (el) => el.getBoundingClientRect().top < rowOneBottom();
+    if (shown.every(onRowOne)) return;                                // all fits on one row: no button
+    filterMoreBtn.hidden = false;
+    filterMoreBtn.classList.toggle("open", filtersExpanded);
+    document.getElementById("filterMoreLabel").textContent = filtersExpanded ? "Show Fewer Filters" : "Show More Filters";
+    if (filtersExpanded) return;
+    const later = shown.filter(el => !onRowOne(el));
+    later.forEach(el => el.classList.add("fb-hidden"));
+    // make room for the button at the end of the first row
+    const rowOne = shown.filter(el => !later.includes(el));
+    while (!onRowOne(filterMoreBtn) && rowOne.length > 1) rowOne.pop().classList.add("fb-hidden");
+    // a filter that's switched on but tucked away: "Show More Filters (1)"
+    const hiddenOn = items.filter(el => el.classList.contains("fb-hidden") &&
+      (el.querySelector("input:checked, .pill-btn.active, .has-selection") || el.matches(".has-selection") || [...el.querySelectorAll("select")].some(x => x.selectedIndex > 0))).length;
+    if (hiddenOn) document.getElementById("filterMoreLabel").textContent = `Show More Filters (${hiddenOn})`;
+  }
+  filterMoreBtn.addEventListener("click", () => { filtersExpanded = !filtersExpanded; layoutFilterRows(); });
+  let layoutQueued = false;
+  window.addEventListener("resize", () => {
+    if (layoutQueued) return; layoutQueued = true;
+    requestAnimationFrame(() => { layoutQueued = false; layoutFilterRows(); });
+  });
+  if (document.fonts) document.fonts.ready.then(layoutFilterRows);
+
+  async function init(){
+    TripsPage.cardHTML = cardHTML; // All Trips draws its cards with this too
+    let allCruises = [];
+    try {
+      const res = await fetch(`${API}/cruises`);
+      allCruises = await res.json();
+    } catch (e) {
+      grid.innerHTML = `<div class="empty-state"><h3>Couldn't load cruises</h3><p>Please refresh the page, or check back in a moment.</p></div>`;
+      factsBar.style.display = "none";
+      filterBar.style.display = "none";
+      TripsPage.setItems("cruises", []); // All Trips still shows the land trips
+      return;
+    }
+
+    const publishable = allCruises.filter(isPublishable);
+
+    // Back-to-back journeys (3+ cruises) get their own card next to the
+    // cruises. Optional: if they can't be loaded, the cruises still show.
+    let journeys = [];
+    try {
+      const res = await fetch(`${API}/back-to-backs/journeys`);
+      if (res.ok) journeys = (await res.json()).filter(j => j.slug && j.cruises.length >= 3 && j.cruises[0].departureDate.slice(0, 10) >= todayStr);
+    } catch (e) { /* cruises alone is fine */ }
+
+    if(!publishable.length && !journeys.length){
+      factsBar.style.display = "none";
+      filterBar.style.display = "none";
+      grid.innerHTML = `<div class="empty-state"><h3>No cruises yet</h3><p>New worldschooling cruises are added regularly — check back soon.</p></div>`;
+      TripsPage.setItems("cruises", []);
+      return;
+    }
+
+    const lineNameByCode = {};
+    allCruises.forEach(c => { if (c.cruiseLine) lineNameByCode[c.cruiseLine.code] = c.cruiseLine.name; });
+    const fullCruises = {};
+    allCruises.forEach(c => { fullCruises[`${c.departureDate.slice(0, 10)}|${c.destination}`] = c; });
+    cruises = [...publishable.map(toCardModel), ...journeys.map(j => toJourneyCardModel(j, lineNameByCode, fullCruises))];
+
+    factDepartures.textContent = String(cruises.length);
+    TripsPage.setCount("cruises", String(cruises.length));
+    TripsPage.setItems("cruises", cruises);
+    const earliest = cruises.map(c => c.sortDate).sort()[0];
+    factNextDeparture.textContent = formatDateShort(earliest);
+    const startingPrices = cruises.map(c => c.startingPrice).filter(p => p != null);
+    factStartingFrom.textContent = startingPrices.length ? `${fmt(Math.min(...startingPrices))} / person` : "Coming soon";
+
+    // Only regions that actually have a classified cruise get a pill - the
+    // dashboards let an admin leave region unset, so an empty pill for a
+    // region nothing is tagged with yet would just be dead UI.
+    const presentRegions = ALL_REGIONS.filter(r => cruises.some(c => c.regions.includes(r)));
+    factRegions.textContent = presentRegions.length ? String(presentRegions.length) : "Coming soon";
+    if(presentRegions.length){
+      regionPillRow.innerHTML = presentRegions.map(r =>
+        `<button type="button" class="pill-btn" data-region="${escapeHtml(r)}">${escapeHtml(r)}</button>`
+      ).join("");
+      regionPillRow.querySelectorAll("[data-region]").forEach(btn => {
+        btn.addEventListener("click", () => toggleRegion(btn.dataset.region));
+      });
+    } else {
+      cruisesView.querySelector(".filter-regions").style.display = "none";
+    }
+
+    // Cruise lines A–Z, only the ones with a cruise or journey listed.
+    const presentLines = [...new Set(cruises.map(c => c.cruiseLine).filter(Boolean))].sort((a, b) => a.localeCompare(b));
+    if(presentLines.length > 1){
+      linePillRow.innerHTML = presentLines.map(l =>
+        `<button type="button" class="pill-btn" data-line="${escapeHtml(l)}">${escapeHtml(l)}</button>`
+      ).join("");
+      linePillRow.querySelectorAll("[data-line]").forEach(btn => {
+        btn.addEventListener("click", () => toggleLine(btn.dataset.line));
+      });
+    } else {
+      cruisesView.querySelector(".filter-lines").style.display = "none"; // nothing to choose between
+    }
+
+    // Year pills: every year a listed cruise or journey sets sail in, so 2028 shows up
+    // by itself once 2028 cruises are added (and a year drops off once it has all sailed)
+    const yearsAvailable = [...new Set(cruises.map(c => c.sortDate.slice(0, 4)))].sort();
+    const yearPills = document.getElementById("yearPills");
+    yearPills.innerHTML = yearsAvailable.map(y => `<button type="button" class="pill-btn" data-year="${y}">${y}</button>`).join("");
+    yearPills.querySelectorAll("[data-year]").forEach(btn => btn.addEventListener("click", () => {
+      state.year = state.year === btn.dataset.year ? null : btn.dataset.year; // click again for any year
+      updateYearPills();
+      render();
+    }));
+    if (yearsAvailable.length < 2) document.getElementById("yearFilter").style.display = "none";
+
+    const nightsValues = cruises.map(c => c.nights);
+    const minNights = Math.min(...nightsValues);
+    const maxNights = Math.max(...nightsValues);
+    durationMinEl.min = minNights; durationMinEl.max = maxNights; durationMinEl.value = minNights;
+    durationMaxEl.min = minNights; durationMaxEl.max = maxNights; durationMaxEl.value = maxNights;
+    state.durationMin = minNights; state.durationMax = maxNights;
+    updateDuration();
+
+    // Price slider spans the per-person starting prices on the page, in $50 steps.
+    const prices = cruises.map(c => c.startingPrice).filter(p => p != null);
+    if (prices.length) {
+      const lo = Math.floor(Math.min(...prices) / 50) * 50;
+      const hi = Math.ceil(Math.max(...prices) / 50) * 50;
+      for (const el of [priceMinEl, priceMaxEl]) { el.min = lo; el.max = hi; }
+      priceMinEl.value = lo; priceMaxEl.value = hi;
+      updatePrice();
+    } else {
+      document.getElementById("priceLabel").closest(".filter-group").style.display = "none";
+      state.priceFull = true; // hidden slider never filters
+    }
+    // Only offer the 5+ filter when at least one cruise has those cabins.
+    if (!cruises.some(c => c.largeFamilies)) document.getElementById("largeFamiliesToggle").style.display = "none";
+    layoutFilterRows();
+
+    render();
+  }
+
+  init();
+})();
+</script>
+<script>
+(function(){
+  const API = 'https://api.worldschoolingjourneys.com';
+  // this view's element ids start with "lt-" (the cruise view above has the same ones without it)
+  const landView = document.getElementById("landView");
+  const ltEl = (id) => document.getElementById("lt-" + id);
+
+  const grid = ltEl("cruiseGrid");
+  const resultsCount = ltEl("resultsCount");
+  const factsBar = ltEl("factsBar");
+  const filterBar = ltEl("filterBar");
+  const factDepartures = ltEl("factDepartures");
+  const factNextDeparture = ltEl("factNextDeparture");
+  const factStartingFrom = ltEl("factStartingFrom");
+  const factRegions = ltEl("factRegions");
+
+  // Fixed list, same order/spelling as the backend's CRUISE_REGIONS (see
+  // domain/cruise-region.util.ts) - kept here too since this page has no
+  // server-rendering step to share it from directly.
+  const ALL_REGIONS = ["Europe", "North America", "South America", "Africa", "Middle East", "Oceania"]; const CRUISE_REGIONS_UNUSED = ["Transpacific", "Transatlantic", "Mediterranean", "Caribbean & Mexico", "East Asia", "Southeast Asia", "Australia & New Zealand", "South America", "Alaska", "Hawaii", "Baltic & Scandinavia", "British Isles"];
+
+  const state = {
+    durationMin: 0, durationMax: 0,
+    hideSoldOut: false,
+    largeFamiliesOnly: false,
+    priceMin: 0, priceMax: 0, priceFull: true, // per-person starting price range; priceFull = slider untouched
+    sort: "date",
+    regions: [], // empty = no filter, every region shows
+    year: null, // null = any year
+    collection: null // "austria-retreats" = only the Austria trips (address /worldschooling-trips?filter=austria-retreats#landtrips)
+  };
+
+  // Trip groups with their own address (the old site's /austria-retreats page redirects here).
+  const COLLECTIONS = {
+    "austria-retreats": { match: (t) => t.slug.startsWith("austria-"), heading: "Austria Retreats for Worldschooling Families", title: "Austria Retreats — Worldschooling Journeys" },
+  };
+
+
+  // Trip data + card builder are shared with the Home and About pages (js/trips.js).
+  const LAND_TRIPS = WSJ.LAND_TRIPS;
+  const tripView = WSJ.landTripView;
+  let cruises = []; // card-shaped models, built from real Cruise records after fetch (see init())
+
+  function escapeHtml(value){
+    const div = document.createElement("div");
+    div.textContent = value ?? "";
+    return div.innerHTML;
+  }
+
+  function fmt(n){ return "$" + n.toLocaleString("en-US"); }
+  function perPerson(twoGuestPrice){ return Math.round(twoGuestPrice / 2); }
+
+  // Starting prices are shown per person: the cheapest 2-guest cabin price
+  // split between its 2 guests (perPerson below).
+  // Cheapest 2-guest price across every cabin category that isn't sold out
+  // specifically for 2 guests - same basis as the "Starting At" badge on the
+  // cruise detail page (see cruise-detail.html's computeStartingAtPrice).
+  // A cruise with no cabinPrices rows yet (pricing not entered) or where
+  // every category is sold out for 2 guests returns null - "Coming soon"
+  // and a real "sold out for 2" are different states, but neither has a
+  // number to show here, so both fall back the same way.
+  function computeStartingPrice(cruise){
+    const prices = (cruise.cabinPrices ?? [])
+      .filter(row => row.guests === 2 && !row.soldOut && row.price != null)
+      .map(row => row.price);
+    return prices.length ? perPerson(Math.min(...prices)) : null;
+  }
+
+  function formatDateShort(iso){
+    if(!iso) return "";
+    const dt = new Date(`${iso.slice(0,10)}T00:00:00Z`);
+    return dt.toLocaleDateString("en-US", {month:"short", day:"numeric", year:"numeric", timeZone:"UTC"});
+  }
+
+  // A cruise that has already set sail (departure date before today - same
+  // rule as cruise-detail.html's isSetSail) is no longer listed; its own
+  // page still works for anyone with the link.
+  const todayStr = new Date().toISOString().slice(0, 10);
+
+  // Only cruises that have been through Enrich Cruise (destination/sailDates/
+  // nights set) are ready to show publicly - anything still in admin draft
+  // state would render a card with blank dates/nights, so it's excluded here
+  // rather than in the API response (the admin list intentionally shows
+  // everything, enriched or not). Add On and Individual cruises are internal
+  // only - never listed publicly (an add-on is shown on its main cruise's
+  // page instead).
+  function isPublishable(cruise){
+    if (cruise.isAddOn || cruise.addOnForCruiseId || cruise.isIndividual) return false;
+    if (cruise.departureDate.slice(0, 10) < todayStr) return false;
+    return Boolean(cruise.destination && cruise.sailDates && cruise.nights != null);
+  }
+
+  function toCardModel(cruise){
+    return {
+      id: cruise.id,
+      title: cruise.title || cruise.destination,
+      dates: cruise.sailDates,
+      nights: cruise.nights,
+      sortDate: cruise.departureDate,
+      soldOut: !!cruise.soldOut,
+      startingPrice: computeStartingPrice(cruise),
+      photoLabel: cruise.destination || cruise.ship.name,
+      heroImageUrl: cruise.heroImageUrl || null,
+      regions: cruise.region ? [cruise.region] : [],
+      // Large Family Cabins - a 5 or 6 guest cabin that can still be booked
+      // (priced, not sold out - see the dashboards' Pricing tab). Shown as a
+      // tag and used by the 5+ filter.
+      largeFamilies: (cruise.cabinPrices ?? []).some(row => row.guests >= 5 && row.price != null && !row.soldOut),
+      href: `/cruises/${encodeURIComponent(cruise.slug || cruise.businessId)}`,
+    };
+  }
+
+  // "Oct 24–31, 2026" / "Nov 19 – Dec 7, 2026" / "Dec 20, 2026 – Jan 5, 2027",
+  // same style as a cruise's own Sail Dates.
+  function formatRange(startIso, endIso){
+    const d = (iso) => new Date(`${iso.slice(0,10)}T00:00:00Z`);
+    const a = d(startIso), b = d(endIso);
+    const md = (x) => x.toLocaleDateString("en-US", {month:"short", day:"numeric", timeZone:"UTC"});
+    const y = (x) => x.getUTCFullYear();
+    if (y(a) !== y(b)) return `${md(a)}, ${y(a)} – ${md(b)}, ${y(b)}`;
+    if (a.getUTCMonth() === b.getUTCMonth()) return `${md(a)}–${b.getUTCDate()}, ${y(b)}`;
+    return `${md(a)} – ${md(b)}, ${y(b)}`;
+  }
+
+  // A 3+ cruise back-to-back journey (GET /back-to-backs/journeys) as a card.
+  // Starting price works like journey.html's whole-journey price: for each
+  // cabin category, the 2-guest prices of every cruise in it added up (only
+  // categories every cruise offers, not sold out), cheapest of those, per
+  // person. Sold out if any of its cruises is.
+  function toJourneyCardModel(j){
+    const legs = j.cruises;
+    const first = legs[0], last = legs[legs.length - 1];
+    const dayMs = 24 * 60 * 60 * 1000;
+    const endIso = new Date(Date.parse(`${last.departureDate.slice(0,10)}T00:00:00Z`) + (last.nights || 0) * dayMs).toISOString();
+    const categories = new Set(legs.flatMap(l => l.cabinPrices.map(p => p.category)));
+    const totals = [...categories].map(cat => {
+      let total = 0;
+      for (const l of legs) {
+        const row = l.cabinPrices.find(p => p.category === cat && p.guests === 2);
+        if (l.soldOut || !row || row.soldOut || row.price == null) return null;
+        total += row.price;
+      }
+      return total;
+    }).filter(t => t != null);
+    return {
+      id: j.id,
+      title: j.title || `${legs.length}-Cruise Back-to-Back Journey`,
+      dates: formatRange(first.departureDate, endIso),
+      nights: legs.reduce((sum, l) => sum + (l.nights || 0), 0),
+      sortDate: first.departureDate,
+      soldOut: legs.some(l => l.soldOut),
+      startingPrice: totals.length ? perPerson(Math.min(...totals)) : null,
+      // "Tokyo → Benoa": where the first cruise leaves from and the last one ends.
+      photoLabel: (first.destination && last.destination) ? `${first.destination.split(" → ")[0]} → ${last.destination.split(" → ").pop()}` : "Back-to-back journey",
+      heroImageUrl: j.heroImageUrl || null,
+      regions: [...new Set(legs.map(l => l.region).filter(Boolean))],
+      href: `/journeys/${j.slug}`,
+      tag: `${legs.length} cruises · back to back`,
+    };
+  }
+
+  const CALENDAR = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>';
+  // The homepage trip card: photo on top (fully visible), dates, name, price
+  // and Learn More on a navy band underneath. Sold out keeps its ribbon.
+  function cardHTML(c){
+    const price = c.priceText != null ? c.priceText : (c.startingPrice != null ? `${fmt(c.startingPrice)} <small>/ person</small>` : null);
+    const foot = c.soldOut
+      ? `<div><div class="cc-soldout-note">No cabins left</div></div><span class="cc-more">See Details</span>`
+      : `<div>${price ? `<div class="cc-price-label">Starting from</div><div class="cc-price">${price}</div>` : `<div class="cc-price cc-price-soon">Coming soon</div>`}</div><span class="cc-more">Learn More</span>`;
+    const tag = c.soldOut ? "" : (c.tag || (c.largeFamilies ? "Cabins for 5–6" : ""));
+    const photo = c.heroImageUrl ? pictureUrl(c.heroImageUrl) : null;
+    return `
+    <a class="spotlight-card style-photo trip-card${photo ? " has-photo" : ""}${c.soldOut ? " sold-out" : ""}" href="${c.href}" target="_blank" rel="noopener">
+      <div class="sp-photo"${photo ? ` style="background-image:url('${photo}')"` : ""}></div>
+      ${photo ? "" : `<span class="sp-caption">Photo: ${escapeHtml(c.photoLabel)}</span>`}
+      ${c.soldOut ? '<span class="cc-ribbon">Sold Out</span>' : (tag ? `<span class="cc-tag">${escapeHtml(tag)}</span>` : "")}
+      <div class="sp-overlay">
+        <div class="spotlight-dates">${CALENDAR}<span>${escapeHtml(c.dates)}</span></div>
+        <div class="spotlight-title">${escapeHtml(c.title)}</div>
+        <div class="cc-foot">${foot}</div>
+      </div>
+    </a>`;
+  }
+
+  function render(){
+    // a picked year swaps in that year's cards (dates, price, link with the year)
+    const trips = state.collection ? LAND_TRIPS.filter(COLLECTIONS[state.collection].match) : LAND_TRIPS;
+    let list = trips.map(t => tripView(t, state.year)).filter(Boolean).filter(c => {
+      if(c.nights < state.durationMin || c.nights > state.durationMax) return false;
+      if(state.hideSoldOut && c.soldOut) return false;
+      if(state.largeFamiliesOnly && !c.largeFamilies) return false;
+      // Once the price slider is moved, only cruises with a price inside it
+      // (an unpriced "Coming soon" cruise can't be placed in a range).
+      if(!state.priceFull && (c.startingPrice == null || c.startingPrice < state.priceMin || c.startingPrice > state.priceMax)) return false;
+      if(state.regions.length && !c.regions.some(r => state.regions.includes(r))) return false;
+      return true;
+    });
+
+    list.sort((a,b) => {
+      if(a.soldOut !== b.soldOut) return a.soldOut ? 1 : -1;
+      switch(state.sort){
+        case "duration-asc": return a.nights - b.nights;
+        case "duration-desc": return b.nights - a.nights;
+        // Cruises with no price yet (null) sort to the end regardless of
+        // direction, same reasoning as sold-out sorting last above - an
+        // unpriced cruise isn't "cheapest", it's just not comparable yet.
+        case "price-asc": return (a.startingPrice ?? Infinity) - (b.startingPrice ?? Infinity);
+        case "price-desc": return (b.startingPrice ?? -Infinity) - (a.startingPrice ?? -Infinity);
+        default: return new Date(a.sortDate) - new Date(b.sortDate);
+      }
+    });
+
+    resultsCount.innerHTML = `<strong>${list.length}</strong> trip${list.length === 1 ? "" : "s"}`;
+    updateMobileFilterButton(list.length);
+
+    if(!list.length){
+      grid.innerHTML = `<div class="empty-state"><h3>No trips match those filters</h3><p>Try widening your duration range, or clearing the sold-out filter.</p></div>`;
+      return;
+    }
+    grid.innerHTML = list.map(cardHTML).join("");
+  }
+
+  /* ---- DUAL RANGE SLIDERS (Duration, and Price - per-person starting price, same number as the cards) ---- */
+  function setupDualRange(minEl, maxEl, fillEl, onChange, formatFn){
+    function update(){
+      let lo = parseInt(minEl.value, 10);
+      let hi = parseInt(maxEl.value, 10);
+      if(lo > hi){
+        if(document.activeElement === minEl){ hi = lo; maxEl.value = hi; }
+        else { lo = hi; minEl.value = lo; }
+      }
+      const range = parseInt(minEl.max,10) - parseInt(minEl.min,10);
+      const loPct = range ? ((lo - parseInt(minEl.min,10)) / range) * 100 : 0;
+      const hiPct = range ? ((hi - parseInt(minEl.min,10)) / range) * 100 : 100;
+      fillEl.style.left = loPct + "%";
+      fillEl.style.width = (hiPct - loPct) + "%";
+      onChange(lo, hi);
+    }
+    minEl.addEventListener("input", update);
+    maxEl.addEventListener("input", update);
+    update();
+    return update;
+  }
+
+  const durationLabel = ltEl("durationLabel");
+  const durationMinEl = ltEl("durationMin");
+  const durationMaxEl = ltEl("durationMax");
+  const updateDuration = setupDualRange(
+    durationMinEl, durationMaxEl, ltEl("durationFill"),
+    (lo, hi) => { state.durationMin = lo; state.durationMax = hi; durationLabel.textContent = `${lo}–${hi} nights`; render(); }
+  );
+
+  const priceLabel = ltEl("priceLabel");
+  const priceMinEl = ltEl("priceMin");
+  const priceMaxEl = ltEl("priceMax");
+  const updatePrice = setupDualRange(
+    priceMinEl, priceMaxEl, ltEl("priceFill"),
+    (lo, hi) => {
+      state.priceMin = lo; state.priceMax = hi;
+      state.priceFull = lo <= parseInt(priceMinEl.min, 10) && hi >= parseInt(priceMaxEl.max, 10);
+      priceLabel.textContent = priceMaxEl.max === "1" ? "—" : `${fmt(lo)}–${fmt(hi)}`;
+      render();
+    }
+  );
+
+  ltEl("sortSelect").addEventListener("change", e => { state.sort = e.target.value; render(); });
+  ltEl("hideSoldOut").addEventListener("change", e => { state.hideSoldOut = e.target.checked; render(); });
+  ltEl("largeFamiliesOnly").addEventListener("change", e => { state.largeFamiliesOnly = e.target.checked; render(); });
+
+  /* ---- REGION FILTER (multi-select dropdown, pills for whichever regions actually have a classified cruise) ---- */
+  const regionDropdownBtn = ltEl("regionDropdownBtn");
+  const regionDropdownPanel = ltEl("regionDropdownPanel");
+  const regionPillRow = ltEl("regionPillRow");
+  const regionDropdownLabel = ltEl("regionDropdownLabel");
+  const regionDropdownCount = ltEl("regionDropdownCount");
+
+  function updateRegionDropdownUI(){
+    const n = state.regions.length;
+    regionDropdownLabel.textContent = n === 0 ? "All Regions" : n === 1 ? state.regions[0] : `${n} Regions`;
+    regionDropdownCount.textContent = n === 0 ? "All regions" : `${n} selected`;
+    regionDropdownBtn.classList.toggle("has-selection", n > 0);
+    regionPillRow.querySelectorAll("[data-region]").forEach(btn => {
+      btn.classList.toggle("active", state.regions.includes(btn.dataset.region));
+    });
+  }
+
+  function toggleRegion(region){
+    const idx = state.regions.indexOf(region);
+    if(idx === -1) state.regions.push(region); else state.regions.splice(idx, 1);
+    updateRegionDropdownUI();
+    render();
+  }
+
+  regionDropdownBtn.addEventListener("click", () => {
+    const isOpen = regionDropdownPanel.classList.toggle("open");
+    regionDropdownBtn.classList.toggle("open", isOpen);
+  });
+  document.addEventListener("click", (e) => {
+    if(!regionDropdownBtn.contains(e.target) && !regionDropdownPanel.contains(e.target)){
+      regionDropdownPanel.classList.remove("open");
+      regionDropdownBtn.classList.remove("open");
+    }
+  });
+  ltEl("regionClearBtn").addEventListener("click", () => {
+    state.regions = [];
+    updateRegionDropdownUI();
+    render();
+  });
+
+  // Facts bar: the trips on show (all of them, or just the Austria Retreats).
+  function updateFacts(){
+    const shown = LAND_TRIPS.filter(state.collection ? COLLECTIONS[state.collection].match : () => true).map(t => tripView(t, null)).filter(Boolean);
+    factStartingFrom.textContent = String(shown.length);
+    factDepartures.textContent = String(shown.reduce((n, c) => n + c.departures, 0));
+    factNextDeparture.textContent = formatDateShort(shown.map(c => c.sortDate).sort()[0]);
+    const regions = ALL_REGIONS.filter(r => shown.some(c => c.regions.includes(r)));
+    factRegions.textContent = regions.length ? String(regions.length) : "Coming soon";
+  }
+
+  // Austria Retreats: its own address (?filter=austria-retreats), heading and tab title while it's on.
+  function updateCollection(){
+    updateFacts();
+    const col = state.collection && COLLECTIONS[state.collection];
+    const btn = ltEl("austriaRetreatsBtn");
+    btn.classList.toggle("active", state.collection === "austria-retreats");
+    btn.setAttribute("aria-pressed", state.collection === "austria-retreats");
+    TripsPage.setLandHero(col ? { title: col.heading, docTitle: col.title } : null);
+    if (TripsPage.view !== "landtrips") return; // the cruise view's address has no ?filter
+    const url = new URL(location.href);
+    if (state.collection) url.searchParams.set("filter", state.collection); else url.searchParams.delete("filter");
+    history.replaceState(history.state, "", url.pathname + url.search + url.hash);
+  }
+  TripsPage.onLandShown = updateCollection; // back on Land Trips: put ?filter and the Austria heading back
+  ltEl("austriaRetreatsBtn").addEventListener("click", () => {
+    state.collection = state.collection === "austria-retreats" ? null : "austria-retreats";
+    updateCollection();
+    render();
+  });
+
+  function updateYearPills(){
+    document.querySelectorAll("#lt-yearPills [data-year]").forEach(b => b.classList.toggle("active", b.dataset.year === state.year));
+  }
+
+  /* ---- PHONE FILTER PANEL: one "Filters" button opens the controls; it shows
+     how many filters are on, and "Show N cruises" closes the panel ---- */
+  const filterMobileToggle = ltEl("filterMobileToggle");
+  function setMobileFiltersOpen(open){
+    filterBar.classList.toggle("mobile-open", open);
+    filterMobileToggle.setAttribute("aria-expanded", open);
+  }
+  function updateMobileFilterButton(shown){
+    const durMin = ltEl("durationMin"), durMax = ltEl("durationMax");
+    const active = [
+      state.regions.length > 0,
+      state.durationMin > Number(durMin.min) || state.durationMax < Number(durMax.max),
+      !state.priceFull,
+      state.hideSoldOut,
+      state.largeFamiliesOnly,
+      state.year != null,
+      state.collection != null,
+    ].filter(Boolean).length;
+    const badge = ltEl("filterActiveCount");
+    badge.textContent = active;
+    badge.hidden = active === 0;
+    ltEl("filterMobileToggle").classList.toggle("has-active", active > 0);
+    ltEl("filterMobileDone").textContent = `Show ${shown} trip${shown === 1 ? "" : "s"}`;
+  }
+  filterMobileToggle.addEventListener("click", () => setMobileFiltersOpen(!filterBar.classList.contains("mobile-open")));
+  ltEl("filterMobileDone").addEventListener("click", () => {
+    setMobileFiltersOpen(false);
+    const top = landView.querySelector(".cruise-grid-section").getBoundingClientRect().top + scrollY - filterBar.offsetHeight;
+    if(scrollY > top) window.scrollTo({ top, behavior: "smooth" });
+  });
+
+  ltEl("resetFiltersBtn").addEventListener("click", () => {
+    state.hideSoldOut = false;
+    ltEl("hideSoldOut").checked = false;
+    ltEl("sortSelect").value = "date";
+    state.sort = "date";
+    durationMinEl.value = durationMinEl.min;
+    durationMaxEl.value = durationMaxEl.max;
+    updateDuration();
+    priceMinEl.value = priceMinEl.min;
+    priceMaxEl.value = priceMaxEl.max;
+    updatePrice();
+    if (ltEl("priceLabel").closest(".filter-group").style.display === "none") state.priceFull = true; // hidden slider never filters
+    state.largeFamiliesOnly = false;
+    ltEl("largeFamiliesOnly").checked = false;
+    state.year = null;
+    updateYearPills();
+    state.regions = [];
+    updateRegionDropdownUI();
+    state.collection = null;
+    updateCollection();
+    render();
+  });
+
+  async function init(){
+    const wanted = new URLSearchParams(location.search).get("filter");
+    if (COLLECTIONS[wanted]) { state.collection = wanted; updateCollection(); }
+    cruises = LAND_TRIPS.map(t => tripView(t, null)).filter(Boolean);
+    updateFacts();
+    TripsPage.setCount("landtrips", String(cruises.length));
+    TripsPage.setItems("land", (year) => LAND_TRIPS.map(t => tripView(t, year)).filter(Boolean));
+
+    // Only regions that actually have a classified cruise get a pill - the
+    // dashboards let an admin leave region unset, so an empty pill for a
+    // region nothing is tagged with yet would just be dead UI.
+    const presentRegions = ALL_REGIONS.filter(r => cruises.some(c => c.regions.includes(r)));
+    if(presentRegions.length){
+      regionPillRow.innerHTML = presentRegions.map(r =>
+        `<button type="button" class="pill-btn" data-region="${escapeHtml(r)}">${escapeHtml(r)}</button>`
+      ).join("");
+      regionPillRow.querySelectorAll("[data-region]").forEach(btn => {
+        btn.addEventListener("click", () => toggleRegion(btn.dataset.region));
+      });
+    } else {
+      landView.querySelector(".filter-regions").style.display = "none";
+    }
+
+    // Year pills: only years that have an upcoming departure on some trip
+    const yearsAvailable = [...new Set(LAND_TRIPS.flatMap(t => Object.keys(t.years).filter(k => t.years[k].sortDate >= todayStr)))].sort();
+    const yearPills = ltEl("yearPills");
+    yearPills.innerHTML = yearsAvailable.map(y => `<button type="button" class="pill-btn" data-year="${y}">${y}</button>`).join("");
+    yearPills.querySelectorAll("[data-year]").forEach(btn => btn.addEventListener("click", () => {
+      state.year = state.year === btn.dataset.year ? null : btn.dataset.year; // click again for any year
+      updateYearPills();
+      render();
+    }));
+    if (yearsAvailable.length < 2) ltEl("yearFilter").style.display = "none";
+
+    const nightsValues = cruises.map(c => c.nights);
+    const minNights = Math.min(...nightsValues);
+    const maxNights = Math.max(...nightsValues);
+    durationMinEl.min = minNights; durationMinEl.max = maxNights; durationMinEl.value = minNights;
+    durationMaxEl.min = minNights; durationMaxEl.max = maxNights; durationMaxEl.value = maxNights;
+    state.durationMin = minNights; state.durationMax = maxNights;
+    updateDuration();
+
+    // Price slider spans the per-person starting prices on the page, in $50 steps.
+    const prices = cruises.map(c => c.startingPrice).filter(p => p != null);
+    if (prices.length) {
+      const lo = Math.floor(Math.min(...prices) / 50) * 50;
+      const hi = Math.ceil(Math.max(...prices) / 50) * 50;
+      for (const el of [priceMinEl, priceMaxEl]) { el.min = lo; el.max = hi; }
+      priceMinEl.value = lo; priceMaxEl.value = hi;
+      updatePrice();
+    } else {
+      ltEl("priceLabel").closest(".filter-group").style.display = "none";
+      state.priceFull = true; // hidden slider never filters
+    }
+    // Only offer the 5+ filter when at least one cruise has those cabins.
+    if (!cruises.some(c => c.largeFamilies)) ltEl("largeFamiliesToggle").style.display = "none";
+
+    render();
+  }
+
+  init();
+})();
+</script>
+<script>
+// ---------- ALL TRIPS (plain /worldschooling-trips): every cruise, journey and land trip by departure date ----------
+// Only a Year filter (one year at a time, click again for any year) and Sort. The cards are the
+// cruise view's and the land view's own (TripsPage.items), drawn with the cruise view's cardHTML.
+(function(){
+  const allEl = (id) => document.getElementById("all-" + id);
+  const grid = allEl("grid"), filterBar = allEl("filterBar");
+  const state = { year: null, sort: "date" };
+  const fmtDate = (iso) => new Date(`${iso.slice(0, 10)}T00:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+
+  // a land trip departing in several years shows once (its soonest departure), or that year's when a year is picked
+  function trips(year){
+    const { cruises, land } = TripsPage.items;
+    const c = (cruises || []).filter(x => !year || x.sortDate.slice(0, 4) === year);
+    const l = land ? land(year ? Number(year) : null) : [];
+    return [...c, ...l];
+  }
+  function years(){
+    const { cruises, land } = TripsPage.items;
+    const ys = new Set((cruises || []).map(x => x.sortDate.slice(0, 4)));
+    if (land) WSJ.landYears().forEach(y => ys.add(String(y)));   // years with an upcoming land trip departure
+    return [...ys].sort();
+  }
+
+  function renderYears(){
+    const ys = years(), box = allEl("yearPills");
+    if (state.year && !ys.includes(state.year)) state.year = null;
+    box.innerHTML = ys.map(y => `<button type="button" class="pill-btn${y === state.year ? " active" : ""}" data-year="${y}">${y}</button>`).join("");
+    allEl("yearFilter").style.display = ys.length < 2 ? "none" : "";
+  }
+  allEl("yearPills").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-year]"); if (!b) return;
+    state.year = state.year === b.dataset.year ? null : b.dataset.year;
+    allEl("yearPills").querySelectorAll("[data-year]").forEach(x => x.classList.toggle("active", x.dataset.year === state.year));
+    render();
+  });
+  allEl("sortSelect").addEventListener("change", (e) => { state.sort = e.target.value; render(); });
+
+  function render(){
+    if (!TripsPage.cardHTML || !TripsPage.items.land) return; // land is ready at once; cruises draw in when the API answers
+    const list = trips(state.year).sort((a, b) => {
+      if (a.soldOut !== b.soldOut) return a.soldOut ? 1 : -1; // sold out at the bottom, like the other two views
+      const byDate = new Date(a.sortDate) - new Date(b.sortDate);
+      switch (state.sort) {
+        case "date-desc": return -byDate;
+        case "duration-asc": return (a.nights - b.nights) || byDate;
+        case "duration-desc": return (b.nights - a.nights) || byDate;
+        default: return byDate;
+      }
+    });
+    const n = list.length;
+    allEl("resultsCount").innerHTML = `<strong>${n}</strong> trip${n === 1 ? "" : "s"}`;
+    allEl("filterMobileDone").textContent = `Show ${n} trip${n === 1 ? "" : "s"}`;
+    const on = (state.year ? 1 : 0) + (state.sort !== "date" ? 1 : 0), badge = allEl("filterActiveCount");
+    badge.textContent = on; badge.hidden = !on; allEl("filterMobileToggle").classList.toggle("has-active", on > 0);
+    grid.innerHTML = n ? list.map(TripsPage.cardHTML).join("")
+      : `<div class="empty-state"><h3>No trips that year yet</h3><p>Pick another year, or check back soon.</p></div>`;
+    if (TripsPage.items.cruises == null) grid.insertAdjacentHTML("beforeend", `<div class="empty-state"><p>Loading cruises…</p></div>`);
+  }
+
+  // facts + the dropdown's count: everything, whatever the filters
+  function update(){
+    renderYears();
+    const everything = trips(null), cruises = TripsPage.items.cruises || [], land = TripsPage.items.land ? TripsPage.items.land(null) : [];
+    allEl("factTrips").textContent = String(everything.length);
+    allEl("factCruises").textContent = TripsPage.items.cruises ? String(cruises.length) : "—";
+    allEl("factLand").textContent = String(land.length);
+    const next = everything.map(x => x.sortDate).sort()[0];
+    allEl("factNext").textContent = next ? fmtDate(next) : "—";
+    if (TripsPage.items.cruises) TripsPage.setCount("all", String(everything.length));
+    render();
+  }
+  TripsPage.onItems = update;
+
+  // phone: the same "Filters" panel as the other views
+  allEl("filterMobileToggle").addEventListener("click", () => {
+    const open = !filterBar.classList.contains("mobile-open");
+    filterBar.classList.toggle("mobile-open", open); allEl("filterMobileToggle").setAttribute("aria-expanded", open);
+  });
+  allEl("filterMobileDone").addEventListener("click", () => {
+    filterBar.classList.remove("mobile-open"); allEl("filterMobileToggle").setAttribute("aria-expanded", false);
+    const top = document.querySelector("#allView .cruise-grid-section").getBoundingClientRect().top + scrollY - filterBar.offsetHeight;
+    if (scrollY > top) window.scrollTo({ top, behavior: "smooth" });
+  });
+
+  update();
+})();
+</script>
+
+<script src="/js/nav.js?v=20261013"></script>
+</body>
+</html>

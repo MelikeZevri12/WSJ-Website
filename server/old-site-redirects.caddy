@@ -19,8 +19,8 @@ map {path} {old_path} {
 # address to its current name.
 map {old_path} {old_site_target} {
         /testimonials/                                                             /testimonials                                          # page (new testimonials page)
-        /trips/                                                                    /cruises                                               # no certain match
-        /trips                                                                     /cruises
+        /trips/                                                                    /worldschooling-trips#cruises                          # no certain match
+        /trips                                                                     /worldschooling-trips#cruises
         /trips/december-panama-canal-cruise/                                       /cruises/PC-03DEC2026-LOS-FOR                          # booking code on old page
         /trips/december-panama-canal-cruise                                        /cruises/PC-03DEC2026-LOS-FOR
         /trips/september-singapore-to-australia/                                   /cruises/PC-28SEP2027-SIN-PER                          # booking code on old page
@@ -151,16 +151,16 @@ map {old_path} {old_site_target} {
         /trips/september-hawaii-tahiti-fiji-new-zealand-cruise                     /cruises/CE-20SEP2026-VAN-HON
         /trips/march-morocco-family-journey/                                       /land-trips/morocco-family-journey                     # land trip
         /trips/march-morocco-family-journey                                        /land-trips/morocco-family-journey
-        /group-cruises/                                                            /cruises                                               # page
-        /group-cruises                                                             /cruises
-        /our-trips/                                                                /cruises                                               # page
-        /our-trips                                                                 /cruises
-        /worldschooling-trips-2026/                                                /cruises                                               # page
-        /worldschooling-trips-2026                                                 /cruises
-        /worldschooling-trips-2027/                                                /cruises                                               # page
-        /worldschooling-trips-2027                                                 /cruises
-        /austria-retreats/                                                         /land-trips?filter=austria-retreats                 # page (Austria Retreats filter)
-        /austria-retreats                                                          /land-trips?filter=austria-retreats
+        /group-cruises/                                                            /worldschooling-trips#cruises                          # page
+        /group-cruises                                                             /worldschooling-trips#cruises
+        /our-trips/                                                                /worldschooling-trips                                  # page
+        /our-trips                                                                 /worldschooling-trips
+        /worldschooling-trips-2026/                                                /worldschooling-trips#cruises                          # page
+        /worldschooling-trips-2026                                                 /worldschooling-trips#cruises
+        /worldschooling-trips-2027/                                                /worldschooling-trips#cruises                          # page
+        /worldschooling-trips-2027                                                 /worldschooling-trips#cruises
+        /austria-retreats/                                                         /worldschooling-trips?filter=austria-retreats#landtrips # page (Austria Retreats filter)
+        /austria-retreats                                                          /worldschooling-trips?filter=austria-retreats#landtrips
         /cancellation-refund-policy/                                               /cancellation-policy                                   # page
         /cancellation-refund-policy                                                /cancellation-policy
         default                                    ""

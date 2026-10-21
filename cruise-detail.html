@@ -435,7 +435,7 @@
           <div class="total">
             <div class="t-label">Total for your family</div>
             <div class="t-value" id="totalPrice">$5,554</div>
-            <div class="t-sub" id="perPerson">≈ $2,777 per person</div>
+            <div class="t-sub" id="perPerson"></div>
           </div>
           <div class="price-meta" id="priceMeta"><!-- populated by renderPriceMeta() --></div>
           <a href="#" class="btn btn-primary open-booking-btn" id="reserveBtn">Book This Cabin</a>
@@ -505,7 +505,7 @@
             <button type="button" class="proof-arrow-btn" id="depPrevBtn" aria-label="Previous cruises">‹</button>
             <button type="button" class="proof-arrow-btn" id="depNextBtn" aria-label="More cruises">›</button>
           </div>
-          <a href="/cruises.html" class="dep-all">See All Cruises →</a>
+          <a href="/worldschooling-trips.html#cruises" class="dep-all">See All Cruises →</a>
         </div>
       </div>
       <p class="dep-note" id="depNote"></p>
@@ -843,6 +843,7 @@
       <button type="button" class="modal-close" id="modalCloseBtn2" aria-label="Close">×</button>
       <h3>Thanks — your inquiry is in!</h3>
       <p>We've got your details and will follow up with current pricing within 24–48 hours.</p>
+      <p class="form-success-note">Please add <strong>booking@everyavenue.com</strong> to your approved senders and check your spam folder. If you don’t hear back within 48 hours, reach out over <a href="https://api.whatsapp.com/message/6C5D7L3I726ND1?autoload=1&app_absent=0" target="_blank" rel="noopener">WhatsApp</a> or <a href="https://www.messenger.com/login.php?next=https%3A%2F%2Fwww.messenger.com%2Ft%2F1472067489710819" target="_blank" rel="noopener">Facebook Messenger</a>.</p>
       <button type="button" class="back-link" id="resetFormBtn">Start over</button>
     </div>
   </div>
@@ -1048,6 +1049,7 @@ function renderGroupImage(cruise) {
 }
 
 // ---------- LOAD THIS CRUISE (slug from the URL path, see loadCruise) ----------
+let flightsCruise = null; // the loaded cruise, for the flights WhatsApp message
 let currentCruiseId = null; // set once loadCruise() resolves - the Book Your Spot form submits against this
 let isSoldOut = false; // set once loadCruise() resolves - every open-booking-btn checks this to decide Reserve vs Waitlist
 let isSetSail = false; // set once loadCruise() resolves - true once the departure date has passed; takes priority over isSoldOut (see applySetSailState)
@@ -1548,13 +1550,13 @@ async function loadCruise(){
       if (cruise.addOnForCruise?.businessId) location.replace(`/cruises/${encodeURIComponent(cruise.addOnForCruise.slug || cruise.addOnForCruise.businessId)}#addon`);
       else if (legs.length >= 3 && cruise.backToBack.slug) location.replace(`/journeys/${encodeURIComponent(cruise.backToBack.slug)}`);
       else if (otherLeg) location.replace(`/cruises/${encodeURIComponent(otherLeg.slug || otherLeg.businessId)}#addon`);
-      else location.replace('/cruises.html');
+      else location.replace('/worldschooling-trips.html#cruises');
       return;
     }
     // Individual cruises are sold outside the group, internal only - no
     // public page, and no main cruise to forward to either.
     if (cruise.isIndividual) {
-      location.replace('/cruises.html');
+      location.replace('/worldschooling-trips.html#cruises');
       return;
     }
 
@@ -1567,6 +1569,7 @@ async function loadCruise(){
 
     document.title = cruise.title ? `${cruise.title} — Worldschooling Journeys` : 'Cruise — Worldschooling Journeys';
     document.getElementById('heroTitle').textContent = cruise.title || '';
+    flightsCruise = cruise;
     mainHeroStats = {
       nights: cruise.nights,
       ports: uniquePortKeys(cruise.stops).size,
@@ -1864,13 +1867,12 @@ function updateSummary(){
     return;
   }
   const total = base + (includeAddon ? extra : 0);
-  const pp = Math.round(total / guests);
   totalPriceEl.textContent = fmt(total);
   perPersonEl.textContent = includeAddon
     ? (addOnIsBackToBack
-      ? `${fmt(base)} + ${fmt(extra)} for both cruises · ≈ ${fmt(pp)} per person`
-      : `${fmt(base)} cruise + ${fmt(extra)} add-on · ≈ ${fmt(pp)} per person`)
-    : `≈ ${fmt(pp)} per person`;
+      ? `${fmt(base)} + ${fmt(extra)} for both cruises`
+      : `${fmt(base)} cruise + ${fmt(extra)} add-on`)
+    : '';
   sbPrice.innerHTML = `<span>${includeAddon ? (addOnIsBackToBack ? 'Both cruises' : 'With add-on') : 'From'}</span>${fmt(total)} total`;
 }
 
@@ -2608,12 +2610,21 @@ function applySetSailState(cruise){
 
 // ---------- FLIGHT HELP: WhatsApp chat ----------
 // "Ask Us About Flights" opens a WhatsApp chat with the team (+40 733 449 977),
-// with a first message naming this trip and its page so they know which one.
+// with a first message ready to send: the trip (name, dates, destination, ship),
+// then "I'm flying from:" / "On date:" for them to fill in.
 const FLIGHTS_WHATSAPP = 'https://wa.me/40733449977';
+// "10-day Worldschooling Alaska ... Cruise" -> "Alaska ... Cruise" ("3-leg 42-day Worldschooling ..." too)
+const tripShortName = (title) => (title || '').replace(/^(?:\s*(?:\d+[\s-]*(?:days?|legs?|nights?|cruises?)|worldschooling)\b)+\s*/i, '').trim();
+function flightsTrip(){
+  const c = flightsCruise;
+  if (!c) return { name: tripShortName(document.getElementById('heroTitle').textContent) };
+  return { name: tripShortName(c.title || c.destination), dates: c.sailDates, destination: c.destination, ship: c.ship && c.ship.name };
+}
 document.querySelectorAll('.open-flights-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    const trip = document.getElementById('heroTitle').textContent.trim();
-    const text = `Hi! I'd like help finding flights for ${trip || 'this trip'}: ${location.origin}${location.pathname}`;
+    const t = flightsTrip();
+    const details = [t.dates, t.destination, t.ship].filter(Boolean).join(', ');
+    const text = `Hi! I'm interested in the ${t.name || 'this trip'}${details ? ` (${details})` : ''} and I'd like help with flights.\nI'm flying from: \nOn date: `;
     btn.href = `${FLIGHTS_WHATSAPP}?text=${encodeURIComponent(text)}`;
   });
 });

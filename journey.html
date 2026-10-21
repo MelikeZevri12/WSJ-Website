@@ -649,7 +649,7 @@
             <button type="button" class="proof-arrow-btn" id="depPrevBtn" aria-label="Previous cruises">‹</button>
             <button type="button" class="proof-arrow-btn" id="depNextBtn" aria-label="More cruises">›</button>
           </div>
-          <a href="/cruises.html" class="dep-all">See All Cruises →</a>
+          <a href="/worldschooling-trips.html#cruises" class="dep-all">See All Cruises →</a>
         </div>
       </div>
       <p class="dep-note" id="depNote"></p>
@@ -999,6 +999,7 @@
       <button type="button" class="modal-close" id="modalCloseBtn2" aria-label="Close">×</button>
       <h3>Thanks — your inquiry is in!</h3>
       <p>We've got your details and will follow up with current pricing within 24–48 hours.</p>
+      <p class="form-success-note">Please add <strong>booking@everyavenue.com</strong> to your approved senders and check your spam folder. If you don’t hear back within 48 hours, reach out over <a href="https://api.whatsapp.com/message/6C5D7L3I726ND1?autoload=1&app_absent=0" target="_blank" rel="noopener">WhatsApp</a> or <a href="https://www.messenger.com/login.php?next=https%3A%2F%2Fwww.messenger.com%2Ft%2F1472067489710819" target="_blank" rel="noopener">Facebook Messenger</a>.</p>
       <button type="button" class="back-link" id="resetFormBtn">Start over</button>
     </div>
   </div>
@@ -1418,7 +1419,7 @@ function renderPricing(){
   const st = statsFor(sel);
   document.getElementById('totalPrice').textContent = total != null ? fmt(total) : noPriceLabel(sel, guests);
   document.getElementById('perPerson').textContent = total != null
-    ? `≈ ${fmt(Math.round(total / guests))} per person · ≈ ${fmt(Math.round(total / st.nights))} per night for your family` : '';
+    ? `≈ ${fmt(Math.round(total / st.nights))} per night for your family` : '';
   const pb = document.getElementById('priceBreakdown');
   const segLegs = legsIn(sel);
   const fold = segLegs.length > 3;
@@ -1837,12 +1838,29 @@ document.addEventListener('keydown', (e) => {
 
 // ---------- FLIGHT HELP: WhatsApp chat ----------
 // "Ask Us About Flights" opens a WhatsApp chat with the team (+40 733 449 977),
-// with a first message naming this trip and its page so they know which one.
+// with a first message ready to send: the trip (name, dates, destination, ship),
+// then "I'm flying from:" / "On date:" for them to fill in.
 const FLIGHTS_WHATSAPP = 'https://wa.me/40733449977';
+// "3-leg 42-day Worldschooling Asia Extravaganza Cruise" -> "Asia Extravaganza Cruise"
+const tripShortName = (title) => (title || '').replace(/^(?:\s*(?:\d+[\s-]*(?:days?|legs?|nights?|cruises?)|worldschooling)\b)+\s*/i, '').trim();
+// The part of the journey they've picked (all of it unless they chose fewer cruises).
+function flightsTrip(){
+  const name = tripShortName(document.getElementById('heroTitle').textContent);
+  if (!LEGS.length) return { name };
+  const legs = legsIn(sel), first = legs[0], last = legs[legs.length - 1];
+  const ships = [...new Set(legs.map(l => l.raw.ship?.name).filter(Boolean))];
+  return {
+    name,
+    dates: fmtRange(first.start, last.end),
+    destination: `${shortPort(STOPS_LINE[sel.start])} → ${shortPort(STOPS_LINE[sel.end + 1])}`,
+    ship: ships.join(' + '),
+  };
+}
 document.querySelectorAll('.open-flights-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    const trip = document.getElementById('heroTitle').textContent.trim();
-    const text = `Hi! I'd like help finding flights for ${trip || 'this trip'}: ${location.origin}${location.pathname}`;
+    const t = flightsTrip();
+    const details = [t.dates, t.destination, t.ship].filter(Boolean).join(', ');
+    const text = `Hi! I'm interested in the ${t.name || 'this trip'}${details ? ` (${details})` : ''} and I'd like help with flights.\nI'm flying from: \nOn date: `;
     btn.href = `${FLIGHTS_WHATSAPP}?text=${encodeURIComponent(text)}`;
   });
 });

@@ -29,7 +29,7 @@
     {"slug":"austria-summer","param":"year","title":"14-day Worldschooling Austrian Mountain Summer Retreat","nights":14,"regions":["Europe"],"per":"person","photo":"/images/land-trips/austria-summer.webp","photoLabel":"Austrian Alps in summer", "years": {
       2027: {"dates":"May 30 – Jul 11, 2027 · 3 sessions","sortDate":"2027-05-30","price":"€1,852","departures":3} } },
     {"slug":"galapagos","param":"departure","title":"8-day Worldschooling Galápagos Island Hopping Tour","nights":7,"regions":["South America"],"per":"person","photo":"/images/land-trips/galapagos.webp","photoLabel":"Galápagos", "years": {
-      2027: {"dates":"Aug 8–15, 2027","sortDate":"2027-08-08","price":"$3,735","departures":1} } },
+      2027: {"dates":"Aug 8–15 & Aug 22–29 (teens 12+), 2027","sortDate":"2027-08-08","price":"$3,735","departures":2} } },
     {"slug":"austria-fall","param":"year","title":"14-day Worldschooling Austrian Fall Mountain Retreat","nights":14,"regions":["Europe"],"per":"person","photo":"/images/land-trips/austria-fall.webp","photoLabel":"Austrian Alps in fall", "years": {
       2027: {"dates":"Sep 11–25, 2027","sortDate":"2027-09-11","price":"€1,740","departures":1} } },
     {"slug":"dude-ranch","param":"year","title":"7-day Worldschooling Horseback Riding Dude Ranch Experience","nights":6,"regions":["North America"],"per":"person","photo":"/images/land-trips/dude-ranch.webp","photoLabel":"VeeBar Guest Ranch", "years": {

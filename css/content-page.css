@@ -195,6 +195,13 @@ section.dark-section .section-head .eyebrow{color:var(--gold);}
 .nl-msg:empty{display:none;}
 .nl-msg.nl-ok{color:var(--green-dark);font-weight:700;}
 .nl-msg.nl-err{color:var(--sunset-1);}
+/* newsletter box: the message covers the email box + button instead of pushing the card taller */
+.newsletter-form{position:relative;}
+.newsletter-form > .nl-msg{position:absolute;inset:0;z-index:1;margin:0;padding:6px 12px;display:flex;align-items:center;justify-content:center;flex:none;background:var(--white);border:1.5px solid var(--line);border-radius:4px;font-size:14px;line-height:1.35;color:var(--dark);animation:nlMsgIn .2s ease;}
+.newsletter-form > .nl-msg:empty{display:none;}
+.newsletter-form > .nl-msg.nl-ok{color:var(--green-dark);border-color:var(--green);}
+.newsletter-form > .nl-msg.nl-err{color:var(--sunset-1);cursor:pointer;}
+@keyframes nlMsgIn{from{opacity:0;}to{opacity:1;}}
 /* CONTACT */
 .contact-grid{display:grid;grid-template-columns:1fr 1.3fr;gap:56px;align-items:start;}
 .contact-channels{display:flex;flex-direction:column;gap:16px;margin-top:26px;}
