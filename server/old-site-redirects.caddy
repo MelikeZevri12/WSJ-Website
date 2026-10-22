@@ -403,6 +403,13 @@ map {path} {old_wp_page} {
 @oldWpPage expression {old_wp_page} != ""
 redir @oldWpPage {old_wp_page} 301
 
+# Any other old trip address typed without /travel, mostly older names of a trip that WordPress still knows
+# (/trips/galapagos-island-hopping-tour -> WordPress -> /travel/trips/galapagos-island-hopping-tour-2027/ -> the list
+# above -> /land-trips/galapagos-island-hopping-tour). Same result as typing it with /travel. Listed addresses never get
+# here (the redirects above come first, in this order).
+@oldTripOther path_regexp oldtrip ^/trips/([^/]+)/?$
+redir @oldTripOther /travel/trips/{re.oldtrip.1}/ 301
+
 # ---------- Served by the old WordPress (cPanel host 107.155.113.78) ----------
 # Every /travel/... address that wasn't redirected above: the old pages, the doc and excursion pages (with their forms and
 # rosters), WordPress's files, the form endpoint (wp-admin/admin-ajax.php), the admin and the login. Their own redirects
