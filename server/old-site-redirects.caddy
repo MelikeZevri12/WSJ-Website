@@ -139,6 +139,8 @@ map {old_path} {old_site_target} {
         /trips/september-vancouver-to-hawaii-cruise                                /cruises/CE-20SEP2026-VAN-HON
         /trips/galapagos-island-hopping-tour-2027/                                 /land-trips/galapagos-island-hopping-tour              # land trip
         /trips/galapagos-island-hopping-tour-2027                                  /land-trips/galapagos-island-hopping-tour
+        /trips/august-galapagos-island-hopping-tour/                               /land-trips/galapagos-island-hopping-tour              # land trip (old page, 404 on WordPress)
+        /trips/august-galapagos-island-hopping-tour                                /land-trips/galapagos-island-hopping-tour
         /trips/nov-19-dec-22-south-america/                                        /cruises/PC-19NOV2026-FOR-BUE                          # date + place
         /trips/nov-19-dec-22-south-america                                         /cruises/PC-19NOV2026-FOR-BUE
         /trips/october-asia-extravaganza/                                          /cruises/RC-02OCT2026-LOS-TOK                          # date + place
