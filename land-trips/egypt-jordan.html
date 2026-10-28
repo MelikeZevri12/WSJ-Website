@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <title>Egypt & Jordan Adventure — Worldschooling Journeys</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -252,7 +256,8 @@ const TRIP = {
     deposit: 500, depositUnit: 'per person',
     nonRefundableDays: 150, finalPaymentDays: 120,
     lines: [['Cancellations', 'Cancelling 100–120 days before travel incurs an 80% cancellation fee. Cancelling 100 days or less before travel incurs a 100% fee. No-shows count as a cancellation.'],
-            ['Booking after the final payment date', 'The full balance is due as soon as we share your quote. The deposit alone doesn’t secure your spots; they’re confirmed once the full payment is received.']],
+            ['Missed payments', 'If the final payment isn’t received within 14 days of the due date, your spots are released and the deposit stays non-refundable.'],
+            ['Booking after the final payment date', 'The full balance is due at the time of booking.']],
   },
   faq: [],
 };
@@ -467,12 +472,7 @@ function renderDeparture(){
         </div>
       </div>`;
   } else {
-    rc.innerHTML = `
-      <div class="roster-full-placeholder">
-        <h3>The Roster Is Just Getting Started</h3>
-        <p>We open the family roster once at least ${ROSTER_MIN_FAMILIES} families have booked, so you can see exactly who’s coming, including kid ages. Book now and you’ll be one of the first families on this departure.</p>
-        <a href="#" class="btn btn-primary book-btn">Book Your Spot</a>
-      </div>`;
+    rc.innerHTML = '';
   }
 
   // cost

@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <title>New Zealand Roadtrip — Worldschooling Journeys</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -277,9 +281,12 @@ const TRIP = {
   notIncluded: ['International flights', 'Arrival and departure transfers', 'Any visas required', 'Meals and drinks not mentioned in the itinerary', 'Optional activities, and transportation to them unless mentioned', 'Extra nights before or after the trip', 'Tips for leaders, guides and driver', 'Personal expenses', 'Travel insurance, required for all participants (we recommend <a href="https://www.notion.so/Travel-Insurance-Guide-Faye-vs-SafetyWing-3334ff0a052380f5abedc5605a762ddc?source=copy_link" target="_blank" rel="noopener">SafetyWing or Faye</a>)'],
   policy: {
     currency: '$', deposit: 1000, depositUnit: 'per person',
-    nonRefundableDays: 150, finalPaymentDays: 120, fullNonRefDays: 90,
+    // 2027 policy: the deposit is refundable until the final payment date, then non-refundable
+    nonRefundableDays: 240, finalPaymentDays: 240, fullNonRefDays: 210,
+    intro: 'At this time, we are only collecting the deposit. Once the final trip price is confirmed, we will update you with the remaining balance and payment details.',
     lines: [['Missed payments', 'If the final payment isn’t received within 14 days of the due date, your spot is released and the deposit stays non-refundable.'],
-            ['Booking after the final payment date', 'The full balance is due as soon as we share your quote. The deposit alone doesn’t secure your spots; they’re confirmed once the full payment is received.']],
+            ['Wire transfer', 'Final payments can be made by wire transfer to avoid credit card service fees. Please reach out to ask about it.'],
+            ['Booking after the final payment date', 'The full balance is due as soon as we share your quote. The deposit alone doesn’t secure your spots; they’re confirmed once the final payment is received.']],
   },
   faq: [],
 };
@@ -897,12 +904,7 @@ function renderDeparture(){
         </div>
       </div>`;
   } else {
-    rc.innerHTML = `
-      <div class="roster-full-placeholder">
-        <h3>The Roster Is Just Getting Started</h3>
-        <p>We open the family roster once at least ${ROSTER_MIN_FAMILIES} families have booked, so you can see exactly who’s coming, including kid ages. Book now and you’ll be one of the first families on this departure.</p>
-        <a href="#" class="btn btn-primary book-btn">Book Your Spot</a>
-      </div>`;
+    rc.innerHTML = '';
   }
 
   // cost
@@ -911,12 +913,12 @@ function renderDeparture(){
 
   // terms (all dates calculated from the policy)
   const P = TRIP.policy, start = D(d.start);
-  const nonRef = addDays(start, -P.nonRefundableDays), finalPay = addDays(start, -P.finalPaymentDays);
-  document.getElementById('payPolicy').innerHTML = [
-    ['Deposit', `${money(P.deposit)} ${P.depositUnit}, paid when you book. The deposit alone doesn’t secure your spot; your booking is secured once the full payment is received.`],
-    ['Deposit becomes non-refundable', `${fmtD(nonRef)} (${P.nonRefundableDays} days before departure)`],
-    ['Final payment due', `${fmtD(finalPay)} (${P.finalPaymentDays} days before departure)`],
-    ...(P.fullNonRefDays ? [['Cancellations', `Cancelling between ${P.fullNonRefDays} and ${P.finalPaymentDays} days before the trip, 50% of the final payment (excluding the non-refundable deposit) is refundable. From ${fmtD(addDays(start, -P.fullNonRefDays))} (${P.fullNonRefDays} days before the trip), all payments are 100% non-refundable.`]] : []),
+  const finalPay = addDays(start, -P.finalPaymentDays), fullNonRef = addDays(start, -P.fullNonRefDays);
+  document.getElementById('payPolicy').innerHTML = (P.intro ? `<p>${P.intro}</p>` : '') + [
+    ['Deposit', `A deposit of ${money(P.deposit)} ${P.depositUnit} is required at the time of booking.`],
+    ['Deposit becomes non-refundable', `${fmtD(addDays(start, -P.nonRefundableDays))} (${P.nonRefundableDays} days before the trip${P.nonRefundableDays === P.finalPaymentDays ? ', the final payment date' : ''}). Until then, the deposit is refundable.`],
+    ['Final payment due', `${fmtD(finalPay)} (${P.finalPaymentDays} days before the trip)`],
+    ...(P.fullNonRefDays ? [['Cancellations', `For cancellations made between ${P.fullNonRefDays} and ${P.finalPaymentDays} days before the trip (${fmtD(finalPay)} through ${fmtD(fullNonRef)}), 50% of the final payment (excluding the non-refundable deposit) is refundable. The deposit remains non-refundable. Final payments are 100% non-refundable after ${fmtD(fullNonRef)} (${P.fullNonRefDays} days before the trip).`]] : []),
     ...P.lines,
     ['Travel insurance', 'Required for all participants. Travel insurance may cover certain unexpected circumstances that prevent you from attending, subject to the terms, conditions, exclusions and limits of the policy you buy. Participants are responsible for getting and keeping their own coverage. Every Avenue Travel LLC is not the insurer and does not provide insurance advice.'],
   ].map(([k, v]) => `<p><strong>${k}:</strong> ${v}</p>`).join('') +
