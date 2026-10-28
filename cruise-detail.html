@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <title>Cruise — Worldschooling Journeys</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -50,6 +54,20 @@
      margin-bottom is what actually separates the paragraphs visually. */
   #overviewDescription p{color:#4a4e55;margin:0 0 18px}
   #overviewDescription p:last-child{margin-bottom:0;}
+  /* Meet Your Host (hosted cruises) */
+  .host-grid{display:grid;grid-template-columns:260px 1fr;gap:48px;align-items:center;}
+  .host-grid:has(.host-photo[hidden]){grid-template-columns:1fr;}
+  .host-photo{width:260px;aspect-ratio:1;border-radius:50%;overflow:hidden;border:4px solid var(--white);box-shadow:0 6px 24px rgba(21,34,48,.12);}
+  .host-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+  .host-section h2{margin:0 0 4px;}
+  .host-role{color:var(--green-dark);font-weight:700;margin-bottom:16px;}
+  .host-bio p, #faqExtraAnswer p{margin:0 0 14px;}
+  .host-bio p{color:#4a4e55;}
+  .host-bio p:last-child, #faqExtraAnswer p:last-child{margin-bottom:0;}
+  @media (max-width:760px){
+    .host-grid{grid-template-columns:1fr;gap:22px;}
+    .host-photo{width:170px;}
+  }
   .subnav-inner{display:flex;gap:4px;overflow-x:auto;padding:0;justify-content:center;}
   /* Centering only holds up while every link fits on one line - once they
      overflow into horizontal scroll on narrow screens, centering would hide
@@ -267,6 +285,7 @@
 <!-- SUBNAV -->
 <nav class="subnav">
   <div class="wrap subnav-inner">
+    <a href="#host" id="hostSubnavLink" hidden>Your Host</a>
     <a href="#overview">Overview</a>
     <a href="#community">Community</a>
     <a href="#itinerary">Itinerary & Excursions</a>
@@ -279,6 +298,19 @@
     <a href="#" class="open-booking-btn" id="subnavReserveLink">Book Now</a>
   </div>
 </nav>
+
+<!-- MEET YOUR HOST (hosted cruises only: shown when the cruise has a host name - see renderHost) -->
+<section class="tint host-section" id="host" hidden>
+  <div class="wrap host-grid">
+    <div class="host-photo" id="hostPhoto" hidden></div>
+    <div>
+      <div class="eyebrow">Meet Your Host</div>
+      <h2 id="hostName"></h2>
+      <div class="host-role" id="hostRole"></div>
+      <div class="host-bio" id="hostBio"></div>
+    </div>
+  </div>
+</section>
 
 <!-- OVERVIEW (picture + description) -->
 <section class="overview" id="overview">
@@ -743,6 +775,12 @@
           <p>At Worldschooling Journeys, our mission is to create meaningful, connection-based travel experiences for homeschooling and worldschooling families who want more than just a vacation.</p><p>We believe that learning happens best through real-world experiences, especially when shared with a like-minded community. Our vision is to build a mobile village — one where families can explore the world together, support one another, and give their children the freedom to grow in environments that are rich with culture, diversity, and natural curiosity.</p><p>Whether it’s a multi-country cruise, a seasonal farm stay, RV caravanning, sailing, skiing, or slow travel — we aim to design journeys that reflect the full spectrum of what families want to experience together. We focus on:</p><ul><li>Ease and flexibility — no packing and unpacking, no rigid structure</li><li>Deep community — families who travel and learn side by side</li><li>Real-world education — through place, people, and presence</li></ul><p>We’re building more than trips — we’re building a lifestyle of freedom, connection, and learning that families can return to again and again.</p><p>Read our full vision: <a href="https://www.facebook.com/groups/everyavenuetravel/permalink/2836753246474734/" target="_blank" rel="noopener">POST</a></p>
         </div>
       </details>
+
+      <!-- this cruise's own extra question (admin: Extra FAQ) - see renderHost -->
+      <details class="faq-item" id="faqExtraItem" hidden>
+        <summary id="faqExtraQuestion"></summary>
+        <div class="faq-a" id="faqExtraAnswer"></div>
+      </details>
     </div>
   </div>
 </section>
@@ -758,51 +796,29 @@
       </div>
 
       <div class="form-progress-bar"><div class="form-progress-fill" id="progressFill"></div></div>
-      <div class="form-progress-text" id="progressText">Step 1 of 8</div>
+      <div class="form-progress-text" id="progressText"></div>
 
       <form id="bookingForm" novalidate>
-        <div class="form-step" data-step="1">
+        <div class="form-step" data-step="you" style="display:none;">
+          <div class="bs-step-title">Your details</div>
           <div class="field"><label for="fullName">Your Full Name</label><input required type="text" id="fullName" name="fullName" placeholder="Jane Smith"></div>
           <div class="field"><label for="email">Email Address</label><input required type="email" id="email" name="email" placeholder="you@email.com"></div>
-        </div>
-
-        <div class="form-step" data-step="2" style="display:none;">
           <div class="field"><label for="phone">Phone Number</label><input type="tel" id="phone" name="phone" placeholder="+1 555 555 5555"></div>
           <div class="field"><label for="contactMethod">Best way to reach you?</label>
             <select id="contactMethod" name="contactMethod"><option value="">Select</option><option>Text</option><option>Call</option><option>Email</option><option>WhatsApp</option></select>
           </div>
         </div>
 
-        <div class="form-step" data-step="3" style="display:none;">
-          <div class="field"><label for="dob">Your DOB</label><input type="date" id="dob" name="dob"></div>
+        <div class="form-step" data-step="you-more" style="display:none;">
+          <div class="bs-step-title">Passenger 1 (you)</div>
+          <div class="field"><label for="dob">Your Date of Birth</label><input type="date" id="dob" name="dob" data-book-required></div>
           <div class="field"><label for="gender">Your Gender</label>
-            <select id="gender" name="gender"><option value="">Select</option><option>Female</option><option>Male</option><option>Prefer not to say</option><option>Other</option></select>
+            <select id="gender" name="gender" data-book-required><option value="">Select</option><option>Female</option><option>Male</option><option>Prefer not to say</option><option>Other</option></select>
           </div>
+          <div class="field"><label for="citizenship">Your Citizenship</label><input type="text" id="citizenship" name="citizenship" placeholder="e.g. United States" data-book-required></div>
         </div>
 
-        <div class="form-step" data-step="4" style="display:none;">
-          <div class="field"><label for="citizenship">Your Citizenship</label><input type="text" id="citizenship" name="citizenship" placeholder="e.g. United States"></div>
-        </div>
-
-        <div class="form-step" data-step="5" style="display:none;">
-          <div class="field">
-            <label>Have you booked a trip through us before?</label>
-            <div class="radio-row">
-              <label class="radio-opt"><input type="radio" name="bookedBefore" value="yes"> Yes, before</label>
-              <label class="radio-opt"><input type="radio" name="bookedBefore" value="no" checked> No, first time</label>
-            </div>
-          </div>
-          <div class="field"><label for="hearAboutUs">How did you hear about us?</label>
-            <select id="hearAboutUs" name="hearAboutUs">
-              <option value="">Select</option>
-              <option>Instagram</option><option>Facebook</option><option>TikTok</option><option>Google Search</option>
-              <option>Family/Friend Referral</option><option>Previous Customer</option><option>WhatsApp</option>
-              <option>Email Newsletter</option><option>Other</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-step" data-step="6" style="display:none;">
+        <div class="form-step" data-step="cabin" style="display:none;">
           <div class="field">
             <label>Which cabin would you like to book?</label>
             <div class="field-hint">Select all that you'd like pricing on.</div>
@@ -820,13 +836,25 @@
           </div>
         </div>
 
-        <div class="form-step" data-step="7" style="display:none;">
-          <div class="field-hint">Traveling with others? You're Passenger 1 — add anyone else joining your cabin.</div>
-          <div id="passengerBlocks"></div>
-          <button type="button" class="add-passenger-btn" id="addPassengerBtn">+ Add a passenger</button>
+        <div class="form-step" data-step="about" style="display:none;">
+          <div class="field">
+            <label>Have you booked a trip through us before?</label>
+            <div class="radio-row">
+              <label class="radio-opt"><input type="radio" name="bookedBefore" value="yes"> Yes, before</label>
+              <label class="radio-opt"><input type="radio" name="bookedBefore" value="no" checked> No, first time</label>
+            </div>
+          </div>
+          <div class="field"><label for="hearAboutUs">How did you hear about us?</label>
+            <select id="hearAboutUs" name="hearAboutUs">
+              <option value="">Select</option>
+              <option>Instagram</option><option>Facebook</option><option>TikTok</option><option>Google Search</option>
+              <option>Family/Friend Referral</option><option>Previous Customer</option><option>WhatsApp</option>
+              <option>Email Newsletter</option><option>Other</option>
+            </select>
+          </div>
         </div>
 
-        <div class="form-step" data-step="8" style="display:none;">
+        <div class="form-step" data-step="review" style="display:none;">
           <div class="field"><label for="comments">Questions or comments?</label><textarea id="comments" name="comments" rows="3" placeholder="Optional"></textarea></div>
           <div class="review-box" id="reviewBox"></div>
         </div>
@@ -892,6 +920,7 @@
 </div>
 
 <script src="/js/picture-url.js"></script>
+<script src="/js/booking-steps.js"></script>
 <script>
 const API = 'https://api.worldschoolingjourneys.com';
 const PORT_GENERIC_IMAGE = '/images/port-generic.webp'; // itinerary fallback when a port has no picture
@@ -1004,6 +1033,35 @@ function renderParagraphs(containerId, text){
     const p = document.createElement('p');
     p.textContent = paragraph;
     container.appendChild(p);
+  }
+}
+
+// Same as renderParagraphs, but web addresses (https://...) become links that open in a new tab.
+function renderLinkedParagraphs(container, text){
+  container.innerHTML = (text || '').split('\n').map((p) => p.trim()).filter(Boolean)
+    .map((p) => `<p>${escapeHtml(p).replace(/https?:\/\/[^\s<]+[^\s<.,;:!?)]/g, (u) => `<a href="${u}" target="_blank" rel="noopener">${u.replace(/^https?:\/\/(www\.)?/, '')}</a>`)}</p>`).join('');
+}
+
+// Hosted cruise (Cruise Type "Hosted Cruise" in the dashboards): "Meet Your Host" first under the
+// hero, once it has a host name. Plus the cruise's extra FAQ as the last question (any cruise).
+function renderHost(cruise){
+  const hosted = !!(cruise.isHosted && cruise.hostName);
+  document.getElementById('host').hidden = !hosted;
+  document.getElementById('hostSubnavLink').hidden = !hosted;
+  if (hosted) {
+    document.getElementById('hostName').textContent = cruise.hostName;
+    document.getElementById('hostRole').textContent = cruise.hostRole || '';
+    document.getElementById('hostRole').hidden = !cruise.hostRole;
+    renderLinkedParagraphs(document.getElementById('hostBio'), cruise.hostBio);
+    const photo = document.getElementById('hostPhoto');
+    photo.hidden = !cruise.hostPhotoUrl;
+    photo.innerHTML = cruise.hostPhotoUrl ? `<img src="${pictureUrl(cruise.hostPhotoUrl)}" alt="${escapeHtml(cruise.hostName)}">` : '';
+  }
+  const faq = !!(cruise.extraFaqQuestion && cruise.extraFaqAnswer);
+  document.getElementById('faqExtraItem').hidden = !faq;
+  if (faq) {
+    document.getElementById('faqExtraQuestion').textContent = cruise.extraFaqQuestion;
+    renderLinkedParagraphs(document.getElementById('faqExtraAnswer'), cruise.extraFaqAnswer);
   }
 }
 
@@ -1587,6 +1645,7 @@ async function loadCruise(){
     document.getElementById('overviewSubtitle').textContent = cruise.subtitle || cruise.title || '';
     renderParagraphs('overviewDescription', cruise.description);
     renderGroupImage(cruise);
+    renderHost(cruise);
 
     document.getElementById('amenitiesShipName').textContent = cruise.ship.name;
     renderAmenities(cruise.ship);
@@ -2004,6 +2063,20 @@ async function rosterPairingLines(cruise){
   return lines.join('');
 }
 
+// Every kid on the roster, youngest first: "6b", "10g" (b = boy, g = girl; no letter when the
+// gender isn't known). Drawn as chips, with a key underneath.
+function kidAgesHTML(kidAges){
+  if(!kidAges.length) return '<div class="rf-sub">No kids on this sailing yet.</div>';
+  const chips = kidAges.map(k => {
+    const m = /^(\d+)([bg]?)$/.exec(k) || [, k, ''];
+    const age = m[1] === '0' ? '<1' : m[1];
+    return `<span class="rf-kid ${m[2]}" aria-label="${age}${m[2] ? (m[2] === 'g' ? ' girl' : ' boy') : ''}">${escapeHtml(age)}${m[2] ? `<small>${m[2]}</small>` : ''}</span>`;
+  });
+  const key = ['b', 'g'].filter(c => kidAges.some(k => k.endsWith(c)))
+    .map(c => `<span><span class="rf-kid ${c}"><small>${c}</small></span> ${c === 'g' ? 'girl' : 'boy'}</span>`).join('');
+  return `<div class="rf-kids">${chips.join('<span class="rf-sep">, </span>')}</div>${key ? `<div class="rf-kids-key">${key}</div>` : ''}`;
+}
+
 async function renderRoster(cruiseId, cruise){
   let roster = { families: 0, adults: 0, kids: 0, ageBrackets: [] };
   try {
@@ -2040,8 +2113,8 @@ async function renderRoster(cruiseId, cruise){
         </div>
       </div>
       <div class="rf-col-right">
-        <div class="rf-ages-label">Kid Ages Aboard</div>
-        ${roster.ageBrackets.map(b => `
+        <div class="rf-ages-label">Kid Ages${roster.kidAges ? '' : ' Aboard'}</div>
+        ${roster.kidAges ? kidAgesHTML(roster.kidAges) : roster.ageBrackets.map(b => `
           <div class="rf-bracket-row">
             <div class="rf-bracket-name">${b.label}</div>
             <div class="rf-bracket-track"><div class="rf-bracket-fill" style="width:${Math.round(b.count/maxBracket*100)}%"></div></div>
@@ -2087,75 +2160,16 @@ function renderFlights(departurePort){
 // ---------- MULTISTEP BOOKING FORM (submits to backend on step 8) ----------
 const bookingForm = document.getElementById('bookingForm');
 const bookingFormWrap = document.getElementById('booking-form');
-const totalSteps = document.querySelectorAll('.form-step').length;
-let currentStep = 1;
-let passengers = []; // Passenger 2, 3, ... each {name, dob, gender, citizenship}
-
-function showStep(n){
-  currentStep = n;
-  document.querySelectorAll('.form-step').forEach(el => {
-    el.style.display = (parseInt(el.dataset.step, 10) === n) ? '' : 'none';
-  });
-  document.getElementById('prevStepBtn').style.visibility = n === 1 ? 'hidden' : 'visible';
-  document.getElementById('nextStepBtn').style.display = n < totalSteps ? 'inline-block' : 'none';
-  document.getElementById('submitBtn').style.display = n === totalSteps ? 'inline-block' : 'none';
-  document.getElementById('progressFill').style.width = Math.round((n / totalSteps) * 100) + '%';
-  document.getElementById('progressText').textContent = `Step ${n} of ${totalSteps}`;
-  if(n === totalSteps) renderReview();
-}
-
-document.getElementById('nextStepBtn').addEventListener('click', () => {
-  if(!bookingForm.reportValidity()) return;
-  if(currentStep < totalSteps) showStep(currentStep + 1);
-});
-document.getElementById('prevStepBtn').addEventListener('click', () => {
-  if(currentStep > 1) showStep(currentStep - 1);
-});
-bookingForm.addEventListener('keydown', (e) => {
-  if(e.key === 'Enter' && e.target.tagName !== 'TEXTAREA'){
-    e.preventDefault();
-  }
-});
-
-function renderPassengers(){
-  const wrap = document.getElementById('passengerBlocks');
-  wrap.innerHTML = passengers.map((p, i) => `
-    <div class="passenger-block">
-      <div class="passenger-block-head">
-        <h5>Passenger ${i + 2}</h5>
-        <button type="button" class="remove-passenger" data-remove="${i}">Remove</button>
-      </div>
-      <div class="passenger-field-grid">
-        <div class="field"><label>Full Name</label><input type="text" data-field="name" data-idx="${i}" value="${p.name || ''}"></div>
-        <div class="field"><label>DOB</label><input type="date" data-field="dob" data-idx="${i}" value="${p.dob || ''}"></div>
-        <div class="field"><label>Gender</label>
-          <select data-field="gender" data-idx="${i}">
-            <option value="">Select</option>
-            ${['Female','Male','Prefer not to say','Other'].map(g => `<option ${p.gender === g ? 'selected' : ''}>${g}</option>`).join('')}
-          </select>
-        </div>
-        <div class="field"><label>Citizenship</label><input type="text" data-field="citizenship" data-idx="${i}" value="${p.citizenship || ''}"></div>
-      </div>
-    </div>`).join('');
-
-  wrap.querySelectorAll('input, select').forEach(el => {
-    el.addEventListener('input', (e) => {
-      const idx = parseInt(e.target.dataset.idx, 10);
-      passengers[idx][e.target.dataset.field] = e.target.value;
-    });
-  });
-  wrap.querySelectorAll('[data-remove]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      passengers.splice(parseInt(e.target.dataset.remove, 10), 1);
-      renderPassengers();
-    });
-  });
-}
-
-document.getElementById('addPassengerBtn').addEventListener('click', () => {
-  if(passengers.length >= 11) return;
-  passengers.push({name:'', dob:'', gender:'', citizenship:''});
-  renderPassengers();
+// Steps, "Who's traveling?" and one step per passenger: js/booking-steps.js. This page adds its own
+// review rows and submit.
+const bookingSteps = BookingSteps.create({
+  form: bookingForm,
+  progressFill: document.getElementById('progressFill'),
+  progressText: document.getElementById('progressText'),
+  prevBtn: document.getElementById('prevStepBtn'),
+  nextBtn: document.getElementById('nextStepBtn'),
+  submitBtn: document.getElementById('submitBtn'),
+  onReview: renderReview,
 });
 
 function fieldValue(name){
@@ -2175,11 +2189,11 @@ function fieldValue(name){
 
 function renderReview(){
   const rows = [
+    ...bookingSteps.summaryRows(),
     ['Full name', fieldValue('fullName')],
     ['Email', fieldValue('email')],
     ['Phone', fieldValue('phone')],
     ['Cabin', fieldValue('cabinChoice')],
-    ['Total passengers', String(passengers.length + 1)],
     ['Booked with us before', fieldValue('bookedBefore') === 'yes' ? 'Yes' : 'No'],
     ...(currentAddOn ? [['Including add-on', document.getElementById('addonChoice').checked ? 'Yes' : 'No']] : []),
   ];
@@ -2243,7 +2257,7 @@ bookingForm.addEventListener('submit', async (e) => {
         hearAboutUs: fieldValue('hearAboutUs'),
         cabinChoice: fieldValue('cabinChoice'),
         comments: fieldValue('comments'),
-        passengers,
+        ...bookingSteps.data(),
       };
       if (addOnChosen) {
         // Back to back or add-on: a linked request on BOTH cruises, in
@@ -2269,15 +2283,11 @@ bookingForm.addEventListener('submit', async (e) => {
 
 document.getElementById('resetFormBtn').addEventListener('click', () => {
   bookingForm.reset();
-  passengers = [];
-  renderPassengers();
   bookingFormWrap.style.display = '';
   document.getElementById('formSuccess').style.display = 'none';
-  showStep(1);
+  bookingSteps.reset();
 });
 
-renderPassengers();
-showStep(1);
 
 // ---------- BOOKING MODAL open/close ----------
 const bookingModalOverlay = document.getElementById('bookingModalOverlay');

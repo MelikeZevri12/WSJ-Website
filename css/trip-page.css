@@ -131,6 +131,7 @@ section.night-sky{
   background:var(--white);border:1px solid var(--green-line);border-radius:4px;
   padding:20px 24px;margin-bottom:22px;
   }
+.roster-full-card:empty{display:none;}
 #rosterCardFull h3{color:var(--dark);}
 .rf-columns{display:grid;grid-template-columns:1fr 1.35fr;gap:0;align-items:start;}
 .rf-col-left{padding-right:26px;border-right:1px dashed var(--line);}
@@ -148,6 +149,17 @@ section.night-sky{
 .rf-bracket-track{flex:1;height:6px;background:var(--green-tint);border-radius:5px;overflow:hidden;}
 .rf-bracket-fill{height:100%;background:var(--green);border-radius:5px;}
 .rf-bracket-count{flex:0 0 20px;text-align:right;color:var(--muted);font-weight:600}
+/* cruise roster: every kid as a chip ("6b", "10g"), boys blue, girls green */
+.rf-kids{display:flex;flex-wrap:wrap;gap:7px;}
+.rf-kid{display:inline-flex;align-items:baseline;justify-content:center;gap:1px;min-width:40px;padding:5px 9px;border-radius:999px;
+  background:var(--paper);border:1px solid var(--line);color:var(--dark);font-weight:700;font-size:15.5px;line-height:1.2;}
+.rf-kid small{font-size:12px;font-weight:700;opacity:.8;}
+.rf-kid.b{background:var(--blue-tint);border-color:var(--blue-line);color:var(--blue);}
+.rf-kid.g{background:color-mix(in srgb, var(--green) 32%, white);border-color:color-mix(in srgb, var(--green-dark) 55%, white);color:var(--green-hover);}
+.rf-sep{font-size:0;}
+.rf-kids-key{display:flex;gap:16px;margin-top:12px;color:var(--muted);font-size:13px;}
+.rf-kids-key > span{display:inline-flex;align-items:center;gap:6px;}
+.rf-kids-key .rf-kid{min-width:0;padding:1px 8px;font-size:12px;}
 .roster-full-placeholder h3{font-family:'Libre Baskerville',serif;margin:0 0 6px}
 .roster-full-placeholder p{color:var(--muted);line-height:1.55;margin:0 0 14px;max-width:520px}
 .roster-full-placeholder .btn{font-size:13px;padding:9px 18px;}
@@ -392,6 +404,21 @@ details.terms .terms-body{color:var(--muted);margin-top:10px}
 .passenger-field-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px;}
 .add-passenger-btn{background:none;border:1.5px dashed var(--line);color:var(--green-dark);font-weight:700;width:100%;padding:9px;border-radius:4px;cursor:pointer;font-family:'Titillium Web',sans-serif}
 .add-passenger-btn:hover{border-color:var(--green);}
+/* booking form steps (js/booking-steps.js): request choice, who's traveling, one step per passenger */
+.bs-step-title{font-family:'Libre Baskerville',serif;font-weight:700;font-size:17px;color:var(--dark);margin-bottom:14px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;}
+.bs-choices{display:grid;gap:10px;}
+.bs-counts .field input[type=number]{width:100%;max-width:160px;border:1px solid var(--line);border-radius:4px;padding:8px 10px;font-family:'Titillium Web',sans-serif;font-size:16px;color:var(--dark);background:var(--white);}
+.bs-counts .field input[type=number]:focus{outline:2px solid var(--green);outline-offset:1px;}
+.bs-choice{display:flex;gap:12px;align-items:flex-start;border:1.5px solid var(--line);border-radius:var(--card-radius, 6px);padding:14px 16px;cursor:pointer;background:var(--white);transition:border-color .15s, background .15s;}
+.bs-choice:hover{border-color:var(--green);}
+.bs-choice:has(input:checked){border-color:var(--green-dark);background:var(--green-tint);}
+.bs-choice input{margin-top:4px;accent-color:var(--green-dark);}
+.bs-choice strong{display:block;color:var(--dark);font-size:16px;}
+.bs-choice small{display:block;color:var(--muted);font-size:14px;line-height:1.4;margin-top:2px;}
+.bs-kid-ages{display:flex;flex-wrap:wrap;gap:10px;}
+.field .bs-kid-age{display:flex;flex-direction:column;gap:4px;margin:0;font-weight:600;font-size:13.5px;color:var(--muted);}
+.bs-kid-age input{width:78px;border:1px solid var(--line);border-radius:4px;padding:8px 10px;font-family:'Titillium Web',sans-serif;font-size:16px;color:var(--dark);background:var(--white);}
+.bs-kid-age input:focus{outline:2px solid var(--green);outline-offset:1px;}
 .quote-tally{font-weight:700;padding:8px 12px;border-radius:4px;margin-bottom:12px;background:var(--green-tint);color:var(--green-dark)}
 .quote-tally.mismatch{background:var(--sunset-tint);color:var(--sunset-1);}
 .quote-error{color:var(--sunset-1);font-weight:600;margin-top:8px;display:none}

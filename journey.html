@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <title>Back-to-Back Journey — Worldschooling Journeys</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -911,51 +915,29 @@
       </div>
 
       <div class="form-progress-bar"><div class="form-progress-fill" id="progressFill"></div></div>
-      <div class="form-progress-text" id="progressText">Step 1 of 8</div>
+      <div class="form-progress-text" id="progressText"></div>
 
       <form id="bookingForm" novalidate>
-        <div class="form-step" data-step="1">
+        <div class="form-step" data-step="you" style="display:none;">
+          <div class="bs-step-title">Your details</div>
           <div class="field"><label for="fullName">Your Full Name</label><input required type="text" id="fullName" name="fullName" placeholder="Jane Smith"></div>
           <div class="field"><label for="email">Email Address</label><input required type="email" id="email" name="email" placeholder="you@email.com"></div>
-        </div>
-
-        <div class="form-step" data-step="2" style="display:none;">
           <div class="field"><label for="phone">Phone Number</label><input type="tel" id="phone" name="phone" placeholder="+1 555 555 5555"></div>
           <div class="field"><label for="contactMethod">Best way to reach you?</label>
             <select id="contactMethod" name="contactMethod"><option value="">Select</option><option>Text</option><option>Call</option><option>Email</option><option>WhatsApp</option></select>
           </div>
         </div>
 
-        <div class="form-step" data-step="3" style="display:none;">
-          <div class="field"><label for="dob">Your DOB</label><input type="date" id="dob" name="dob"></div>
+        <div class="form-step" data-step="you-more" style="display:none;">
+          <div class="bs-step-title">Passenger 1 (you)</div>
+          <div class="field"><label for="dob">Your Date of Birth</label><input type="date" id="dob" name="dob" data-book-required></div>
           <div class="field"><label for="gender">Your Gender</label>
-            <select id="gender" name="gender"><option value="">Select</option><option>Female</option><option>Male</option><option>Prefer not to say</option><option>Other</option></select>
+            <select id="gender" name="gender" data-book-required><option value="">Select</option><option>Female</option><option>Male</option><option>Prefer not to say</option><option>Other</option></select>
           </div>
+          <div class="field"><label for="citizenship">Your Citizenship</label><input type="text" id="citizenship" name="citizenship" placeholder="e.g. United States" data-book-required></div>
         </div>
 
-        <div class="form-step" data-step="4" style="display:none;">
-          <div class="field"><label for="citizenship">Your Citizenship</label><input type="text" id="citizenship" name="citizenship" placeholder="e.g. United States"></div>
-        </div>
-
-        <div class="form-step" data-step="5" style="display:none;">
-          <div class="field">
-            <label>Have you booked a trip through us before?</label>
-            <div class="radio-row">
-              <label class="radio-opt"><input type="radio" name="bookedBefore" value="yes"> Yes, before</label>
-              <label class="radio-opt"><input type="radio" name="bookedBefore" value="no" checked> No, first time</label>
-            </div>
-          </div>
-          <div class="field"><label for="hearAboutUs">How did you hear about us?</label>
-            <select id="hearAboutUs" name="hearAboutUs">
-              <option value="">Select</option>
-              <option>Instagram</option><option>Facebook</option><option>TikTok</option><option>Google Search</option>
-              <option>Family/Friend Referral</option><option>Previous Customer</option><option>WhatsApp</option>
-              <option>Email Newsletter</option><option>Other</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-step" data-step="6" style="display:none;">
+        <div class="form-step" data-step="cabin" style="display:none;">
           <div class="field">
             <label>Which part of the journey are you sailing?</label>
             <div class="passenger-field-grid">
@@ -976,13 +958,25 @@
           </div>
         </div>
 
-        <div class="form-step" data-step="7" style="display:none;">
-          <div class="field-hint">Traveling with others? You're Passenger 1 — add anyone else joining your cabin.</div>
-          <div id="passengerBlocks"></div>
-          <button type="button" class="add-passenger-btn" id="addPassengerBtn">+ Add a passenger</button>
+        <div class="form-step" data-step="about" style="display:none;">
+          <div class="field">
+            <label>Have you booked a trip through us before?</label>
+            <div class="radio-row">
+              <label class="radio-opt"><input type="radio" name="bookedBefore" value="yes"> Yes, before</label>
+              <label class="radio-opt"><input type="radio" name="bookedBefore" value="no" checked> No, first time</label>
+            </div>
+          </div>
+          <div class="field"><label for="hearAboutUs">How did you hear about us?</label>
+            <select id="hearAboutUs" name="hearAboutUs">
+              <option value="">Select</option>
+              <option>Instagram</option><option>Facebook</option><option>TikTok</option><option>Google Search</option>
+              <option>Family/Friend Referral</option><option>Previous Customer</option><option>WhatsApp</option>
+              <option>Email Newsletter</option><option>Other</option>
+            </select>
+          </div>
         </div>
 
-        <div class="form-step" data-step="8" style="display:none;">
+        <div class="form-step" data-step="review" style="display:none;">
           <div class="field"><label for="comments">Questions or comments?</label><textarea id="comments" name="comments" rows="3" placeholder="Optional"></textarea></div>
           <div class="review-box" id="reviewBox"></div>
         </div>
@@ -1048,6 +1042,7 @@
 </div>
 
 <script src="/js/picture-url.js"></script>
+<script src="/js/booking-steps.js"></script>
 <script>
 // =====================================================================
 // JOURNEY DATA (see templates/page-template-b2b-4.html / -b2b-8.html)
@@ -1638,76 +1633,17 @@ proofNextBtn.addEventListener('click', () => {
 // ---------- MULTISTEP BOOKING FORM (one booking request per cruise in the segment) ----------
 const bookingForm = document.getElementById('bookingForm');
 const bookingFormWrap = document.getElementById('booking-form');
-const totalSteps = document.querySelectorAll('.form-step').length;
-let currentStep = 1;
-let passengers = []; // Passenger 2, 3, ... each {name, dob, gender, citizenship}
-
-function showStep(n){
-  currentStep = n;
-  document.querySelectorAll('.form-step').forEach(el => {
-    el.style.display = (parseInt(el.dataset.step, 10) === n) ? '' : 'none';
-  });
-  document.getElementById('prevStepBtn').style.visibility = n === 1 ? 'hidden' : 'visible';
-  document.getElementById('nextStepBtn').style.display = n < totalSteps ? 'inline-block' : 'none';
-  document.getElementById('submitBtn').style.display = n === totalSteps ? 'inline-block' : 'none';
-  document.getElementById('progressFill').style.width = Math.round((n / totalSteps) * 100) + '%';
-  document.getElementById('progressText').textContent = `Step ${n} of ${totalSteps}`;
-  if(n === totalSteps) renderReview();
-}
-
-document.getElementById('nextStepBtn').addEventListener('click', () => {
-  if(currentStep === 6 && !checkFormSegment()) return;
-  if(!bookingForm.reportValidity()) return;
-  if(currentStep < totalSteps) showStep(currentStep + 1);
-});
-document.getElementById('prevStepBtn').addEventListener('click', () => {
-  if(currentStep > 1) showStep(currentStep - 1);
-});
-bookingForm.addEventListener('keydown', (e) => {
-  if(e.key === 'Enter' && e.target.tagName !== 'TEXTAREA'){
-    e.preventDefault();
-  }
-});
-
-function renderPassengers(){
-  const wrap = document.getElementById('passengerBlocks');
-  wrap.innerHTML = passengers.map((p, i) => `
-    <div class="passenger-block">
-      <div class="passenger-block-head">
-        <h5>Passenger ${i + 2}</h5>
-        <button type="button" class="remove-passenger" data-remove="${i}">Remove</button>
-      </div>
-      <div class="passenger-field-grid">
-        <div class="field"><label>Full Name</label><input type="text" data-field="name" data-idx="${i}" value="${p.name || ''}"></div>
-        <div class="field"><label>DOB</label><input type="date" data-field="dob" data-idx="${i}" value="${p.dob || ''}"></div>
-        <div class="field"><label>Gender</label>
-          <select data-field="gender" data-idx="${i}">
-            <option value="">Select</option>
-            ${['Female','Male','Prefer not to say','Other'].map(g => `<option ${p.gender === g ? 'selected' : ''}>${g}</option>`).join('')}
-          </select>
-        </div>
-        <div class="field"><label>Citizenship</label><input type="text" data-field="citizenship" data-idx="${i}" value="${p.citizenship || ''}"></div>
-      </div>
-    </div>`).join('');
-
-  wrap.querySelectorAll('input, select').forEach(el => {
-    el.addEventListener('input', (e) => {
-      const idx = parseInt(e.target.dataset.idx, 10);
-      passengers[idx][e.target.dataset.field] = e.target.value;
-    });
-  });
-  wrap.querySelectorAll('[data-remove]').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      passengers.splice(parseInt(e.target.dataset.remove, 10), 1);
-      renderPassengers();
-    });
-  });
-}
-
-document.getElementById('addPassengerBtn').addEventListener('click', () => {
-  if(passengers.length >= 11) return;
-  passengers.push({name:'', dob:'', gender:'', citizenship:''});
-  renderPassengers();
+// Steps, "Who's traveling?" and one step per passenger: js/booking-steps.js. This page adds its own
+// review rows and submit.
+const bookingSteps = BookingSteps.create({
+  form: bookingForm,
+  progressFill: document.getElementById('progressFill'),
+  progressText: document.getElementById('progressText'),
+  prevBtn: document.getElementById('prevStepBtn'),
+  nextBtn: document.getElementById('nextStepBtn'),
+  submitBtn: document.getElementById('submitBtn'),
+  beforeNext: (step) => step !== 'cabin' || checkFormSegment(),
+  onReview: renderReview,
 });
 
 function fieldValue(name){
@@ -1727,12 +1663,12 @@ function fieldValue(name){
 
 function renderReview(){
   const rows = [
+    ...bookingSteps.summaryRows(),
     ['Full name', fieldValue('fullName')],
     ['Email', fieldValue('email')],
     ['Phone', fieldValue('phone')],
     ['Segment', segLabel(formSel())],
     ['Cabin', fieldValue('cabinChoice')],
-    ['Total passengers', String(passengers.length + 1)],
     ['Booked with us before', fieldValue('bookedBefore') === 'yes' ? 'Yes' : 'No'],
   ];
   document.getElementById('reviewBox').innerHTML = `
@@ -1782,7 +1718,7 @@ bookingForm.addEventListener('submit', async (e) => {
         hearAboutUs: fieldValue('hearAboutUs'),
         cabinChoice: fieldValue('cabinChoice'),
         comments,
-        passengers,
+        ...bookingSteps.data(),
     });
   }catch(err){
     // Same as the single cruise page: still show success - a family that
@@ -1794,15 +1730,11 @@ bookingForm.addEventListener('submit', async (e) => {
 
 document.getElementById('resetFormBtn').addEventListener('click', () => {
   bookingForm.reset();
-  passengers = [];
-  renderPassengers();
   bookingFormWrap.style.display = '';
   document.getElementById('formSuccess').style.display = 'none';
-  showStep(1);
+  bookingSteps.reset();
 });
 
-renderPassengers();
-showStep(1);
 
 // ---------- BOOKING MODAL open/close ----------
 const bookingModalOverlay = document.getElementById('bookingModalOverlay');
