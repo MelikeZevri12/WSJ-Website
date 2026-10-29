@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <title>Austrian Mountain Summer Retreat — Worldschooling Journeys</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -292,6 +296,7 @@
   <a href="#" class="btn btn-primary" data-open-picker>Change Sessions</a>
 </div>
 
+<script src="/js/land-roster.js"></script>
 <script>
 const VALUE_ICONS = ["<div class=\"value-icon\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"8.5\" cy=\"8\" r=\"3\"/><circle cx=\"16.5\" cy=\"9\" r=\"2.5\"/><path d=\"M3 19c.6-3 2.8-5 5.5-5s4.9 2 5.5 5\"/><path d=\"M14.2 14.3c.7-.3 1.5-.5 2.3-.5 2.3 0 4 1.7 4.5 4.2\"/></svg></div>","<div class=\"value-icon\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6\"/></svg></div>","<div class=\"value-icon\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3.5 11 12 4l8.5 7\"/><path d=\"M5.5 9.5V20h13V9.5\"/><path d=\"M10 20v-5h4v5\"/></svg></div>"];
 // =====================================================================
@@ -627,13 +632,8 @@ function renderRoster(S, past){
   if(past){ rc.innerHTML = ''; return; }
   const shown = S.filter(s => s.roster && s.roster.families >= ROSTER_MIN_FAMILIES);
   if(!shown.length){
-    rc.innerHTML = `<div class="roster-full-placeholder"><h3>The Roster Is Just Getting Started</h3>
-      <p>We open the family roster once at least ${ROSTER_MIN_FAMILIES} families have booked a session, so you can see exactly who’s coming, including kid ages. Book now and you’ll be one of the first families there.</p>
-      <a href="#" class="btn btn-primary book-btn">Book Your Spot</a></div>`; return;
+    rc.innerHTML = ''; return;
   }
-  const ages = shown.flatMap(s => s.roster.kidAges);
-  const BR = [['2–5 yrs',0,5],['6–9 yrs',6,9],['10–13 yrs',10,13],['14–17 yrs',14,17],['18+ yrs',18,99]].map(([l, lo, hi]) => ({l, c: ages.filter(a => a >= lo && a <= hi).length}));
-  const maxB = Math.max(1, ...BR.map(b => b.c));
   const one = S.length === 1 ? shown[0].roster : null;
   const left = one
     ? `<div class="rf-head"><h3>Current Roster</h3><div class="rf-sub">Families already booked for Session ${S[0].n}</div></div>
@@ -642,8 +642,7 @@ function renderRoster(S, past){
     : `<div class="rf-head"><h3>Current Roster</h3><div class="rf-sub">Families already booked for your sessions</div></div>` +
       S.map(s => `<div class="rf-sess-row"><strong>Session ${s.n}</strong> · ${s.roster && s.roster.families >= ROSTER_MIN_FAMILIES ? `${s.roster.families} families · ${s.roster.kids} kids` : 'just getting started'}</div>`).join('');
   rc.innerHTML = `<div class="rf-columns"><div class="rf-col-left">${left}</div>
-    <div class="rf-col-right"><div class="rf-ages-label">Kid Ages Joining</div>${BR.map(b => `<div class="rf-bracket-row"><div class="rf-bracket-name">${b.l}</div>
-      <div class="rf-bracket-track"><div class="rf-bracket-fill" style="width:${Math.round(b.c / maxB * 100)}%"></div></div><div class="rf-bracket-count">${b.c}</div></div>`).join('')}</div></div>`;
+    <div class="rf-col-right">${LandRoster.kidsHTML(shown.map(s => s.roster))}</div></div>`;
 }
 
 function renderItinerary(S){
@@ -832,6 +831,7 @@ document.querySelectorAll('[data-open-picker]').forEach(a => a.addEventListener(
 
 renderStatic();
 renderSelection();
+addEventListener('DOMContentLoaded', () => LandRoster.sync(SEASONS, renderSelection));
 </script>
 <script src="/js/nav.js?v=20261013"></script>
 <script src="/js/waitlist.js"></script>

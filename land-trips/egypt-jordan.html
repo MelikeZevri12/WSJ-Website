@@ -196,6 +196,7 @@
   <a href="#" class="btn btn-primary" data-open-picker>Change Departure</a>
 </div>
 
+<script src="/js/land-roster.js"></script>
 <script>
 const VALUE_ICONS = ["<div class=\"value-icon\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"8.5\" cy=\"8\" r=\"3\"/><circle cx=\"16.5\" cy=\"9\" r=\"2.5\"/><path d=\"M3 19c.6-3 2.8-5 5.5-5s4.9 2 5.5 5\"/><path d=\"M14.2 14.3c.7-.3 1.5-.5 2.3-.5 2.3 0 4 1.7 4.5 4.2\"/></svg></div>","<div class=\"value-icon\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6\"/></svg></div>","<div class=\"value-icon\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3.5 11 12 4l8.5 7\"/><path d=\"M5.5 9.5V20h13V9.5\"/><path d=\"M10 20v-5h4v5\"/></svg></div>"];
 // =====================================================================
@@ -448,9 +449,6 @@ function renderDeparture(){
   // roster (same card as the cruise pages; shows once ROSTER_MIN_FAMILIES have booked)
   const r = d.roster, rc = document.getElementById('rosterCard');
   if(r && r.families >= ROSTER_MIN_FAMILIES){
-    const BRACKETS = [['2–5 yrs',2,5],['6–9 yrs',6,9],['10–13 yrs',10,13],['14–17 yrs',14,17],['18+ yrs',18,99]]
-      .map(([label, lo, hi]) => ({label, count: r.kidAges.filter(a => a >= lo && a <= hi).length}));
-    const maxB = Math.max(1, ...BRACKETS.map(b => b.count));
     rc.innerHTML = `
       <div class="rf-columns">
         <div class="rf-col-left">
@@ -462,13 +460,7 @@ function renderDeparture(){
           </div>
         </div>
         <div class="rf-col-right">
-          <div class="rf-ages-label">Kid Ages Joining</div>
-          ${BRACKETS.map(b => `
-            <div class="rf-bracket-row">
-              <div class="rf-bracket-name">${b.label}</div>
-              <div class="rf-bracket-track"><div class="rf-bracket-fill" style="width:${Math.round(b.count / maxB * 100)}%"></div></div>
-              <div class="rf-bracket-count">${b.count}</div>
-            </div>`).join('')}
+          ${LandRoster.kidsHTML([r])}
         </div>
       </div>`;
   } else {
@@ -592,6 +584,7 @@ document.querySelectorAll('[data-open-picker]').forEach(a => a.addEventListener(
 
 renderStatic();
 renderDeparture();
+addEventListener('DOMContentLoaded', () => LandRoster.sync(DEPARTURES, renderDeparture));
 </script>
 <script src="/js/nav.js?v=20261013"></script>
 <script src="/js/waitlist.js"></script>

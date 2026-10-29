@@ -154,8 +154,9 @@ section.night-sky{
 .rf-kid{display:inline-flex;align-items:baseline;justify-content:center;gap:1px;min-width:40px;padding:5px 9px;border-radius:999px;
   background:var(--paper);border:1px solid var(--line);color:var(--dark);font-weight:700;font-size:15.5px;line-height:1.2;}
 .rf-kid small{font-size:12px;font-weight:700;opacity:.8;}
-.rf-kid.b{background:var(--blue-tint);border-color:var(--blue-line);color:var(--blue);}
-.rf-kid.g{background:color-mix(in srgb, var(--green) 32%, white);border-color:color-mix(in srgb, var(--green-dark) 55%, white);color:var(--green-hover);}
+/* fixed colors (the cruise page's blue + green): land trip themes recolor --blue/--green, chips stay the same everywhere */
+.rf-kid.b{background:color-mix(in srgb, #2f7f8a 22%, white);border-color:color-mix(in srgb, #2f7f8a 48%, white);color:#2f7f8a;}
+.rf-kid.g{background:color-mix(in srgb, #A5BD8E 32%, white);border-color:color-mix(in srgb, #708F53 55%, white);color:#2D3A22;}
 .rf-sep{font-size:0;}
 .rf-kids-key{display:flex;gap:16px;margin-top:12px;color:var(--muted);font-size:13px;}
 .rf-kids-key > span{display:inline-flex;align-items:center;gap:6px;}

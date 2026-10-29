@@ -13,6 +13,7 @@
 | Rounded card corners | `css/cards.css` |
 | Land trip booking: WeTravel UUIDs / booking links per trip and year (no UUID = waitlist) | `js/booking.js` |
 | Waitlist popup (land trips + Coming Soon idea cards) | `js/waitlist.js`, `css/waitlist.css` |
+| Land trip "Current Roster" numbers (synced from the Notion "Rosters" pages through the API) | `js/land-roster.js` (the numbers in each page's data are only a backup) |
 | Cruise + journey booking form steps (Book now / Pricing question, who's traveling, one step per passenger) | `js/booking-steps.js` (styles: `.bs-` in `css/trip-page.css`) |
 | Where cruise/journey/port/cabin pictures load from (API `/uploads/...` or this site): used by every page that shows them | `js/picture-url.js` |
 | Zipchat chat bubble + "Connect via ChatBot" links (loaded by the footer) | `js/chatbot.js` |

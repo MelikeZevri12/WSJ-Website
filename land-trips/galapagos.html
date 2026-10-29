@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <title>Galápagos Island Hopping — Worldschooling Journeys</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -66,6 +70,7 @@
       <div>
         <div class="eyebrow">Overview</div>
         <h2 style="font-size:28px;line-height:1.25;margin-bottom:14px;" id="ovHeading"></h2>
+        <p class="lede" id="ovIntro" hidden></p>
         <div id="ovStory"></div>
       </div>
     </div>
@@ -208,6 +213,7 @@
   <a href="#" class="btn btn-primary" data-open-picker>Change Departure</a>
 </div>
 
+<script src="/js/land-roster.js"></script>
 <script>
 const VALUE_ICONS = ["<div class=\"value-icon\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"8.5\" cy=\"8\" r=\"3\"/><circle cx=\"16.5\" cy=\"9\" r=\"2.5\"/><path d=\"M3 19c.6-3 2.8-5 5.5-5s4.9 2 5.5 5\"/><path d=\"M14.2 14.3c.7-.3 1.5-.5 2.3-.5 2.3 0 4 1.7 4.5 4.2\"/></svg></div>","<div class=\"value-icon\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><circle cx=\"12\" cy=\"12\" r=\"4\"/><path d=\"M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6\"/></svg></div>","<div class=\"value-icon\" aria-hidden=\"true\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3.5 11 12 4l8.5 7\"/><path d=\"M5.5 9.5V20h13V9.5\"/><path d=\"M10 20v-5h4v5\"/></svg></div>"];
 // =====================================================================
@@ -471,6 +477,7 @@ const DEPARTURES = [
   {start:'2027-08-08', end:'2027-08-15', price:3735, status:'open'},
   {start:'2027-08-22', end:'2027-08-29', price:3735, status:'open',
    title:'8-day Worldschooling Galápagos Island Hopping for Teens', label:'Teens 12+', badge:'For Families with Teens 12+', minAge:'Ages 12+',
+   intro:'This group is exclusively for families with teens aged 12+!',   // first sentence of the Overview
    // shown under the price; add the price here once it's known
    addon:{name:'Private room for your teen', text:'Teens can have their own room instead of sharing one. Price and more details to come.'}},
 ];
@@ -574,9 +581,6 @@ function renderDeparture(){
   // roster (same card as the cruise pages; shows once ROSTER_MIN_FAMILIES have booked)
   const r = d.roster, rc = document.getElementById('rosterCard');
   if(r && r.families >= ROSTER_MIN_FAMILIES){
-    const BRACKETS = [['2–5 yrs',2,5],['6–9 yrs',6,9],['10–13 yrs',10,13],['14–17 yrs',14,17],['18+ yrs',18,99]]
-      .map(([label, lo, hi]) => ({label, count: r.kidAges.filter(a => a >= lo && a <= hi).length}));
-    const maxB = Math.max(1, ...BRACKETS.map(b => b.count));
     rc.innerHTML = `
       <div class="rf-columns">
         <div class="rf-col-left">
@@ -588,22 +592,11 @@ function renderDeparture(){
           </div>
         </div>
         <div class="rf-col-right">
-          <div class="rf-ages-label">Kid Ages Joining</div>
-          ${BRACKETS.map(b => `
-            <div class="rf-bracket-row">
-              <div class="rf-bracket-name">${b.label}</div>
-              <div class="rf-bracket-track"><div class="rf-bracket-fill" style="width:${Math.round(b.count / maxB * 100)}%"></div></div>
-              <div class="rf-bracket-count">${b.count}</div>
-            </div>`).join('')}
+          ${LandRoster.kidsHTML([r])}
         </div>
       </div>`;
   } else {
-    rc.innerHTML = `
-      <div class="roster-full-placeholder">
-        <h3>The Roster Is Just Getting Started</h3>
-        <p>We open the family roster once at least ${ROSTER_MIN_FAMILIES} families have booked, so you can see exactly who’s coming, including kid ages. Book now and you’ll be one of the first families on this departure.</p>
-        <a href="#" class="btn btn-primary book-btn">Book Your Spot</a>
-      </div>`;
+    rc.innerHTML = '';
   }
 
   // cost
@@ -651,6 +644,9 @@ function renderCost(){
   const an = document.getElementById('addonNote');
   an.hidden = !d.addon;
   an.innerHTML = d.addon ? `<strong>Optional add-on: ${d.addon.name}.</strong> ${d.addon.text}` : '';
+  const oi = document.getElementById('ovIntro');
+  oi.hidden = !d.intro;
+  oi.innerHTML = d.intro ? `<strong>${d.intro}</strong>` : '';
   document.getElementById('sbPrice').innerHTML = `<span>${range(d)}</span>${money(d.price)} / person`;
 }
 
@@ -721,6 +717,7 @@ document.querySelectorAll('[data-open-picker]').forEach(a => a.addEventListener(
 
 renderStatic();
 renderDeparture();
+addEventListener('DOMContentLoaded', () => LandRoster.sync(DEPARTURES, renderDeparture));
 </script>
 <script src="/js/nav.js?v=20261013"></script>
 <script src="/js/waitlist.js"></script>
