@@ -251,8 +251,9 @@ const TRIP = {
   notIncluded: ['International flights', 'Meals and drinks not mentioned in the itinerary', 'Optional experiences with additional fees outside the main itinerary, unless otherwise specified', 'Travel insurance, required for all participants (we recommend <a href="https://www.notion.so/Travel-Insurance-Guide-Faye-vs-SafetyWing-3334ff0a052380f5abedc5605a762ddc?source=copy_link" target="_blank" rel="noopener">SafetyWing or Faye</a>)'],
   policy: {                 // one rule for every departure; all dates are calculated from it
     currency: '$', deposit: 500, depositUnit: 'per person',
-    nonRefundableDays: 90, finalPaymentDays: 75,
-    lines: [['Cancellations', 'Cancellation 74 days or less before departure incurs a 100% cancellation fee. No-shows count as a cancellation.'],
+    // deposit non-refundable 120 days before, final payment 100 days before (each departure shows only its own dates)
+    nonRefundableDays: 120, finalPaymentDays: 100,
+    lines: [['Cancellations (after the deposit is non-refundable)', 'Cancellation 90 days or less before departure incurs a 100% cancellation fee. No-shows are treated as a cancellation and incur a 100% cancellation fee.'],
             ['Missed payments', 'If the final payment isn’t received within two weeks of the due date, spots are released and the deposit stays non-refundable.'],
             ['Booking after the final payment date', 'The full balance is due as soon as we share your quote. The deposit alone doesn’t secure your spots; they’re confirmed once the full payment is received.']],
   },
@@ -433,7 +434,7 @@ function renderDeparture(){
   const P = TRIP.policy, start = D(d.start);
   const nonRef = addDays(start, -P.nonRefundableDays), finalPay = addDays(start, -P.finalPaymentDays);
   document.getElementById('payPolicy').innerHTML = [
-    ['Deposit', `${money(P.deposit)} ${P.depositUnit}, paid when you book. The deposit alone doesn’t secure your spot; your booking is secured once the full payment is received.`],
+    ['Deposit', `A ${money(P.deposit)} deposit ${P.depositUnit} is required at the time of booking. The deposit alone doesn’t secure your spot; your booking is secured once the full payment is received.`],
     ['Deposit becomes non-refundable', `${fmtD(nonRef)} (${P.nonRefundableDays} days before departure)`],
     ['Final payment due', `${fmtD(finalPay)} (${P.finalPaymentDays} days before departure)`],
     ...P.lines,
