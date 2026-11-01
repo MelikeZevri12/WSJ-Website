@@ -7,7 +7,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<title>Back-to-Back Journey — Worldschooling Journeys</title>
+<title>Back-to-Back Journey | Worldschooling Journeys</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/nav.css?v=20261013">
@@ -737,7 +737,7 @@
         </ul>
       </div>
     </div>
-    <p class="fine-print">*Group excursions are organized at cost — separate from cruise fare, and always optional.</p>
+    <p class="fine-print">*Group excursions are organized at cost, separate from cruise fare, and always optional.</p>
   </div>
 </section>
 
@@ -825,10 +825,10 @@
           <p>We keep scheduled group activities simple and optional, so families can enjoy both connection and freedom during the cruise.</p>
           <p>Every sailing includes:</p>
           <ul><li>A welcome meet-and-greet on embarkation day</li><li>A group dinner on the first night to help everyone get acquainted</li><li>Linked dining reservations so families can all dine together nightly, though some may choose to dine based on their own schedule</li><li>Access to a group chat for coordinating meetups, excursions, or spontaneous gatherings throughout the trip</li><li>Optional, but highly recommended: port excursions, specifically tailored to our worldschooled group</li></ul>
-          <p>Beyond that, the cruise ship itself offers a full schedule of entertainment, kids’ clubs, and activities — which families are free to enjoy together or separately. In our experience, children make friends quickly, and adults naturally form smaller connection groups based on shared interests and energy levels.</p>
+          <p>Beyond that, the cruise ship itself offers a full schedule of entertainment, kids’ clubs, and activities, which families are free to enjoy together or separately. In our experience, children make friends quickly, and adults naturally form smaller connection groups based on shared interests and energy levels.</p>
           <p>We also try to arrange special enrichment opportunities, such as a behind-the-scenes talk with the ship’s engineer or staff, though these are subject to cruise line approval.</p>
           <p>Dining is flexible: we link all cabins under the group reservation so it’s easy to sit together or make your own plans.</p>
-          <p>Each family can engage as much or as little as they choose — our structure creates space for connection without adding pressure or over-scheduling.</p>
+          <p>Each family can engage as much or as little as they choose. Our structure creates space for connection without adding pressure or over-scheduling.</p>
         </div>
       </details>
       <details class="faq-item">
@@ -897,7 +897,7 @@
       <details class="faq-item">
         <summary>Can you tell me more about your mission and vision?</summary>
         <div class="faq-a">
-          <p>At Worldschooling Journeys, our mission is to create meaningful, connection-based travel experiences for homeschooling and worldschooling families who want more than just a vacation.</p><p>We believe that learning happens best through real-world experiences, especially when shared with a like-minded community. Our vision is to build a mobile village — one where families can explore the world together, support one another, and give their children the freedom to grow in environments that are rich with culture, diversity, and natural curiosity.</p><p>Whether it’s a multi-country cruise, a seasonal farm stay, RV caravanning, sailing, skiing, or slow travel — we aim to design journeys that reflect the full spectrum of what families want to experience together. We focus on:</p><ul><li>Ease and flexibility — no packing and unpacking, no rigid structure</li><li>Deep community — families who travel and learn side by side</li><li>Real-world education — through place, people, and presence</li></ul><p>We’re building more than trips — we’re building a lifestyle of freedom, connection, and learning that families can return to again and again.</p><p>Read our full vision: <a href="https://www.facebook.com/groups/everyavenuetravel/permalink/2836753246474734/" target="_blank" rel="noopener">POST</a></p>
+          <p>At Worldschooling Journeys, our mission is to create meaningful, connection-based travel experiences for homeschooling and worldschooling families who want more than just a vacation.</p><p>We believe that learning happens best through real-world experiences, especially when shared with a like-minded community. Our vision is to build a mobile village, one where families can explore the world together, support one another, and give their children the freedom to grow in environments that are rich with culture, diversity, and natural curiosity.</p><p>Whether it’s a multi-country cruise, a seasonal farm stay, RV caravanning, sailing, skiing, or slow travel, we aim to design journeys that reflect the full spectrum of what families want to experience together. We focus on:</p><ul><li>Ease and flexibility: no packing and unpacking, no rigid structure</li><li>Deep community: families who travel and learn side by side</li><li>Real-world education: through place, people, and presence</li></ul><p>We’re building more than trips. We’re building a lifestyle of freedom, connection, and learning that families can return to again and again.</p><p>Read our full vision: <a href="https://www.facebook.com/groups/everyavenuetravel/permalink/2836753246474734/" target="_blank" rel="noopener">POST</a></p>
         </div>
       </details>
     </div>
@@ -991,7 +991,7 @@
 
     <div class="form-success" id="formSuccess" style="display:none;">
       <button type="button" class="modal-close" id="modalCloseBtn2" aria-label="Close">×</button>
-      <h3>Thanks — your inquiry is in!</h3>
+      <h3>Thanks, your inquiry is in!</h3>
       <p>We've got your details and will follow up with current pricing within 24–48 hours.</p>
       <p class="form-success-note">Please add <strong>booking@everyavenue.com</strong> to your approved senders and check your spam folder. If you don’t hear back within 48 hours, reach out over <a href="https://api.whatsapp.com/message/6C5D7L3I726ND1?autoload=1&app_absent=0" target="_blank" rel="noopener">WhatsApp</a> or <a href="https://www.messenger.com/login.php?next=https%3A%2F%2Fwww.messenger.com%2Ft%2F1472067489710819" target="_blank" rel="noopener">Facebook Messenger</a>.</p>
       <button type="button" class="back-link" id="resetFormBtn">Start over</button>
@@ -1350,7 +1350,7 @@ function buildLegCards(){
     const chips = ports.filter((s, k, arr) => arr.findIndex(x => x[1] === s[1]) === k)
       .map(s => `<span class="port-chip ${s[4] === CRUISE ? 'cruising' : ''}">${shortPort(s[1])}</span>`).join('');
     const days = l.stops.map((s, k) => {
-      const times = s[4] === SEA ? 'Sea day — no port stop' : s[4] === CRUISE ? 'Scenic cruising' :
+      const times = s[4] === SEA ? 'Sea day, no port stop' : s[4] === CRUISE ? 'Scenic cruising' :
         [s[2] ? `Arrive ${s[2]}` : null, s[3] ? `Depart ${s[3]}` : null].filter(Boolean).join(' · ');
       return `<div class="stop ${s[4] === SEA ? 'sea' : ''}"><div class="stop-card"><div class="stop-content">
         <div class="stop-day">Day ${Math.round((d(s[0]) - d(l.start)) / 86400000) + 1} · ${fmtDate(s[0])}</div>
@@ -1673,7 +1673,7 @@ function renderReview(){
   ];
   document.getElementById('reviewBox').innerHTML = `
     <h4>Quick review before sending</h4>
-    ${rows.map(([k, v]) => `<div class="review-row"><span class="k">${k}</span><span class="v">${v || '—'}</span></div>`).join('')}
+    ${rows.map(([k, v]) => `<div class="review-row"><span class="k">${k}</span><span class="v">${v || 'Not provided'}</span></div>`).join('')}
   `;
 }
 
@@ -1850,7 +1850,7 @@ function segmentMinAge(){
 
 function renderJourneyText(){
   const title = JOURNEY.title || `${LEGS.length}-Cruise Back-to-Back Journey: ${journeyRoute()}`;
-  document.title = `${title} — Worldschooling Journeys`;
+  document.title = `${title} | Worldschooling Journeys`;
   document.getElementById('heroTitle').textContent = title;
   if(JOURNEY.heroImageUrl){
     const hero = document.getElementById('heroSection');

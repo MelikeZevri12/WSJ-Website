@@ -7,7 +7,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<title>Community Cruises — Worldschooling Journeys</title>
+<title>Community Cruises | Worldschooling Journeys</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/nav.css?v=20261013">
@@ -101,10 +101,10 @@
 <div class="trips-view" id="allView">
 <div class="facts-bar">
   <div class="wrap facts-grid">
-    <div class="fact"><div class="label">Trips</div><div class="value price" id="all-factTrips">—</div></div>
-    <div class="fact"><div class="label">Community Cruises</div><div class="value" id="all-factCruises">—</div></div>
-    <div class="fact"><div class="label">Land Trips</div><div class="value" id="all-factLand">—</div></div>
-    <div class="fact"><div class="label">Next Departure</div><div class="value" id="all-factNext">—</div></div>
+    <div class="fact"><div class="label">Trips</div><div class="value price" id="all-factTrips">…</div></div>
+    <div class="fact"><div class="label">Community Cruises</div><div class="value" id="all-factCruises">…</div></div>
+    <div class="fact"><div class="label">Land Trips</div><div class="value" id="all-factLand">…</div></div>
+    <div class="fact"><div class="label">Next Departure</div><div class="value" id="all-factNext">…</div></div>
   </div>
 </div>
 <div class="filter-bar" id="all-filterBar">
@@ -145,9 +145,9 @@
 <div class="facts-bar" id="factsBar">
   <div class="wrap facts-grid">
     <div class="fact"><div class="label">Starting From</div><div class="value price" id="factStartingFrom">Coming soon</div></div>
-    <div class="fact"><div class="label">Departures</div><div class="value" id="factDepartures">—</div></div>
-    <div class="fact"><div class="label">Regions</div><div class="value" id="factRegions">—</div></div>
-    <div class="fact"><div class="label">Next Departure</div><div class="value" id="factNextDeparture">—</div></div>
+    <div class="fact"><div class="label">Departures</div><div class="value" id="factDepartures">…</div></div>
+    <div class="fact"><div class="label">Regions</div><div class="value" id="factRegions">…</div></div>
+    <div class="fact"><div class="label">Next Departure</div><div class="value" id="factNextDeparture">…</div></div>
   </div>
 </div>
 
@@ -195,7 +195,7 @@
         <input type="range" id="durationMin" min="0" max="1" step="1" value="0">
         <input type="range" id="durationMax" min="0" max="1" step="1" value="1">
       </div>
-      <span class="lv" id="durationLabel">—</span>
+      <span class="lv" id="durationLabel">Any</span>
     </div>
     <div class="filter-group filter-range">
       <div class="filter-label">Price</div>
@@ -205,7 +205,7 @@
         <input type="range" id="priceMin" min="0" max="1" step="50" value="0">
         <input type="range" id="priceMax" min="0" max="1" step="50" value="1">
       </div>
-      <span class="lv" id="priceLabel">—</span>
+      <span class="lv" id="priceLabel">Any</span>
     </div>
     <div class="filter-group filter-sort">
       <div class="filter-label">Sort</div>
@@ -242,10 +242,10 @@
 <!-- QUICK STATS -->
 <div class="facts-bar" id="lt-factsBar">
   <div class="wrap facts-grid">
-    <div class="fact"><div class="label">Trips</div><div class="value price" id="lt-factStartingFrom">—</div></div>
-    <div class="fact"><div class="label">Departures</div><div class="value" id="lt-factDepartures">—</div></div>
-    <div class="fact"><div class="label">Regions</div><div class="value" id="lt-factRegions">—</div></div>
-    <div class="fact"><div class="label">Next Departure</div><div class="value" id="lt-factNextDeparture">—</div></div>
+    <div class="fact"><div class="label">Trips</div><div class="value price" id="lt-factStartingFrom">…</div></div>
+    <div class="fact"><div class="label">Departures</div><div class="value" id="lt-factDepartures">…</div></div>
+    <div class="fact"><div class="label">Regions</div><div class="value" id="lt-factRegions">…</div></div>
+    <div class="fact"><div class="label">Next Departure</div><div class="value" id="lt-factNextDeparture">…</div></div>
   </div>
 </div>
 
@@ -284,7 +284,7 @@
         <input type="range" id="lt-durationMin" min="0" max="1" step="1" value="0">
         <input type="range" id="lt-durationMax" min="0" max="1" step="1" value="1">
       </div>
-      <span class="lv" id="lt-durationLabel">—</span>
+      <span class="lv" id="lt-durationLabel">Any</span>
     </div>
     <div class="filter-group filter-range">
       <div class="filter-label">Price</div>
@@ -294,7 +294,7 @@
         <input type="range" id="lt-priceMin" min="0" max="1" step="50" value="0">
         <input type="range" id="lt-priceMax" min="0" max="1" step="50" value="1">
       </div>
-      <span class="lv" id="lt-priceLabel">—</span>
+      <span class="lv" id="lt-priceLabel">Any</span>
     </div>
     <div class="filter-group filter-sort">
       <div class="filter-label">Sort</div>
@@ -355,7 +355,7 @@ window.TripsPage = (function(){
       title: "Worldschooling Trips for Homeschool Families",
       lede: "Community cruises and guided land trips for homeschooling families, all in one place, soonest first.",
       more: ["Learn more about how our trips are run here", "/about-our-trips"],
-      docTitle: "Worldschooling Trips — Worldschooling Journeys",
+      docTitle: "Worldschooling Trips | Worldschooling Journeys",
     },
     cruises: {
       label: "Group Cruises", // the dropdown's name for it (same as the navbar)
@@ -363,7 +363,7 @@ window.TripsPage = (function(){
       title: "Worldschooling Community Cruises",
       lede: "These trips are a way for homeschooling families to see the world without a huge cost or commitment, alongside a group of fun, inclusive, like-minded families.",
       more: ["Learn more about how our cruises are run here", "/about-our-trips#cruises"],
-      docTitle: "Community Cruises — Worldschooling Journeys",
+      docTitle: "Community Cruises | Worldschooling Journeys",
     },
     landtrips: {
       label: "Land Trips",
@@ -371,7 +371,7 @@ window.TripsPage = (function(){
       title: "Guided Land Trips for Worldschooling Families",
       lede: "Land trips are guided, immersive group trips with a busy schedule of activities, designed for you to truly feel the destination alongside other worldschooling families.",
       more: ["Learn more about how our land trips are run here", "/about-our-trips#land-trips"],
-      docTitle: "Land Trips — Worldschooling Journeys",
+      docTitle: "Land Trips | Worldschooling Journeys",
     },
   };
   const el = (id) => document.getElementById(id);
@@ -710,7 +710,7 @@ window.TripsPage = (function(){
     (lo, hi) => {
       state.priceMin = lo; state.priceMax = hi;
       state.priceFull = lo <= parseInt(priceMinEl.min, 10) && hi >= parseInt(priceMaxEl.max, 10);
-      priceLabel.textContent = priceMaxEl.max === "1" ? "—" : `${fmt(lo)}–${fmt(hi)}`;
+      priceLabel.textContent = priceMaxEl.max === "1" ? "Any" : `${fmt(lo)}–${fmt(hi)}`;
       render();
     }
   );
@@ -921,7 +921,7 @@ window.TripsPage = (function(){
     if(!publishable.length && !journeys.length){
       factsBar.style.display = "none";
       filterBar.style.display = "none";
-      grid.innerHTML = `<div class="empty-state"><h3>No cruises yet</h3><p>New worldschooling cruises are added regularly — check back soon.</p></div>`;
+      grid.innerHTML = `<div class="empty-state"><h3>No cruises yet</h3><p>New worldschooling cruises are added regularly. Check back soon.</p></div>`;
       TripsPage.setItems("cruises", []);
       return;
     }
@@ -1045,7 +1045,7 @@ window.TripsPage = (function(){
 
   // Trip groups with their own address (the old site's /austria-retreats page redirects here).
   const COLLECTIONS = {
-    "austria-retreats": { match: (t) => t.slug.startsWith("austria-"), heading: "Austria Retreats for Worldschooling Families", title: "Austria Retreats — Worldschooling Journeys" },
+    "austria-retreats": { match: (t) => t.slug.startsWith("austria-"), heading: "Austria Retreats for Worldschooling Families", title: "Austria Retreats | Worldschooling Journeys" },
   };
 
 
@@ -1271,7 +1271,7 @@ window.TripsPage = (function(){
     (lo, hi) => {
       state.priceMin = lo; state.priceMax = hi;
       state.priceFull = lo <= parseInt(priceMinEl.min, 10) && hi >= parseInt(priceMaxEl.max, 10);
-      priceLabel.textContent = priceMaxEl.max === "1" ? "—" : `${fmt(lo)}–${fmt(hi)}`;
+      priceLabel.textContent = priceMaxEl.max === "1" ? "Any" : `${fmt(lo)}–${fmt(hi)}`;
       render();
     }
   );
@@ -1536,10 +1536,10 @@ window.TripsPage = (function(){
     renderYears();
     const everything = trips(null), cruises = TripsPage.items.cruises || [], land = TripsPage.items.land ? TripsPage.items.land(null) : [];
     allEl("factTrips").textContent = String(everything.length);
-    allEl("factCruises").textContent = TripsPage.items.cruises ? String(cruises.length) : "—";
+    allEl("factCruises").textContent = TripsPage.items.cruises ? String(cruises.length) : "N/A";
     allEl("factLand").textContent = String(land.length);
     const next = everything.map(x => x.sortDate).sort()[0];
-    allEl("factNext").textContent = next ? fmtDate(next) : "—";
+    allEl("factNext").textContent = next ? fmtDate(next) : "N/A";
     if (TripsPage.items.cruises) TripsPage.setCount("all", String(everything.length));
     render();
   }

@@ -7,7 +7,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<title>Dude Ranch Experience — Worldschooling Journeys</title>
+<title>Dude Ranch Experience | Worldschooling Journeys</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/nav.css?v=20261013">
@@ -687,7 +687,7 @@ function renderCost(){
   const finalPay = addDays(D(selStart()), -P.finalPaymentDays), late = finalPay < today;
   document.getElementById('paySteps').innerHTML = [
     ['Today', late ? money(sub) : money(sub * P.depositRate), late ? 'full stay' : '30% deposit, non-refundable'],
-    ['By ' + fmtD(finalPay), late ? '—' : money(sub * (1 - P.depositRate)), late ? 'already passed' : 'rest of your stay'],
+    ['By ' + fmtD(finalPay), late ? money(0) : money(sub * (1 - P.depositRate)), late ? 'already passed' : 'rest of your stay'],
     ['At checkout', money(service + tax), 'service charge + tax'],
   ].map(([a, v, s]) => `<div class="pay-step">${a}<strong>${v}</strong>${s}</div>`).join('');
   const ln = document.getElementById('lateNote');

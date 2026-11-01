@@ -8,7 +8,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <meta name="robots" content="noindex, nofollow">
-<title>Booking Request — Worldschooling Journeys</title>
+<title>Booking Request | Worldschooling Journeys</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -133,7 +133,7 @@
   </div>
 
   <div id="detailsDoneState" class="card center" hidden>
-    <h1>Thanks — your details are in!</h1>
+    <h1>Thanks, your details are in!</h1>
     <p class="intro">We'll get your booking started and follow up within 24–48 hours. Please add <strong>booking@everyavenue.com</strong> to your approved senders and check your spam folder.</p>
   </div>
 
@@ -185,7 +185,7 @@
   </div>
 
   <div id="successState" class="card center" hidden>
-    <h1>Thanks — we've got it!</h1>
+    <h1>Thanks, we've got it!</h1>
     <p class="intro">Your booking request is in. Our team will follow up shortly with current pricing and next steps.</p>
   </div>
 </div>
@@ -216,10 +216,10 @@ async function loadCruise(){
     if(!res.ok) throw new Error('not found');
     const cruise = await res.json();
     currentCruiseId = cruise.id;
-    document.title = `Booking Request — ${cruise.destination || cruise.ship.name}`;
+    document.title = `Booking Request | ${cruise.destination || cruise.ship.name}`;
     document.getElementById('cruiseSummary').innerHTML = `
       <div class="name">${escapeHtml(cruise.destination) || escapeHtml(cruise.ship.name)}</div>
-      <div class="meta">${escapeHtml(cruise.ship.name)} — ${formatDateShort(cruise.departureDate)}</div>
+      <div class="meta">${escapeHtml(cruise.ship.name)} · ${formatDateShort(cruise.departureDate)}</div>
     `;
     document.getElementById('loadingState').hidden = true;
     document.getElementById('formCard').hidden = false;
@@ -258,10 +258,10 @@ async function loadDetails(){
     return showOnly('notFoundState');
   }
   if (r.booked) return showOnly('detailsBookedState');
-  document.title = 'Add Your Passenger Details — Worldschooling Journeys';
+  document.title = 'Add Your Passenger Details | Worldschooling Journeys';
   $('detailsSummary').innerHTML = r.cruises.map((c) => `
     <div class="name">${escapeHtml(c.destination) || escapeHtml(c.ship?.name)}</div>
-    <div class="meta">${escapeHtml(c.ship?.name || '')} — ${formatDateShort(c.departureDate)}</div>`).join('<div style="height:8px"></div>');
+    <div class="meta">${escapeHtml(c.ship?.name || '')} · ${formatDateShort(c.departureDate)}</div>`).join('<div style="height:8px"></div>');
   $('detailsIntro').innerHTML = `Booking for <strong>${escapeHtml(r.fullName)}</strong> (${escapeHtml(r.email || '')}). Fill in everyone who's traveling and we'll get you booked.`;
   $('dTravelers').value = r.travelers || '';
   $('dKids').value = r.travelers ? (r.kidAges || []).length : '';
