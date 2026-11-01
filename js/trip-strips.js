@@ -1,5 +1,5 @@
 // Home + About trip strips, filled from js/trips.js:
-//   #soonGrid   - "Departing Soon": the next 3 departures (cruises + land trips), not sold out
+//   #soonGrid   - "Departing Soon": the next SOON_LIMIT departures (cruises + land trips), not sold out, sideways slider
 //   #cruise-grid - every upcoming cruise and 3+ cruise journey (not sold out), sideways slider
 //   #land-grid   - every upcoming land trip, sideways slider
 // Each slider's year buttons are built from the years that actually have trips;
@@ -9,6 +9,8 @@
   // "8-day Worldschooling Mediterranean Ravenna to Barcelona Cruise" -> "Mediterranean Ravenna to Barcelona Cruise"
   const shortTitle = (t) => String(t || "").replace(/^(\d+-(leg|day)\s+)+/i, "").replace(/^(mini\s+)?worldschooling\s+/i, "");
   const bySoonest = (a, b) => String(a.sortDate).localeCompare(String(b.sortDate));
+  // "Trips Filling Up Now": how many of the soonest departures the slider holds (3 per view on desktop)
+  const SOON_LIMIT = 8;
 
   const CALENDAR = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>';
   function priceHTML(c){
@@ -28,7 +30,8 @@
       `<div class="cc-foot">${priceHTML(c)}<span class="cc-more">Learn More</span></div></div></a>`;
   }
 
-  function setupSlider(gridId, years, cardsFor){
+  // arrowsHost: where the ‹ › buttons go (default: after the year buttons, or just above the cards)
+  function setupSlider(gridId, years, cardsFor, arrowsHost){
     const grid = document.getElementById(gridId);
     if (!grid) return;
     const row = document.querySelector(`.trip-filter-row[data-filter-target="${gridId}"]`);
@@ -38,7 +41,8 @@
     const arrows = document.createElement("div");
     arrows.className = "strip-arrows";
     arrows.innerHTML = '<button type="button" class="strip-arrow" data-dir="-1" aria-label="Previous trips">&#8249;</button><button type="button" class="strip-arrow" data-dir="1" aria-label="More trips">&#8250;</button>';
-    (row || grid).insertAdjacentElement(row ? "afterend" : "beforebegin", arrows);
+    if (arrowsHost) arrowsHost.prepend(arrows);
+    else (row || grid).insertAdjacentElement(row ? "afterend" : "beforebegin", arrows);
     const [prev, next] = arrows.querySelectorAll("button");
     function updateArrows(){
       const max = grid.scrollWidth - grid.clientWidth;
@@ -91,17 +95,18 @@
       data = await W.loadCruiseCards();
     } catch (e) {
       if (cruiseGrid) cruiseGrid.outerHTML = '<p class="trip-empty-note">Cruises couldn’t be loaded right now. <a href="/worldschooling-trips#cruises">See all cruises</a></p>';
-      if (soon) soon.innerHTML = W.landTrips().sort(bySoonest).slice(0, 3).map(cardHTML).join("");
+      setupSoon(() => W.landTrips());
       return;
     }
     const cruiseCards = [...data.cruises, ...data.journeys].filter((c) => !c.soldOut);
     const cruiseYears = [...new Set(cruiseCards.map((c) => c.year))].sort();
     setupSlider("cruise-grid", cruiseYears, (y) => cruiseCards.filter((c) => !y || c.year === y));
-    if (soon) {
-      // individual cruises + land trips (journeys repeat their first cruise's date)
-      const next = [...data.cruises.filter((c) => !c.soldOut), ...W.landTrips()].sort(bySoonest).slice(0, 3);
-      soon.innerHTML = next.map(cardHTML).join("");
-    }
+    // individual cruises + land trips (journeys repeat their first cruise's date)
+    setupSoon(() => [...data.cruises.filter((c) => !c.soldOut), ...W.landTrips()]);
+  }
+  function setupSoon(all){
+    const soon = document.getElementById("soonGrid");
+    if (soon) setupSlider("soonGrid", [], () => all().sort(bySoonest).slice(0, SOON_LIMIT), soon.parentElement.querySelector(".spotlight-actions"));
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();
