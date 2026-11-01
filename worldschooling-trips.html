@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <title>Community Cruises — Worldschooling Journeys</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -19,6 +23,9 @@
 /* Hero dropdown: same look as the departure picker on the land trip pages (css/land-trip.css) */
 .hero-cta.dep-switch{display:flex;flex-wrap:wrap;align-items:stretch;gap:10px;margin-top:28px;}
 .hero-cta.dep-switch .hp-field{flex:0 0 auto;min-width:260px;}
+/* "Learn more ... here →" at the end of the hero paragraph (the article, about-our-trips.html) */
+.hero p.lede .lede-more{color:var(--white);font-weight:700;text-decoration:underline;text-underline-offset:3px;}
+.hero p.lede .lede-more:hover{color:#cfe3bb;}
 .hp-field{position:relative;display:flex;flex-direction:column;justify-content:center;min-width:250px;
   padding:6px 38px 6px 14px;border:1.5px solid rgba(255,255,255,0.4);border-radius:4px;
   background:rgba(21,34,48,0.42);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);cursor:pointer;}
@@ -85,7 +92,6 @@
           </ul>
         </span>
       </div>
-      <a href="/about-our-trips.html" class="btn btn-outline-hero">Read More</a>
     </div>
   </div>
 </header>
@@ -348,6 +354,7 @@ window.TripsPage = (function(){
       eyebrow: "Worldschooling Trips · For Homeschool Families",
       title: "Worldschooling Trips for Homeschool Families",
       lede: "Community cruises and guided land trips for homeschooling families, all in one place, soonest first.",
+      more: ["Learn more about how our trips are run here", "/about-our-trips"],
       docTitle: "Worldschooling Trips — Worldschooling Journeys",
     },
     cruises: {
@@ -355,13 +362,15 @@ window.TripsPage = (function(){
       eyebrow: "Worldschooling Group Cruise · For Homeschool Families",
       title: "Worldschooling Community Cruises",
       lede: "These trips are a way for homeschooling families to see the world without a huge cost or commitment, alongside a group of fun, inclusive, like-minded families.",
+      more: ["Learn more about how our cruises are run here", "/about-our-trips#cruises"],
       docTitle: "Community Cruises — Worldschooling Journeys",
     },
     landtrips: {
       label: "Land Trips",
       eyebrow: "Worldschooling Land Trips · For Homeschool Families",
       title: "Guided Land Trips for Worldschooling Families",
-      lede: "Land trips are guided, immersive trips with a busy schedule of activities, designed to not just see the destination, but to truly feel it.",
+      lede: "Land trips are guided, immersive group trips with a busy schedule of activities, designed for you to truly feel the destination alongside other worldschooling families.",
+      more: ["Learn more about how our land trips are run here", "/about-our-trips#land-trips"],
       docTitle: "Land Trips — Worldschooling Journeys",
     },
   };
@@ -380,7 +389,9 @@ window.TripsPage = (function(){
     const h = page.view === "landtrips" && page.landHero ? { ...VIEWS.landtrips, ...page.landHero } : VIEWS[page.view];
     el("heroEyebrow").textContent = h.eyebrow;
     el("heroTitle").textContent = h.title;
-    el("heroLede").textContent = h.lede;
+    // the paragraph + a link to its part of the About Our Trips article (replaced the Read More button)
+    const more = Object.assign(document.createElement("a"), { className: "lede-more", href: VIEWS[page.view].more[1], textContent: VIEWS[page.view].more[0] + " →" });
+    el("heroLede").replaceChildren(h.lede + " ", more);
     document.title = h.docTitle;
     el("viewBtn").textContent = VIEWS[page.view].label;
     el("viewList").querySelectorAll(".cs-opt").forEach(li => li.setAttribute("aria-selected", li.dataset.v === page.view));

@@ -24,7 +24,7 @@
 | sitemap.xml / robots.txt (made at every deploy) | `tools/sitemap.js` |
 | Newsletter (Moosend via the Google Apps Script): Sign Up boxes + every form also subscribes (loaded by the footer) | `js/newsletter.js` |
 | Phones/tablets: trip cards open in the same tab + "Back to ..." buttons on trip pages (loaded by the footer) | `js/trip-links.js` |
-| "Read More" article on the Cruises / Land Trips pages | `about-our-trips.html` |
+| "Learn more ... here →" article (link at the end of the Worldschooling Trips hero paragraph) | `about-our-trips.html` |
 | Roadmap page ("Vote Now" links): ProductLift boards | `roadmap.html` |
 
 Pages pull the navbar and footer in with a marker:

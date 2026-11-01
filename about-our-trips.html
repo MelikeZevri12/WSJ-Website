@@ -3,7 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>About Our Trips — Worldschooling Journeys</title>
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<title>What Our Worldschooling Trips Are Really Like — Worldschooling Journeys</title>
 <meta name="description" content="What our worldschooling cruises are really like, how they differ from our guided land trips, and which one fits your family.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -21,6 +25,20 @@
 .article-cta .cta-buttons{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px;}
 .legal-doc .article-cta a.btn{text-decoration:none;color:#fff;}
 .article-cta h2{border-top:0;padding-top:0;}
+/* the article's parts (Cruises / Land Trips / Choosing): a clear band between them */
+.part-divider{margin:48px 0 26px;padding:22px 24px;background:var(--dark);color:#fff;border-radius:6px;border-left:6px solid var(--green);scroll-margin-top:20px;}
+.part-divider.land{border-left-color:#c97b4a;}
+.part-divider.both{background:var(--green-tint);color:var(--dark);border:1px solid var(--green-line);border-left:6px solid var(--green);}
+.pd-kicker{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.14em;color:#b9d19f;margin-bottom:4px;}
+.part-divider.land .pd-kicker{color:#f0b48a;}
+.part-divider.both .pd-kicker{color:var(--green-dark);}
+.legal-doc .part-divider h2.pd-title{margin:0;padding:0;border:0;font-size:28px;color:inherit;}
+.part-divider p{margin:8px 0 0;color:#d8dde2;font-size:17px;}
+.part-divider.both p{color:#3c4048;}
+.legal-doc .part-divider + section.ls h2{margin-top:0;padding-top:0;border-top:none;}
+.legal-toc .toc-part{display:block;margin:12px 6px 2px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:var(--green-dark);break-after:avoid;}
+.legal-toc .toc-part:first-child{margin-top:0;}
+@media (max-width:640px){ .part-divider{padding:18px;} .legal-doc .part-divider h2.pd-title{font-size:23px;} }
 </style>
 </head>
 <body id="top">
@@ -30,17 +48,19 @@
 
 <header class="legal-hero"><div class="wrap">
   <div class="eyebrow" style="color:var(--green);">About Our Trips</div>
-  <h1>What Our Worldschooling Cruises Are Really Like</h1>
+  <h1>What Our Worldschooling Trips Are Really Like</h1>
   <p class="lh-meta">One of the best things in life is community. One of the hardest things to find in life is community.</p>
 </div></header>
 <div class="legal-body"><div class="wrap legal-grid">
-  <details class="legal-toc" open><summary class="toc-label">On this page</summary><nav><a href="#what-happens">What Actually Happens</a><a href="#keep-it-real">How We Keep It Real</a><a href="#our-team">What Our Team Actually Does</a><a href="#reality">The Messy, Beautiful Reality</a><a href="#who-for">Who Our Cruises Are Actually For</a><a href="#land-trips">Who Might Love Our Land Trips Instead</a><a href="#why">Why This Differentiation Actually Works</a></nav></details>
+  <details class="legal-toc" open><summary class="toc-label">On this page</summary><nav><span class="toc-part">Part 1 · Cruises</span><a href="#what-happens">What Actually Happens</a><a href="#keep-it-real">How We Keep It Real</a><a href="#our-team">What Our Team Actually Does</a><a href="#reality">The Messy, Beautiful Reality</a><a href="#who-for">Who Our Cruises Are Actually For</a><span class="toc-part">Part 2 · Land Trips</span><a href="#land-trips">Who Might Love Our Land Trips Instead</a><span class="toc-part">Cruise or Land Trip?</span><a href="#why">Why This Differentiation Actually Works</a></nav></details>
   <article class="legal-doc">
     <div class="legal-intro">
 <p>Here's what we've learned after years of bringing worldschooling families together: most of us are starving for real connection, but we've been conditioned to think it has to be complicated, expensive, or perfectly orchestrated to work.</p>
 <p>That's exactly backwards.</p>
 <p>Our worldschooling cruises work precisely because we've stripped away all the unnecessary stuff that gets in the way of what actually matters - homeschooling families connecting with other homeschooling families who get it.</p>
     </div>
+
+<div class="part-divider" id="cruises"><div class="pd-kicker">Part 1</div><h2 class="pd-title">Our Worldschooling Cruises</h2><p>Flexible, community-driven trips: the ship provides the structure and activities, we help create the connections.</p></div>
 
 <section class="ls" id="what-happens"><h2>What Actually Happens</h2>
 <p>When you join one of our cruises, you're stepping into something that already works. The cruise ship handles all the logistics that usually stress parents out: food, entertainment, safe spaces for kids, activities every hour.</p>
@@ -102,11 +122,15 @@
 <p>That is what allows families to travel at the cruise line’s regular rates, join a worldschooling community, and shape the experience in the way that works best for them.</p>
 </section>
 
-<section class="ls" id="land-trips"><h2>Who Might Love Our Land Trips Instead</h2>
+<div class="part-divider land" id="land-trips"><div class="pd-kicker">Part 2</div><h2 class="pd-title">Our Worldschooling Land Trips</h2><p>Guided, immersive trips with local guides and a full schedule of activities.</p></div>
+
+<section class="ls" id="land-trips-who"><h2>Who Might Love Our Land Trips Instead</h2>
 <p>If you thrive with expert guidance, carefully curated daily experiences, and dedicated leaders creating magical moments throughout your journey, our land-based Worldschooling Journeys trips are absolutely incredible.</p>
 <p>Those trips feature knowledgeable local guides, immersive cultural experiences, and hands-on support that creates deep educational opportunities in stunning destinations, often moving faster, exploring more and more in depth. Both styles are beautiful. They just serve different travel personalities and family needs.</p>
 <p>Our worldschooling land trips are designed to have an immersive community travel experience where you get to feel the destination, not just see it. And do it with a group of other amazing worldschoolers who will quickly become life-long friends. Our company’s mission is to combine travel and community, because in the end, it's not where you go to, it's who you travel there with.</p>
 </section>
+
+<div class="part-divider both" id="choosing"><div class="pd-kicker">Cruise or Land Trip?</div><h2 class="pd-title">Which One Fits Your Family</h2></div>
 
 <section class="ls" id="why"><h2>Why This Differentiation Actually Works</h2>
 <p>We've learned that different families need different types of travel experiences.</p>
