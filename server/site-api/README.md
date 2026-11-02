@@ -69,6 +69,19 @@ The data file is never overwritten by an update (the seed file is only read when
 If the cruise API's `JWT_SECRET` ever changes, copy it again on the VPS
 (`cd ~/apps/site-api && grep '^JWT_SECRET=' ~/apps/cruise-backend/.env > .env`) and restart `site-api`.
 
+## Adding testimonials in bulk (import)
+
+`import-testimonials.js` + a file in `imports/` (`{ "add": [...], "fillFullText": [{ "id", "fullText" }] }`). It only adds
+testimonials that aren't there yet and fills in empty full texts, so nothing edited in admin is overwritten. Without
+`--apply` it only shows what it would do; with `--apply` it needs `site-api` stopped (the running server keeps the list in
+memory) and backs the data up first. Used on 2026-11-02 for `imports/2026-11-02-old-site.json` (9 reviews from the old
+WordPress testimonials page that were missing + the full text of Natiera, Christina and Matea).
+```
+cd ~/apps/site-api
+node import-testimonials.js imports/<file>.json
+sudo systemctl stop site-api; node import-testimonials.js imports/<file>.json --apply; sudo systemctl start site-api
+```
+
 ## Undoing a change
 
 Every save leaves the previous version in `~/apps/site-api/data/backups/testimonials-<date-time>.json`. To go back:
