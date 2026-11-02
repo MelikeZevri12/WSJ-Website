@@ -785,3 +785,26 @@ a.press-logo:hover{opacity:1;background:var(--gold);}
 
 /* the whole picker box opens its list, so the whole box shows a pointer */
 .hp-field, .sb-field{cursor:pointer;}
+
+/* Phones + tablets: the "How many guests?" buttons sit in even rows instead of
+   stacking one per line. Every button in a row is the same width, and no row
+   is left with a single stretched button:
+   4 buttons (2/3/4/5+ Guests): 2 x 2 on phones, one row from 480px.
+   5-6 buttons (cruises with Large Family Cabins): rows of 3, one row from 640px. */
+@media (max-width:760px){
+  .pricing-card{padding:24px 18px;}
+  .guest-select{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+  .guest-select:has(> .pill-btn:nth-child(5)){grid-template-columns:repeat(3,1fr);}
+  .guest-select .pill-btn{min-width:0;padding:10px 6px;font-size:15px;white-space:nowrap;}
+}
+/* very small phones: 3 across doesn't fit, keep 2 across */
+@media (max-width:359px){
+  .guest-select:has(> .pill-btn:nth-child(5)){grid-template-columns:repeat(2,1fr);}
+}
+@media (min-width:480px) and (max-width:760px){
+  .guest-select{grid-template-columns:repeat(4,1fr);}
+}
+@media (min-width:640px) and (max-width:760px){
+  .guest-select:has(> .pill-btn:nth-child(5)){grid-template-columns:repeat(5,1fr);}
+  .guest-select:has(> .pill-btn:nth-child(6)){grid-template-columns:repeat(6,1fr);}
+}
