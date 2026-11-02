@@ -343,6 +343,7 @@
 </style>
 <link rel="stylesheet" href="/css/hero.css?v=20261012">
 <link rel="stylesheet" href="/css/cards.css?v=20261012">
+<link rel="stylesheet" href="/css/testimonials.css">
 </head>
 <body>
 <!-- GLOBAL NAV -->
@@ -1599,21 +1600,8 @@ document.querySelectorAll('.seg-picker select.seg-start, .seg-picker select.seg-
 
 
 // ---------- PROOF STRIP (short testimonials) ----------
-const testimonials = [
-  {name:"Cheryl", quote:"We found what we were missing at home, a community of people who lived in non-traditional ways. A group that believes in inclusivity and equality."},
-  {name:"Christina", quote:"I’m sharing this, not to try to convince you, but to advise you that if you homeschool your children and you have been considering a cruise then please take a look at what Worldschooling Journeys has to offer."},
-  {name:"Brett", quote:"It has now been three months since our initial journey and our daughter talks about all the people on that trip on a daily basis. She can’t wait to see all of her friends on her next worldschooling journey."},
-  {name:"Barry", quote:"We had never done anything like this before our first ever trip. IT WAS AWESOME! Our kids had such a great time and we loved being in a group and having a sense of belonging and understanding."},
-];
-
+// The testimonials themselves come live from the database (js/testimonials.js, called at the end of the page).
 const testiTrack = document.getElementById('testiTrack');
-testiTrack.innerHTML = testimonials.map(t => `
-  <div class="proof-chip">
-    <div>
-      <p>"${t.quote}"</p>
-      <div class="who">${t.name}</div>
-    </div>
-  </div>`).join('');
 
 const proofPrevBtn = document.getElementById('proofPrevBtn');
 const proofNextBtn = document.getElementById('proofNextBtn');
@@ -2210,5 +2198,7 @@ if (localStorage.getItem('cruiseAdminAuthToken')) {
 loadJourney();
 </script>
 <script src="/js/nav.js?v=20261013"></script>
+<script src="/js/testimonials.js"></script>
+<script>WSJTestimonials.strip({ types: ['cruise'], more: '/testimonials#cruises' });</script>
 </body>
 </html>

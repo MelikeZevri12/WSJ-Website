@@ -65,6 +65,7 @@
 </style>
 <link rel="stylesheet" href="/css/hero.css?v=20261012">
 <link rel="stylesheet" href="/css/cards.css?v=20261012">
+<link rel="stylesheet" href="/css/testimonials.css">
 </head>
 <body data-trip="austria-fall">
 <!-- GLOBAL NAV -->
@@ -339,17 +340,6 @@ const TRIP = {
       {t:'Explore the Austrian Alps', d:'The breathtaking mountains of the Austrian countryside and the rich history of Salzburg.'},
       {t:'Activities for the whole family', d:'Hiking, biking, paragliding, thermal spas. Join every outing or none. Freedom of choice comes first.'},
     ],
-    testimonials: [
-      {name:'Ashley', quote:'THE. BEST. TIME! If anyone is thinking about signing up next year, DO IT! I could not imagine having a more fun 2 weeks!'},
-      {name:'Mary Beth', quote:'I’m not a crier (when it comes to goodbyes, at least), but that was an epic group hug. It’ll live in my memory forever.'},
-      {name:'Smaranda', quote:'Matthew completely transformed. I could really see his confidence shine by the end, and he was so loved by everyone.'},
-      {name:'Mary', quote:'The idea that I could go on a vacation I didn’t plan myself, and actually enjoy each and every activity chosen for me…'},
-      {name:'Maria', quote:'I really appreciated the amenities and comforts of the hotel, at a truly great value!'},
-      {name:'Pearly', quote:'This has been an epic experience thanks to your utmost care for building not just itineraries but a true community.'},
-      {name:'Jael', quote:'What we had imagined for this trip was far exceeded by the reality.'},
-      {name:'Jazsa', quote:'I might look like the quiet one, but I was having a great time listening to all your jokes, stories, and adventures.'},
-      {name:'Debbie', quote:'I found myself tearing up getting on the van. I’m beyond grateful for how everyone embraced Zachary and supported me too.'},
-    ],
     facebookGroup: 'https://www.facebook.com/groups/everyavenuetravel',
   },
   included: ['Scheduled group activities and daily experiences', 'Retreat leaders who stay at the resort and join outings as guides and facilitators', 'A like-minded group of worldschooling families', 'Private WhatsApp chats for adults and kids, before and during the trip', 'Your apartment with kitchenette for the full 14 nights', 'Entry tickets, coach buses and tour fees for the main group-planned activities', 'Single-day lift tickets for scheduled group mountain days', 'Group transportation to activities, plus a travel card for free trains and buses in Salzburgerland (including Salzburg to the resort town)', 'Resort amenities: thermal spa, indoor pool, game room, fitness center and bowling alley', 'Extra kids club hours just for our group', 'A private dining room and a dedicated group room for coworking, board games and hanging out', 'Trip support: let us know how we can help make this trip possible for your family'],
@@ -570,8 +560,6 @@ function renderStatic(){
   document.getElementById('leadersText').textContent = C.leaders;
   document.getElementById('pillars').innerHTML = C.pillars.map((p, i) =>
     `<div class="value-prop">${VALUE_ICONS[i % 3]}<div><h4>${p.t}</h4><p>${p.d}</p></div></div>`).join('');
-  document.getElementById('stories').style.display = C.testimonials.length ? '' : 'none';
-  document.getElementById('testiTrack').innerHTML = C.testimonials.map(t => `<div class="proof-chip"><div><p>“${t.quote}”</p><div class="who">${t.name}</div></div></div>`).join('');
   document.getElementById('fbJoin').innerHTML = C.facebookGroup ? `<span>Meet other worldschooling families before you go.</span><a class="btn btn-outline" href="${C.facebookGroup}" target="_blank" rel="noopener">Join our Worldschooling Facebook Group</a>` : '';
   document.querySelectorAll('.photo-strip[data-strip]').forEach(el => { const ph = (TRIP.photoStrips || [])[+el.dataset.strip] || [];
     el.style.display = ph.length ? '' : 'none';
@@ -843,5 +831,7 @@ addEventListener('DOMContentLoaded', () => LandRoster.sync(SEASONS, renderSelect
 <script src="/js/waitlist.js"></script>
 <script src="/js/booking.js"></script>
 <script src="https://cdn.wetravel.com/widgets/embed_checkout.js"></script>
+<script src="/js/testimonials.js"></script>
+<script>WSJTestimonials.strip({ types: ['austria_retreat'], more: '/testimonials#land-trips' });</script>
 </body>
 </html>

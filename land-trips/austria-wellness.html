@@ -142,6 +142,7 @@
 </style>
 <link rel="stylesheet" href="/css/hero.css?v=20261012">
 <link rel="stylesheet" href="/css/cards.css?v=20261012">
+<link rel="stylesheet" href="/css/testimonials.css">
 </head>
 <body data-trip="austria-wellness">
 <!-- GLOBAL NAV -->
@@ -536,7 +537,6 @@ const TRIP = {
       {t:'Your health gets real time', d:'Treatments, rest and slower days, without the rest of life pulling at you.'},
       {t:'Freedom of choice', d:'Join group outings or stay at the resort. Nobody has to do it all.'},
     ],
-    testimonials: [],
     facebookGroup: 'https://www.facebook.com/groups/everyavenuetravel',
   },
   rhythm: {
@@ -790,8 +790,6 @@ function renderStatic(){
   document.getElementById('leadersText').textContent = C.leaders;
   document.getElementById('pillars').innerHTML = C.pillars.map((p, i) =>
     `<div class="value-prop">${VALUE_ICONS[i % 3]}<div><h4>${p.t}</h4><p>${p.d}</p></div></div>`).join('');
-  document.getElementById('stories').style.display = C.testimonials.length ? '' : 'none';
-  document.getElementById('testiTrack').innerHTML = C.testimonials.map(t => `<div class="proof-chip"><div><p>“${t.quote}”</p><div class="who">${t.name}</div></div></div>`).join('');
   document.getElementById('fbJoin').innerHTML = C.facebookGroup ? `<span>Meet other worldschooling families before you go.</span><a class="btn btn-outline" href="${C.facebookGroup}" target="_blank" rel="noopener">Join our Worldschooling Facebook Group</a>` : '';
   document.querySelectorAll('.photo-strip[data-strip]').forEach(el => { const ph = (TRIP.photoStrips || [])[+el.dataset.strip] || [];
     el.style.display = ph.length ? '' : 'none';
@@ -1068,5 +1066,7 @@ addEventListener('DOMContentLoaded', () => LandRoster.sync(SEASONS, renderSelect
 <script src="/js/waitlist.js"></script>
 <script src="/js/booking.js"></script>
 <script src="https://cdn.wetravel.com/widgets/embed_checkout.js"></script>
+<script src="/js/testimonials.js"></script>
+<script>WSJTestimonials.strip({ types: ['austria_retreat'], more: '/testimonials#land-trips' });</script>
 </body>
 </html>

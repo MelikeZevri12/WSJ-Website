@@ -55,6 +55,7 @@
 </style>
 <link rel="stylesheet" href="/css/hero.css?v=20261012">
 <link rel="stylesheet" href="/css/cards.css?v=20261012">
+<link rel="stylesheet" href="/css/testimonials.css">
 </head>
 <body>
 
@@ -418,32 +419,8 @@
 
 <script>
 // ---------- PROOF STRIP (short testimonials, same pattern as the trip pages) ----------
-const testimonials = [
-  {name:"Kayse", trip:"Cruise", quote:"We are so happy that we found out about the amazing cruise we took with Elena! The entire process was smooth sailing! Our family of four had an amazing time and made such wonderful memories."},
-  {name:"Natiera", trip:"Cruise", quote:"This trip felt completely centered around the kids and facilitating their ability to connect with each other and explore. My kids were on fire with joy the entire trip."},
-  {name:"Mary", trip:"Austria retreat", quote:"Our Austria trip was everything I'd hoped it would be. Before we even got on the plane, I told my husband, 'If this works out, these worldschool tours may be how we travel.'"},
-  {name:"Regan", trip:"Cruise", quote:"We have been traveling for 3 years and the group of kids from our Worldschooling cruise are the only kids my children regularly talk with."},
-  {name:"Crissy", trip:"Cruise", quote:"I had looked at pictures of these trips and worried as an introvert if I would self implode. I'm happy to say that I did not."},
-  {name:"Smaranda", trip:"Land trip", quote:"Matthew completely transformed during the 10 days! I could really see his confidence shine by the end."},
-  {name:"Tanise", trip:"Cruise", quote:"She has an amazing system with everything worked out for you, which makes it so easy, all with a built-in community ready to connect. Our kids asked right away when we could go again."},
-  {name:"Matea", trip:"Cruise", quote:"As a solo traveling mom with ND kids, naturally I had concerns about our integration into a group with strangers. It was a fantastic group of people."},
-  {name:"Ashley", trip:"Austria retreat", quote:"THE. BEST. TIME! If anyone is thinking about signing up next year, DO IT! I could not imagine having a more fun 2 weeks!"},
-  {name:"Kylie", trip:"Cruise", quote:"Last year our family went on a 42-night worldschooling cruise and absolutely loved it. Hubby and I have made lifelong friendships from that one cruise."},
-  {name:"Jocelyn", trip:"Japan cruise", quote:"Parents and kids were all so welcoming! From the first day on board, adults and kids melded right into the group."},
-  {name:"Tara-Nicolle", trip:"Cruise", quote:"The other families were awesome and my kid continues to ask about them, two months later. If you're considering going on one of these trips, stop thinking about it and just go."},
-  {name:"Kate E", trip:"Cruise", quote:"I would happily pay extra for the level of care and attention I've received during the booking process. Everything was made so easy."},
-  {name:"Mary Beth", trip:"Land trip", quote:"I'm not a crier (when it comes to goodbyes, at least), but that was an epic group hug. It'll live in my memory forever."},
-  {name:"Brandi", trip:"Cruise", quote:"The friendships, bonds we formed, and experiences we shared made our recent trip amazing, and we can't wait to book another."},
-];
-
+// The testimonials themselves come live from the database (js/testimonials.js, called at the end of the page).
 const testiTrack = document.getElementById('testiTrack');
-testiTrack.innerHTML = testimonials.map(t => `
-  <div class="proof-chip">
-    <div>
-      <p>"${t.quote}"</p>
-      <div class="who">${t.name}</div>
-    </div>
-  </div>`).join('');
 
 const proofPrevBtn = document.getElementById('proofPrevBtn');
 const proofNextBtn = document.getElementById('proofNextBtn');
@@ -492,5 +469,7 @@ document.querySelectorAll('.trip-filter-row').forEach((row) => {
 <script src="/js/waitlist.js" defer></script>
 <script src="/js/contact-form.js" defer></script>
 <script src="/js/nav.js?v=20261013"></script>
+<script src="/js/testimonials.js"></script>
+<script>WSJTestimonials.strip({ types: ['cruise', 'land_trip', 'austria_retreat'], more: '/testimonials' });</script>
 </body>
 </html>
