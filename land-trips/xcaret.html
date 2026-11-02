@@ -523,7 +523,7 @@ function renderCost(){
   ].map(([k, v, s]) => `<div class="pay-step">${k}<strong>${v}</strong>${s}</div>`).join('');
   const ln = document.getElementById('lateNote');
   ln.style.display = late ? '' : 'none';
-  ln.textContent = late ? `The final payment date for this departure (${fmtD(finalPay)}) has passed, so the full balance is due when we send your quote. Spots are confirmed once it’s paid.` : '';
+  ln.textContent = late ? 'Full balance is due at the time of booking.' : '';
   document.getElementById('sbPrice').innerHTML = `<span>${range(d)}</span>${money(d.price)} / person`;
 }
 
