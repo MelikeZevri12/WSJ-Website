@@ -22,6 +22,8 @@
 //   POST   /site-api/testimonials                     staff login
 //   PUT    /site-api/testimonials/:id                 staff login
 //   DELETE /site-api/testimonials/:id                 staff login
+//
+// A testimonial: { id, name, fullText, shortVersion, category, featured, sortOrder, createdAt, updatedAt }
 'use strict';
 const http = require('http');
 const fs = require('fs');
@@ -105,7 +107,14 @@ function validateTestimonial(body) {
   if (!name) return { error: 'Name is required.' };
   if (!fullText && !shortVersion) return { error: 'Add the full text, the short version, or both.' };
   if (!CATEGORIES.includes(category)) return { error: 'Pick a type: Cruise, Land Trip, Port Excursion or Austria Retreat.' };
-  return { value: { name, fullText, shortVersion, category } };
+  const value = { name, fullText, shortVersion, category };
+  // "Featured" = one of our best (admin star): shown first on the website. Left as it
+  // was when a save doesn't mention it; new testimonials start not featured.
+  if (body.featured !== undefined) {
+    if (typeof body.featured !== 'boolean') return { error: 'featured must be true or false.' };
+    value.featured = body.featured;
+  }
+  return { value };
 }
 const bySortOrder = (a, b) => a.sortOrder - b.sortOrder || String(a.createdAt).localeCompare(String(b.createdAt));
 
@@ -165,7 +174,7 @@ function createServer({ dataDir, seedDir, secret }) {
     const now = new Date().toISOString();
     if (req.method === 'POST') {
       const row = await testimonials.change((rows) => {
-        const t = { id: crypto.randomUUID(), ...value, sortOrder: rows.reduce((m, r) => Math.max(m, r.sortOrder || 0), 0) + 10, createdAt: now, updatedAt: now };
+        const t = { id: crypto.randomUUID(), featured: false, ...value, sortOrder: rows.reduce((m, r) => Math.max(m, r.sortOrder || 0), 0) + 10, createdAt: now, updatedAt: now };
         rows.push(t); return t;
       });
       return send(res, 201, row);

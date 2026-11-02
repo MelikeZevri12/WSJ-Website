@@ -15,7 +15,8 @@ The website's internal data, kept apart from the cruise API. For now that's the
 
 Endpoints: `GET /site-api/health`, `GET /site-api/testimonials[?category=cruise|land_trip|port_excursion|austria_retreat]`
 (public), `POST /site-api/testimonials`, `PUT` and `DELETE /site-api/testimonials/<id>` (staff login).
-A testimonial: `{ id, name, fullText, shortVersion, category, sortOrder, createdAt, updatedAt }`.
+A testimonial: `{ id, name, fullText, shortVersion, category, featured, sortOrder, createdAt, updatedAt }`
+(`featured` = marked as one of the best in admin; shown first on the website; missing on older rows = not featured).
 
 ## First-time setup (done once)
 

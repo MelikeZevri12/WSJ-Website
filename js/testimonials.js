@@ -4,12 +4,12 @@
 //
 //   WSJTestimonials.strip({ types: ['cruise'], more: '/testimonials#cruises' })
 //     The "In Their Words" carousel (#testiTrack inside #stories / .proof-strip-wrap):
-//     up to 10 random testimonials of those types, each with "Read more" (opens the
+//     up to 10 testimonials of those types (featured ones first, each group in random order), each with "Read more" (opens the
 //     whole review in a popup) when there's more to read, plus a "Read More
 //     Testimonials" link above the carousel. Hidden if there are none or the
 //     database can't be reached.
 //   WSJTestimonials.page()
-//     testimonials.html: fills each section's [data-t-types] grid, in the database order.
+//     testimonials.html: fills each section's [data-t-types] grid: featured first, then the database order.
 //
 // Types: cruise, land_trip, port_excursion, austria_retreat. Styles: css/testimonials.css.
 (function () {
@@ -78,7 +78,9 @@
     const wrap = el.closest('.proof-strip-wrap') || el;
     wrap.hidden = true;
     load().then((rows) => {
-      const picked = shuffle(rows.filter((t) => (!types || types.includes(t.category)) && (t.shortVersion || t.fullText))).slice(0, STRIP_MAX);
+      // Featured ones (admin star = our best) come first, each group in random order
+      const fit = rows.filter((t) => (!types || types.includes(t.category)) && (t.shortVersion || t.fullText));
+      const picked = [...shuffle(fit.filter((t) => t.featured)), ...shuffle(fit.filter((t) => !t.featured))].slice(0, STRIP_MAX);
       if (!picked.length) return;
       el.innerHTML = picked.map((t, i) => {
         const shown = t.shortVersion || clip(t.fullText, SHORT_CHARS);
@@ -107,7 +109,8 @@
     load().then((rows) => {
       grids.forEach((grid) => {
         const types = grid.dataset.tTypes.split(',');
-        const list = rows.filter((t) => types.includes(t.category));
+        // featured ones (admin star) first, then the database order
+        const list = rows.filter((t) => types.includes(t.category)).sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
         grid.innerHTML = list.map((t) => {
           const full = t.fullText || t.shortVersion;
           const excerpt = clip(full, EXCERPT_CHARS);

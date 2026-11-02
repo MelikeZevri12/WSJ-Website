@@ -90,6 +90,18 @@ test('adds, edits and deletes (staff only), keeping a backup of every change', a
   } finally { await s.close(); }
 });
 
+test('featured: off for new ones, set and cleared by a save, kept when a save leaves it out', async () => {
+  const s = await start([]);
+  try {
+    const added = (await s.call('POST', '/testimonials', kylie)).body;
+    assert.equal(added.featured, false);
+    assert.equal((await s.call('PUT', `/testimonials/${added.id}`, { ...kylie, featured: true })).body.featured, true);
+    assert.equal((await s.call('PUT', `/testimonials/${added.id}`, kylie)).body.featured, true);
+    assert.equal((await s.call('PUT', `/testimonials/${added.id}`, { ...kylie, featured: false })).body.featured, false);
+    assert.equal((await s.call('PUT', `/testimonials/${added.id}`, { ...kylie, featured: 'yes' })).status, 400);
+  } finally { await s.close(); }
+});
+
 test('rejects incomplete testimonials and unknown addresses', async () => {
   const s = await start([]);
   try {

@@ -232,6 +232,12 @@
   .t-type-picker input:focus-visible + .t-type{outline:2px solid var(--green-dark);outline-offset:2px;}
   .t-snip{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-width:440px;line-height:1.45;}
   .t-none{color:var(--muted);font-style:italic;}
+  .t-star{background:none;border:none;padding:0 8px 0 0;font-size:20px;line-height:1;cursor:pointer;color:#cfc8b8;vertical-align:-2px;}
+  .t-star:hover{color:#d9a441;}
+  .t-star.on{color:#d9a441;}
+  .t-star:disabled{opacity:.5;cursor:wait;}
+  .t-featured-toggle{font-weight:700;}
+  .t-name-cell{white-space:nowrap;}
   #chooseImageGrid button{
     border:1.5px solid var(--line);border-radius:7px;padding:0;overflow:hidden;
     cursor:pointer;background:none;aspect-ratio:16/10;
@@ -670,7 +676,7 @@
     <div class="admin-header">
       <div>
         <h1>Testimonials</h1>
-        <p>Reviews from our families, kept on the website's own server (not the cruise system). Click one to edit or delete it.</p>
+        <p>Reviews from our families, kept on the website's own server (not the cruise system). Click one to edit or delete it. Click the star to mark your best ones as Featured: they're shown first on the website.</p>
       </div>
       <button type="button" class="btn btn-primary" id="addTestimonialBtn">Add Testimonial</button>
     </div>
@@ -682,6 +688,10 @@
       <div class="admin-field" style="flex:1;max-width:360px;margin-bottom:0;">
         <input id="testimonialSearchInput" type="text" placeholder="Search by name or words...">
       </div>
+      <label class="attention-toggle" style="flex-shrink:0;">
+        <input type="checkbox" id="testimonialFeaturedOnly">
+        Featured only
+      </label>
       <div class="admin-hint" id="testimonialCount" style="margin:0;"></div>
     </div>
 
@@ -1164,6 +1174,12 @@
       <div class="admin-field">
         <label>Type</label>
         <div class="t-type-picker" id="testimonialTypePicker"><!-- one pill per type, see TESTIMONIAL_TYPES --></div>
+      </div>
+      <div class="admin-field">
+        <label class="attention-toggle t-featured-toggle">
+          <input type="checkbox" id="testimonialFeaturedInput">
+          <span>&#9733; Featured: one of our best (shown first in the carousels and on the testimonials page)</span>
+        </label>
       </div>
       <div class="admin-field">
         <label for="testimonialShortInput">Short Version</label>
@@ -3725,21 +3741,23 @@ async function loadTestimonials() {
 }
 function renderTestimonials() {
   const type = $('testimonialTypeFilter').value, q = $('testimonialSearchInput').value.trim().toLowerCase();
-  const rows = testimonialRows.filter((r) => (!type || r.category === type)
+  const featuredOnly = $('testimonialFeaturedOnly').checked;
+  const rows = testimonialRows.filter((r) => (!type || r.category === type) && (!featuredOnly || r.featured)
     && (!q || `${r.name}\n${r.shortVersion}\n${r.fullText}`.toLowerCase().includes(q)));
   $('testimonialEmptyState').style.display = testimonialRows.length ? 'none' : '';
   $('testimonialTable').style.display = testimonialRows.length ? '' : 'none';
-  $('testimonialCount').textContent = testimonialRows.length ? `Showing ${rows.length} of ${testimonialRows.length}` : '';
+  $('testimonialCount').textContent = testimonialRows.length ? `Showing ${rows.length} of ${testimonialRows.length} · ${testimonialRows.filter((r) => r.featured).length} featured` : '';
   const snip = (text) => text ? `<div class="t-snip">${escapeHtml(text)}</div>` : '<span class="t-none">None yet</span>';
   $('testimonialTableBody').innerHTML = rows.length ? rows.map((r) => `
     <tr data-testimonial-id="${escapeHtml(r.id)}">
-      <td><strong>${escapeHtml(r.name)}</strong></td>
+      <td class="t-name-cell"><button type="button" class="t-star${r.featured ? ' on' : ''}" data-star-id="${escapeHtml(r.id)}" title="${r.featured ? 'Featured (click to unmark)' : 'Mark as Featured'}" aria-label="${r.featured ? 'Featured, click to unmark' : 'Mark as Featured'}" aria-pressed="${r.featured ? 'true' : 'false'}">${r.featured ? '&#9733;' : '&#9734;'}</button><strong>${escapeHtml(r.name)}</strong></td>
       <td>${testimonialTypePill(r.category)}</td>
       <td>${snip(r.shortVersion)}</td>
       <td>${snip(r.fullText)}</td>
     </tr>`).join('') : '<tr><td colspan="4" style="color:var(--muted);">No testimonials match.</td></tr>';
 }
 $('testimonialTypeFilter').addEventListener('change', renderTestimonials);
+$('testimonialFeaturedOnly').addEventListener('change', renderTestimonials);
 $('testimonialSearchInput').addEventListener('input', renderTestimonials);
 
 function showTestimonialError(message) {
@@ -3753,6 +3771,7 @@ function openTestimonialModal(row) {
   $('testimonialShortInput').value = row ? row.shortVersion : '';
   $('testimonialFullInput').value = row ? row.fullText : '';
   document.querySelectorAll('input[name="testimonialType"]').forEach((r) => { r.checked = !!row && r.value === row.category; });
+  $('testimonialFeaturedInput').checked = !!(row && row.featured);
   $('deleteTestimonialBtn').hidden = !row;
   $('deleteTestimonialBtn').disabled = false;
   $('saveTestimonialBtn').disabled = false;
@@ -3761,7 +3780,24 @@ function openTestimonialModal(row) {
   $('testimonialNameInput').focus();
 }
 $('addTestimonialBtn').addEventListener('click', () => openTestimonialModal(null));
-$('testimonialTableBody').addEventListener('click', (e) => {
+$('testimonialTableBody').addEventListener('click', async (e) => {
+  const star = e.target.closest('button[data-star-id]');
+  if (star) {
+    const row = testimonialRows.find((r) => r.id === star.dataset.starId); if (!row) return;
+    star.disabled = true;
+    try {
+      const res = await apiFetch(`${SITE_API}/testimonials/${encodeURIComponent(row.id)}`, {
+        method: 'PUT', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: row.name, fullText: row.fullText, shortVersion: row.shortVersion, category: row.category, featured: !row.featured }),
+      });
+      if (!res.ok) { const err = await res.json().catch(() => ({})); throw new Error(err.message || `HTTP ${res.status}`); }
+      Object.assign(row, await res.json());
+    } catch (err) {
+      if (err.message !== 'Unauthorized') alert(`Couldn't change the star (${err.message}).`);
+    }
+    renderTestimonials();
+    return;
+  }
   const tr = e.target.closest('tr[data-testimonial-id]'); if (!tr) return;
   const row = testimonialRows.find((r) => r.id === tr.dataset.testimonialId);
   if (row) openTestimonialModal(row);
@@ -3774,6 +3810,7 @@ $('saveTestimonialBtn').addEventListener('click', async () => {
     shortVersion: $('testimonialShortInput').value.trim(),
     fullText: $('testimonialFullInput').value.trim(),
     category: document.querySelector('input[name="testimonialType"]:checked')?.value || '',
+    featured: $('testimonialFeaturedInput').checked,
   };
   if (!data.name) return showTestimonialError('Please add a name.');
   if (!data.category) return showTestimonialError('Please pick a type: Cruise, Land Trip, Port Excursion or Austria Retreat.');
