@@ -2,4 +2,6 @@
 *.log
 desktop.ini
 node_modules/
+# the website server's data lives only on the VPS (a local test run would write here)
+server/site-api/data/
 .env

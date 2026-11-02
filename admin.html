@@ -3,11 +3,16 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <meta name="robots" content="noindex, nofollow" />
 <title>Cruises — Admin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/nav.css">
 <style>
   :root{
     /* brand green — --green-dark is the requested hex #708F53, used for solid
@@ -55,47 +60,6 @@
   }
   a{color:inherit;}
   button{font-family:inherit;}
-
-  /* GLOBAL NAV */
-  .global-nav{background:var(--dark-soft);border-bottom:1px solid var(--line-on-dark);}
-  .global-nav .gn-wrap{
-    max-width:1180px;margin:0 auto;padding:12px 24px;
-    display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;
-  }
-  .gn-logo{display:flex;align-items:baseline;gap:8px;text-decoration:none;}
-  .gn-logo .gn-script{font-family:'Caveat',cursive;font-weight:700;font-size:26px;color:var(--gold);line-height:1;}
-  .gn-logo .gn-sans{font-family:'Titillium Web',sans-serif;font-weight:600;font-size:14px;color:var(--green);letter-spacing:.02em;}
-  .gn-links{display:flex;gap:8px 26px;flex-wrap:wrap;}
-  .gn-link{
-    padding:4px 0;font-family:'Titillium Web',sans-serif;font-weight:700;font-size:14px;
-    text-decoration:none;color:#c7ccd1;
-    transition:color .15s ease;
-  }
-  .gn-link:hover{color:var(--white);}
-  .gn-link.active{color:var(--green);}
-  .gn-link.disabled{color:#5c626b;cursor:default;pointer-events:none;}
-
-  /* display:flex + align-items:center so the wrapped <a> lines up with its
-     plain <a> siblings - without this, the div (stretched to the row's
-     full height as a flex item) leaves its inline <a> child sitting at the
-     top of that box instead of centered like the others. */
-  .gn-dropdown{position:relative;display:flex;align-items:center;}
-  .gn-dropdown-menu{
-    position:absolute;top:100%;left:0;margin-top:14px;
-    background:var(--dark-soft);border:1px solid var(--line-on-dark);border-radius:8px;
-    min-width:200px;padding:6px;display:none;flex-direction:column;
-    box-shadow:0 12px 30px rgba(0,0,0,0.35);z-index:20;
-  }
-  /* The margin-top gap above would otherwise break :hover the instant the
-     cursor leaves the link - this pseudo-element bridges it so the menu
-     stays open on the way down to it. */
-  .gn-dropdown::after{content:'';position:absolute;top:100%;left:0;right:0;height:14px;}
-  .gn-dropdown:hover .gn-dropdown-menu{display:flex;}
-  .gn-dropdown-item{
-    padding:9px 12px;font-family:'Titillium Web',sans-serif;font-weight:600;font-size:13.5px;
-    color:#c7ccd1;text-decoration:none;border-radius:5px;white-space:nowrap;
-  }
-  .gn-dropdown-item:hover{background:rgba(255,255,255,0.08);color:var(--white);}
 
   /* PAGE */
   .admin-wrap{max-width:1180px;margin:0 auto;padding:38px 24px 80px;}
@@ -219,6 +183,7 @@
     cursor:pointer;letter-spacing:.02em;
   }
   .booking-status-select.status-received{background:var(--red-tint);border:1px solid var(--red-line);color:var(--red);}
+  .booking-status-select.status-no_response{background:#f1f1ef;border:1px solid #d6d6d2;color:#5f5f5a;}
   .booking-status-select.status-booked{background:var(--green-tint);border:1px solid var(--green-line);color:var(--green-dark);}
 
   /* Roster (Bookings tab) - compact table always visible for a quick scan;
@@ -245,6 +210,28 @@
   dialog#addCruiseModal[open], dialog#chooseImageModal[open], dialog#portModal[open], dialog#cruiseLineModal[open], dialog#shipsModal[open], dialog#portMergeModal[open], dialog#backToBackModal[open]{display:flex;flex-direction:column;}
   dialog#addCruiseModal form, dialog#portModal form, dialog#cruiseLineModal form, dialog#portMergeModal form, dialog#backToBackModal form{display:flex;flex-direction:column;min-height:0;}
   dialog#portMergeModal{max-width:480px;}
+  /* TESTIMONIALS tab: same native <dialog> look as the other editors */
+  dialog#testimonialModal{
+    width:100%;max-width:760px;padding:0;border:none;border-radius:14px;
+    box-shadow:0 24px 60px rgba(0,0,0,.35);max-height:calc(100vh - 68px);
+    outline:1.5px dashed rgba(21,34,48,0.3);outline-offset:-6px;
+  }
+  dialog#testimonialModal::backdrop{background:rgba(36,40,48,.6);}
+  dialog#testimonialModal[open]{display:flex;flex-direction:column;}
+  dialog#testimonialModal form{display:flex;flex-direction:column;min-height:0;}
+  .t-type{display:inline-block;padding:5px 10px;border-radius:20px;border:1px solid;font-family:'Titillium Web',sans-serif;font-weight:800;font-size:11px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;}
+  .t-type-cruise{background:var(--blue-tint);border-color:var(--blue-line);color:var(--blue);}
+  .t-type-land_trip{background:var(--green-tint);border-color:var(--green-line);color:var(--green-dark);}
+  .t-type-port_excursion{background:#f6eedb;border-color:#e0c98f;color:#8a6516;}
+  .t-type-austria_retreat{background:#f3ecf5;border-color:#cdb4d4;color:#6d3f7a;}
+  .t-type-picker{display:flex;flex-wrap:wrap;gap:8px;}
+  .t-type-picker label{position:relative;cursor:pointer;margin:0;}
+  .t-type-picker input{position:absolute;opacity:0;pointer-events:none;}
+  .t-type-picker .t-type{padding:9px 14px;font-size:12px;}
+  .t-type-picker input:not(:checked) + .t-type{background:var(--white);border-color:var(--line);color:var(--muted);}
+  .t-type-picker input:focus-visible + .t-type{outline:2px solid var(--green-dark);outline-offset:2px;}
+  .t-snip{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-width:440px;line-height:1.45;}
+  .t-none{color:var(--muted);font-style:italic;}
   #chooseImageGrid button{
     border:1.5px solid var(--line);border-radius:7px;padding:0;overflow:hidden;
     cursor:pointer;background:none;aspect-ratio:16/10;
@@ -334,6 +321,7 @@
   }
   select.cruise-type-badge:hover{filter:brightness(0.97);}
   select.cruise-type-badge:has(option[value="addon"]:checked){background-color:var(--blue-tint);border-color:var(--blue-line);color:var(--blue);}
+  select.cruise-type-badge:has(option[value="hosted"]:checked){background-color:#f3ecf5;border-color:#cdb4d4;color:#6d3f7a;}
   .cruise-id-type-row{display:flex;gap:16px;align-items:flex-start;}
   .cruise-id-type-row #cruiseIdField{flex:1;min-width:0;}
   .cruise-id-type-row .admin-field-fit{flex:0 0 auto;}
@@ -368,7 +356,7 @@
   .login-screen[hidden]{display:none;}
   .login-wordmark{display:flex;align-items:baseline;gap:12px;}
   .login-wordmark .gn-script{font-family:'Caveat',cursive;font-weight:700;font-size:52px;color:var(--gold);line-height:1;}
-  .login-wordmark .gn-sans{font-family:'Titillium Web',sans-serif;font-weight:600;font-size:22px;color:var(--green);letter-spacing:.02em;}
+  .login-wordmark .gn-sans{font-family:'Caveat',cursive;font-weight:700;font-size:52px;color:var(--green);line-height:1;}
   .login-card{
     width:100%;max-width:280px;background:var(--white);border-radius:14px;
     padding:34px 28px 28px;box-shadow:0 24px 60px rgba(0,0,0,.35);
@@ -444,30 +432,12 @@
 </head>
 <body>
 
-<div class="global-nav">
-  <div class="gn-wrap">
-    <a href="/" class="gn-logo">
-      <span class="gn-script">Worldschooling</span><span class="gn-sans">journeys</span>
-    </a>
-    <div class="gn-links">
-      <span class="gn-link active">Admin</span>
-      <a href="/" class="gn-link">Home</a>
-      <div class="gn-dropdown">
-        <a href="#" class="gn-link">Worldschooling Trips</a>
-        <div class="gn-dropdown-menu">
-          <a href="/cruises.html" class="gn-dropdown-item">Group Cruises</a>
-        </div>
-      </div>
-      <a href="#" class="gn-link">About Us</a>
-      <a href="#" class="gn-link">Stay Updated</a>
-      <a href="#" class="gn-link">Contact</a>
-    </div>
-  </div>
-</div>
+<!-- GLOBAL NAV -->
+<!-- include nav active="admin" -->
 
 <div id="loginScreen" class="login-screen">
   <div class="login-wordmark">
-    <span class="gn-script">Worldschooling</span><span class="gn-sans">journeys</span>
+    <span class="gn-script">Worldschooling</span><span class="gn-sans">Journeys</span>
   </div>
   <div class="login-card">
     <form id="loginForm">
@@ -490,6 +460,7 @@
     <button type="button" class="admin-subnav-btn" data-tab="ships">Ships</button>
     <button type="button" class="admin-subnav-btn" data-tab="backtoback">Back to Backs</button>
     <button type="button" class="admin-subnav-btn" data-tab="waitlist">Waitlist</button>
+    <button type="button" class="admin-subnav-btn" data-tab="testimonials">Testimonials</button>
   </div>
 
   <section class="admin-tab-panel" id="tab-cruises">
@@ -694,6 +665,44 @@
       </div>
     </div>
   </section>
+
+  <section class="admin-tab-panel" id="tab-testimonials" hidden>
+    <div class="admin-header">
+      <div>
+        <h1>Testimonials</h1>
+        <p>Reviews from our families, kept on the website's own server (not the cruise system). Click one to edit or delete it.</p>
+      </div>
+      <button type="button" class="btn btn-primary" id="addTestimonialBtn">Add Testimonial</button>
+    </div>
+
+    <div class="cruises-toolbar">
+      <div class="admin-field" style="flex:0 1 260px;margin-bottom:0;">
+        <select id="testimonialTypeFilter"><option value="">All types</option></select>
+      </div>
+      <div class="admin-field" style="flex:1;max-width:360px;margin-bottom:0;">
+        <input id="testimonialSearchInput" type="text" placeholder="Search by name or words...">
+      </div>
+      <div class="admin-hint" id="testimonialCount" style="margin:0;"></div>
+    </div>
+
+    <div class="admin-card">
+      <table class="cruise-table" id="testimonialTable">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Short Version</th>
+            <th>Full Text</th>
+          </tr>
+        </thead>
+        <tbody id="testimonialTableBody"><!-- populated by loadTestimonials() --></tbody>
+      </table>
+      <div class="empty-state" id="testimonialEmptyState" style="display:none;">
+        <h3>No testimonials yet</h3>
+        <p>Click "Add Testimonial" to add the first one.</p>
+      </div>
+    </div>
+  </section>
 </div>
 
 <dialog id="addCruiseModal">
@@ -749,6 +758,7 @@
             <select id="cruiseTypeSelect" class="cruise-type-badge">
               <option value="group">Group Cruise</option>
               <option value="addon">Add On Cruise</option>
+              <option value="hosted">Hosted Cruise</option>
             </select>
           </div>
         </div>
@@ -889,6 +899,45 @@
           <label for="descriptionInput">Description</label>
           <textarea id="descriptionInput" rows="5"></textarea>
           <button type="button" class="btn btn-outline btn-sm field-regenerate" id="regenerateDescriptionBtn">Regenerate Description</button>
+        </div>
+
+        <!-- Hosted cruise (Cruise Type "Hosted Cruise"): "Meet Your Host" is the first section of the cruise page -->
+        <div id="hostedFields" hidden>
+        <div class="admin-section-label">Meet Your Host</div>
+        <div class="admin-hint" style="margin-top:-8px;margin-bottom:12px;">Hosted Cruise: the cruise page opens with a "Meet Your Host" section built from these fields (it needs at least the Host Name).</div>
+        <div class="admin-field">
+          <label for="hostNameInput">Host Name</label>
+          <input id="hostNameInput" type="text" placeholder="e.g. Dr. Kishi Ducre">
+        </div>
+        <div class="admin-field">
+          <label for="hostRoleInput">Host Role</label>
+          <input id="hostRoleInput" type="text" placeholder="e.g. Founder of The SoulJourners Academy">
+        </div>
+        <div class="admin-field">
+          <label>Host Photo</label>
+          <input id="hostPhotoInput" type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+          <div class="url-parse-row">
+            <button type="button" class="btn btn-outline btn-sm" id="addHostPhotoBtn">Add Photo</button>
+            <button type="button" class="btn btn-outline btn-sm" id="removeHostPhotoBtn" hidden>Remove Photo</button>
+          </div>
+          <div class="admin-hint" id="hostPhotoStatus"></div>
+          <img id="hostPhotoPreview" alt="Host photo preview" hidden style="margin-top:8px;max-width:140px;border-radius:7px;border:1.5px solid var(--line);display:block;">
+        </div>
+        <div class="admin-field">
+          <label for="hostBioInput">About the Host</label>
+          <textarea id="hostBioInput" rows="5" placeholder="A few sentences about the host. Links (https://...) become clickable."></textarea>
+        </div>
+        </div>
+
+        <div class="admin-section-label">Extra FAQ (optional)</div>
+        <div class="admin-hint" style="margin-top:-8px;margin-bottom:12px;">Added as the last question in this cruise's FAQ. Works on any cruise.</div>
+        <div class="admin-field">
+          <label for="extraFaqQuestionInput">Question</label>
+          <input id="extraFaqQuestionInput" type="text" placeholder="e.g. What is The SoulJourners Academy?">
+        </div>
+        <div class="admin-field">
+          <label for="extraFaqAnswerInput">Answer</label>
+          <textarea id="extraFaqAnswerInput" rows="4" placeholder="Links (https://...) become clickable."></textarea>
         </div>
       </div>
 
@@ -1093,6 +1142,48 @@
     <div class="admin-modal-foot">
       <div class="foot-actions">
         <button type="button" class="btn btn-primary" id="savePortBtn">Save & Close</button>
+      </div>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="testimonialModal">
+  <form method="dialog">
+    <div class="admin-modal-head">
+      <h2 id="testimonialModalTitle">Add Testimonial</h2>
+      <button type="button" class="modal-close" id="testimonialModalCloseBtn" aria-label="Close">×</button>
+    </div>
+
+    <div class="admin-modal-body">
+      <div id="testimonialErrorBanner" class="error-banner" hidden></div>
+
+      <div class="admin-field">
+        <label for="testimonialNameInput">Name</label>
+        <input id="testimonialNameInput" type="text" maxlength="120" placeholder="e.g. Kylie">
+      </div>
+      <div class="admin-field">
+        <label>Type</label>
+        <div class="t-type-picker" id="testimonialTypePicker"><!-- one pill per type, see TESTIMONIAL_TYPES --></div>
+      </div>
+      <div class="admin-field">
+        <label for="testimonialShortInput">Short Version</label>
+        <textarea id="testimonialShortInput" rows="3" maxlength="1000" placeholder="A sentence or two for the carousels"></textarea>
+        <div class="admin-hint">Used where space is tight, like the carousels on the home page and trip pages.</div>
+      </div>
+      <div class="admin-field">
+        <label for="testimonialFullInput">Full Text</label>
+        <textarea id="testimonialFullInput" rows="10" maxlength="10000" placeholder="The whole review"></textarea>
+        <div class="admin-hint">Leave an empty line between paragraphs. Either Short Version or Full Text can be empty, not both.</div>
+      </div>
+
+      <div class="danger-zone">
+        <button type="button" class="btn-text-danger" id="deleteTestimonialBtn" hidden>Delete this testimonial</button>
+      </div>
+    </div>
+
+    <div class="admin-modal-foot">
+      <div class="foot-actions">
+        <button type="button" class="btn btn-primary" id="saveTestimonialBtn">Save & Close</button>
       </div>
     </div>
   </form>
@@ -1317,6 +1408,7 @@
 </dialog>
 </div>
 
+<script src="/js/picture-url.js"></script>
 <script>
 const API = 'https://api.worldschoolingjourneys.com';
 
@@ -1444,6 +1536,7 @@ function resetState() {
       destination: '', sailDates: '', nights: '', daysAtSea: '', minimumAge: '6 months old',
       ports: '', countries: '', title: '', subtitle: '', description: '', heroImageUrl: null,
       depositAmount: '', depositUnit: 'person', depositRefundable: null, finalPaymentDate: '',
+      hostName: '', hostRole: '', hostBio: '', hostPhotoUrl: null, extraFaqQuestion: '', extraFaqAnswer: '',
     },
   };
 }
@@ -1454,11 +1547,24 @@ const $ = (id) => document.getElementById(id);
 function renderHeroImagePreview() {
   const url = state.enrichment.heroImageUrl;
   $('heroImagePreview').hidden = !url;
-  $('heroImagePreview').src = url ? `${API}${url}` : '';
+  $('heroImagePreview').src = url ? pictureUrl(url) : '';
+}
+
+function renderHostPhotoPreview() {
+  const url = state.enrichment.hostPhotoUrl;
+  $('hostPhotoPreview').hidden = !url;
+  $('hostPhotoPreview').src = url ? pictureUrl(url) : '';
+  $('removeHostPhotoBtn').hidden = !url;
 }
 
 function renderEnrichmentFields() {
   renderHeroImagePreview();
+  renderHostPhotoPreview();
+  $('hostNameInput').value = state.enrichment.hostName ?? '';
+  $('hostRoleInput').value = state.enrichment.hostRole ?? '';
+  $('hostBioInput').value = state.enrichment.hostBio ?? '';
+  $('extraFaqQuestionInput').value = state.enrichment.extraFaqQuestion ?? '';
+  $('extraFaqAnswerInput').value = state.enrichment.extraFaqAnswer ?? '';
   $('destinationInput').value = state.enrichment.destination ?? '';
   $('sailDatesInput').value = state.enrichment.sailDates ?? '';
   $('nightsInput').value = state.enrichment.nights ?? '';
@@ -1484,6 +1590,8 @@ for (const [inputId, field] of [
   ['nightsInput', 'nights'], ['daysAtSeaInput', 'daysAtSea'], ['minimumAgeInput', 'minimumAge'],
   ['portsInput', 'ports'], ['countriesInput', 'countries'],
   ['titleInput', 'title'], ['subtitleInput', 'subtitle'], ['descriptionInput', 'description'],
+  ['hostNameInput', 'hostName'], ['hostRoleInput', 'hostRole'], ['hostBioInput', 'hostBio'],
+  ['extraFaqQuestionInput', 'extraFaqQuestion'], ['extraFaqAnswerInput', 'extraFaqAnswer'],
 ]) {
   document.getElementById(inputId).addEventListener('input', (e) => { state.enrichment[field] = e.target.value; });
 }
@@ -1612,6 +1720,12 @@ function buildEnrichmentPayload() {
     subtitle: e.subtitle || null,
     description: e.description || null,
     heroImageUrl: e.heroImageUrl || null,
+    hostName: e.hostName?.trim() || null,
+    hostRole: e.hostRole?.trim() || null,
+    hostBio: e.hostBio?.trim() || null,
+    hostPhotoUrl: e.hostPhotoUrl || null,
+    extraFaqQuestion: e.extraFaqQuestion?.trim() || null,
+    extraFaqAnswer: e.extraFaqAnswer?.trim() || null,
     depositAmount: toNumberOrNull(e.depositAmount),
     depositUnit: e.depositUnit || null,
     depositRefundable: e.depositRefundable,
@@ -1640,7 +1754,7 @@ function rosterEntries() {
 
 function renderBookingRequestsBadge() {
   const el = $('bookingRequestsBadge');
-  const n = receivedRequests().length;
+  const n = receivedRequests().filter((r) => r.status === 'received').length; // No Response not counted
   el.textContent = `${n} ${n === 1 ? 'Request' : 'Requests'}`;
   el.className = n > 0 ? 'line-badge' : 'admin-hint';
 }
@@ -1704,8 +1818,9 @@ function passengerTableHtml(r) {
 
 function statusSelectHtml(r) {
   return `
-    <select class="booking-status-select status-${r.status}" data-id="${r.id}">
+    <select class="booking-status-select status-${r.status}" data-id="${r.id}" data-previous="${r.status}">
       <option value="received" ${r.status === 'received' ? 'selected' : ''}>Received</option>
+      <option value="no_response" ${r.status === 'no_response' ? 'selected' : ''}>No Response</option>
       <option value="booked" ${r.status === 'booked' ? 'selected' : ''}>Booked</option>
     </select>`;
 }
@@ -1748,7 +1863,7 @@ function attachStatusSelectHandlers(container) {
   container.querySelectorAll('.booking-status-select').forEach((sel) => {
     sel.addEventListener('click', (e) => e.stopPropagation());
     sel.addEventListener('change', async () => {
-      const previous = sel.value === 'booked' ? 'received' : 'booked';
+      const previous = sel.dataset.previous;
       sel.disabled = true;
       try {
         await patchBookingRequest(sel.dataset.id, { status: sel.value });
@@ -1934,6 +2049,25 @@ $('heroImageInput').addEventListener('change', async () => {
 
 $('addImageBtn').addEventListener('click', () => $('heroImageInput').click());
 
+// Host photo (hosted cruises) - same upload as the header image, saved with the cruise.
+$('hostPhotoInput').addEventListener('change', async () => {
+  const file = $('hostPhotoInput').files[0];
+  if (!file) return;
+  showError(null);
+  const url = await uploadHeaderImage(file, $('hostPhotoStatus'), showError);
+  if (url) {
+    state.enrichment.hostPhotoUrl = url;
+    renderHostPhotoPreview();
+  }
+  $('hostPhotoInput').value = '';
+});
+$('addHostPhotoBtn').addEventListener('click', () => $('hostPhotoInput').click());
+$('removeHostPhotoBtn').addEventListener('click', () => {
+  state.enrichment.hostPhotoUrl = null;
+  $('hostPhotoStatus').textContent = '';
+  renderHostPhotoPreview();
+});
+
 // ---- Choose Image (reuse a header image already used on another cruise) ----
 const chooseImageModal = $('chooseImageModal');
 
@@ -1953,7 +2087,7 @@ async function openChooseImageModal(onPick, onError) {
       const btn = document.createElement('button');
       btn.type = 'button';
       const img = document.createElement('img');
-      img.src = `${API}${url}`;
+      img.src = pictureUrl(url);
       img.alt = 'Previously used header image';
       btn.appendChild(img);
       btn.addEventListener('click', () => {
@@ -2495,6 +2629,7 @@ $('saveCruiseBtn').addEventListener('click', async () => {
 
   const cruiseType = $('cruiseTypeSelect').value;
   const isAddOn = cruiseType === 'addon';
+  const isHosted = cruiseType === 'hosted';
 
   const missingDateAt = state.itineraryStops.findIndex((stop) => !stop.date);
   if (missingDateAt !== -1) {
@@ -2514,7 +2649,7 @@ $('saveCruiseBtn').addEventListener('click', async () => {
     const soldOut = $('cruiseSoldOutInput').checked;
     const addOnForCruiseId = isAddOn ? $('cruiseAddOnForSelect').value || null : null;
     const body = isEditing
-      ? { ship: state.ship, itineraryStops: state.itineraryStops, cabinPrices, includesLargeCabins, region, soldOut, addOnForCruiseId, isAddOn, ...buildEnrichmentPayload() }
+      ? { ship: state.ship, itineraryStops: state.itineraryStops, cabinPrices, includesLargeCabins, region, soldOut, addOnForCruiseId, isAddOn, isHosted, ...buildEnrichmentPayload() }
       : {
           importRecordId: state.importRecordId,
           cruiseLineCode: $('cruiseLineSelect').value,
@@ -2529,6 +2664,7 @@ $('saveCruiseBtn').addEventListener('click', async () => {
           soldOut,
           addOnForCruiseId,
           isAddOn,
+          isHosted,
           ...buildEnrichmentPayload(),
         };
 
@@ -2586,6 +2722,7 @@ function updateCruiseTypeUI() {
   $('cruiseAddOnForField').hidden = !isAddOn;
   $('subtitleField').hidden = isAddOn;
   $('titleField').hidden = isAddOn; // the public page names an add-on by its destination, not a title
+  $('hostedFields').hidden = type !== 'hosted';
 }
 
 // Sets the Cruise Type badge + picker (this cruise's own addOnForCruiseId,
@@ -2594,7 +2731,7 @@ function updateCruiseTypeUI() {
 // CRUISE_DETAIL_INCLUDE - see backend cruise.controller.ts). Called with
 // null for a brand-new cruise, which has neither yet.
 function renderCruiseAddOns(cruise) {
-  $('cruiseTypeSelect').value = cruise?.isAddOn || cruise?.addOnForCruiseId ? 'addon' : 'group';
+  $('cruiseTypeSelect').value = cruise?.isAddOn || cruise?.addOnForCruiseId ? 'addon' : cruise?.isHosted ? 'hosted' : 'group';
   $('cruiseAddOnForSelect').value = cruise?.addOnForCruiseId || '';
   updateCruiseTypeUI();
 
@@ -2642,6 +2779,7 @@ function openModalShell() {
   $('contentStatus').textContent = '';
   $('heroImageInput').value = '';
   $('heroImageStatus').textContent = '';
+  $('hostPhotoStatus').textContent = '';
   renderItineraryStops();
   renderItineraryMissingInfo();
   renderCabinPricing();
@@ -2734,6 +2872,9 @@ async function openEditModal(cruiseId) {
       depositAmount: cruise.depositAmount ?? '', depositUnit: cruise.depositUnit ?? 'person',
       depositRefundable: cruise.depositRefundable ?? null,
       finalPaymentDate: cruise.finalPaymentDate ? cruise.finalPaymentDate.slice(0, 10) : '',
+      hostName: cruise.hostName ?? '', hostRole: cruise.hostRole ?? '', hostBio: cruise.hostBio ?? '',
+      hostPhotoUrl: cruise.hostPhotoUrl ?? null,
+      extraFaqQuestion: cruise.extraFaqQuestion ?? '', extraFaqAnswer: cruise.extraFaqAnswer ?? '',
     };
     // Only still eligible for the cruise-line prefill if this cruise never
     // had a deposit amount saved - one that's already set reflects a real,
@@ -3266,7 +3407,7 @@ let journeyHeroImageUrl = null;
 
 function renderJourneyHeroImagePreview() {
   $('journeyHeroImagePreview').hidden = !journeyHeroImageUrl;
-  $('journeyHeroImagePreview').src = journeyHeroImageUrl ? `${API}${journeyHeroImageUrl}` : '';
+  $('journeyHeroImagePreview').src = journeyHeroImageUrl ? pictureUrl(journeyHeroImageUrl) : '';
 }
 
 function renderJourneySegmentNames() {
@@ -3475,7 +3616,7 @@ $('deleteBackToBackBtn').addEventListener('click', async () => {
 // created as a side effect of saving a cruise, so the Ports tab's data can
 // go stale the moment a cruise is saved without a page reload - refetch on
 // switch is what keeps it honest.
-const TAB_LOADERS = { cruises: loadCruises, ports: loadPorts, ships: loadShipsTab, backtoback: loadBackToBacks, waitlist: loadWaitlist };
+const TAB_LOADERS = { cruises: loadCruises, ports: loadPorts, ships: loadShipsTab, backtoback: loadBackToBacks, waitlist: loadWaitlist, testimonials: loadTestimonials };
 
 // ---- Waitlist (land trip "be the first to be notified" signups) ----
 // Saved by the land trip pages' waitlist popup (frontend/js/waitlist.js);
@@ -3549,6 +3690,133 @@ $('waitlistCsvBtn').addEventListener('click', () => {
   a.download = `waitlist-${new Date().toISOString().slice(0, 10)}.csv`;
   a.click(); URL.revokeObjectURL(a.href);
 });
+// ---- Testimonials ----
+// The website's OWN data, not the cruise API: they live on the small website
+// server (frontend/server/site-api, on the VPS as the "site-api" service),
+// reached on this site's own address /site-api. Same staff login: apiFetch
+// sends the token, and the website server checks it.
+const SITE_API = '/site-api';
+const TESTIMONIAL_TYPES = { cruise: 'Cruise', land_trip: 'Land Trip', port_excursion: 'Port Excursion', austria_retreat: 'Austria Retreat' };
+let testimonialRows = [];
+let editingTestimonialId = null; // null = add mode
+const testimonialTypePill = (type) => `<span class="t-type t-type-${escapeHtml(type)}">${escapeHtml(TESTIMONIAL_TYPES[type] || type)}</span>`;
+$('testimonialTypePicker').innerHTML = Object.entries(TESTIMONIAL_TYPES).map(([value, label]) =>
+  `<label><input type="radio" name="testimonialType" value="${value}"><span class="t-type t-type-${value}">${label}</span></label>`).join('');
+
+async function loadTestimonials() {
+  const body = $('testimonialTableBody');
+  body.innerHTML = '<tr><td colspan="4" style="color:var(--muted);">Loading...</td></tr>';
+  try {
+    const res = await apiFetch(`${SITE_API}/testimonials`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    testimonialRows = await res.json();
+  } catch (err) {
+    if (err.message === 'Unauthorized') return;
+    $('testimonialEmptyState').style.display = 'none';
+    $('testimonialTable').style.display = '';
+    body.innerHTML = `<tr><td colspan="4" style="color:#c14a2f;">Couldn't load the testimonials (${escapeHtml(err.message)}).</td></tr>`;
+    return;
+  }
+  const filter = $('testimonialTypeFilter'), keep = filter.value;
+  filter.innerHTML = `<option value="">All types (${testimonialRows.length})</option>` + Object.entries(TESTIMONIAL_TYPES).map(([value, label]) =>
+    `<option value="${value}">${label} (${testimonialRows.filter((r) => r.category === value).length})</option>`).join('');
+  filter.value = keep;
+  renderTestimonials();
+}
+function renderTestimonials() {
+  const type = $('testimonialTypeFilter').value, q = $('testimonialSearchInput').value.trim().toLowerCase();
+  const rows = testimonialRows.filter((r) => (!type || r.category === type)
+    && (!q || `${r.name}\n${r.shortVersion}\n${r.fullText}`.toLowerCase().includes(q)));
+  $('testimonialEmptyState').style.display = testimonialRows.length ? 'none' : '';
+  $('testimonialTable').style.display = testimonialRows.length ? '' : 'none';
+  $('testimonialCount').textContent = testimonialRows.length ? `Showing ${rows.length} of ${testimonialRows.length}` : '';
+  const snip = (text) => text ? `<div class="t-snip">${escapeHtml(text)}</div>` : '<span class="t-none">None yet</span>';
+  $('testimonialTableBody').innerHTML = rows.length ? rows.map((r) => `
+    <tr data-testimonial-id="${escapeHtml(r.id)}">
+      <td><strong>${escapeHtml(r.name)}</strong></td>
+      <td>${testimonialTypePill(r.category)}</td>
+      <td>${snip(r.shortVersion)}</td>
+      <td>${snip(r.fullText)}</td>
+    </tr>`).join('') : '<tr><td colspan="4" style="color:var(--muted);">No testimonials match.</td></tr>';
+}
+$('testimonialTypeFilter').addEventListener('change', renderTestimonials);
+$('testimonialSearchInput').addEventListener('input', renderTestimonials);
+
+function showTestimonialError(message) {
+  $('testimonialErrorBanner').hidden = !message;
+  $('testimonialErrorBanner').textContent = message || '';
+}
+function openTestimonialModal(row) {
+  editingTestimonialId = row ? row.id : null;
+  $('testimonialModalTitle').textContent = row ? 'Edit Testimonial' : 'Add Testimonial';
+  $('testimonialNameInput').value = row ? row.name : '';
+  $('testimonialShortInput').value = row ? row.shortVersion : '';
+  $('testimonialFullInput').value = row ? row.fullText : '';
+  document.querySelectorAll('input[name="testimonialType"]').forEach((r) => { r.checked = !!row && r.value === row.category; });
+  $('deleteTestimonialBtn').hidden = !row;
+  $('deleteTestimonialBtn').disabled = false;
+  $('saveTestimonialBtn').disabled = false;
+  showTestimonialError(null);
+  $('testimonialModal').showModal();
+  $('testimonialNameInput').focus();
+}
+$('addTestimonialBtn').addEventListener('click', () => openTestimonialModal(null));
+$('testimonialTableBody').addEventListener('click', (e) => {
+  const tr = e.target.closest('tr[data-testimonial-id]'); if (!tr) return;
+  const row = testimonialRows.find((r) => r.id === tr.dataset.testimonialId);
+  if (row) openTestimonialModal(row);
+});
+$('testimonialModalCloseBtn').addEventListener('click', () => $('testimonialModal').close());
+
+$('saveTestimonialBtn').addEventListener('click', async () => {
+  const data = {
+    name: $('testimonialNameInput').value.trim(),
+    shortVersion: $('testimonialShortInput').value.trim(),
+    fullText: $('testimonialFullInput').value.trim(),
+    category: document.querySelector('input[name="testimonialType"]:checked')?.value || '',
+  };
+  if (!data.name) return showTestimonialError('Please add a name.');
+  if (!data.category) return showTestimonialError('Please pick a type: Cruise, Land Trip, Port Excursion or Austria Retreat.');
+  if (!data.shortVersion && !data.fullText) return showTestimonialError('Please add the short version, the full text, or both.');
+  showTestimonialError(null);
+  $('saveTestimonialBtn').disabled = true;
+  try {
+    const url = editingTestimonialId ? `${SITE_API}/testimonials/${encodeURIComponent(editingTestimonialId)}` : `${SITE_API}/testimonials`;
+    const res = await apiFetch(url, { method: editingTestimonialId ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      showTestimonialError(err.message || `Couldn't save (HTTP ${res.status}).`);
+      $('saveTestimonialBtn').disabled = false;
+      return;
+    }
+    $('testimonialModal').close();
+    await loadTestimonials();
+  } catch (err) {
+    if (err.message !== 'Unauthorized') showTestimonialError('Could not reach the website server.');
+    $('saveTestimonialBtn').disabled = false;
+  }
+});
+
+$('deleteTestimonialBtn').addEventListener('click', async () => {
+  if (!editingTestimonialId) return;
+  if (!confirm('Delete this testimonial permanently? This cannot be undone.')) return;
+  $('deleteTestimonialBtn').disabled = true;
+  try {
+    const res = await apiFetch(`${SITE_API}/testimonials/${encodeURIComponent(editingTestimonialId)}`, { method: 'DELETE' });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      showTestimonialError(err.message || `Couldn't delete (HTTP ${res.status}).`);
+      $('deleteTestimonialBtn').disabled = false;
+      return;
+    }
+    $('testimonialModal').close();
+    await loadTestimonials();
+  } catch (err) {
+    if (err.message !== 'Unauthorized') showTestimonialError('Could not reach the website server.');
+    $('deleteTestimonialBtn').disabled = false;
+  }
+});
+
 document.querySelectorAll('.admin-subnav-btn').forEach((btn) => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.admin-subnav-btn').forEach((b) => b.classList.remove('active'));
@@ -3574,7 +3842,7 @@ let portFlightFares = []; // [{departureCity, departureCode, price}] - only show
 
 function renderPortHeroImagePreview() {
   $('portHeroImagePreview').hidden = !portHeroImageUrl;
-  $('portHeroImagePreview').src = portHeroImageUrl ? `${API}${portHeroImageUrl}` : '';
+  $('portHeroImagePreview').src = portHeroImageUrl ? pictureUrl(portHeroImageUrl) : '';
 }
 
 // Table is fully editable from the moment the modal opens, same philosophy
@@ -4001,7 +4269,7 @@ function renderCabinCategoryInputs(categories) {
       <input type="file" accept="image/jpeg,image/png,image/webp,image/gif" hidden data-cabin-cat-input="${cat.id}">
       <button type="button" class="btn btn-outline btn-sm" data-cabin-cat-btn="${cat.id}">Add Image</button>
       <div class="admin-hint" data-cabin-cat-status="${cat.id}"></div>
-      <img alt="${escapeHtml(cat.name)} cabin preview" data-cabin-cat-preview="${cat.id}" ${cat.imageUrl ? '' : 'hidden'} src="${cat.imageUrl ? `${API}${cat.imageUrl}` : ''}" style="margin-top:8px;max-width:200px;border-radius:7px;border:1.5px solid var(--line);display:block;">
+      <img alt="${escapeHtml(cat.name)} cabin preview" data-cabin-cat-preview="${cat.id}" ${cat.imageUrl ? '' : 'hidden'} src="${cat.imageUrl ? pictureUrl(cat.imageUrl) : ''}" style="margin-top:8px;max-width:200px;border-radius:7px;border:1.5px solid var(--line);display:block;">
     </div>`).join('');
 
   container.querySelectorAll('[data-cabin-cat-btn]').forEach((btn) => {
@@ -4391,5 +4659,6 @@ document.querySelectorAll('dialog').forEach((dialog) => {
   });
 });
 </script>
+<script src="/js/nav.js"></script>
 </body>
 </html>
