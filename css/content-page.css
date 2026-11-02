@@ -273,3 +273,22 @@ fieldset.form-row legend{padding:0;}
 .cs-credits summary{cursor:pointer;display:inline-block;}
 .cs-credits p{margin:6px 0 0;line-height:1.6;max-width:760px;}
 .cs-credits a{color:inherit;}
+
+/* Phones + tablets: the "Reason for contacting us" chips sit in even rows
+   (same idea as the cruise pages' guest buttons) instead of one per line:
+   2 per row on phones (3 rows), 3 per row from 480px (2 rows). Every chip in
+   a row is the same width; a long one ("Press & Media Request") wraps onto
+   two lines inside its chip and its row-mate grows to the same height. */
+@media (max-width:760px){
+  .contact-form{padding:24px 18px;}
+  .reason-chips{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+  .reason-chips .reason-chip{display:flex;align-items:center;justify-content:center;text-align:center;min-width:0;padding:9px 8px;line-height:1.25;}
+}
+@media (min-width:480px) and (max-width:760px){
+  .reason-chips{grid-template-columns:repeat(3,1fr);}
+}
+/* small phones: slightly smaller text so the labels wrap less
+   (.contact-form in front so it beats css/home-sections.css's 15px) */
+@media (max-width:389px){
+  .contact-form .reason-chips .reason-chip{font-size:14px;padding:8px 5px;}
+}
