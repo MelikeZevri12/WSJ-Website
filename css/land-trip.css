@@ -143,6 +143,11 @@ section[id]{scroll-margin-top:60px;}
 .pay-step{background:var(--paper);border-radius:4px;padding:12px 14px;color:var(--muted)}
 .pay-step strong{display:block;color:var(--dark);font-size:15px;}
 .late-note{margin-top:14px;background:var(--sunset-tint);border-radius:4px;padding:10px 14px;color:var(--dark)}
+/* "Travel insurance is required" reminder under the payment boxes; its link opens the Travel Insurance dropdown (js/booking.js) */
+.ins-note{margin:14px 0 0;background:var(--paper);border-left:4px solid var(--green-dark);border-radius:4px;padding:10px 14px;color:var(--dark);font-size:16px;line-height:1.5;}
+.ins-note a{color:var(--green-dark);font-weight:700;text-decoration:none;}
+.ins-note a:hover{text-decoration:underline;}
+#travelInsurance{scroll-margin-top:84px;}   /* clear the sticky subnav when the links scroll to it */
 @media (max-width:700px){
   .pay-steps{grid-template-columns:1fr;}
 }

@@ -123,13 +123,14 @@
       </div>
       <div class="pay-steps" id="paySteps"></div>
       <div class="late-note" id="lateNote" style="display:none;"></div>
+      <p class="ins-note"><strong>Travel insurance is required for every traveler.</strong> We recommend SafetyWing or Faye: <a href="https://app.notion.com/p/Travel-Insurance-Guide-Faye-vs-SafetyWing-3334ff0a052380f5abedc5605a762ddc" target="_blank" rel="noopener sponsored">read our guide comparing them</a> &middot; <a href="#travelInsurance" data-open-insurance>full&nbsp;details&nbsp;&rarr;</a></p>
 
       <details class="terms">
         <summary>Payment Schedule & Cancellation Policy</summary>
         <div class="terms-body" id="payPolicy"></div>
       </details>
 
-      <details class="terms">
+      <details class="terms" id="travelInsurance">
         <summary>Travel Insurance</summary>
         <div class="terms-body">
           <p><strong>Travel insurance is required for all participants attending the trip.</strong></p>
@@ -138,6 +139,7 @@
           <p>Travel insurance may provide coverage for certain unexpected circumstances that prevent you from attending the trip, subject to the specific terms, conditions, exclusions, and coverage limits of the policy you purchase.</p>
           <p>Participants are responsible for obtaining and maintaining their own travel insurance. If a participant chooses not to obtain the required insurance, Every Avenue Travel will not assume responsibility for losses arising from a participant&rsquo;s inability to attend the trip.</p>
           <p>Any cancellation or refund request will remain subject to Every Avenue Travel&rsquo;s applicable cancellation and refund policy, including any stated payment or refund deadlines.</p>
+          <p><strong>Full insurance terms:</strong> <a href="/terms-and-conditions.html#s12" target="_blank" rel="noopener">Terms and Conditions, section 12 (Travel Insurance)</a></p>
           <p class="ti-disclaimer">Every Avenue Travel LLC is not the insurer, does not provide insurance advice, and does not guarantee the availability, suitability, terms, coverage, benefits, or payment of any claim under a policy. Please review all policy terms, exclusions, coverage limits, and eligibility requirements directly with the insurance provider before purchasing. Disclosure: Every Avenue Travel LLC may receive a referral fee or commission if you purchase insurance through this link.</p>
         </div>
       </details>
@@ -479,7 +481,7 @@ function renderDeparture(){
     ['Deposit becomes non-refundable', `${fmtD(nonRef)} (${P.nonRefundableDays} days before departure)`],
     ['Final payment due', `${fmtD(finalPay)} (${P.finalPaymentDays} days before departure)`],
     ...P.lines,
-    ['Travel insurance', 'Required for all participants. Travel insurance may cover certain unexpected circumstances that prevent you from attending, subject to the terms, conditions, exclusions and limits of the policy you buy. Participants are responsible for getting and keeping their own coverage. Every Avenue Travel LLC is not the insurer and does not provide insurance advice.'],
+    ['Travel insurance', 'Required for all participants. See <a href="#travelInsurance" data-open-insurance>Travel Insurance</a> for our guide and full details.'],
   ].map(([k, v]) => `<p><strong>${k}:</strong> ${v}</p>`).join('') +
     '<p><a href="/cancellation-policy.html" target="_blank" rel="noopener">View Our Full Cancellations & Refunds Policy</a></p>';
   document.querySelectorAll('.faq-policy').forEach(el => el.innerHTML = document.getElementById('payPolicy').innerHTML);

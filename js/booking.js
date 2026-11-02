@@ -73,4 +73,15 @@
     e.preventDefault(); e.stopPropagation();
     window.open(booking, '_blank', 'noopener');
   }, true);
+
+  // "Travel Insurance" links (the reminder under the price, the Payment Schedule
+  // line and its FAQ copy): open the Travel Insurance dropdown and scroll to it.
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[data-open-insurance]');
+    const box = a && document.getElementById('travelInsurance');
+    if (!box) return;
+    e.preventDefault();
+    box.open = true;
+    box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 })();
