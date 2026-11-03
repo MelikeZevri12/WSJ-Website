@@ -18,7 +18,7 @@
       2027: {"dates":"Oct 19 – Nov 8, 2027","sortDate":"2027-10-19","price":"$4,997","departures":1} } },
     {"slug":"morocco","param":"departure","title":"12-day Worldschooling Morocco Family Journey","nights":11,"regions":["Africa"],"per":"person","photo":"/images/land-trips/morocco.webp","photoLabel":"Morocco", "years": {
       2026: {"dates":"Nov 1–12, 2026","sortDate":"2026-11-01","price":"$2,200","tag":"Few spots left","departures":1},
-      2027: {"dates":"Mar 19–30 & Nov 1–12, 2027","sortDate":"2027-03-19","price":"$2,300","departures":2} } },
+      2027: {"dates":"Nov 1–12, 2027","sortDate":"2027-11-01","price":"$2,300","departures":1} } },
     {"slug":"austria-winter","param":"year","title":"14-day Worldschooling Austrian Skiing & Christmas Markets Retreat","nights":14,"regions":["Europe"],"per":"person","photo":"/images/land-trips/austria-winter.webp","photoLabel":"Austrian Alps in winter", "years": {
       2026: {"dates":"Dec 4–18, 2026","sortDate":"2026-12-04","price":"€1,350","tag":"Few spots left","departures":1},
       2027: {"dates":"Dec 5–19, 2027","sortDate":"2027-12-05","price":"€1,505","departures":1} } },
