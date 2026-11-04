@@ -102,6 +102,21 @@ test('featured: off for new ones, set and cleared by a save, kept when a save le
   } finally { await s.close(); }
 });
 
+test('carousel pick: off for new ones, set by a save, kept when a save leaves it out, separate from featured', async () => {
+  const s = await start([]);
+  try {
+    const added = (await s.call('POST', '/testimonials', kylie)).body;
+    assert.equal(added.carousel, false);
+    const on = (await s.call('PUT', `/testimonials/${added.id}`, { ...kylie, carousel: true })).body;
+    assert.equal(on.carousel, true);
+    assert.equal(on.featured, false);
+    const starred = (await s.call('PUT', `/testimonials/${added.id}`, { ...kylie, featured: true })).body;
+    assert.equal(starred.carousel, true);
+    assert.equal((await s.call('PUT', `/testimonials/${added.id}`, { ...kylie, carousel: false })).body.carousel, false);
+    assert.equal((await s.call('PUT', `/testimonials/${added.id}`, { ...kylie, carousel: 1 })).status, 400);
+  } finally { await s.close(); }
+});
+
 test('rejects incomplete testimonials and unknown addresses', async () => {
   const s = await start([]);
   try {

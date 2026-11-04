@@ -23,7 +23,7 @@
 //   PUT    /site-api/testimonials/:id                 staff login
 //   DELETE /site-api/testimonials/:id                 staff login
 //
-// A testimonial: { id, name, fullText, shortVersion, category, featured, sortOrder, createdAt, updatedAt }
+// A testimonial: { id, name, fullText, shortVersion, category, featured, carousel, sortOrder, createdAt, updatedAt }
 'use strict';
 const http = require('http');
 const fs = require('fs');
@@ -110,9 +110,11 @@ function validateTestimonial(body) {
   const value = { name, fullText, shortVersion, category };
   // "Featured" = one of our best (admin star): shown first on the website. Left as it
   // was when a save doesn't mention it; new testimonials start not featured.
-  if (body.featured !== undefined) {
-    if (typeof body.featured !== 'boolean') return { error: 'featured must be true or false.' };
-    value.featured = body.featured;
+  // "carousel" = picked to show in the website carousels (admin "Carousel" switch). Same rules.
+  for (const key of ['featured', 'carousel']) {
+    if (body[key] === undefined) continue;
+    if (typeof body[key] !== 'boolean') return { error: `${key} must be true or false.` };
+    value[key] = body[key];
   }
   return { value };
 }
@@ -174,7 +176,7 @@ function createServer({ dataDir, seedDir, secret }) {
     const now = new Date().toISOString();
     if (req.method === 'POST') {
       const row = await testimonials.change((rows) => {
-        const t = { id: crypto.randomUUID(), featured: false, ...value, sortOrder: rows.reduce((m, r) => Math.max(m, r.sortOrder || 0), 0) + 10, createdAt: now, updatedAt: now };
+        const t = { id: crypto.randomUUID(), featured: false, carousel: false, ...value, sortOrder: rows.reduce((m, r) => Math.max(m, r.sortOrder || 0), 0) + 10, createdAt: now, updatedAt: now };
         rows.push(t); return t;
       });
       return send(res, 201, row);

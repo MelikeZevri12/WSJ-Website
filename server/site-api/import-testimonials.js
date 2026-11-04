@@ -2,6 +2,8 @@
 // Never overwrites anything edited in admin: it only
 //   - adds the ones in "add" that aren't there yet (same name + same full text = already there), and
 //   - fills in "fillFullText" for testimonials whose full text is still empty.
+// Exception: a file with "replaceCategory": "<type>" first takes out every testimonial of that type
+// that isn't in its "add" list (used 2026-11-04 for the new Austria Retreat ones); they stay in the backup.
 //
 //   node import-testimonials.js imports/<file>.json            shows what it would do (changes nothing)
 //   node import-testimonials.js imports/<file>.json --apply    does it (stop site-api first)
@@ -27,14 +29,31 @@ function serverIsRunning(port) {
 }
 
 function plan(rows, changes, now = new Date().toISOString()) {
-  const next = JSON.parse(JSON.stringify(rows));
+  let next = JSON.parse(JSON.stringify(rows));
   const log = [];
+  // "removeIds": take out these exact testimonials (e.g. ones filed under the wrong type that "add" brings back
+  // under the right one). They stay in the backup. Already gone = nothing to do.
+  for (const id of changes.removeIds || []) {
+    const r = next.find((x) => x.id === id);
+    if (!r) { log.push(`already removed: ${id}`); continue; }
+    log.push(`REMOVE ${r.name} (${r.category}, ${id.slice(0, 8)})`);
+    next = next.filter((x) => x !== r);
+  }
+  // "replaceCategory": first take out every testimonial of that type that isn't in "add" (they stay
+  // in the backup). Ones already matching an "add" entry are kept, so running it twice changes nothing.
+  if (changes.replaceCategory) {
+    if (!CATEGORIES.includes(changes.replaceCategory)) throw new Error(`Unknown replaceCategory: ${changes.replaceCategory}`);
+    const inAdd = (r) => (changes.add || []).some((t) => norm(r.name) === norm(t.name) && norm(r.fullText) === norm(t.fullText));
+    const out = next.filter((r) => r.category === changes.replaceCategory && !inAdd(r));
+    out.forEach((r) => log.push(`REMOVE ${r.name} (${r.category})`));
+    next = next.filter((r) => !out.includes(r));
+  }
   let order = next.reduce((m, r) => Math.max(m, r.sortOrder || 0), 0);
   for (const t of changes.add || []) {
     if (!t.name || !(t.fullText || t.shortVersion) || !CATEGORIES.includes(t.category)) throw new Error(`Bad entry in "add": ${JSON.stringify(t).slice(0, 120)}`);
     if (next.some((r) => norm(r.name) === norm(t.name) && norm(r.fullText) === norm(t.fullText))) { log.push(`already there: ${t.name}`); continue; }
     order += 10;
-    next.push({ id: crypto.randomUUID(), name: t.name, fullText: t.fullText || '', shortVersion: t.shortVersion || '', category: t.category, featured: false, sortOrder: order, createdAt: now, updatedAt: now });
+    next.push({ id: crypto.randomUUID(), name: t.name, fullText: t.fullText || '', shortVersion: t.shortVersion || '', category: t.category, featured: false, carousel: false, sortOrder: order, createdAt: now, updatedAt: now });
     log.push(`ADD ${t.name} (${t.category})`);
   }
   for (const f of changes.fillFullText || []) {

@@ -1,0 +1,95 @@
+{
+ "note": "2026-11-04: the user's new Austria Retreat testimonials. Replaces every austria_retreat testimonial (the old ones stay in the backup). Em dashes in Lazka G's review and a spaced hyphen in Stephanie S's became colons.",
+ "removeIds": [
+  "dd862fe3-7b5c-4d0f-8042-4be12cc9b385",
+  "57861b06-5f9f-4a1a-a076-b2e4d6b2c1da"
+ ],
+ "removeIdsNote": "Two Austria reviews that were filed as Land Trip (both 'Anonymous': 'Thank you all for the epic adventures!' and 'Thank you for another amazing trip'). They come back as Austria Retreat through 'add'.",
+ "replaceCategory": "austria_retreat",
+ "add": [
+  {
+   "name": "Mary C",
+   "category": "austria_retreat",
+   "fullText": "Our Austria trip was everything I’d hoped it would be. Before we even got on the plane, I told my husband, “If this works out, these worldschool tours may be how we travel for the foreseeable future.” The idea that I could go on a vacation that I didn’t plan myself, and actually enjoy each and every activity chosen for me, seemed too good to be true. But we love being outdoors, we love hiking, we love playing... so this trip seemed like a great fit. And we weren’t disappointed! Not only was the itinerary a blast, but this was the first trip in a long time that actually seemed like a vacation. This mama didn’t plan a single activity, cook a single meal, figure out any transportation... I was truly able to “vacate” and simply enjoy. The locations and hikes the Worldschooling Journeys Team chose were beautiful, the playgrounds and other kids’ entertainment kept my son occupied for days, and the spas were an awesome respite for my husband and me. We WILL be going back... and we WILL be booking future worldschooling adventures with Worldschooling Journeys!",
+   "shortVersion": "This mama didn’t plan a single activity, cook a single meal, figure out any transportation... I was truly able to “vacate” and simply enjoy."
+  },
+  {
+   "name": "Jessica Anderson",
+   "category": "austria_retreat",
+   "fullText": "I went to Austria with them last summer and it was amazing! Trying to see if we can make it again this year, and waiting to see dates for their New Zealand trip. It was my first international trip with the kids, and this was absolutely the best way for us to do it. They made friends. I made friends. I didn’t have to plan anything once we were there, so I actually got to relax.",
+   "shortVersion": "It was my first international trip with the kids, and this was absolutely the best way for us to do it. They made friends. I made friends."
+  },
+  {
+   "name": "Jessica Anderson",
+   "category": "austria_retreat",
+   "fullText": "Austria was AMAZING! If you’re thinking about it, this is your sign to do it. The location was amazing, it was so well run, and I got to actually take a break while traveling because my kids had friends and the collective group watched out for everyone. It was amazing.",
+   "shortVersion": "Austria was AMAZING! If you’re thinking about it, this is your sign to do it... I got to actually take a break while traveling because my kids had friends."
+  },
+  {
+   "name": "Anonymous",
+   "category": "austria_retreat",
+   "fullText": "Worldschooling Journeys Team, thank you for another amazing trip. It was so much fun and this group was so amazing to meet and get to know. Thank you for bringing us all together! You are all truly amazing! ❤️",
+   "shortVersion": "Thank you for another amazing trip. It was so much fun and this group was so amazing to meet and get to know. Thank you for bringing us all together!"
+  },
+  {
+   "name": "Pearly Chen",
+   "category": "austria_retreat",
+   "fullText": "Thank you Worldschooling Journeys Team for sharing your hearts with us and showing up so fully. This has been an epic experience thanks to your utmost care for building not just itineraries but a true community. I overheard Atena telling Daddy on the phone today that Austria is the best and she’s loved being here with you all. Thank you everyone for tolerating and co-parenting my very sassy girls and showing me a glimpse of how you all world school in your own ways. The inspiration will stay with me and our paths shall cross again some day somewhere in our world schooling journeys 🫶",
+   "shortVersion": "This has been an epic experience thanks to your utmost care for building not just itineraries but a true community... The inspiration will stay with me."
+  },
+  {
+   "name": "Anonymous",
+   "category": "austria_retreat",
+   "fullText": "Thank you all for the epic adventures! That itinerary was stacked in all the best ways. We loved the charm of the town and the hotel. The outings were so much fun. Friendships were made and will be forever cherished. It was harder to leave this morning than any of us expected it to be. What a beautiful country! This trip will forever reside in our hearts, the memories the girls got to make will surely be unforgettable. Thank you for that! 🫶 The impression we all leave on one another is greater than any one of us can expect. Let those moments propel us out into the world, changed and better for it. Safe travels and well wishes to you all!!!",
+   "shortVersion": "Friendships were made and will be forever cherished. It was harder to leave this morning than any of us expected it to be."
+  },
+  {
+   "name": "Lazka G",
+   "category": "austria_retreat",
+   "fullText": "This was the BEST trip of our lives! This is a trip I wish every family had the opportunity to experience. Every day brought a new adventure: the views were incredible, the hikes were breathtaking and family-friendly, and there was always something to do. There was never a moment to be bored. The hotel was amazing, comfortable, and perfectly located, with everything you could possibly need within walking distance. The public transportation was unlike anything we have ever experienced: efficient, easy, and incredibly convenient. And the Worldschooling team is simply out of this world. We took a leap of faith after finding this group on Instagram and decided to experience a Worldschooling trip for ourselves... and it did not disappoint. You can truly feel the tremendous amount of hard work, dedication, and planning that went into making this experience possible. We are forever grateful for this opportunity, so much so that we are already coming back next year! THANK YOU, THANK YOU, THANK YOU!!!!! ❤️",
+   "shortVersion": "This was the BEST trip of our lives! This is a trip I wish every family had the opportunity to experience... we are already coming back next year!"
+  },
+  {
+   "name": "Stephanie S",
+   "category": "austria_retreat",
+   "fullText": "It’s really hard to express what this trip meant to our family because I just don’t think words can properly express our feelings. Our Austria trip was such an incredible experience and I wish I could hit the rewind button and do it all over again tomorrow. The people, the adventures, the views, the food and again, the PEOPLE...! One of the best parts about a trip like this was that we didn’t have to do anything other than show up. Every day was planned to perfection, meals were always readily available, we didn’t have to worry about transportation or tickets or the timing of activities: we just had to show up on time in the morning and be prepared for a day that was, somehow, always better than the day before. Thank you for such a wonderful two weeks!!",
+   "shortVersion": "I wish I could hit the rewind button and do it all over again tomorrow. The people, the adventures, the views, the food and again, the PEOPLE...!"
+  },
+  {
+   "name": "Dante Paredes",
+   "category": "austria_retreat",
+   "fullText": "Hi Worldschooling Journeys Team! We just wanted to thank you for such an amazing two weeks. This was our family’s first Worldschooling trip, and after this experience, it definitely will not be our last! From beginning to end, the trip was full of energy, adventure, learning, new experiences, and so many activities. There was always something interesting to do, but what made the experience especially memorable was the community you created around it. My wife, our kids, and I genuinely had a blast. We enjoyed exploring together, meeting the other families, watching the children connect and make new friends, and experiencing so many wonderful places and activities as a family in this amazing Austrian event! We also really appreciated all the effort, organization, enthusiasm, and personal attention that you put into the program. Organizing two full weeks for a group of families is no small task, and it was clear how much work and heart went into making everything happen. Thank you for welcoming our family and for giving us such a memorable first Worldschooling experience. We are leaving with wonderful memories, new friendships, and a strong desire to join another adventure in the future. Congratulations on everything you created, and thank you again from all of us! Dante, Hilda and the 3 kids!",
+   "shortVersion": "From beginning to end, the trip was full of energy, adventure, learning, new experiences... but what made the experience especially memorable was the community you created around it."
+  },
+  {
+   "name": "Dante Paredes",
+   "category": "austria_retreat",
+   "fullText": "An unforgettable first Worldschooling experience! We just boarded our train to Munich, we just wanted to say thank you to everyone. It was truly great meeting you all! This was our family’s very first Worldschooling experience, and it definitely won’t be our last. My wife, our kids, and I had an absolute blast over these past two weeks. We came for the adventure, but we’re leaving with amazing memories, new friendships, and a much deeper appreciation for learning through travel. A huge thank you to the entire Worldschooling Journeys Team for all the work, energy, and heart you put into making this experience so special. Organizing something like this is no small feat, and it showed every single day. Wishing everyone safe travels, and we hope our paths cross again somewhere else in the world. Until next time! 🌍✈️❤️",
+   "shortVersion": "We came for the adventure, but we’re leaving with amazing memories, new friendships, and a much deeper appreciation for learning through travel."
+  },
+  {
+   "name": "Bernadette Sperrazza",
+   "category": "austria_retreat",
+   "fullText": "We are on our way to Munich. It was a wonderful trip with all of you! The girls have been asking all morning when they will get to see their new friends again. We are grateful we had such a great group of people on this trip. Thank you Worldschooling Journeys Team for all of your hard work organizing and guiding us on these fabulous adventures. Till next time!",
+   "shortVersion": "The girls have been asking all morning when they will get to see their new friends again. We are grateful we had such a great group of people."
+  },
+  {
+   "name": "Kary",
+   "category": "austria_retreat",
+   "fullText": "We’ve also already started our trip back home. Thank you Worldschooling Journeys Team for this wonderful trip! Your work and dedication is truly reflected on the one of a kind experiences we were able to experience. Thank you for organizing this amazing trip. It was great meeting everyone and having a Worldschooling tribe! All the best to everyone on your next stops and on way back home ✨✨✨",
+   "shortVersion": "Your work and dedication is truly reflected on the one of a kind experiences we were able to experience... It was great meeting everyone and having a Worldschooling tribe!"
+  },
+  {
+   "name": "Ada",
+   "category": "austria_retreat",
+   "fullText": "Plunkett’s also checked out! We’re on the train on our way to Salzburg. Worldschooling Journeys Team, thank you so much for an incredible and unforgettable trip. 🥰 So grateful to have found this incredible group. My kids will never want to travel another way and they already told me they want to become worldschoolers. I know we will be booking future trips and hope to see you again!",
+   "shortVersion": "So grateful to have found this incredible group. My kids will never want to travel another way and they already told me they want to become worldschoolers."
+  },
+  {
+   "name": "Anonymous",
+   "category": "austria_retreat",
+   "fullText": "Worldschooling Journeys Team, thank you so so much for pouring your hearts into this absolutely amazing experience. L and I will never forget this trip and will be watching the trip releases for our next adventure!! Cheers to you all, what a fun group. I have a feeling this chat will live on....",
+   "shortVersion": "Thank you so so much for pouring your hearts into this absolutely amazing experience. L and I will never forget this trip."
+  }
+ ]
+}

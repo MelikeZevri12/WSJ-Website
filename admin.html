@@ -238,6 +238,10 @@
   .t-star:disabled{opacity:.5;cursor:wait;}
   .t-featured-toggle{font-weight:700;}
   .t-name-cell{white-space:nowrap;}
+  .t-car{border:1.5px solid var(--line);background:var(--white);color:var(--muted);border-radius:999px;padding:5px 11px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit;}
+  .t-car:hover{border-color:var(--green);}
+  .t-car.on{background:var(--green-dark, #4d6b37);border-color:var(--green-dark, #4d6b37);color:#fff;}
+  .t-car:disabled{opacity:.5;cursor:wait;}
   #chooseImageGrid button{
     border:1.5px solid var(--line);border-radius:7px;padding:0;overflow:hidden;
     cursor:pointer;background:none;aspect-ratio:16/10;
@@ -676,7 +680,7 @@
     <div class="admin-header">
       <div>
         <h1>Testimonials</h1>
-        <p>Reviews from our families, kept on the website's own server (not the cruise system). Click one to edit or delete it. Click the star to mark your best ones as Featured: they're shown first on the website.</p>
+        <p>Reviews from our families, kept on the website's own server (not the cruise system). Click one to edit or delete it. Click the star to mark your best ones as Featured: they're shown first on the website. Use the Carousel switch to choose which ones the carousels show: once any of a type is switched on, the carousels with that type show only the switched-on ones (10 at most); with none switched on they pick from all of them.</p>
       </div>
       <button type="button" class="btn btn-primary" id="addTestimonialBtn">Add Testimonial</button>
     </div>
@@ -692,6 +696,10 @@
         <input type="checkbox" id="testimonialFeaturedOnly">
         Featured only
       </label>
+      <label class="attention-toggle" style="flex-shrink:0;">
+        <input type="checkbox" id="testimonialCarouselOnly">
+        In carousel only
+      </label>
       <div class="admin-hint" id="testimonialCount" style="margin:0;"></div>
     </div>
 
@@ -703,6 +711,7 @@
             <th>Type</th>
             <th>Short Version</th>
             <th>Full Text</th>
+            <th title="Switch on to choose which testimonials the website carousels show">Carousel</th>
           </tr>
         </thead>
         <tbody id="testimonialTableBody"><!-- populated by loadTestimonials() --></tbody>
@@ -1180,6 +1189,11 @@
           <input type="checkbox" id="testimonialFeaturedInput">
           <span>&#9733; Featured: one of our best (shown first in the carousels and on the testimonials page)</span>
         </label>
+        <label class="attention-toggle t-featured-toggle" style="margin-top:8px;">
+          <input type="checkbox" id="testimonialCarouselInput">
+          <span>Show in the carousel</span>
+        </label>
+        <div class="admin-hint">Carousel: once at least one testimonial of a carousel's type is switched on, that carousel shows only the switched-on ones (10 at most, in random order). With none switched on, it picks from all of them.</div>
       </div>
       <div class="admin-field">
         <label for="testimonialShortInput">Short Version</label>
@@ -3721,7 +3735,7 @@ $('testimonialTypePicker').innerHTML = Object.entries(TESTIMONIAL_TYPES).map(([v
 
 async function loadTestimonials() {
   const body = $('testimonialTableBody');
-  body.innerHTML = '<tr><td colspan="4" style="color:var(--muted);">Loading...</td></tr>';
+  body.innerHTML = '<tr><td colspan="5" style="color:var(--muted);">Loading...</td></tr>';
   try {
     const res = await apiFetch(`${SITE_API}/testimonials`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -3730,7 +3744,7 @@ async function loadTestimonials() {
     if (err.message === 'Unauthorized') return;
     $('testimonialEmptyState').style.display = 'none';
     $('testimonialTable').style.display = '';
-    body.innerHTML = `<tr><td colspan="4" style="color:#c14a2f;">Couldn't load the testimonials (${escapeHtml(err.message)}).</td></tr>`;
+    body.innerHTML = `<tr><td colspan="5" style="color:#c14a2f;">Couldn't load the testimonials (${escapeHtml(err.message)}).</td></tr>`;
     return;
   }
   const filter = $('testimonialTypeFilter'), keep = filter.value;
@@ -3741,12 +3755,12 @@ async function loadTestimonials() {
 }
 function renderTestimonials() {
   const type = $('testimonialTypeFilter').value, q = $('testimonialSearchInput').value.trim().toLowerCase();
-  const featuredOnly = $('testimonialFeaturedOnly').checked;
-  const rows = testimonialRows.filter((r) => (!type || r.category === type) && (!featuredOnly || r.featured)
+  const featuredOnly = $('testimonialFeaturedOnly').checked, carouselOnly = $('testimonialCarouselOnly').checked;
+  const rows = testimonialRows.filter((r) => (!type || r.category === type) && (!featuredOnly || r.featured) && (!carouselOnly || r.carousel)
     && (!q || `${r.name}\n${r.shortVersion}\n${r.fullText}`.toLowerCase().includes(q)));
   $('testimonialEmptyState').style.display = testimonialRows.length ? 'none' : '';
   $('testimonialTable').style.display = testimonialRows.length ? '' : 'none';
-  $('testimonialCount').textContent = testimonialRows.length ? `Showing ${rows.length} of ${testimonialRows.length} · ${testimonialRows.filter((r) => r.featured).length} featured` : '';
+  $('testimonialCount').textContent = testimonialRows.length ? `Showing ${rows.length} of ${testimonialRows.length} · ${testimonialRows.filter((r) => r.featured).length} featured · ${testimonialRows.filter((r) => r.carousel).length} in carousel` : '';
   const snip = (text) => text ? `<div class="t-snip">${escapeHtml(text)}</div>` : '<span class="t-none">None yet</span>';
   $('testimonialTableBody').innerHTML = rows.length ? rows.map((r) => `
     <tr data-testimonial-id="${escapeHtml(r.id)}">
@@ -3754,10 +3768,12 @@ function renderTestimonials() {
       <td>${testimonialTypePill(r.category)}</td>
       <td>${snip(r.shortVersion)}</td>
       <td>${snip(r.fullText)}</td>
-    </tr>`).join('') : '<tr><td colspan="4" style="color:var(--muted);">No testimonials match.</td></tr>';
+      <td><button type="button" class="t-car${r.carousel ? ' on' : ''}" data-carousel-id="${escapeHtml(r.id)}" aria-pressed="${r.carousel ? 'true' : 'false'}" title="${r.carousel ? 'Shown in the carousel (click to take it out)' : 'Click to show it in the carousel'}">${r.carousel ? 'In carousel' : 'Off'}</button></td>
+    </tr>`).join('') : '<tr><td colspan="5" style="color:var(--muted);">No testimonials match.</td></tr>';
 }
 $('testimonialTypeFilter').addEventListener('change', renderTestimonials);
 $('testimonialFeaturedOnly').addEventListener('change', renderTestimonials);
+$('testimonialCarouselOnly').addEventListener('change', renderTestimonials);
 $('testimonialSearchInput').addEventListener('input', renderTestimonials);
 
 function showTestimonialError(message) {
@@ -3772,6 +3788,7 @@ function openTestimonialModal(row) {
   $('testimonialFullInput').value = row ? row.fullText : '';
   document.querySelectorAll('input[name="testimonialType"]').forEach((r) => { r.checked = !!row && r.value === row.category; });
   $('testimonialFeaturedInput').checked = !!(row && row.featured);
+  $('testimonialCarouselInput').checked = !!(row && row.carousel);
   $('deleteTestimonialBtn').hidden = !row;
   $('deleteTestimonialBtn').disabled = false;
   $('saveTestimonialBtn').disabled = false;
@@ -3781,19 +3798,20 @@ function openTestimonialModal(row) {
 }
 $('addTestimonialBtn').addEventListener('click', () => openTestimonialModal(null));
 $('testimonialTableBody').addEventListener('click', async (e) => {
-  const star = e.target.closest('button[data-star-id]');
+  const star = e.target.closest('button[data-star-id], button[data-carousel-id]');
   if (star) {
-    const row = testimonialRows.find((r) => r.id === star.dataset.starId); if (!row) return;
+    const key = star.dataset.starId ? 'featured' : 'carousel';
+    const row = testimonialRows.find((r) => r.id === (star.dataset.starId || star.dataset.carouselId)); if (!row) return;
     star.disabled = true;
     try {
       const res = await apiFetch(`${SITE_API}/testimonials/${encodeURIComponent(row.id)}`, {
         method: 'PUT', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: row.name, fullText: row.fullText, shortVersion: row.shortVersion, category: row.category, featured: !row.featured }),
+        body: JSON.stringify({ name: row.name, fullText: row.fullText, shortVersion: row.shortVersion, category: row.category, [key]: !row[key] }),
       });
       if (!res.ok) { const err = await res.json().catch(() => ({})); throw new Error(err.message || `HTTP ${res.status}`); }
       Object.assign(row, await res.json());
     } catch (err) {
-      if (err.message !== 'Unauthorized') alert(`Couldn't change the star (${err.message}).`);
+      if (err.message !== 'Unauthorized') alert(`Couldn't change it (${err.message}).`);
     }
     renderTestimonials();
     return;
@@ -3811,6 +3829,7 @@ $('saveTestimonialBtn').addEventListener('click', async () => {
     fullText: $('testimonialFullInput').value.trim(),
     category: document.querySelector('input[name="testimonialType"]:checked')?.value || '',
     featured: $('testimonialFeaturedInput').checked,
+    carousel: $('testimonialCarouselInput').checked,
   };
   if (!data.name) return showTestimonialError('Please add a name.');
   if (!data.category) return showTestimonialError('Please pick a type: Cruise, Land Trip, Port Excursion or Austria Retreat.');

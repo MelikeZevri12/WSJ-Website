@@ -4,7 +4,8 @@
 //
 //   WSJTestimonials.strip({ types: ['cruise'], more: '/testimonials#cruises' })
 //     The "In Their Words" carousel (#testiTrack inside #stories / .proof-strip-wrap):
-//     up to 10 testimonials of those types (featured ones first, each group in random order), each with "Read more" (opens the
+//     up to 10 testimonials of those types (only the ones switched to "Carousel" in admin, if any are;
+//     featured ones first, each group in random order), each with "Read more" (opens the
 //     whole review in a popup) when there's more to read, plus a "Read More
 //     Testimonials" link above the carousel. Hidden if there are none or the
 //     database can't be reached.
@@ -78,9 +79,12 @@
     const wrap = el.closest('.proof-strip-wrap') || el;
     wrap.hidden = true;
     load().then((rows) => {
-      // Featured ones (admin star = our best) come first, each group in random order
+      // If any of this carousel's testimonials are switched to "Carousel" in admin, only those show;
+      // if none are, any of them can. Featured ones (admin star = our best) come first, each group in random order.
       const fit = rows.filter((t) => (!types || types.includes(t.category)) && (t.shortVersion || t.fullText));
-      const picked = [...shuffle(fit.filter((t) => t.featured)), ...shuffle(fit.filter((t) => !t.featured))].slice(0, STRIP_MAX);
+      const chosen = fit.filter((t) => t.carousel);
+      const pool = chosen.length ? chosen : fit;
+      const picked = [...shuffle(pool.filter((t) => t.featured)), ...shuffle(pool.filter((t) => !t.featured))].slice(0, STRIP_MAX);
       if (!picked.length) return;
       el.innerHTML = picked.map((t, i) => {
         const shown = t.shortVersion || clip(t.fullText, SHORT_CHARS);

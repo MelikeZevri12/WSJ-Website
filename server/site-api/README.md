@@ -15,8 +15,8 @@ The website's internal data, kept apart from the cruise API. For now that's the
 
 Endpoints: `GET /site-api/health`, `GET /site-api/testimonials[?category=cruise|land_trip|port_excursion|austria_retreat]`
 (public), `POST /site-api/testimonials`, `PUT` and `DELETE /site-api/testimonials/<id>` (staff login).
-A testimonial: `{ id, name, fullText, shortVersion, category, featured, sortOrder, createdAt, updatedAt }`
-(`featured` = marked as one of the best in admin; shown first on the website; missing on older rows = not featured).
+A testimonial: `{ id, name, fullText, shortVersion, category, featured, carousel, sortOrder, createdAt, updatedAt }`
+(`featured` = marked as one of the best in admin; shown first on the website; missing on older rows = not featured; `carousel` = picked for the website carousels with the admin Carousel switch, same rules).
 
 ## First-time setup (done once)
 
@@ -75,7 +75,7 @@ If the cruise API's `JWT_SECRET` ever changes, copy it again on the VPS
 testimonials that aren't there yet and fills in empty full texts, so nothing edited in admin is overwritten. Without
 `--apply` it only shows what it would do; with `--apply` it needs `site-api` stopped (the running server keeps the list in
 memory) and backs the data up first. Used on 2026-11-02 for `imports/2026-11-02-old-site.json` (9 reviews from the old
-WordPress testimonials page that were missing + the full text of Natiera, Christina and Matea).
+WordPress testimonials page that were missing + the full text of Natiera, Christina and Matea). Also `"removeIds"` (take out exact ids) and `"replaceCategory"` (take out every testimonial of that type not in `add`): used on 2026-11-04 for `imports/2026-11-04-austria.json` (the 14 new Austria Retreat testimonials replace the old 9; two Austria reviews filed as Land Trip moved over).
 ```
 cd ~/apps/site-api
 node import-testimonials.js imports/<file>.json
