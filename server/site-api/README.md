@@ -13,6 +13,11 @@ The website's internal data, kept apart from the cruise API. For now that's the
 | Login | The admin page's staff login. The server only checks the login token's signature with the cruise API's `JWT_SECRET` (copied into `~/apps/site-api/.env` on the server; never print it) |
 | Tests | `node --test server/site-api/server.test.js` (from the `frontend` folder) |
 
+Also the **sign-ups** from public forms (`data/signups.json`, admin → Black Friday): `POST /site-api/signups` (public:
+`{ campaign: "black-friday-2026", name, email, trips: [{ slug, title }] }`; a filled-in hidden `website` field = bot, ignored;
+20 per hour per visitor; the same email for the same campaign updates that entry), `GET /site-api/signups[?campaign=]` and
+`DELETE /site-api/signups/<id>` (staff login). New campaigns: add them to `CAMPAIGNS` in `server.js`.
+
 Endpoints: `GET /site-api/health`, `GET /site-api/testimonials[?category=cruise|land_trip|port_excursion|austria_retreat]`
 (public), `POST /site-api/testimonials`, `PUT` and `DELETE /site-api/testimonials/<id>` (staff login).
 A testimonial: `{ id, name, fullText, shortVersion, category, featured, carousel, sortOrder, createdAt, updatedAt }`

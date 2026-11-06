@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Shared by the social media team only: kept out of Google and out of the sitemap -->
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<title>Black Friday Waitlist | Worldschooling Journeys</title>
+<meta name="description" content="Join the Worldschooling Journeys Black Friday waitlist and be the first to hear about our deals on land trips.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/nav.css?v=20261013">
+<link rel="stylesheet" href="/css/footer.css?v=20261013">
+<link rel="stylesheet" href="/css/site.css?v=20261013">
+<link rel="stylesheet" href="/css/content-page.css?v=20261013">
+<link rel="stylesheet" href="/css/waitlist.css">
+<link rel="stylesheet" href="/css/home-sections.css?v=20261013">
+<style>
+  @media (min-width:1000px){
+    .hero{background-size:cover;background-position:center 40%;min-height:0;display:block;}
+  }
+  .bf-section{padding:56px 0 72px;}
+  .bf-form{max-width:680px;margin:0 auto;}
+  .bf-form h2{font-size:26px;margin:0 0 6px;}
+  .bf-form .bf-intro{color:var(--muted);font-size:16px;line-height:1.6;margin:0 0 22px;}
+  .bf-form .reason-chips .reason-chip{font-size:13.5px;}
+  .bf-form .bf-hint{font-size:13px;color:var(--muted);margin:8px 0 0;}
+  .bf-form button[type="submit"]{width:100%;margin-top:6px;}
+  .bf-form .cf-msg:empty{display:none;}
+  .bf-done{max-width:680px;margin:0 auto;text-align:center;}
+  .bf-done h2{font-size:28px;margin:0 0 10px;}
+  .bf-done p{color:var(--muted);font-size:17px;line-height:1.6;margin:0 0 8px;}
+  .bf-done .bf-trips{font-weight:700;color:var(--dark);}
+  /* Phones: two trips per row, the longer names wrap inside their pill */
+  @media (max-width:760px){
+    .bf-section{padding:36px 0 52px;}
+    .bf-form .reason-chips .reason-chip{font-size:14px;}
+  }
+  /* Phones: name and email one under the other */
+  @media (max-width:600px){
+    .bf-form .form-row-split{flex-direction:column;gap:16px;}
+  }
+</style>
+<link rel="stylesheet" href="/css/hero.css?v=20261012">
+</head>
+<body>
+
+<!-- GLOBAL NAV -->
+<!-- include nav -->
+
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Black Friday</div>
+    <h1>Black Friday Waitlist</h1>
+    <p class="lede">Our best prices of the year on worldschooling land trips. Join the waitlist and be the first to hear about the deals.</p>
+    <div class="hero-cta">
+      <a href="#join" class="btn btn-primary">Join The Waitlist</a>
+    </div>
+  </div>
+</header>
+
+<section class="bf-section" id="join">
+  <div class="wrap">
+    <form class="contact-form bf-form" id="bfForm" novalidate>
+      <h2>Join the Black Friday Waitlist</h2>
+      <p class="bf-intro">Tell us which trips you're dreaming about and we'll let you know as soon as the Black Friday deals go live.</p>
+      <div class="form-row-split">
+        <div class="form-row">
+          <label for="bf-name">Your Name</label>
+          <input type="text" id="bf-name" name="fullName" placeholder="Jane Smith" autocomplete="name" maxlength="120" required>
+        </div>
+        <div class="form-row">
+          <label for="bf-email">Your Email</label>
+          <input type="email" id="bf-email" name="email" placeholder="you@email.com" autocomplete="email" maxlength="200" required>
+        </div>
+      </div>
+      <fieldset class="form-row">
+        <legend>Trips you're interested in</legend>
+        <div class="reason-chips" id="bfTrips"><!-- one pill per trip, built from js/trips.js below --></div>
+        <p class="bf-hint">Pick as many as you like.</p>
+      </fieldset>
+      <label class="wl-hp" aria-hidden="true">Leave this empty<input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+      <button type="submit" class="btn btn-primary">Join The Waitlist</button>
+      <p class="nl-msg cf-msg" id="bfMsg" role="status"></p>
+    </form>
+    <div class="bf-done" id="bfDone" hidden>
+      <div class="eyebrow">You're On The List</div>
+      <h2>Thank you!</h2>
+      <p>We'll email you as soon as our Black Friday deals go live for <span class="bf-trips" id="bfDoneTrips"></span>.</p>
+      <p><a href="/worldschooling-trips#landtrips">Browse our land trips in the meantime &rarr;</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- include footer -->
+
+<script src="/js/trips.js?v=20261013"></script>
+<script>
+// Black Friday waitlist. Every land trip on the website (js/trips.js) except the ones below;
+// a trip added to trips.js later shows up here by itself. Sign-ups are saved on the
+// website's own server (/site-api/signups) and show in admin → Black Friday.
+// The footer's js/newsletter.js also adds the email to the newsletter once the form is complete.
+(function () {
+  const CAMPAIGN = 'black-friday-2026';
+  const NOT_ON_THIS_PAGE = ['egypt-jordan', 'xcaret', 'dude-ranch'];
+  const short = (title) => title.replace(/^\s*\d+[\s-]*days?\s+/i, '').replace(/^Worldschooling\s+/i, '').trim();
+  const trips = window.WSJ.LAND_TRIPS.filter((t) => !NOT_ON_THIS_PAGE.includes(t.slug))
+    .map((t) => ({ slug: t.slug, title: short(t.title) }))
+    .sort((a, b) => a.title.localeCompare(b.title));
+
+  const form = document.getElementById('bfForm');
+  const box = document.getElementById('bfTrips');
+  const msg = document.getElementById('bfMsg');
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  box.innerHTML = trips.map((t) => `<label class="reason-chip"><input type="checkbox" name="trips" value="${esc(t.slug)}">${esc(t.title)}</label>`).join('');
+  const boxes = [...box.querySelectorAll('input')];
+  const picked = () => boxes.filter((b) => b.checked).map((b) => trips.find((t) => t.slug === b.value));
+  // "pick at least one" as a form rule, so the form only counts as complete with a trip
+  // (js/newsletter.js waits for a complete form before adding the email to the newsletter)
+  const checkTrips = () => boxes[0].setCustomValidity(picked().length ? '' : 'Please pick at least one trip.');
+  boxes.forEach((b) => b.addEventListener('change', () => { checkTrips(); if (picked().length) showMsg(''); }));
+  checkTrips();
+
+  function showMsg(text, ok) {
+    msg.textContent = text;
+    msg.classList.toggle('nl-err', !!text && !ok);
+    msg.classList.toggle('nl-ok', !!text && !!ok);
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = form.fullName.value.trim(), email = form.email.value.trim();
+    if (!name) { showMsg('Please add your name.'); form.fullName.focus(); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { showMsg('Please add a valid email address.'); form.email.focus(); return; }
+    if (!picked().length) { showMsg('Please pick at least one trip.'); boxes[0].focus(); return; }
+    const btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true; showMsg('');
+    try {
+      const res = await fetch('/site-api/signups', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ campaign: CAMPAIGN, name, email, trips: picked(), website: form.website.value }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.message || 'Something went wrong. Please try again.');
+      }
+      const names = picked().map((t) => t.title);
+      document.getElementById('bfDoneTrips').textContent = names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0];
+      form.hidden = true;
+      document.getElementById('bfDone').hidden = false;
+      document.getElementById('join').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch (err) {
+      showMsg(err.message === 'Failed to fetch' ? 'We couldn\'t reach our server. Please check your connection and try again.' : err.message);
+      btn.disabled = false;
+    }
+  });
+})();
+</script>
+<script src="/js/nav.js?v=20261013"></script>
+</body>
+</html>

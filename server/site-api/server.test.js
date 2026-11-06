@@ -129,6 +129,38 @@ test('rejects incomplete testimonials and unknown addresses', async () => {
   } finally { await s.close(); }
 });
 
+test('sign-ups: anyone can join, the same email is merged, only staff can list and delete', async () => {
+  const s = await start([]);
+  const join = (body, auth = null) => s.call('POST', '/signups', { campaign: 'black-friday-2026', name: 'Kylie', email: 'Kylie@Example.com', trips: [{ slug: 'morocco', title: 'Morocco Family Journey' }], ...body }, auth);
+  try {
+    assert.equal((await join({})).status, 201);
+    assert.equal((await join({ name: 'Kylie B', trips: [{ slug: 'morocco', title: 'Morocco Family Journey' }, { slug: 'galapagos', title: 'Galápagos' }] })).status, 201);
+    assert.equal((await join({ email: 'mary@example.com' })).status, 201);
+    // bad input
+    assert.equal((await join({ campaign: 'other' })).status, 400);
+    assert.equal((await join({ name: ' ' })).status, 400);
+    assert.equal((await join({ email: 'not-an-email' })).status, 400);
+    assert.equal((await join({ trips: [] })).status, 400);
+    assert.equal((await join({ trips: [{ slug: '<script>', title: 'x' }] })).status, 400);
+    // a bot filling the hidden field: "ok", nothing saved
+    assert.equal((await join({ email: 'bot@example.com', website: 'http://spam' })).status, 201);
+    // staff only
+    assert.equal((await s.call('GET', '/signups', null, null)).status, 401);
+    const list = (await s.call('GET', '/signups?campaign=black-friday-2026')).body;
+    assert.deepEqual(list.map((r) => r.email).sort(), ['kylie@example.com', 'mary@example.com']);
+    const kylie = list.find((r) => r.email === 'kylie@example.com');
+    assert.equal(kylie.name, 'Kylie B');
+    assert.deepEqual(kylie.trips.map((t) => t.slug), ['morocco', 'galapagos']);
+    assert.equal((await s.call('DELETE', `/signups/${kylie.id}`, null, null)).status, 401);
+    assert.equal((await s.call('DELETE', `/signups/${kylie.id}`)).status, 200);
+    assert.equal((await s.call('GET', '/signups')).body.length, 1);
+    // too many from one connection
+    let last;
+    for (let i = 0; i < 25; i++) last = await join({ email: `p${i}@example.com` });
+    assert.equal(last.status, 429);
+  } finally { await s.close(); }
+});
+
 test('the real seed file is valid', () => {
   const seed = JSON.parse(fs.readFileSync(path.join(__dirname, 'seed', 'testimonials.json'), 'utf8'));
   assert.ok(seed.length > 50);

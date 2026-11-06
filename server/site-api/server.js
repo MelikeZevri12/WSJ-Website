@@ -22,6 +22,11 @@
 //   POST   /site-api/testimonials                     staff login
 //   PUT    /site-api/testimonials/:id                 staff login
 //   DELETE /site-api/testimonials/:id                 staff login
+//   POST   /site-api/signups                          public (the /black-friday waitlist form)
+//   GET    /site-api/signups[?campaign=black-friday-2026]   staff login
+//   DELETE /site-api/signups/:id                      staff login
+//
+// A sign-up (data/signups.json): { id, campaign, name, email, trips: [{ slug, title }], createdAt, updatedAt }
 //
 // A testimonial: { id, name, fullText, shortVersion, category, featured, carousel, sortOrder, createdAt, updatedAt }
 'use strict';
@@ -120,9 +125,44 @@ function validateTestimonial(body) {
 }
 const bySortOrder = (a, b) => a.sortOrder - b.sortOrder || String(a.createdAt).localeCompare(String(b.createdAt));
 
+// ---------- sign-ups from public forms (the Black Friday waitlist page) ----------
+// One list per campaign. The same email signing up again for the same campaign updates
+// their entry (new name, trips added) instead of making a second one.
+const CAMPAIGNS = ['black-friday-2026'];
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const SIGNUPS_PER_HOUR = 20;   // per visitor (IP address): enough for a family, not for a bot
+function validateSignup(body) {
+  const campaign = clip(body.campaign, 60);
+  if (!CAMPAIGNS.includes(campaign)) return { error: 'Unknown sign-up list.' };
+  const name = clip(body.name, 120);
+  const email = clip(body.email, 200).toLowerCase();
+  if (!name) return { error: 'Please add your name.' };
+  if (!EMAIL_RE.test(email)) return { error: 'Please add a valid email address.' };
+  if (!Array.isArray(body.trips) || !body.trips.length) return { error: 'Please pick at least one trip.' };
+  const trips = [];
+  for (const t of body.trips.slice(0, 30)) {
+    const slug = clip(t && t.slug, 60), title = clip(t && t.title, 150);
+    if (!/^[a-z0-9-]+$/.test(slug) || !title) return { error: 'Please pick the trips from the list.' };
+    if (!trips.some((x) => x.slug === slug)) trips.push({ slug, title });
+  }
+  return { value: { campaign, name, email, trips } };
+}
+
 // ---------- HTTP ----------
 function createServer({ dataDir, seedDir, secret }) {
   const testimonials = createStore(dataDir, 'testimonials', seedDir && path.join(seedDir, 'testimonials.json'));
+  const signups = createStore(dataDir, 'signups', null);
+  // sign-ups per visitor in the last hour (kept in memory only)
+  const recent = new Map();
+  function tooMany(req) {
+    // Caddy passes the visitor's address in X-Forwarded-For (the last entry is the one Caddy saw)
+    const ip = String(req.headers['x-forwarded-for'] || '').split(',').pop().trim() || req.socket.remoteAddress || '?';
+    const hourAgo = Date.now() - 3600e3;
+    const times = (recent.get(ip) || []).filter((t) => t > hourAgo);
+    times.push(Date.now()); recent.set(ip, times);
+    if (recent.size > 5000) for (const [k, v] of recent) if (v[v.length - 1] < hourAgo) recent.delete(k);
+    return times.length > SIGNUPS_PER_HOUR;
+  }
 
   function send(res, status, body) {
     res.writeHead(status, {
@@ -155,6 +195,44 @@ function createServer({ dataDir, seedDir, secret }) {
       if (category && !CATEGORIES.includes(category)) return send(res, 400, { message: 'Unknown category.' });
       const rows = (await testimonials.load()).filter((t) => !category || t.category === category).sort(bySortOrder);
       return send(res, 200, rows);
+    }
+
+    // public sign-up form
+    if (p === '/site-api/signups' && req.method === 'POST') {
+      const body = await readBody(req);
+      if (body.website) return send(res, 201, { ok: true });   // honeypot filled in = a bot: pretend it worked, save nothing
+      if (tooMany(req)) return send(res, 429, { message: 'Too many sign-ups from this connection. Please try again in an hour.' });
+      const { value, error } = validateSignup(body);
+      if (error) return send(res, 400, { message: error });
+      const now = new Date().toISOString();
+      await signups.change((rows) => {
+        const same = rows.find((r) => r.campaign === value.campaign && r.email === value.email);
+        if (same) {
+          same.name = value.name;
+          value.trips.forEach((t) => { if (!same.trips.some((x) => x.slug === t.slug)) same.trips.push(t); });
+          same.updatedAt = now; return same;
+        }
+        const row = { id: crypto.randomUUID(), ...value, createdAt: now, updatedAt: now };
+        rows.push(row); return row;
+      });
+      return send(res, 201, { ok: true });
+    }
+    // the lists, for the admin page
+    const signup = p.match(/^\/site-api\/signups\/([A-Za-z0-9-]{1,64})$/);
+    if ((p === '/site-api/signups' && req.method === 'GET') || (signup && req.method === 'DELETE')) {
+      if (!isStaff(req)) return send(res, 401, { message: 'Please log in again.' });
+      if (req.method === 'GET') {
+        const campaign = url.searchParams.get('campaign');
+        const rows = (await signups.load()).filter((r) => !campaign || r.campaign === campaign)
+          .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
+        return send(res, 200, rows);
+      }
+      const gone = await signups.change((rows) => {
+        const i = rows.findIndex((r) => r.id === signup[1]);
+        if (i < 0) return false;
+        rows.splice(i, 1); return true;
+      });
+      return gone ? send(res, 200, { ok: true }) : send(res, 404, { message: 'Sign-up not found.' });
     }
 
     const one = p.match(/^\/site-api\/testimonials\/([A-Za-z0-9-]{1,64})$/);
@@ -197,7 +275,7 @@ function createServer({ dataDir, seedDir, secret }) {
   });
 }
 
-module.exports = { createServer, verifyToken, validateTestimonial, CATEGORIES };
+module.exports = { createServer, verifyToken, validateTestimonial, validateSignup, CATEGORIES, CAMPAIGNS };
 
 if (require.main === module) {
   const port = Number(process.env.SITE_API_PORT || 3100);

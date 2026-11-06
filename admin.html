@@ -471,6 +471,7 @@
     <button type="button" class="admin-subnav-btn" data-tab="backtoback">Back to Backs</button>
     <button type="button" class="admin-subnav-btn" data-tab="waitlist">Waitlist</button>
     <button type="button" class="admin-subnav-btn" data-tab="testimonials">Testimonials</button>
+    <button type="button" class="admin-subnav-btn" data-tab="blackfriday">Black Friday</button>
   </div>
 
   <section class="admin-tab-panel" id="tab-cruises">
@@ -672,6 +673,45 @@
       <div class="empty-state" id="waitlistEmptyState" style="display:none;">
         <h3>No waitlist signups yet</h3>
         <p>When someone clicks "Join the Waitlist" on a land trip page and leaves their name and email, they'll show up here.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="admin-tab-panel" id="tab-blackfriday" hidden>
+    <div class="admin-header">
+      <div>
+        <h1>Black Friday Waitlist</h1>
+        <p>Families who joined the Black Friday waitlist on <a href="/black-friday" target="_blank" rel="noopener">worldschoolingjourneys.com/black-friday</a> (the link the social media team shares). Kept on the website's own server. Someone who signs up again with the same email is updated, not added twice.</p>
+      </div>
+      <button type="button" class="btn btn-primary" id="bfCsvBtn">Download CSV</button>
+    </div>
+
+    <div class="cruises-toolbar">
+      <div class="admin-field" style="flex:0 1 320px;margin-bottom:0;">
+        <select id="bfTripFilter"><option value="">All trips</option></select>
+      </div>
+      <div class="admin-field" style="flex:1;max-width:360px;margin-bottom:0;">
+        <input id="bfSearchInput" type="text" placeholder="Search by name or email...">
+      </div>
+      <div class="admin-hint" id="bfCount" style="margin:0;"></div>
+    </div>
+
+    <div class="admin-card">
+      <table class="cruise-table" id="bfTable">
+        <thead>
+          <tr>
+            <th>Signed up</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Trips</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="bfTableBody"><!-- populated by loadBlackFriday() --></tbody>
+      </table>
+      <div class="empty-state" id="bfEmptyState" style="display:none;">
+        <h3>No sign-ups yet</h3>
+        <p>When someone fills out the form on the Black Friday page, they'll show up here.</p>
       </div>
     </div>
   </section>
@@ -3646,7 +3686,7 @@ $('deleteBackToBackBtn').addEventListener('click', async () => {
 // created as a side effect of saving a cruise, so the Ports tab's data can
 // go stale the moment a cruise is saved without a page reload - refetch on
 // switch is what keeps it honest.
-const TAB_LOADERS = { cruises: loadCruises, ports: loadPorts, ships: loadShipsTab, backtoback: loadBackToBacks, waitlist: loadWaitlist, testimonials: loadTestimonials };
+const TAB_LOADERS = { cruises: loadCruises, ports: loadPorts, ships: loadShipsTab, backtoback: loadBackToBacks, waitlist: loadWaitlist, testimonials: loadTestimonials, blackfriday: loadBlackFriday };
 
 // ---- Waitlist (land trip "be the first to be notified" signups) ----
 // Saved by the land trip pages' waitlist popup (frontend/js/waitlist.js);
@@ -3718,6 +3758,77 @@ $('waitlistCsvBtn').addEventListener('click', () => {
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([lines.join('\r\n')], { type: 'text/csv' }));
   a.download = `waitlist-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click(); URL.revokeObjectURL(a.href);
+});
+// ---- Black Friday waitlist ----
+// Sign-ups from /black-friday, stored on the website server (site-api), not the cruise API.
+const BF_CAMPAIGN = 'black-friday-2026';
+let bfRows = [];
+async function loadBlackFriday() {
+  const body = $('bfTableBody');
+  body.innerHTML = '<tr><td colspan="5" style="color:var(--muted);">Loading...</td></tr>';
+  try {
+    const res = await apiFetch(`${SITE_API}/signups?campaign=${BF_CAMPAIGN}`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    bfRows = await res.json();
+  } catch (err) {
+    if (err.message === 'Unauthorized') return;
+    $('bfEmptyState').style.display = 'none';
+    $('bfTable').style.display = '';
+    body.innerHTML = `<tr><td colspan="5" style="color:#c14a2f;">Couldn't load the sign-ups (${escapeHtml(err.message)}).</td></tr>`;
+    return;
+  }
+  // trip filter with how many people picked each trip, most popular first
+  const counts = new Map();
+  bfRows.forEach((r) => r.trips.forEach((t) => { const c = counts.get(t.slug) || { title: t.title, n: 0 }; c.n++; counts.set(t.slug, c); }));
+  const filter = $('bfTripFilter'), keep = filter.value;
+  filter.innerHTML = `<option value="">All trips (${bfRows.length} people)</option>` + [...counts.entries()].sort((a, b) => b[1].n - a[1].n || a[1].title.localeCompare(b[1].title))
+    .map(([slug, c]) => `<option value="${escapeHtml(slug)}">${escapeHtml(c.title)} (${c.n})</option>`).join('');
+  filter.value = counts.has(keep) ? keep : '';
+  renderBlackFriday();
+}
+function visibleBfRows() {
+  const trip = $('bfTripFilter').value, q = $('bfSearchInput').value.trim().toLowerCase();
+  return bfRows.filter((r) => (!trip || r.trips.some((t) => t.slug === trip)) && (!q || r.name.toLowerCase().includes(q) || r.email.includes(q)));
+}
+function renderBlackFriday() {
+  const rows = visibleBfRows();
+  $('bfEmptyState').style.display = bfRows.length ? 'none' : '';
+  $('bfTable').style.display = bfRows.length ? '' : 'none';
+  $('bfCount').textContent = bfRows.length ? `Showing ${rows.length} of ${bfRows.length}` : '';
+  const fmt = (iso) => new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  $('bfTableBody').innerHTML = rows.length ? rows.map((r) => `
+    <tr>
+      <td style="white-space:nowrap;">${fmt(r.createdAt)}</td>
+      <td><strong>${escapeHtml(r.name)}</strong></td>
+      <td><a href="mailto:${escapeHtml(r.email)}">${escapeHtml(r.email)}</a></td>
+      <td>${r.trips.map((t) => escapeHtml(t.title)).join(', ')}</td>
+      <td style="text-align:right;"><button type="button" class="btn-text-danger" data-bf-delete="${escapeHtml(r.id)}">Delete</button></td>
+    </tr>`).join('') : '<tr><td colspan="5" style="color:var(--muted);">No sign-ups match.</td></tr>';
+}
+$('bfTripFilter').addEventListener('change', renderBlackFriday);
+$('bfSearchInput').addEventListener('input', renderBlackFriday);
+$('bfTableBody').addEventListener('click', async (e) => {
+  const btn = e.target.closest('button[data-bf-delete]'); if (!btn) return;
+  const row = bfRows.find((r) => r.id === btn.dataset.bfDelete); if (!row) return;
+  if (!confirm(`Delete ${row.name} (${row.email}) from the Black Friday waitlist? This cannot be undone.`)) return;
+  btn.disabled = true;
+  try {
+    const res = await apiFetch(`${SITE_API}/signups/${encodeURIComponent(row.id)}`, { method: 'DELETE' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    await loadBlackFriday();
+  } catch (err) {
+    btn.disabled = false;
+    if (err.message !== 'Unauthorized') alert(`Couldn't delete it (${err.message}).`);
+  }
+});
+$('bfCsvBtn').addEventListener('click', () => {
+  const cell = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const lines = [['Signed up', 'Name', 'Email', 'Trips'].map(cell).join(',')]
+    .concat(visibleBfRows().map((r) => [new Date(r.createdAt).toLocaleDateString('en-CA'), r.name, r.email, r.trips.map((t) => t.title).join('; ')].map(cell).join(',')));
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([lines.join('\r\n')], { type: 'text/csv' }));
+  a.download = `black-friday-waitlist-${new Date().toISOString().slice(0, 10)}.csv`;
   a.click(); URL.revokeObjectURL(a.href);
 });
 // ---- Testimonials ----
