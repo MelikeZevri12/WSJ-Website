@@ -108,7 +108,7 @@
 // The footer's js/newsletter.js also adds the email to the newsletter once the form is complete.
 (function () {
   const CAMPAIGN = 'black-friday-2026';
-  const NOT_ON_THIS_PAGE = ['egypt-jordan', 'xcaret', 'dude-ranch'];
+  const NOT_ON_THIS_PAGE = ['egypt-jordan', 'xcaret', 'dude-ranch', 'galapagos'];
   const short = (title) => title.replace(/^\s*\d+[\s-]*days?\s+/i, '').replace(/^Worldschooling\s+/i, '').trim();
   const trips = window.WSJ.LAND_TRIPS.filter((t) => !NOT_ON_THIS_PAGE.includes(t.slug))
     .map((t) => ({ slug: t.slug, title: short(t.title) }))
