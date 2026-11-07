@@ -22,8 +22,8 @@ window.LandRoster = (function(){
     return {families: sum('families'), adults: sum('adults'), kids: sum('kids'), kidAges, kidLabels};
   }
 
-  // Every kid on the roster(s), youngest first, as chips like the cruise pages: "6b", "10g"
-  // (b = boy, g = girl; no letter when Notion doesn't say). Same CSS (.rf-kid in css/trip-page.css).
+  // Every kid on the roster(s), youngest first, as one string like the cruise pages: "6B · 10G"
+  // (b = boy, g = girl; no letter when Notion doesn't say). Same CSS (.rf-kid / .rf-sep in css/trip-page.css).
   function kidsHTML(rosters){
     const kids = rosters.flatMap(labelsOf).sort(byAge);
     if(!kids.length) return '<div class="rf-sub">No kids on this trip yet.</div>';

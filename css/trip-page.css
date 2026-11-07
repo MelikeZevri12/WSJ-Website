@@ -149,18 +149,32 @@ section.night-sky{
 .rf-bracket-track{flex:1;height:6px;background:var(--green-tint);border-radius:5px;overflow:hidden;}
 .rf-bracket-fill{height:100%;background:var(--green);border-radius:5px;}
 .rf-bracket-count{flex:0 0 20px;text-align:right;color:var(--muted);font-weight:600}
-/* cruise roster: every kid as a chip ("6b", "10g"), boys blue, girls green */
-.rf-kids{display:flex;flex-wrap:wrap;gap:7px;}
-.rf-kid{display:inline-flex;align-items:baseline;justify-content:center;gap:1px;min-width:40px;padding:5px 9px;border-radius:999px;
-  background:var(--paper);border:1px solid var(--line);color:var(--dark);font-weight:700;font-size:15.5px;line-height:1.2;}
-.rf-kid small{font-size:12px;font-weight:700;opacity:.8;}
-/* fixed colors (the cruise page's blue + green): land trip themes recolor --blue/--green, chips stay the same everywhere */
-.rf-kid.b{background:color-mix(in srgb, #2f7f8a 22%, white);border-color:color-mix(in srgb, #2f7f8a 48%, white);color:#2f7f8a;}
-.rf-kid.g{background:color-mix(in srgb, #A5BD8E 32%, white);border-color:color-mix(in srgb, #708F53 55%, white);color:#2D3A22;}
-.rf-sep{font-size:0;}
-.rf-kids-key{display:flex;gap:16px;margin-top:12px;color:var(--muted);font-size:13px;}
+/* Kid ages as one flowing string ("6b · 10g · 12"), the user's design of 2026-11-07.
+   Markup from js/land-roster.js + cruise-detail.html: .rf-kids > .rf-kid.b / .rf-kid.g (+ <small>), .rf-sep, .rf-kids-key.
+   The letters use --blue / --green-dark, so on land trips they follow the trip's theme colors. */
+.rf-kids-key{display:flex;color:var(--muted);}
 .rf-kids-key > span{display:inline-flex;align-items:center;gap:6px;}
-.rf-kids-key .rf-kid{min-width:0;padding:1px 8px;font-size:12px;}
+.roster-full-card .rf-col-right{min-width:0;}
+.roster-full-card .rf-kids{display:flex;flex-wrap:wrap;align-items:baseline;gap:0;min-width:0;max-width:100%;line-height:2;}
+.roster-full-card .rf-kid{display:inline;min-width:0;padding:0;background:none;border:0;border-radius:0;white-space:nowrap;
+  font-family:"Libre Baskerville",serif;font-weight:400;font-size:15.5px;line-height:inherit;color:var(--dark);}
+.roster-full-card .rf-kid small{font-family:"Titillium Web",sans-serif;font-size:11px;font-weight:700;letter-spacing:.04em;
+  text-transform:uppercase;opacity:1;margin-left:1px;vertical-align:1px;}
+.roster-full-card .rf-kid.b small{color:var(--blue);}
+.roster-full-card .rf-kid.g small{color:color-mix(in srgb, var(--green-dark) 80%, black);}
+.roster-full-card .rf-kid.m small{color:var(--muted);} /* babies under 1, if used */
+/* the ", " between kids becomes a soft dot */
+.roster-full-card .rf-sep{font-size:0;}
+.roster-full-card .rf-sep::before{content:"·";font-family:"Titillium Web",sans-serif;font-size:15px;color:var(--line);
+  color:rgba(21,34,48,0.3);margin:0 7px 0 6px;}
+/* key under the string: plain colored letters, no pills */
+.roster-full-card .rf-kids-key{gap:14px;margin-top:8px;font-size:12.5px;}
+.roster-full-card .rf-kids-key .rf-kid{font-size:12.5px;}
+.roster-full-card .rf-kids-key .rf-kid small{margin-left:0;vertical-align:0;}
+@media (max-width:760px){
+  .roster-full-card .rf-kid{font-size:14.5px;}
+  .roster-full-card .rf-sep::before{margin:0 5px 0 4px;}
+}
 .roster-full-placeholder h3{font-family:'Libre Baskerville',serif;margin:0 0 6px}
 .roster-full-placeholder p{color:var(--muted);line-height:1.55;margin:0 0 14px;max-width:520px}
 .roster-full-placeholder .btn{font-size:13px;padding:9px 18px;}
