@@ -102,24 +102,24 @@
     <div class="cruise-summary" id="detailsSummary"></div>
     <h1>Add Your Passenger Details</h1>
     <p class="intro" id="detailsIntro"></p>
-    <form id="detailsForm" novalidate>
+    <form id="detailsForm" novalidate data-validate>
       <div class="section-label">Who's Traveling</div>
       <div class="field-grid">
-        <div class="field"><label for="dTravelers">Number of travelers, including you</label><input type="number" id="dTravelers" inputmode="numeric" min="1" max="30" step="1" required></div>
-        <div class="field"><label for="dKids">How many are kids (under 18)?</label><input type="number" id="dKids" inputmode="numeric" min="0" step="1" required></div>
+        <div class="field"><label for="dTravelers">Number of travelers, including you</label><input type="number" id="dTravelers" inputmode="numeric" min="1" step="1" required data-check="travelers"></div>
+        <div class="field"><label for="dKids">How many are kids (under 18)?</label><input type="number" id="dKids" inputmode="numeric" min="0" step="1" required data-check="kids" data-travelers="dTravelers"></div>
       </div>
       <div class="field" id="dKidAgesField" hidden><label>Kids' ages</label><div class="kid-ages" id="dKidAges"></div></div>
 
       <div class="section-label">Passenger 1 (You)</div>
       <div class="field-grid">
-        <div class="field"><label for="dDob">Date of Birth</label><input type="date" id="dDob" required></div>
+        <div class="field"><label for="dDob">Date of Birth</label><input type="date" id="dDob" data-check="dob-adult" required></div>
         <div class="field"><label for="dGender">Gender</label>
           <select id="dGender" required><option value="">Select</option><option>Female</option><option>Male</option><option>Prefer not to say</option><option>Other</option></select>
         </div>
       </div>
       <div class="field-grid">
-        <div class="field"><label for="dCitizenship">Citizenship</label><input type="text" id="dCitizenship" placeholder="e.g. United States" required></div>
-        <div class="field"><label for="dPhone">Phone Number <span class="optional">(optional)</span></label><input type="tel" id="dPhone"></div>
+        <div class="field"><label for="dCitizenship">Citizenship</label><select id="dCitizenship" data-country required></select></div>
+        <div class="field"><label for="dPhone">Phone Number <span class="optional">(optional)</span></label><input type="tel" id="dPhone" autocomplete="tel"></div>
       </div>
 
       <div id="dPassengerBlocks"></div>
@@ -147,23 +147,23 @@
     <h1>Booking Request</h1>
     <p class="intro">Fill out your info below and our team will follow up with current pricing and next steps.</p>
 
-    <form id="bookingForm" novalidate>
+    <form id="bookingForm" novalidate data-validate>
       <div class="section-label">Lead Passenger</div>
       <div class="field-grid">
-        <div class="field"><label for="leadFirstName">First Name</label><input required type="text" id="leadFirstName"></div>
-        <div class="field"><label for="leadLastName">Last Name</label><input required type="text" id="leadLastName"></div>
+        <div class="field"><label for="leadFirstName">First Name</label><input required type="text" id="leadFirstName" data-check="name" autocomplete="given-name"></div>
+        <div class="field"><label for="leadLastName">Last Name</label><input required type="text" id="leadLastName" data-check="name" autocomplete="family-name"></div>
       </div>
       <div class="field-grid">
-        <div class="field"><label for="leadDob">Date of Birth</label><input type="date" id="leadDob"></div>
+        <div class="field"><label for="leadDob">Date of Birth</label><input type="date" id="leadDob" data-check="dob-adult"></div>
         <div class="field"><label for="leadGender">Gender</label>
           <select id="leadGender"><option value="">Select</option><option>Female</option><option>Male</option><option>Prefer not to say</option><option>Other</option></select>
         </div>
       </div>
-      <div class="field"><label for="leadCitizenship">Citizenship</label><input type="text" id="leadCitizenship" placeholder="e.g. United States"></div>
+      <div class="field"><label for="leadCitizenship">Citizenship</label><select id="leadCitizenship" data-country></select></div>
 
       <div class="section-label">Contact Info</div>
-      <div class="field"><label for="leadEmail">Email Address</label><input required type="email" id="leadEmail"></div>
-      <div class="field"><label for="leadPhone">Phone Number</label><input type="tel" id="leadPhone"></div>
+      <div class="field"><label for="leadEmail">Email Address</label><input required type="email" id="leadEmail" autocomplete="email"></div>
+      <div class="field"><label for="leadPhone">Phone Number</label><input type="tel" id="leadPhone" autocomplete="tel"></div>
 
       <div class="section-label">Cabin Type</div>
       <div class="field-hint">Which cabin type(s) would you like pricing on?</div>
@@ -190,6 +190,7 @@
   </div>
 </div>
 
+<script src="/js/form-check.js"></script>
 <script>
 const API = 'https://api.worldschoolingjourneys.com';
 
@@ -240,7 +241,7 @@ let dPassengers = []; // passengers 2, 3, ... each {name, dob, gender, citizensh
 let dKidAges = [];
 const $ = (id) => document.getElementById(id);
 const countOf = (id) => { const n = parseInt($(id).value, 10); return Number.isFinite(n) && n >= 0 ? n : 0; };
-const dTravelers = () => Math.min(countOf('dTravelers'), 30);
+const dTravelers = () => Math.min(countOf('dTravelers'), WSJForm.MAX_TRAVELERS);
 const dKids = () => Math.min(countOf('dKids'), Math.max(dTravelers() - 1, 0));
 
 function showOnly(id){
@@ -268,7 +269,7 @@ async function loadDetails(){
   dKidAges = (r.kidAges || []).map(String);
   $('dDob').value = r.dob || '';
   $('dGender').value = r.gender || '';
-  $('dCitizenship').value = r.citizenship || '';
+  WSJForm.setCountry($('dCitizenship'), r.citizenship || '');
   $('dPhone').value = r.phone || '';
   dPassengers = (r.passengers || []).map((p) => ({ name: p.name || '', dob: p.dob || '', gender: p.gender || '', citizenship: p.citizenship || '' }));
   const chosen = (r.cabinChoice || '').split(',').map((s) => s.trim()).filter(Boolean);
@@ -279,12 +280,16 @@ async function loadDetails(){
 }
 
 function renderDetailsCounts(){
-  $('dKids').max = String(Math.max(dTravelers() - 1, 0));
+  // age boxes + passenger blocks only once both numbers make sense (js/form-check.js); typed details are kept
+  if (!WSJForm.countsOk($('dTravelers'), $('dKids'))) {
+    $('dKidAgesField').hidden = true; $('dKidAges').innerHTML = ''; $('dPassengerBlocks').innerHTML = '';
+    return;
+  }
   const k = dKids();
   dKidAges = dKidAges.slice(0, k);
   $('dKidAgesField').hidden = !k;
   $('dKidAges').innerHTML = Array.from({ length: k }, (_, i) =>
-    `<label class="kid-age"><span>Kid ${i + 1}</span><input type="number" inputmode="numeric" min="0" max="17" step="1" required placeholder="Age" data-kid="${i}" value="${escapeHtml(dKidAges[i] ?? '')}"></label>`).join('');
+    `<label class="kid-age"><span>Kid ${i + 1}</span><input type="number" inputmode="numeric" min="0" step="1" required placeholder="Age" data-check="kidage" data-kid="${i}" value="${escapeHtml(dKidAges[i] ?? '')}"></label>`).join('');
   $('dKidAges').querySelectorAll('input').forEach((el) => el.addEventListener('input', () => { dKidAges[+el.dataset.kid] = el.value; }));
 
   const n = Math.max(dTravelers(), 1);
@@ -293,14 +298,14 @@ function renderDetailsCounts(){
   $('dPassengerBlocks').innerHTML = dPassengers.map((p, i) => `
     <div class="section-label">Passenger ${i + 2} of ${n}</div>
     <div class="field-grid">
-      <div class="field"><label>Full Name</label><input type="text" data-p="${i}" data-field="name" required value="${escapeHtml(p.name)}"></div>
-      <div class="field"><label>Date of Birth</label><input type="date" data-p="${i}" data-field="dob" required value="${escapeHtml(p.dob)}"></div>
+      <div class="field"><label>Full Name</label><input type="text" data-p="${i}" data-field="name" data-check="fullname" required value="${escapeHtml(p.name)}"></div>
+      <div class="field"><label>Date of Birth</label><input type="date" data-p="${i}" data-field="dob" data-check="dob" required value="${escapeHtml(p.dob)}"></div>
     </div>
     <div class="field-grid">
       <div class="field"><label>Gender</label><select data-p="${i}" data-field="gender" required><option value="">Select</option>${GENDERS.map((g) => `<option ${p.gender === g ? 'selected' : ''}>${g}</option>`).join('')}</select></div>
-      <div class="field"><label>Citizenship</label><input type="text" data-p="${i}" data-field="citizenship" required placeholder="e.g. United States" value="${escapeHtml(p.citizenship)}"></div>
+      <div class="field"><label>Citizenship</label><select data-p="${i}" data-field="citizenship" required>${WSJForm.countryOptions(p.citizenship)}</select></div>
     </div>`).join('');
-  $('dPassengerBlocks').querySelectorAll('[data-p]').forEach((el) => el.addEventListener('input', () => { dPassengers[+el.dataset.p][el.dataset.field] = el.value; }));
+  $('dPassengerBlocks').querySelectorAll('[data-p]').forEach((el) => el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', () => { dPassengers[+el.dataset.p][el.dataset.field] = el.value; }));
 }
 $('dTravelers').addEventListener('input', renderDetailsCounts);
 $('dKids').addEventListener('input', renderDetailsCounts);
@@ -309,6 +314,7 @@ $('detailsForm').addEventListener('submit', async (e) => {
   e.preventDefault();
   const errorEl = $('detailsError');
   errorEl.hidden = true;
+  // js/form-check.js has already checked the formats (capture listener) and marked the fields
   for (const el of $('detailsForm').querySelectorAll('input, select')) {
     if (!el.checkValidity()) { el.reportValidity(); return; }
   }
@@ -354,20 +360,20 @@ function renderPassengers(){
         <button type="button" class="remove-passenger" data-remove="${i}">Remove</button>
       </div>
       <div class="passenger-field-grid">
-        <div class="field"><label>Full Name</label><input type="text" data-field="name" data-idx="${i}" value="${escapeHtml(p.name)}"></div>
-        <div class="field"><label>DOB</label><input type="date" data-field="dob" data-idx="${i}" value="${p.dob || ''}"></div>
+        <div class="field"><label>Full Name</label><input type="text" data-field="name" data-idx="${i}" data-check="fullname" value="${escapeHtml(p.name)}"></div>
+        <div class="field"><label>DOB</label><input type="date" data-field="dob" data-idx="${i}" data-check="dob" value="${p.dob || ''}"></div>
         <div class="field"><label>Gender</label>
           <select data-field="gender" data-idx="${i}">
             <option value="">Select</option>
             ${['Female','Male','Prefer not to say','Other'].map((g) => `<option ${p.gender === g ? 'selected' : ''}>${g}</option>`).join('')}
           </select>
         </div>
-        <div class="field"><label>Citizenship</label><input type="text" data-field="citizenship" data-idx="${i}" value="${escapeHtml(p.citizenship)}"></div>
+        <div class="field"><label>Citizenship</label><select data-field="citizenship" data-idx="${i}">${WSJForm.countryOptions(p.citizenship)}</select></div>
       </div>
     </div>`).join('');
 
   wrap.querySelectorAll('input, select').forEach((el) => {
-    el.addEventListener('input', (e) => {
+    el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', (e) => {
       const idx = parseInt(e.target.dataset.idx, 10);
       passengers[idx][e.target.dataset.field] = e.target.value;
     });
@@ -400,6 +406,10 @@ document.getElementById('bookingForm').addEventListener('submit', async (e) => {
     errorEl.textContent = 'First name, last name, and email are required.';
     errorEl.hidden = false;
     return;
+  }
+  // formats (js/form-check.js): names, email, phone, dates of birth
+  for (const el of document.getElementById('bookingForm').querySelectorAll('input, select')) {
+    if (!el.checkValidity()) { el.reportValidity(); return; }
   }
 
   const submitBtn = document.getElementById('submitBtn');

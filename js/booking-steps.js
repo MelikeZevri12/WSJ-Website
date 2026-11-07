@@ -9,8 +9,10 @@
 // team's reply email then carries the family's own link to add them later (it updates the same request).
 // Each page keeps its own submit; it reads BookingSteps' data() (requestType, travelers, kidAges, passengers).
 (function () {
-  const MAX_TRAVELERS = 30;
+  const MAX_TRAVELERS = (window.WSJForm && WSJForm.MAX_TRAVELERS) || 15;
   const GENDERS = ['Female', 'Male', 'Prefer not to say', 'Other'];
+  // Citizenship lists + name/date/phone/email checks: js/form-check.js (loaded before this file)
+  const countries = (v) => (window.WSJForm ? WSJForm.countryOptions(v) : '<option value="">Select</option>');
   const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
   function create(opts) {
@@ -34,9 +36,9 @@
         <div class="bs-step-title">Who's traveling?</div>
         <div class="bs-counts">
           <div class="field"><label for="bsTravelers">How many people are traveling, including you?</label>
-            <input type="number" id="bsTravelers" inputmode="numeric" min="1" max="${MAX_TRAVELERS}" step="1" required placeholder="e.g. 4"></div>
+            <input type="number" id="bsTravelers" inputmode="numeric" min="1" step="1" required placeholder="e.g. 4" data-check="travelers" data-max="${MAX_TRAVELERS}"></div>
           <div class="field"><label for="bsKids">How many of them are kids (under 18)?</label>
-            <input type="number" id="bsKids" inputmode="numeric" min="0" step="1" required placeholder="e.g. 2"></div>
+            <input type="number" id="bsKids" inputmode="numeric" min="0" step="1" required placeholder="e.g. 2" data-check="kids" data-travelers="bsTravelers"></div>
         </div>
         <div class="field" id="bsKidAgesField" hidden><label>Kids' ages</label><div class="bs-kid-ages" id="bsKidAges"></div></div>
         <div class="field-hint" id="bsWhoHint" hidden>More than one cabin is usually needed for 5 or more people; we'll quote that for you.</div>
@@ -61,6 +63,10 @@
     const count = (id) => { const n = parseInt($(id).value, 10); return Number.isFinite(n) && n >= 0 ? n : 0; };
     const travelers = () => Math.min(count('bsTravelers'), MAX_TRAVELERS);
     const kids = () => Math.min(count('bsKids'), Math.max(travelers() - 1, 0));
+    // Kid age boxes and passenger steps are only drawn once both numbers make sense (1 to 15 travelers,
+    // fewer kids than travelers), so typing "300" doesn't draw 299 steps. What's typed in them is kept.
+    const countsOk = () => (window.WSJForm ? WSJForm.countsOk($('bsTravelers'), $('bsKids'))
+      : travelers() >= 1 && count('bsKids') <= travelers() - 1);
     // Steps that don't apply right now are skipped: the "now or later?" question unless it's a pricing
     // question, and the passenger details when they chose "later".
     const skipped = (el) => (el.dataset.step === 'details-now' && mode() !== 'pricing') ||
@@ -70,19 +76,18 @@
     // ---- Who's traveling ----
     function onCountsChange() {
       const n = travelers();
-      // at least one adult travels
-      $('bsKids').max = String(Math.max(n - 1, 0));
-      $('bsWhoHint').hidden = n < 5;
+      $('bsWhoHint').hidden = !countsOk() || n < 5;
       renderKidAges();
       renderPassengerSteps();
       updateProgress();
     }
     function renderKidAges() {
+      if (!countsOk()) { $('bsKidAgesField').hidden = true; $('bsKidAges').innerHTML = ''; return; }
       const k = kids();
       kidAges = kidAges.slice(0, k);
       $('bsKidAgesField').hidden = !k;
       $('bsKidAges').innerHTML = Array.from({ length: k }, (_, i) => `
-        <label class="bs-kid-age"><span>Kid ${i + 1}</span><input type="number" inputmode="numeric" min="0" max="17" step="1" required placeholder="Age" data-kid="${i}" value="${esc(kidAges[i] ?? '')}"></label>`).join('');
+        <label class="bs-kid-age"><span>Kid ${i + 1}</span><input type="number" inputmode="numeric" min="0" step="1" required placeholder="Age" data-check="kidage" data-kid="${i}" value="${esc(kidAges[i] ?? '')}"></label>`).join('');
       $('bsKidAges').querySelectorAll('input').forEach((el) => el.addEventListener('input', () => { kidAges[+el.dataset.kid] = el.value; }));
     }
     $('bsTravelers').addEventListener('input', onCountsChange);
@@ -90,6 +95,7 @@
 
     // ---- one step per other passenger ----
     function renderPassengerSteps() {
+      if (!countsOk()) { $('bsPassengerSteps').innerHTML = ''; applyMode(); return; }
       const n = Math.max(travelers(), 1);
       while (passengers.length < n - 1) passengers.push({ name: '', dob: '', gender: '', citizenship: '' });
       passengers = passengers.slice(0, n - 1);
@@ -97,13 +103,13 @@
         <div class="form-step" data-step="passenger" style="display:none;">
           <div class="bs-step-title">Passenger ${i + 2} of ${n}</div>
           <div class="passenger-field-grid">
-            <div class="field"><label>Full Name</label><input type="text" data-p="${i}" data-field="name" data-book-required value="${esc(p.name)}"></div>
-            <div class="field"><label>Date of Birth</label><input type="date" data-p="${i}" data-field="dob" data-book-required value="${esc(p.dob)}"></div>
+            <div class="field"><label>Full Name</label><input type="text" data-p="${i}" data-field="name" data-check="fullname" data-book-required value="${esc(p.name)}"></div>
+            <div class="field"><label>Date of Birth</label><input type="date" data-p="${i}" data-field="dob" data-check="dob" data-book-required value="${esc(p.dob)}"></div>
             <div class="field"><label>Gender</label><select data-p="${i}" data-field="gender" data-book-required><option value="">Select</option>${GENDERS.map((g) => `<option ${p.gender === g ? 'selected' : ''}>${g}</option>`).join('')}</select></div>
-            <div class="field"><label>Citizenship</label><input type="text" data-p="${i}" data-field="citizenship" data-book-required placeholder="e.g. United States" value="${esc(p.citizenship)}"></div>
+            <div class="field"><label>Citizenship</label><select data-p="${i}" data-field="citizenship" data-book-required>${countries(p.citizenship)}</select></div>
           </div>
         </div>`).join('');
-      $('bsPassengerSteps').querySelectorAll('[data-p]').forEach((el) => el.addEventListener('input', () => { passengers[+el.dataset.p][el.dataset.field] = el.value; }));
+      $('bsPassengerSteps').querySelectorAll('[data-p]').forEach((el) => el.addEventListener(el.tagName === 'SELECT' ? 'change' : 'input', () => { passengers[+el.dataset.p][el.dataset.field] = el.value; }));
       applyMode();
     }
 
@@ -133,9 +139,12 @@
       updateProgress();
       if (last && opts.onReview) opts.onReview();
     }
-    // Only the step on screen is checked - the browser's own message points at the missing field.
+    // Only the step on screen is checked - the browser's own message points at the missing field
+    // (js/form-check.js adds the format checks and a message under each wrong field).
     function stepIsValid() {
-      for (const el of steps()[current].querySelectorAll('input, select, textarea')) {
+      const step = steps()[current];
+      if (window.WSJForm && !WSJForm.checkAll(step)) WSJForm.touchAll(step);
+      for (const el of step.querySelectorAll('input, select, textarea')) {
         if (!el.disabled && !el.checkValidity()) { el.reportValidity(); return false; }
       }
       return true;
