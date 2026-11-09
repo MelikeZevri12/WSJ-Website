@@ -104,3 +104,18 @@
   .global-nav > .wrap > .gn-logo .gn-script, .global-nav > .gn-wrap > .gn-logo .gn-script,
   .global-nav > .wrap > .gn-logo .gn-sans, .global-nav > .gn-wrap > .gn-logo .gn-sans{font-size:23px;}
 }
+
+/* ---------- Pictures while they load (site-wide: this is the one stylesheet every page loads) ----------
+   Safari and Firefox print a picture's alt text in its place until it arrives; transparent text hides it
+   (screen readers still read it). js/img-loading.js adds .wsj-img-loading (soft shimmer) to pictures that
+   are still on their way, then fades them in; .wsj-img-failed keeps a calm empty box if one never loads. */
+img{color:transparent;}
+img.wsj-img-loading, img.wsj-img-failed{background-color:#ebe5d8;}
+img.wsj-img-loading{
+  background-image:linear-gradient(100deg, rgba(255,255,255,0) 30%, rgba(255,255,255,.55) 50%, rgba(255,255,255,0) 70%);
+  background-size:200% 100%;background-repeat:no-repeat;animation:wsjImgShimmer 1.4s linear infinite;
+}
+img.wsj-img-in{animation:wsjImgFade .35s ease-out;}
+@keyframes wsjImgShimmer{from{background-position:150% 0;}to{background-position:-50% 0;}}
+@keyframes wsjImgFade{from{opacity:0;}to{opacity:1;}}
+@media (prefers-reduced-motion:reduce){ img.wsj-img-loading, img.wsj-img-in{animation:none;} }
