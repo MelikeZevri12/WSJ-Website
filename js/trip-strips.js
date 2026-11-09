@@ -1,5 +1,6 @@
 // Home + About trip strips, filled from js/trips.js:
-//   #soonGrid   - "Departing Soon": the next SOON_LIMIT departures (cruises + land trips), not sold out, sideways slider
+//   #soonGrid   - "Departing Soon": the next SOON_LIMIT departures (cruises + land trips), not sold out, sideways slider.
+//                 While a sale is on (js/black-friday.js, home page only) it shows just the sale trips instead.
 //   #cruise-grid - every upcoming cruise and 3+ cruise journey (not sold out), sideways slider
 //   #land-grid   - every upcoming land trip, sideways slider
 // Each slider's year buttons are built from the years that actually have trips;
@@ -20,13 +21,15 @@
   // Two stacked zones: the photo on top (fully visible), the dates, name,
   // price and Learn More on a navy band underneath.
   function cardHTML(c){
-    return `<a href="${esc(c.href)}" target="_blank" rel="noopener" class="spotlight-card style-photo trip-card${c.photo ? " has-photo" : ""}">` +
+    return `<a href="${esc(c.href)}" target="_blank" rel="noopener" class="spotlight-card style-photo trip-card${c.photo ? " has-photo" : ""}${c.promoCode ? " has-bf" : ""}">` +
       `<div class="sp-photo"${c.photo ? ` style="background-image:url('${esc(c.photo)}')"` : ""}></div>` +
       (c.photo ? "" : `<span class="sp-caption">Photo: ${esc(c.photoLabel)}</span>`) +
       (c.tag ? `<span class="cc-tag">${esc(c.tag)}</span>` : "") +
+      (c.promoCode ? `<span class="bf-ribbon">${esc(c.promoLabel)}</span>` : "") +
       `<div class="sp-overlay"><div class="spotlight-dates">${CALENDAR}<span>${esc(c.dates)}</span></div>` +
       `<div class="spotlight-title">${esc(shortTitle(c.title))}</div>` +
       (c.shipLine ? `<div class="cc-ship">${esc(c.shipLine)}</div>` : "") +
+      (c.promoCode ? `<div class="cc-bf-code">Code <strong>${esc(c.promoCode)}</strong></div>` : "") +
       `<div class="cc-foot">${priceHTML(c)}<span class="cc-more">Learn More</span></div></div></a>`;
   }
 
@@ -82,10 +85,33 @@
     draw();
   }
 
+  // Sale cards (js/black-friday.js): every sale trip + year still upcoming, linked to that year
+  function promoCards(W){
+    const P = window.WSJPromo;
+    if (!P || !P.on) return [];
+    return Object.keys(P.trips).flatMap((slug) => P.trips[slug].years.map((y) => {
+      const c = W.landTrips(y).find((t) => t.slug === slug);
+      return c && { ...c, tag: null, promoCode: P.trips[slug].code, promoLabel: P.label };
+    })).filter(Boolean);
+  }
+  let promoShown = false;
+  function setupPromo(W){
+    const soon = document.getElementById("soonGrid");
+    const cards = soon ? promoCards(W) : [];
+    if (!cards.length) return;
+    promoShown = true;
+    const strip = soon.closest(".spotlight-strip");
+    strip.classList.add("is-bf");
+    strip.querySelector(".eyebrow").textContent = window.WSJPromo.label;
+    strip.querySelector("h3").textContent = "Black Friday Deals Are Here";
+    setupSlider("soonGrid", [], () => cards.slice(), soon.parentElement.querySelector(".spotlight-actions"));
+  }
+
   async function init(){
     const W = window.WSJ;
     // Land trips need no network - draw them straight away
     setupSlider("land-grid", W.landYears(), (y) => W.landTrips(y));
+    setupPromo(W);
 
     const soon = document.getElementById("soonGrid");
     const cruiseGrid = document.getElementById("cruise-grid");
@@ -106,7 +132,7 @@
   }
   function setupSoon(all){
     const soon = document.getElementById("soonGrid");
-    if (soon) setupSlider("soonGrid", [], () => all().sort(bySoonest).slice(0, SOON_LIMIT), soon.parentElement.querySelector(".spotlight-actions"));
+    if (soon && !promoShown) setupSlider("soonGrid", [], () => all().sort(bySoonest).slice(0, SOON_LIMIT), soon.parentElement.querySelector(".spotlight-actions"));
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init); else init();
 })();

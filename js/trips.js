@@ -59,7 +59,7 @@
     if(!key || !upcoming.includes(key)) return null;
     const v = t.years[key];
     return {
-      kind: "land",
+      kind: "land", slug: t.slug,
       href: landTripPath(t) + (year ? `?${t.param}=${year}` : ""),
       title: t.title, dates: v.dates, sortDate: v.sortDate, nights: t.nights, regions: t.regions,
       year: Number(key),
