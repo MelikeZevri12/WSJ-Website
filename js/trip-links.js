@@ -61,14 +61,14 @@
   var label, href;
   if (from) {
     var fu = new URL(from), fp = clean(fu.pathname);
-    var names = { '/': 'Home', '/home': 'Home', '/cruises': 'Group Cruises', '/land-trips': 'Land Trips', '/about': 'About Us',
+    var names = { '/': 'Home', '/home': 'Home', '/cruises': 'Community-Led Cruises', '/land-trips': 'Guided Land Trips', '/about': 'About Us',
       '/contact': 'Contact', '/stay-updated': 'Stay Updated', '/testimonials': 'Testimonials', '/faq': 'FAQ',
       // one page, two views: the # says which
-      '/worldschooling-trips': fu.hash === '#landtrips' ? 'Land Trips' : fu.hash === '#cruises' ? 'Group Cruises' : 'Worldschooling Trips' };
+      '/worldschooling-trips': fu.hash === '#landtrips' ? 'Guided Land Trips' : fu.hash === '#cruises' ? 'Community-Led Cruises' : 'Worldschooling Trips' };
     label = 'Back to ' + (names[fp] || (tripKind(fp) ? 'Previous Trip' : 'Previous Page'));
     href = from;
   } else {
-    label = kind === 'land' ? 'See All Land Trips' : 'See All Group Cruises';
+    label = kind === 'land' ? 'See All Guided Land Trips' : 'See All Community-Led Cruises';
     href = kind === 'land' ? '/worldschooling-trips#landtrips' : '/worldschooling-trips#cruises';
   }
 

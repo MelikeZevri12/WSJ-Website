@@ -7,7 +7,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<title>Community Cruises | Worldschooling Journeys</title>
+<title>Community-Led Cruises | Worldschooling Journeys</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/nav.css?v=20261013">
@@ -80,15 +80,15 @@
   <div class="wrap">
     <div class="eyebrow" id="heroEyebrow">Worldschooling Trips · For Homeschool Families</div>
     <h1 id="heroTitle">Worldschooling Trips for Homeschool Families</h1>
-    <p class="lede" id="heroLede">Community cruises and guided land trips for homeschooling families, all in one place, soonest first.</p>
+    <p class="lede" id="heroLede">Community-led cruises and guided land trips for homeschooling families, all in one place, soonest first.</p>
     <div class="hero-cta dep-switch">
       <div class="hp-field" id="viewField"><span class="hp-label">Showing</span>
         <span class="cs" id="viewPicker">
           <button type="button" class="cs-btn" id="viewBtn" aria-haspopup="listbox" aria-expanded="false" aria-label="Choose the type of trip">All Trips</button>
           <ul class="cs-list" id="viewList" role="listbox" aria-label="Type of trip">
             <li class="cs-opt" role="option" tabindex="-1" data-v="all" aria-selected="true">All Trips<span class="o-status" id="viewCountAll"></span></li>
-            <li class="cs-opt" role="option" tabindex="-1" data-v="cruises" aria-selected="false">Group Cruises<span class="o-status" id="viewCountCruises"></span></li>
-            <li class="cs-opt" role="option" tabindex="-1" data-v="landtrips" aria-selected="false">Land Trips<span class="o-status" id="viewCountLand"></span></li>
+            <li class="cs-opt" role="option" tabindex="-1" data-v="cruises" aria-selected="false">Community-Led Cruises<span class="o-status" id="viewCountCruises"></span></li>
+            <li class="cs-opt" role="option" tabindex="-1" data-v="landtrips" aria-selected="false">Guided Land Trips<span class="o-status" id="viewCountLand"></span></li>
           </ul>
         </span>
       </div>
@@ -102,8 +102,8 @@
 <div class="facts-bar">
   <div class="wrap facts-grid">
     <div class="fact"><div class="label">Trips</div><div class="value price" id="all-factTrips">…</div></div>
-    <div class="fact"><div class="label">Community Cruises</div><div class="value" id="all-factCruises">…</div></div>
-    <div class="fact"><div class="label">Land Trips</div><div class="value" id="all-factLand">…</div></div>
+    <div class="fact"><div class="label">Community-Led Cruises</div><div class="value" id="all-factCruises">…</div></div>
+    <div class="fact"><div class="label">Guided Land Trips</div><div class="value" id="all-factLand">…</div></div>
     <div class="fact"><div class="label">Next Departure</div><div class="value" id="all-factNext">…</div></div>
   </div>
 </div>
@@ -353,25 +353,25 @@ window.TripsPage = (function(){
       label: "All Trips",
       eyebrow: "Worldschooling Trips · For Homeschool Families",
       title: "Worldschooling Trips for Homeschool Families",
-      lede: "Community cruises and guided land trips for homeschooling families, all in one place, soonest first.",
+      lede: "Community-led cruises and guided land trips for homeschooling families, all in one place, soonest first.",
       more: ["Learn more about how our trips are run here", "/about-our-trips"],
       docTitle: "Worldschooling Trips | Worldschooling Journeys",
     },
     cruises: {
-      label: "Group Cruises", // the dropdown's name for it (same as the navbar)
-      eyebrow: "Worldschooling Group Cruise · For Homeschool Families",
-      title: "Worldschooling Community Cruises",
+      label: "Community-Led Cruises", // the dropdown's name for it (same as the navbar)
+      eyebrow: "Community-Led Worldschooling Cruises · For Homeschool Families",
+      title: "Community-Led Worldschooling Cruises",
       lede: "These trips are a way for homeschooling families to see the world without a huge cost or commitment, alongside a group of fun, inclusive, like-minded families.",
       more: ["Learn more about how our cruises are run here", "/about-our-trips#cruises"],
-      docTitle: "Community Cruises | Worldschooling Journeys",
+      docTitle: "Community-Led Cruises | Worldschooling Journeys",
     },
     landtrips: {
-      label: "Land Trips",
-      eyebrow: "Worldschooling Land Trips · For Homeschool Families",
+      label: "Guided Land Trips",
+      eyebrow: "Guided Worldschooling Land Trips · For Homeschool Families",
       title: "Guided Land Trips for Worldschooling Families",
       lede: "Land trips are guided, immersive group trips with a busy schedule of activities, designed for you to truly feel the destination alongside other worldschooling families.",
       more: ["Learn more about how our land trips are run here", "/about-our-trips#land-trips"],
-      docTitle: "Land Trips | Worldschooling Journeys",
+      docTitle: "Guided Land Trips | Worldschooling Journeys",
     },
   };
   const el = (id) => document.getElementById(id);
