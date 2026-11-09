@@ -28,7 +28,7 @@ async function start(seed, extra = {}) {
     const res = await fetch(base + p, { method, headers: { 'Content-Type': 'application/json', ...(auth ? { Authorization: `Bearer ${auth}` } : {}) }, body: body ? JSON.stringify(body) : undefined });
     return { status: res.status, body: await res.json() };
   };
-  return { dir, call, close: () => new Promise((r) => server.close(r)) };
+  return { dir, call, base, close: () => new Promise((r) => server.close(r)) };
 }
 
 const kylie = { name: ' Kylie ', fullText: ' Last year our family went on a cruise. ', shortVersion: '', category: 'cruise' };
@@ -246,6 +246,32 @@ test('sends each family their code email once, tracks it per trip, staff only', 
   } finally { await s.close(); }
 });
 
+test('unsubscribe: the link needs its signature, GET only asks, POST unsubscribes, then never emailed again', async () => {
+  const sent = [];
+  const s = await start(null, { mail: { host: 'x' }, mailer: async (cfg, msg) => { sent.push(msg); } });
+  try {
+    await s.call('POST', '/signups', { campaign: 'black-friday-2026', name: 'A', email: 'a@example.com', trips: [{ slug: 'austria-fall', title: 'x' }] }, null);
+    const id = (await s.call('GET', '/signups')).body[0].id;
+    const { unsubUrl } = require('./server');
+    const link = unsubUrl(SECRET, id).replace('https://worldschoolingjourneys.com/site-api', '');
+    const raw = (m, p) => fetch(s.base + p, { method: m }).then(async (r) => ({ status: r.status, text: await r.text() }));
+    // the email carries the link + one-click headers
+    const pv = await s.call('GET', `/bf-email/preview/${id}`);
+    assert.ok(pv.body.html.includes(unsubUrl(SECRET, id).replace(/&/g, '&amp;')));
+    assert.equal((await raw('GET', `/unsubscribe?id=${id}&t=wrongwrongwrongwrongwron`)).status, 400);
+    const ask = await raw('GET', link);
+    assert.equal(ask.status, 200); assert.match(ask.text, /Yes, unsubscribe me/);
+    assert.deepEqual((await s.call('GET', '/signups')).body[0].bfDue, ['austria-fall']);   // just opening the link changes nothing
+    const done = await raw('POST', link);
+    assert.equal(done.status, 200); assert.match(done.text, /unsubscribed/);
+    const row = (await s.call('GET', '/signups')).body[0];
+    assert.ok(row.unsubscribedAt); assert.deepEqual(row.bfDue, []);
+    assert.equal((await s.call('POST', `/bf-email/send/${id}`)).status, 409);
+    assert.equal(sent.length, 0);
+    assert.match((await raw('GET', '/unsubscribe?test=1')).text, /test email/);
+  } finally { await s.close(); }
+});
+
 test('a failed send is not marked, and missing mail settings give a clear message', async () => {
   const mailer = async () => { throw new Error('Mail server said: 550 no'); };
   const s = await start(null, { mail: { host: 'x' }, mailer });
@@ -287,6 +313,10 @@ test('smtp.js talks to a mail server and sends a proper message', async () => {
     assert.match(body, /Reply-To: <booking@example.com>/);
     assert.match(body, /Subject: =\?UTF-8\?B\?/);
     assert.match(body, /multipart\/alternative/);
+    await sendMail(cfg, { to: 'fam@example.com', subject: 's', text: 't', html: 'h', unsubscribe: 'https://x.test/u?id=1' }, { insecure: true });
+    const body2 = seen.filter((x) => Array.isArray(x))[1][1];
+    assert.match(body2, /List-Unsubscribe: <https:\/\/x.test\/u\?id=1>/);
+    assert.match(body2, /List-Unsubscribe-Post: List-Unsubscribe=One-Click/);
     await assert.rejects(sendMail(cfg, { to: 'not an email', subject: 's', text: 't', html: 'h' }, { insecure: true }), /doesn.t look right/);
     await assert.rejects(sendMail(null, { to: 'a@b.co' }), /isn.t set up/);
   } finally { fake.close(); }

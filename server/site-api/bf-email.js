@@ -87,8 +87,10 @@ function tripCard(t) {
   </td></tr>`;
 }
 
-// signup: { name, email, trips: [{slug}] }  ->  { subject, html, text } (null when none of their trips has a code yet)
-function renderBlackFridayEmail(signup, { test = false } = {}) {
+// signup: { name, email, trips: [{slug}] }  ->  { subject, html, text, unsubscribe } (null when none of their trips has a code yet)
+// unsubscribeUrl: this family's own one-click unsubscribe link (made by server.js); without it the footer points to the contact page
+function renderBlackFridayEmail(signup, { test = false, unsubscribeUrl = '' } = {}) {
+  const optOut = unsubscribeUrl || `${SITE}/contact`;
   const slugs = saleTripsFor(signup.trips);
   if (!slugs.length) return null;
   const trips = slugs.map((s) => SALE_TRIPS[s]);
@@ -129,7 +131,7 @@ function renderBlackFridayEmail(signup, { test = false } = {}) {
     </td></tr>
     <tr><td style="background:${C.dark};padding:20px 28px;font-family:${SANS};font-size:12.5px;line-height:1.6;color:#b8c0c8;" align="center">
       You’re getting this email because you joined our Black Friday waitlist on <a href="${SITE}" target="_blank" style="color:#ffffff;">worldschoolingjourneys.com</a>.
-      Rather not hear about this sale? <a href="${SITE}/contact" target="_blank" style="color:#ffffff;">Let us know here</a>.<br>
+      Rather not hear about this sale? <a href="${esc(optOut)}" target="_blank" style="color:#ffffff;">Unsubscribe</a>.<br>
       Worldschooling Journeys, an Every Avenue Travel company · Florida Seller of Travel Reg. No. ST45213
     </td></tr>
   </table>
@@ -145,10 +147,10 @@ function renderBlackFridayEmail(signup, { test = false } = {}) {
       `Learn more: ${SITE + t.page}`, `Book now: ${t.book}`, ``,
     ]),
     `Questions? Get in touch with us at ${SITE}/contact (this email address can’t receive replies).`, ``, `See you out there,`, `The Worldschooling Journeys Team`, ``,
-    `You’re getting this email because you joined our Black Friday waitlist on worldschoolingjourneys.com. Rather not hear about this sale? Let us know at ${SITE}/contact`,
+    `You’re getting this email because you joined our Black Friday waitlist on worldschoolingjourneys.com. Rather not hear about this sale? Unsubscribe: ${optOut}`,
   ].join('\n');
 
-  return { subject, html, text };
+  return { subject, html, text, unsubscribe: unsubscribeUrl || '' };
 }
 
 module.exports = { renderBlackFridayEmail, saleTripsFor, SALE_TRIPS };

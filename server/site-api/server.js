@@ -29,9 +29,12 @@
 //   GET    /site-api/bf-email/preview/:signupId       staff login: { subject, html } of that family's email
 //   POST   /site-api/bf-email/test   { to, signupId? } staff login: a [Test] copy to any address (nothing is marked)
 //   POST   /site-api/bf-email/send/:signupId          staff login: the real email for the trips not emailed yet, then marked
+//   GET    /site-api/unsubscribe?id=&t=               public: "Unsubscribe me" page (a button, so link scanners can't unsubscribe anyone)
+//   POST   /site-api/unsubscribe?id=&t=               public: unsubscribes (the button, or a mail app's one-click Unsubscribe)
 //
 // A sign-up (data/signups.json): { id, campaign, name, email, trips: [{ slug, title }], createdAt, updatedAt,
-//   emailed?: [{ slug, code, at }] }  (emailed = the Black Friday code emails sent to them, one entry per trip)
+//   emailed?: [{ slug, code, at }], unsubscribedAt? }  (emailed = the Black Friday code emails sent to them, one entry per trip;
+//   unsubscribedAt = they clicked Unsubscribe in one of those emails: never emailed again)
 // The Black Friday email itself: bf-email.js (design + which trips have a code). Sending: smtp.js.
 //
 // A testimonial: { id, name, fullText, shortVersion, category, featured, carousel, sortOrder, createdAt, updatedAt }
@@ -161,9 +164,23 @@ function validateSignup(body) {
 const BF_CAMPAIGN = 'black-friday-2026';
 const SEND_GAP_MS = 2000;   // at least this long between two real emails, so the mail server isn't flooded
 function bfDue(row) {
-  if (row.campaign !== BF_CAMPAIGN) return [];
+  if (row.campaign !== BF_CAMPAIGN || row.unsubscribedAt) return [];
   const done = new Set((row.emailed || []).map((e) => e.slug));
   return saleTripsFor(row.trips).filter((slug) => !done.has(slug));
+}
+
+// each sign-up's unsubscribe link carries a signature, so nobody can unsubscribe someone else by guessing
+const SITE_URL = 'https://worldschoolingjourneys.com';
+const unsubToken = (secret, id) => crypto.createHmac('sha256', String(secret)).update('unsub:' + id).digest('base64url').slice(0, 24);
+const unsubUrl = (secret, id) => `${SITE_URL}/site-api/unsubscribe?id=${encodeURIComponent(id)}&t=${unsubToken(secret, id)}`;
+function unsubPage(title, body, form) {
+  const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  return `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>${esc(title)}</title></head>
+<body style="margin:0;background:#f4f1e9;font-family:'Segoe UI',Arial,sans-serif;color:#152230;">
+<div style="max-width:520px;margin:60px auto;background:#fffdf7;border:1px solid #e2ddd0;border-radius:14px;padding:32px 28px;text-align:center;">
+<div style="font-family:Georgia,serif;font-size:22px;font-weight:700;margin-bottom:12px;">${esc(title)}</div>
+<p style="font-size:16px;line-height:1.6;margin:0 0 20px;">${esc(body)}</p>${form || ''}
+<p style="font-size:14px;margin:22px 0 0;"><a href="${SITE_URL}" style="color:#708F53;font-weight:700;">worldschoolingjourneys.com</a></p></div></body></html>`;
 }
 
 function createServer({ dataDir, seedDir, secret, mail = mailConfig(), mailer = sendMail }) {
@@ -224,6 +241,24 @@ function createServer({ dataDir, seedDir, secret, mail = mailConfig(), mailer = 
     const p = url.pathname.replace(/\/+$/, '');
     if (p === '/site-api/health' && req.method === 'GET') return send(res, 200, { ok: true });
 
+    // unsubscribe link from the Black Friday emails (public; checked by the link's signature)
+    if (p === '/site-api/unsubscribe' && (req.method === 'GET' || req.method === 'POST')) {
+      const html = (status, page) => { res.writeHead(status, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff' }); res.end(page); };
+      if (url.searchParams.get('test')) return html(200, unsubPage('This was a test email', 'Nothing was changed. In the real emails this link unsubscribes the family.'));
+      const id = String(url.searchParams.get('id') || ''), t = String(url.searchParams.get('t') || '');
+      const good = /^[A-Za-z0-9-]{1,64}$/.test(id) && t.length === 24 && crypto.timingSafeEqual(Buffer.from(t), Buffer.from(unsubToken(secret, id)));
+      if (!good) return html(400, unsubPage('Link not recognized', 'This unsubscribe link looks incomplete. Please use the link from the email, or contact us through our website.'));
+      if (req.method === 'GET') {
+        const row = (await signups.load()).find((r) => r.id === id);
+        if (row && row.unsubscribedAt) return html(200, unsubPage('You’re unsubscribed', 'You won’t get any more Black Friday emails from us.'));
+        return html(200, unsubPage('Unsubscribe?', 'Stop getting emails about our Black Friday sale?',
+          `<form method="post" action="/site-api/unsubscribe?id=${encodeURIComponent(id)}&amp;t=${t}"><button type="submit" style="font:inherit;font-size:16px;font-weight:700;background:#708F53;color:#fff;border:0;border-radius:6px;padding:12px 26px;cursor:pointer;">Yes, unsubscribe me</button></form>`));
+      }
+      await new Promise((resolve) => { req.resume(); req.on('end', resolve); req.on('error', resolve); });   // the form / one-click body isn't needed
+      await signups.change((rows) => { const r = rows.find((x) => x.id === id); if (!r || r.unsubscribedAt) return null; r.unsubscribedAt = new Date().toISOString(); return r; });
+      return html(200, unsubPage('You’re unsubscribed', 'You won’t get any more Black Friday emails from us. Sorry to see you go!'));
+    }
+
     if (p === '/site-api/testimonials' && req.method === 'GET') {
       const category = url.searchParams.get('category');
       if (category && !CATEGORIES.includes(category)) return send(res, 400, { message: 'Unknown category.' });
@@ -281,7 +316,7 @@ function createServer({ dataDir, seedDir, secret, mail = mailConfig(), mailer = 
         const row = (await signups.load()).find((r) => r.id === preview[1]);
         if (!row) return send(res, 404, { message: 'Sign-up not found.' });
         const due = bfDue(row);
-        const msg = renderBlackFridayEmail({ name: row.name, trips: due.length ? due : row.trips });
+        const msg = renderBlackFridayEmail({ name: row.name, trips: due.length ? due : row.trips }, { unsubscribeUrl: unsubUrl(secret, row.id) });
         if (!msg) return send(res, 404, { message: 'None of their trips has a code yet.' });
         return send(res, 200, { subject: msg.subject, html: msg.html, due });
       }
@@ -289,9 +324,9 @@ function createServer({ dataDir, seedDir, secret, mail = mailConfig(), mailer = 
         const body = await readBody(req);
         const row = body.signupId && (await signups.load()).find((r) => r.id === body.signupId);
         // a real family's email if one is picked, otherwise every sale trip
-        const msg = renderBlackFridayEmail({ name: row ? row.name : 'Friend', trips: row ? row.trips : Object.keys(SALE_TRIPS) }, { test: true });
+        const msg = renderBlackFridayEmail({ name: row ? row.name : 'Friend', trips: row ? row.trips : Object.keys(SALE_TRIPS) }, { test: true, unsubscribeUrl: `${SITE_URL}/site-api/unsubscribe?test=1` });
         if (!msg) return send(res, 400, { message: 'None of their trips has a code yet.' });
-        await paced(() => mailer(mail, { to: clip(body.to, 200), subject: msg.subject, text: msg.text, html: msg.html }));
+        await paced(() => mailer(mail, { to: clip(body.to, 200), subject: msg.subject, text: msg.text, html: msg.html, unsubscribe: msg.unsubscribe }));
         return send(res, 200, { ok: true, subject: msg.subject });
       }
       const real = p.match(/^\/site-api\/bf-email\/send\/([A-Za-z0-9-]{1,64})$/);
@@ -304,8 +339,8 @@ function createServer({ dataDir, seedDir, secret, mail = mailConfig(), mailer = 
           if (!row) return send(res, 404, { message: 'Sign-up not found.' });
           const due = bfDue(row);
           if (!due.length) return send(res, 409, { message: 'Nothing to send: already emailed, or none of their trips has a code yet.' });
-          const msg = renderBlackFridayEmail({ name: row.name, trips: due });
-          await paced(() => mailer(mail, { to: row.email, subject: msg.subject, text: msg.text, html: msg.html }));
+          const msg = renderBlackFridayEmail({ name: row.name, trips: due }, { unsubscribeUrl: unsubUrl(secret, row.id) });
+          await paced(() => mailer(mail, { to: row.email, subject: msg.subject, text: msg.text, html: msg.html, unsubscribe: msg.unsubscribe }));
           const at = new Date().toISOString();
           const saved = await signups.change((rows) => {
             const r = rows.find((x) => x.id === id);
@@ -359,7 +394,7 @@ function createServer({ dataDir, seedDir, secret, mail = mailConfig(), mailer = 
   });
 }
 
-module.exports = { createServer, verifyToken, validateTestimonial, validateSignup, bfDue, CATEGORIES, CAMPAIGNS };
+module.exports = { createServer, verifyToken, validateTestimonial, validateSignup, bfDue, unsubUrl, CATEGORIES, CAMPAIGNS };
 
 if (require.main === module) {
   const port = Number(process.env.SITE_API_PORT || 3100);

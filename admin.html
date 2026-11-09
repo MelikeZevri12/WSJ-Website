@@ -722,6 +722,7 @@
           <option value="ready">Ready for the code email</option>
           <option value="sent">Code email sent</option>
           <option value="wait">No code yet for their trips</option>
+          <option value="unsub">Unsubscribed</option>
         </select>
       </div>
       <div class="admin-field" style="flex:1;max-width:360px;margin-bottom:0;">
@@ -3864,7 +3865,7 @@ async function loadBlackFriday() {
   renderBlackFriday();
 }
 // Code email status: "ready" = a trip with a live code they haven't been emailed about (bfDue, worked out by the server)
-const bfStatus = (r) => ((r.bfDue || []).length ? 'ready' : (r.emailed || []).length ? 'sent' : 'wait');
+const bfStatus = (r) => (r.unsubscribedAt ? 'unsub' : (r.bfDue || []).length ? 'ready' : (r.emailed || []).length ? 'sent' : 'wait');
 function visibleBfRows() {
   const trip = $('bfTripFilter').value, q = $('bfSearchInput').value.trim().toLowerCase(), st = $('bfStatusFilter').value;
   return bfRows.filter((r) => (!trip || r.trips.some((t) => t.slug === trip)) && (!q || r.name.toLowerCase().includes(q) || r.email.includes(q))
@@ -3875,7 +3876,8 @@ function bfStatusHtml(r) {
   const fmt = (iso) => new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   const sent = (r.emailed || []).map((e) => `<span class="bf-pill bf-pill-sent" title="${escapeHtml(e.code)}">Sent ${fmt(e.at)}: ${escapeHtml(bfTripTitle(r, e.slug))}</span>`);
   const due = (r.bfDue || []).map((slug) => `<span class="bf-pill bf-pill-ready">Ready: ${escapeHtml(bfTripTitle(r, slug))}</span>`);
-  return sent.concat(due).join('') || '<span class="bf-pill bf-pill-wait">No code yet</span>';
+  const unsub = r.unsubscribedAt ? [`<span class="bf-pill bf-pill-wait" title="They clicked Unsubscribe in the email: never emailed again">Unsubscribed ${fmt(r.unsubscribedAt)}</span>`] : [];
+  return sent.concat(due, unsub).join('') || '<span class="bf-pill bf-pill-wait">No code yet</span>';
 }
 function renderBlackFriday() {
   const rows = visibleBfRows();
@@ -3953,7 +3955,7 @@ $('bfEmailBtn').addEventListener('click', async () => {
   } catch (err) { if (err.message !== 'Unauthorized') bfEmailError(`Couldn't reach the website server (${err.message}).`); }
   const ready = bfReady(), sent = bfRows.filter((r) => (r.emailed || []).length).length, wait = bfRows.filter((r) => bfStatus(r) === 'wait').length;
   $('bfEmailSummary').innerHTML = `<strong>${ready.length}</strong> of ${bfRows.length} ${bfRows.length === 1 ? 'family is' : 'families are'} ready for the code email. ` +
-    `${sent} already emailed, ${wait} only picked trips that don't have a code yet (they're left out).`;
+    `${sent} already emailed, ${wait} only picked trips that don't have a code yet (they're left out)` + (bfRows.some((r) => r.unsubscribedAt) ? `, ${bfRows.filter((r) => r.unsubscribedAt).length} unsubscribed.` : '.');
   $('bfPreviewSelect').innerHTML = ready.map((r) => `<option value="${escapeHtml(r.id)}">${escapeHtml(r.name)} (${escapeHtml(r.email)}): ${(r.bfDue || []).map((slug) => escapeHtml(bfTripTitle(r, slug))).join(', ')}</option>`).join('');
   bfUpdateSendButton();
   bfShowPreview();

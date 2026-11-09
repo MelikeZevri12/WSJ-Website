@@ -49,13 +49,15 @@ const wrap76 = (s) => s.replace(/.{1,76}/g, '$&\r\n');
 // =?UTF-8?B?...?= for headers with non-ASCII characters (€, ’, ā)
 const header = (s) => (/^[\x20-\x7e]*$/.test(s) ? s : `=?UTF-8?B?${b64(s)}?=`);
 
-function buildMessage({ from, fromName, to, replyTo, subject, text, html }) {
+// unsubscribe: a https link that unsubscribes with one click (RFC 8058); mail apps show it as their own "Unsubscribe" button
+function buildMessage({ from, fromName, to, replyTo, subject, text, html, unsubscribe }) {
   const boundary = 'wsj-' + crypto.randomBytes(12).toString('hex');
   const domain = from.split('@')[1] || 'localhost';
   return [
     `From: ${header(fromName)} <${from}>`,
     `To: <${to}>`,
     ...(replyTo ? [`Reply-To: <${replyTo}>`] : []),
+    ...(unsubscribe ? [`List-Unsubscribe: <${unsubscribe}>`, 'List-Unsubscribe-Post: List-Unsubscribe=One-Click'] : []),
     `Subject: ${header(subject)}`,
     `Date: ${new Date().toUTCString().replace('GMT', '+0000')}`,
     `Message-ID: <${crypto.randomUUID()}@${domain}>`,

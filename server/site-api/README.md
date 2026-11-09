@@ -29,7 +29,8 @@ Admin → Black Friday → **Email the Codes**: one email per family listing onl
 `bf-email.js`, keep in step with `js/black-friday.js`), preview, "Send Test" to any address, then "Send to N families".
 Each sign-up keeps `emailed: [{ slug, code, at }]`; the server never emails a family twice for the same trip
 (`bfDue` = sale trips not emailed yet) and sends one email every 2 seconds. A failed email stays "Ready" and is retried by pressing Send again.
-Files: `bf-email.js` (design), `smtp.js` (sender, no packages). Upload all three files when updating:
+Every email has an Unsubscribe link in the footer + List-Unsubscribe headers (one click in Yahoo/Gmail; added 2026-11-10 because the first test landed in Yahoo spam although SPF/DKIM/DMARC all passed): `/site-api/unsubscribe?id=&t=` (signed with JWT_SECRET; GET only shows a "Yes, unsubscribe me" button so link scanners change nothing, POST sets `unsubscribedAt` = never emailed again, Admin shows "Unsubscribed"). Tests get `?test=1` links that change nothing.
+Files: `bf-email.js` (design), `smtp.js` (sender, no packages), `smtp-check.js` (settings check). Upload all three files when updating:
 `scp server\site-api\server.js server\site-api\bf-email.js server\site-api\smtp.js melike@178.105.202.222:~/apps/site-api/`
 
 Check the settings on the VPS without sending: `cd ~/apps/site-api && node smtp-check.js`. Live setup (2026-11-10): SMTP_HOST mail.everyavenue.com, port 587, user noreply@worldschoolingjourneys.com.
