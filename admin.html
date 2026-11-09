@@ -210,6 +210,29 @@
   dialog#addCruiseModal[open], dialog#chooseImageModal[open], dialog#portModal[open], dialog#cruiseLineModal[open], dialog#shipsModal[open], dialog#portMergeModal[open], dialog#backToBackModal[open]{display:flex;flex-direction:column;}
   dialog#addCruiseModal form, dialog#portModal form, dialog#cruiseLineModal form, dialog#portMergeModal form, dialog#backToBackModal form{display:flex;flex-direction:column;min-height:0;}
   dialog#portMergeModal{max-width:480px;}
+  /* BLACK FRIDAY tab: code email status + the "Email the Codes" window */
+  .bf-pill{display:inline-block;padding:4px 9px;border-radius:20px;border:1px solid;font-size:11.5px;font-weight:700;line-height:1.3;margin:2px 4px 2px 0;}
+  .bf-pill-ready{background:#fdecef;border-color:#f0a9b5;color:#a10d26;}
+  .bf-pill-sent{background:var(--green-tint, #eef3e8);border-color:#b9cca5;color:#4d6a35;}
+  .bf-pill-wait{background:#f3f1ec;border-color:var(--line);color:var(--muted);}
+  dialog#bfEmailModal{
+    width:100%;max-width:860px;padding:0;border:none;border-radius:14px;
+    box-shadow:0 24px 60px rgba(0,0,0,.35);max-height:calc(100vh - 68px);
+    outline:1.5px dashed rgba(21,34,48,0.3);outline-offset:-6px;
+  }
+  dialog#bfEmailModal::backdrop{background:rgba(36,40,48,.6);}
+  dialog#bfEmailModal[open]{display:flex;flex-direction:column;}
+  .bf-codes{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0;}
+  .bf-codes span{background:#fdecef;border:1px dashed #c8102e;border-radius:8px;padding:6px 10px;font-size:13px;}
+  .bf-codes strong{letter-spacing:.05em;}
+  #bfPreviewFrame{width:100%;height:560px;border:1px solid var(--line);border-radius:10px;background:#f4f1e9;}
+  .bf-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .bf-row select, .bf-row input{flex:1 1 260px;}
+  .bf-progress{height:10px;border-radius:6px;background:#eceae4;overflow:hidden;margin:8px 0;}
+  .bf-progress div{height:100%;width:0;background:var(--green-dark, #708F53);transition:width .3s ease;}
+  .bf-log{font-size:13px;color:var(--muted);max-height:140px;overflow:auto;}
+  .bf-log .bad{color:#c14a2f;}
+  #bfStopBtn[hidden]{display:none;}
   /* TESTIMONIALS tab: same native <dialog> look as the other editors */
   dialog#testimonialModal{
     width:100%;max-width:760px;padding:0;border:none;border-radius:14px;
@@ -683,12 +706,23 @@
         <h1>Black Friday Waitlist</h1>
         <p>Families who joined the Black Friday waitlist on <a href="/black-friday" target="_blank" rel="noopener">worldschoolingjourneys.com/black-friday</a> (the link the social media team shares). Kept on the website's own server. Someone who signs up again with the same email is updated, not added twice.</p>
       </div>
-      <button type="button" class="btn btn-primary" id="bfCsvBtn">Download CSV</button>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button type="button" class="btn btn-outline" id="bfCsvBtn">Download CSV</button>
+        <button type="button" class="btn btn-primary" id="bfEmailBtn">Email the Codes</button>
+      </div>
     </div>
 
     <div class="cruises-toolbar">
       <div class="admin-field" style="flex:0 1 320px;margin-bottom:0;">
         <select id="bfTripFilter"><option value="">All trips</option></select>
+      </div>
+      <div class="admin-field" style="flex:0 1 240px;margin-bottom:0;">
+        <select id="bfStatusFilter">
+          <option value="">Any code email status</option>
+          <option value="ready">Ready for the code email</option>
+          <option value="sent">Code email sent</option>
+          <option value="wait">No code yet for their trips</option>
+        </select>
       </div>
       <div class="admin-field" style="flex:1;max-width:360px;margin-bottom:0;">
         <input id="bfSearchInput" type="text" placeholder="Search by name or email...">
@@ -704,6 +738,7 @@
             <th>Name</th>
             <th>Email</th>
             <th>Trips</th>
+            <th>Code Email</th>
             <th></th>
           </tr>
         </thead>
@@ -1204,6 +1239,47 @@
       </div>
     </div>
   </form>
+</dialog>
+
+<dialog id="bfEmailModal">
+  <div class="admin-modal-head">
+    <h2>Email the Black Friday Codes</h2>
+    <button type="button" class="modal-close" id="bfEmailCloseBtn" aria-label="Close">×</button>
+  </div>
+  <div class="admin-modal-body">
+    <div id="bfEmailError" class="error-banner" hidden></div>
+    <div class="admin-field">
+      <div id="bfEmailSummary"></div>
+      <div class="bf-codes" id="bfEmailCodes"></div>
+      <div class="admin-hint">Each family gets ONE email listing only their trips that have a code (from the website's sale settings). Someone already emailed for a trip never gets that trip again; when another trip gets a code later, they become "ready" again just for that trip.</div>
+    </div>
+    <div class="admin-field">
+      <label for="bfPreviewSelect">Preview the email for</label>
+      <div class="bf-row"><select id="bfPreviewSelect"></select></div>
+      <iframe id="bfPreviewFrame" title="Email preview"></iframe>
+    </div>
+    <div class="admin-field">
+      <label for="bfTestTo">Send a test first</label>
+      <div class="bf-row">
+        <input id="bfTestTo" type="email" placeholder="your@email.com">
+        <button type="button" class="btn btn-outline" id="bfTestBtn">Send Test</button>
+      </div>
+      <div class="admin-hint" id="bfTestNote">Sends the email shown above to this address, marked [Test]. Nobody is marked as emailed.</div>
+    </div>
+    <div class="admin-field" id="bfSendBox" hidden>
+      <label>Sending</label>
+      <div class="bf-progress"><div id="bfProgressBar"></div></div>
+      <div id="bfProgressText"></div>
+      <div class="bf-log" id="bfSendLog"></div>
+    </div>
+  </div>
+  <div class="admin-modal-foot">
+    <span class="foot-note" id="bfFootNote">Emails go out one every 2 seconds. Keep this window open until it's done.</span>
+    <div class="foot-actions" style="display:flex;gap:10px;">
+      <button type="button" class="btn btn-outline" id="bfStopBtn" hidden>Stop</button>
+      <button type="button" class="btn btn-primary" id="bfSendAllBtn">Send</button>
+    </div>
+  </div>
 </dialog>
 
 <dialog id="testimonialModal">
@@ -3766,7 +3842,7 @@ const BF_CAMPAIGN = 'black-friday-2026';
 let bfRows = [];
 async function loadBlackFriday() {
   const body = $('bfTableBody');
-  body.innerHTML = '<tr><td colspan="5" style="color:var(--muted);">Loading...</td></tr>';
+  body.innerHTML = '<tr><td colspan="6" style="color:var(--muted);">Loading...</td></tr>';
   try {
     const res = await apiFetch(`${SITE_API}/signups?campaign=${BF_CAMPAIGN}`);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -3775,7 +3851,7 @@ async function loadBlackFriday() {
     if (err.message === 'Unauthorized') return;
     $('bfEmptyState').style.display = 'none';
     $('bfTable').style.display = '';
-    body.innerHTML = `<tr><td colspan="5" style="color:#c14a2f;">Couldn't load the sign-ups (${escapeHtml(err.message)}).</td></tr>`;
+    body.innerHTML = `<tr><td colspan="6" style="color:#c14a2f;">Couldn't load the sign-ups (${escapeHtml(err.message)}).</td></tr>`;
     return;
   }
   // trip filter with how many people picked each trip, most popular first
@@ -3787,9 +3863,19 @@ async function loadBlackFriday() {
   filter.value = counts.has(keep) ? keep : '';
   renderBlackFriday();
 }
+// Code email status: "ready" = a trip with a live code they haven't been emailed about (bfDue, worked out by the server)
+const bfStatus = (r) => ((r.bfDue || []).length ? 'ready' : (r.emailed || []).length ? 'sent' : 'wait');
 function visibleBfRows() {
-  const trip = $('bfTripFilter').value, q = $('bfSearchInput').value.trim().toLowerCase();
-  return bfRows.filter((r) => (!trip || r.trips.some((t) => t.slug === trip)) && (!q || r.name.toLowerCase().includes(q) || r.email.includes(q)));
+  const trip = $('bfTripFilter').value, q = $('bfSearchInput').value.trim().toLowerCase(), st = $('bfStatusFilter').value;
+  return bfRows.filter((r) => (!trip || r.trips.some((t) => t.slug === trip)) && (!q || r.name.toLowerCase().includes(q) || r.email.includes(q))
+    && (!st || (st === 'sent' ? (r.emailed || []).length > 0 : bfStatus(r) === st)));
+}
+function bfTripTitle(r, slug) { const t = r.trips.find((x) => x.slug === slug); return t ? t.title : slug; }
+function bfStatusHtml(r) {
+  const fmt = (iso) => new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  const sent = (r.emailed || []).map((e) => `<span class="bf-pill bf-pill-sent" title="${escapeHtml(e.code)}">Sent ${fmt(e.at)}: ${escapeHtml(bfTripTitle(r, e.slug))}</span>`);
+  const due = (r.bfDue || []).map((slug) => `<span class="bf-pill bf-pill-ready">Ready: ${escapeHtml(bfTripTitle(r, slug))}</span>`);
+  return sent.concat(due).join('') || '<span class="bf-pill bf-pill-wait">No code yet</span>';
 }
 function renderBlackFriday() {
   const rows = visibleBfRows();
@@ -3803,10 +3889,12 @@ function renderBlackFriday() {
       <td><strong>${escapeHtml(r.name)}</strong></td>
       <td><a href="mailto:${escapeHtml(r.email)}">${escapeHtml(r.email)}</a></td>
       <td>${r.trips.map((t) => escapeHtml(t.title)).join(', ')}</td>
+      <td>${bfStatusHtml(r)}</td>
       <td style="text-align:right;"><button type="button" class="btn-text-danger" data-bf-delete="${escapeHtml(r.id)}">Delete</button></td>
-    </tr>`).join('') : '<tr><td colspan="5" style="color:var(--muted);">No sign-ups match.</td></tr>';
+    </tr>`).join('') : '<tr><td colspan="6" style="color:var(--muted);">No sign-ups match.</td></tr>';
 }
 $('bfTripFilter').addEventListener('change', renderBlackFriday);
+$('bfStatusFilter').addEventListener('change', renderBlackFriday);
 $('bfSearchInput').addEventListener('input', renderBlackFriday);
 $('bfTableBody').addEventListener('click', async (e) => {
   const btn = e.target.closest('button[data-bf-delete]'); if (!btn) return;
@@ -3824,12 +3912,96 @@ $('bfTableBody').addEventListener('click', async (e) => {
 });
 $('bfCsvBtn').addEventListener('click', () => {
   const cell = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
-  const lines = [['Signed up', 'Name', 'Email', 'Trips'].map(cell).join(',')]
-    .concat(visibleBfRows().map((r) => [new Date(r.createdAt).toLocaleDateString('en-CA'), r.name, r.email, r.trips.map((t) => t.title).join('; ')].map(cell).join(',')));
+  const lines = [['Signed up', 'Name', 'Email', 'Trips', 'Code email sent', 'Ready for the code email'].map(cell).join(',')]
+    .concat(visibleBfRows().map((r) => [new Date(r.createdAt).toLocaleDateString('en-CA'), r.name, r.email, r.trips.map((t) => t.title).join('; '),
+      (r.emailed || []).map((e) => `${bfTripTitle(r, e.slug)} (${e.at.slice(0, 10)})`).join('; '), (r.bfDue || []).map((slug) => bfTripTitle(r, slug)).join('; ')].map(cell).join(',')));
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([lines.join('\r\n')], { type: 'text/csv' }));
   a.download = `black-friday-waitlist-${new Date().toISOString().slice(0, 10)}.csv`;
   a.click(); URL.revokeObjectURL(a.href);
+});
+// ---- Black Friday: "Email the Codes" ----
+// The email design and the sale trips/codes live on the website server (server/site-api/bf-email.js); it also
+// sends (smtp.js), refuses to email a family twice for the same trip, and spaces the emails 2 seconds apart.
+let bfSending = false, bfStop = false;
+const bfReady = () => bfRows.filter((r) => (r.bfDue || []).length);
+function bfEmailError(msg) { $('bfEmailError').textContent = msg || ''; $('bfEmailError').hidden = !msg; }
+async function bfJson(res) { let b = {}; try { b = await res.json(); } catch (e) {} if (!res.ok) throw new Error(b.message || `HTTP ${res.status}`); return b; }
+function bfUpdateSendButton() {
+  const n = bfReady().length;
+  $('bfSendAllBtn').textContent = n ? `Send to ${n} ${n === 1 ? 'family' : 'families'}` : 'Nobody to email right now';
+  $('bfSendAllBtn').disabled = !n || bfSending || $('bfSendAllBtn').dataset.mailReady !== 'yes';
+}
+async function bfShowPreview() {
+  const id = $('bfPreviewSelect').value;
+  if (!id) { $('bfPreviewFrame').srcdoc = '<p style="font-family:sans-serif;padding:20px;color:#5a5343;">Nobody is waiting for a code email right now.</p>'; return; }
+  try {
+    const p = await bfJson(await apiFetch(`${SITE_API}/bf-email/preview/${encodeURIComponent(id)}`));
+    $('bfPreviewFrame').srcdoc = p.html;
+  } catch (err) { if (err.message !== 'Unauthorized') bfEmailError(`Couldn't load the preview (${err.message}).`); }
+}
+$('bfEmailBtn').addEventListener('click', async () => {
+  bfEmailError('');
+  $('bfSendBox').hidden = true; $('bfSendLog').innerHTML = '';
+  $('bfTestTo').value = localStorage.getItem('bfTestTo') || '';
+  $('bfEmailModal').showModal();
+  try {
+    const info = await bfJson(await apiFetch(`${SITE_API}/bf-email/info`));
+    $('bfEmailCodes').innerHTML = info.trips.map((t) => `<span>${escapeHtml(t.title)} (${escapeHtml(t.dates)}): <strong>${escapeHtml(t.code)}</strong>, ${escapeHtml(t.saving)} off per person</span>`).join('');
+    $('bfSendAllBtn').dataset.mailReady = info.mailReady ? 'yes' : 'no';
+    if (!info.mailReady) bfEmailError("Email isn't set up on the website server yet, so nothing can be sent (see server/site-api/README.md, \"Sending emails\").");
+  } catch (err) { if (err.message !== 'Unauthorized') bfEmailError(`Couldn't reach the website server (${err.message}).`); }
+  const ready = bfReady(), sent = bfRows.filter((r) => (r.emailed || []).length).length, wait = bfRows.filter((r) => bfStatus(r) === 'wait').length;
+  $('bfEmailSummary').innerHTML = `<strong>${ready.length}</strong> of ${bfRows.length} ${bfRows.length === 1 ? 'family is' : 'families are'} ready for the code email. ` +
+    `${sent} already emailed, ${wait} only picked trips that don't have a code yet (they're left out).`;
+  $('bfPreviewSelect').innerHTML = ready.map((r) => `<option value="${escapeHtml(r.id)}">${escapeHtml(r.name)} (${escapeHtml(r.email)}): ${(r.bfDue || []).map((slug) => escapeHtml(bfTripTitle(r, slug))).join(', ')}</option>`).join('');
+  bfUpdateSendButton();
+  bfShowPreview();
+});
+$('bfPreviewSelect').addEventListener('change', bfShowPreview);
+$('bfEmailCloseBtn').addEventListener('click', () => { if (bfSending && !confirm('Emails are still being sent. Stop and close?')) return; bfStop = true; $('bfEmailModal').close(); });
+$('bfEmailModal').addEventListener('cancel', (e) => { if (bfSending) e.preventDefault(); });
+$('bfTestBtn').addEventListener('click', async () => {
+  const to = $('bfTestTo').value.trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(to)) { bfEmailError('Please type the email address the test should go to.'); return; }
+  bfEmailError(''); localStorage.setItem('bfTestTo', to);
+  const btn = $('bfTestBtn'); btn.disabled = true; btn.textContent = 'Sending...';
+  try {
+    await bfJson(await apiFetch(`${SITE_API}/bf-email/test`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ to, signupId: $('bfPreviewSelect').value || undefined }) }));
+    $('bfTestNote').textContent = `Test sent to ${to}. Check the inbox (and the spam folder).`;
+  } catch (err) { if (err.message !== 'Unauthorized') bfEmailError(`The test didn't go out (${err.message}).`); }
+  btn.disabled = false; btn.textContent = 'Send Test';
+});
+$('bfStopBtn').addEventListener('click', () => { bfStop = true; $('bfStopBtn').disabled = true; $('bfStopBtn').textContent = 'Stopping...'; });
+$('bfSendAllBtn').addEventListener('click', async () => {
+  const list = bfReady();
+  if (!list.length || bfSending) return;
+  if (!confirm(`Send the Black Friday code email to ${list.length} ${list.length === 1 ? 'family' : 'families'} now?\n\nEach family gets it once, for their trips that have a code. Emails can't be unsent.`)) return;
+  bfSending = true; bfStop = false; bfEmailError('');
+  $('bfSendBox').hidden = false; $('bfSendLog').innerHTML = '';
+  $('bfStopBtn').hidden = false; $('bfStopBtn').disabled = false; $('bfStopBtn').textContent = 'Stop';
+  bfUpdateSendButton();
+  let ok = 0; const failed = [];
+  for (let i = 0; i < list.length && !bfStop; i++) {
+    const r = list[i];
+    $('bfProgressText').textContent = `Sending ${i + 1} of ${list.length}: ${r.name}...`;
+    try {
+      const saved = await bfJson(await apiFetch(`${SITE_API}/bf-email/send/${encodeURIComponent(r.id)}`, { method: 'POST' }));
+      Object.assign(r, { emailed: saved.emailed, bfDue: saved.bfDue }); ok++;
+      $('bfSendLog').insertAdjacentHTML('afterbegin', `<div>Sent to ${escapeHtml(r.name)} (${escapeHtml(r.email)})</div>`);
+    } catch (err) {
+      if (err.message === 'Unauthorized') { bfStop = true; break; }
+      failed.push(r);
+      $('bfSendLog').insertAdjacentHTML('afterbegin', `<div class="bad">Not sent to ${escapeHtml(r.name)} (${escapeHtml(r.email)}): ${escapeHtml(err.message)}</div>`);
+    }
+    $('bfProgressBar').style.width = `${Math.round(((i + 1) / list.length) * 100)}%`;
+    renderBlackFriday();
+  }
+  bfSending = false; $('bfStopBtn').hidden = true;
+  $('bfProgressText').textContent = `Done: ${ok} sent` + (failed.length ? `, ${failed.length} not sent (see below; press Send again to retry them)` : '') + (bfStop ? '. Stopped before the end.' : '.');
+  await loadBlackFriday();
+  $('bfPreviewSelect').innerHTML = bfReady().map((r) => `<option value="${escapeHtml(r.id)}">${escapeHtml(r.name)} (${escapeHtml(r.email)})</option>`).join('');
+  bfUpdateSendButton(); bfShowPreview();
 });
 // ---- Testimonials ----
 // The website's OWN data, not the cruise API: they live on the small website

@@ -25,8 +25,14 @@
 //   POST   /site-api/signups                          public (the /black-friday waitlist form)
 //   GET    /site-api/signups[?campaign=black-friday-2026]   staff login
 //   DELETE /site-api/signups/:id                      staff login
+//   GET    /site-api/bf-email/info                    staff login: the sale trips + codes, is email set up
+//   GET    /site-api/bf-email/preview/:signupId       staff login: { subject, html } of that family's email
+//   POST   /site-api/bf-email/test   { to, signupId? } staff login: a [Test] copy to any address (nothing is marked)
+//   POST   /site-api/bf-email/send/:signupId          staff login: the real email for the trips not emailed yet, then marked
 //
-// A sign-up (data/signups.json): { id, campaign, name, email, trips: [{ slug, title }], createdAt, updatedAt }
+// A sign-up (data/signups.json): { id, campaign, name, email, trips: [{ slug, title }], createdAt, updatedAt,
+//   emailed?: [{ slug, code, at }] }  (emailed = the Black Friday code emails sent to them, one entry per trip)
+// The Black Friday email itself: bf-email.js (design + which trips have a code). Sending: smtp.js.
 //
 // A testimonial: { id, name, fullText, shortVersion, category, featured, carousel, sortOrder, createdAt, updatedAt }
 'use strict';
@@ -35,6 +41,8 @@ const fs = require('fs');
 const fsp = require('fs/promises');
 const path = require('path');
 const crypto = require('crypto');
+const { renderBlackFridayEmail, saleTripsFor, SALE_TRIPS } = require('./bf-email');
+const { sendMail, mailConfig } = require('./smtp');
 
 const CATEGORIES = ['cruise', 'land_trip', 'port_excursion', 'austria_retreat'];
 const MAX_BODY = 200 * 1024;
@@ -149,7 +157,16 @@ function validateSignup(body) {
 }
 
 // ---------- HTTP ----------
-function createServer({ dataDir, seedDir, secret }) {
+// Black Friday code emails: the sale trips a sign-up picked that haven't been emailed yet
+const BF_CAMPAIGN = 'black-friday-2026';
+const SEND_GAP_MS = 2000;   // at least this long between two real emails, so the mail server isn't flooded
+function bfDue(row) {
+  if (row.campaign !== BF_CAMPAIGN) return [];
+  const done = new Set((row.emailed || []).map((e) => e.slug));
+  return saleTripsFor(row.trips).filter((slug) => !done.has(slug));
+}
+
+function createServer({ dataDir, seedDir, secret, mail = mailConfig(), mailer = sendMail }) {
   const testimonials = createStore(dataDir, 'testimonials', seedDir && path.join(seedDir, 'testimonials.json'));
   const signups = createStore(dataDir, 'signups', null);
   // sign-ups per visitor in the last hour (kept in memory only)
@@ -162,6 +179,20 @@ function createServer({ dataDir, seedDir, secret }) {
     times.push(Date.now()); recent.set(ip, times);
     if (recent.size > 5000) for (const [k, v] of recent) if (v[v.length - 1] < hourAgo) recent.delete(k);
     return times.length > SIGNUPS_PER_HOUR;
+  }
+
+  // emails go out one at a time, at least SEND_GAP_MS apart; a family being emailed can't be emailed twice at once
+  const sending = new Set();
+  let mailQueue = Promise.resolve(), lastSent = 0;
+  function paced(job) {
+    const run = mailQueue.then(async () => {
+      const wait = lastSent + SEND_GAP_MS - Date.now();
+      if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+      // a mail server refusal goes back to the admin page word for word (502), not as a generic error
+      try { return await job(); } catch (err) { throw Object.assign(err, { status: err.status || 502 }); } finally { lastSent = Date.now(); }
+    });
+    mailQueue = run.catch(() => {});
+    return run;
   }
 
   function send(res, status, body) {
@@ -224,7 +255,8 @@ function createServer({ dataDir, seedDir, secret }) {
       if (req.method === 'GET') {
         const campaign = url.searchParams.get('campaign');
         const rows = (await signups.load()).filter((r) => !campaign || r.campaign === campaign)
-          .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
+          .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)))
+          .map((r) => ({ ...r, bfDue: bfDue(r) }));
         return send(res, 200, rows);
       }
       const gone = await signups.change((rows) => {
@@ -233,6 +265,55 @@ function createServer({ dataDir, seedDir, secret }) {
         rows.splice(i, 1); return true;
       });
       return gone ? send(res, 200, { ok: true }) : send(res, 404, { message: 'Sign-up not found.' });
+    }
+
+    // Black Friday code emails (admin → Black Friday → Email the Codes)
+    if (p.startsWith('/site-api/bf-email/')) {
+      if (!isStaff(req)) return send(res, 401, { message: 'Please log in again.' });
+      if (p === '/site-api/bf-email/info' && req.method === 'GET') {
+        return send(res, 200, { mailReady: !!mail, trips: Object.entries(SALE_TRIPS).map(([slug, t]) => ({ slug, title: t.title, dates: t.dates, code: t.code, saving: t.saving })) });
+      }
+      const preview = p.match(/^\/site-api\/bf-email\/preview\/([A-Za-z0-9-]{1,64})$/);
+      if (preview && req.method === 'GET') {
+        const row = (await signups.load()).find((r) => r.id === preview[1]);
+        if (!row) return send(res, 404, { message: 'Sign-up not found.' });
+        const due = bfDue(row);
+        const msg = renderBlackFridayEmail({ name: row.name, trips: due.length ? due : row.trips });
+        if (!msg) return send(res, 404, { message: 'None of their trips has a code yet.' });
+        return send(res, 200, { subject: msg.subject, html: msg.html, due });
+      }
+      if (p === '/site-api/bf-email/test' && req.method === 'POST') {
+        const body = await readBody(req);
+        const row = body.signupId && (await signups.load()).find((r) => r.id === body.signupId);
+        // a real family's email if one is picked, otherwise every sale trip
+        const msg = renderBlackFridayEmail({ name: row ? row.name : 'Friend', trips: row ? row.trips : Object.keys(SALE_TRIPS) }, { test: true });
+        if (!msg) return send(res, 400, { message: 'None of their trips has a code yet.' });
+        await paced(() => mailer(mail, { to: clip(body.to, 200), subject: msg.subject, text: msg.text, html: msg.html }));
+        return send(res, 200, { ok: true, subject: msg.subject });
+      }
+      const real = p.match(/^\/site-api\/bf-email\/send\/([A-Za-z0-9-]{1,64})$/);
+      if (real && req.method === 'POST') {
+        const id = real[1];
+        if (sending.has(id)) return send(res, 409, { message: 'Already being sent.' });
+        sending.add(id);
+        try {
+          const row = (await signups.load()).find((r) => r.id === id);
+          if (!row) return send(res, 404, { message: 'Sign-up not found.' });
+          const due = bfDue(row);
+          if (!due.length) return send(res, 409, { message: 'Nothing to send: already emailed, or none of their trips has a code yet.' });
+          const msg = renderBlackFridayEmail({ name: row.name, trips: due });
+          await paced(() => mailer(mail, { to: row.email, subject: msg.subject, text: msg.text, html: msg.html }));
+          const at = new Date().toISOString();
+          const saved = await signups.change((rows) => {
+            const r = rows.find((x) => x.id === id);
+            if (!r) return null;
+            r.emailed = (r.emailed || []).concat(due.map((slug) => ({ slug, code: SALE_TRIPS[slug].code, at })));
+            return r;
+          });
+          return send(res, 200, saved ? { ...saved, bfDue: bfDue(saved) } : { ok: true });
+        } finally { sending.delete(id); }
+      }
+      return send(res, 404, { message: 'Not found.' });
     }
 
     const one = p.match(/^\/site-api\/testimonials\/([A-Za-z0-9-]{1,64})$/);
@@ -275,7 +356,7 @@ function createServer({ dataDir, seedDir, secret }) {
   });
 }
 
-module.exports = { createServer, verifyToken, validateTestimonial, validateSignup, CATEGORIES, CAMPAIGNS };
+module.exports = { createServer, verifyToken, validateTestimonial, validateSignup, bfDue, CATEGORIES, CAMPAIGNS };
 
 if (require.main === module) {
   const port = Number(process.env.SITE_API_PORT || 3100);

@@ -17,11 +17,11 @@ function token({ secret = SECRET, role = 'cruise-team', exp = Math.floor(Date.no
   return `${h}.${p}.${sig}`;
 }
 
-async function start(seed) {
+async function start(seed, extra = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'site-api-'));
   const seedDir = path.join(dir, 'seed'); fs.mkdirSync(seedDir);
   if (seed) fs.writeFileSync(path.join(seedDir, 'testimonials.json'), JSON.stringify(seed));
-  const server = createServer({ dataDir: path.join(dir, 'data'), seedDir, secret: SECRET });
+  const server = createServer({ dataDir: path.join(dir, 'data'), seedDir, secret: SECRET, ...extra });
   await new Promise((r) => server.listen(0, '127.0.0.1', r));
   const base = `http://127.0.0.1:${server.address().port}/site-api`;
   const call = async (method, p, body, auth = token()) => {
@@ -171,4 +171,124 @@ test('the real seed file is valid', () => {
     assert.ok(['cruise', 'land_trip', 'port_excursion', 'austria_retreat'].includes(t.category));
     assert.ok(!/—/.test(t.fullText + t.shortVersion), `em dash in ${t.name}`);
   }
+});
+
+// ---------- Black Friday code emails ----------
+const { renderBlackFridayEmail } = require('./bf-email');
+const { sendMail, buildMessage } = require('./smtp');
+const net = require('net');
+
+test('the email lists only trips with a code, per person savings, no em dashes', () => {
+  const m = renderBlackFridayEmail({ name: 'Ana Silva', trips: [{ slug: 'austria-fall' }, { slug: 'morocco' }, { slug: 'new-zealand' }] });
+  assert.match(m.subject, /codes are live for 2 of your trips/);
+  assert.match(m.html, /Hi Ana,/);
+  assert.match(m.html, /BFAUSTRIA/); assert.match(m.html, /BFNEWZEALAND/);
+  assert.match(m.html, /Save €50 per person/); assert.match(m.html, /A family of 4 saves \$200/);
+  assert.ok(!/Morocco/.test(m.html));
+  assert.ok(!/—/.test(m.html + m.text + m.subject));
+  assert.ok(!/gastein|mondi/i.test(m.html + m.text));
+  assert.equal(renderBlackFridayEmail({ name: 'X', trips: [{ slug: 'morocco' }] }), null);
+  const one = renderBlackFridayEmail({ name: '', trips: ['new-zealand'] });
+  assert.match(one.subject, /save \$50 per person on the New Zealand Roadtrip/);
+  assert.match(one.html, /Hi there,/);
+});
+
+test('sends each family their code email once, tracks it per trip, staff only', async () => {
+  const sent = [];
+  const mailer = async (cfg, msg) => { sent.push(msg); return { accepted: msg.to }; };
+  const s = await start(null, { mail: { host: 'x', from: 'no-reply@example.com' }, mailer });
+  try {
+    const join = (email, trips) => s.call('POST', '/signups', { campaign: 'black-friday-2026', name: 'Fam ' + email, email, trips: trips.map((slug) => ({ slug, title: slug })) }, null);
+    await join('a@example.com', ['austria-fall', 'morocco']);
+    await join('b@example.com', ['morocco']);
+    await join('c@example.com', ['new-zealand', 'austria-winter']);
+    const list = (await s.call('GET', '/signups?campaign=black-friday-2026')).body;
+    const by = (e) => list.find((r) => r.email === e);
+    assert.deepEqual(by('a@example.com').bfDue, ['austria-fall']);
+    assert.deepEqual(by('b@example.com').bfDue, []);
+    assert.deepEqual(by('c@example.com').bfDue, ['new-zealand', 'austria-winter']);
+
+    // staff only
+    assert.equal((await s.call('POST', `/bf-email/send/${by('a@example.com').id}`, null, null)).status, 401);
+    assert.equal((await s.call('GET', '/bf-email/info', null, null)).status, 401);
+    assert.equal((await s.call('GET', '/bf-email/info')).body.mailReady, true);
+
+    // preview: nothing sent
+    const pv = await s.call('GET', `/bf-email/preview/${by('c@example.com').id}`);
+    assert.equal(pv.status, 200); assert.match(pv.body.html, /BFNEWZEALAND/);
+    assert.equal(sent.length, 0);
+
+    // test: goes to the given address, marks nothing
+    const t = await s.call('POST', '/bf-email/test', { to: 'me@example.com', signupId: by('a@example.com').id });
+    assert.equal(t.status, 200);
+    assert.equal(sent.length, 1); assert.equal(sent[0].to, 'me@example.com'); assert.match(sent[0].subject, /^\[Test\]/);
+    assert.deepEqual((await s.call('GET', '/signups')).body.find((r) => r.email === 'a@example.com').bfDue, ['austria-fall']);
+
+    // real send: marked, and a second send is refused
+    const r1 = await s.call('POST', `/bf-email/send/${by('a@example.com').id}`);
+    assert.equal(r1.status, 200);
+    assert.equal(sent[1].to, 'a@example.com'); assert.ok(!/^\[Test\]/.test(sent[1].subject));
+    assert.deepEqual(r1.body.emailed.map((e) => [e.slug, e.code]), [['austria-fall', 'BFAUSTRIA']]);
+    assert.deepEqual(r1.body.bfDue, []);
+    assert.equal((await s.call('POST', `/bf-email/send/${by('a@example.com').id}`)).status, 409);
+    assert.equal((await s.call('POST', `/bf-email/send/${by('b@example.com').id}`)).status, 409);   // no code yet
+    assert.equal(sent.length, 2);
+
+    // two clicks at once: only one email
+    const c = by('c@example.com').id;
+    const both = await Promise.all([s.call('POST', `/bf-email/send/${c}`), s.call('POST', `/bf-email/send/${c}`)]);
+    assert.deepEqual(both.map((x) => x.status).sort(), [200, 409]);
+    assert.equal(sent.length, 3);
+
+    // signing up again later for another sale trip: only the new trip is due
+    await join('a@example.com', ['austria-summer']);
+    assert.deepEqual((await s.call('GET', '/signups')).body.find((r) => r.email === 'a@example.com').bfDue, ['austria-summer']);
+  } finally { await s.close(); }
+});
+
+test('a failed send is not marked, and missing mail settings give a clear message', async () => {
+  const mailer = async () => { throw new Error('Mail server said: 550 no'); };
+  const s = await start(null, { mail: { host: 'x' }, mailer });
+  const s2 = await start(null, { mail: null });
+  try {
+    await s.call('POST', '/signups', { campaign: 'black-friday-2026', name: 'A', email: 'a@example.com', trips: [{ slug: 'austria-fall', title: 'x' }] }, null);
+    const id = (await s.call('GET', '/signups')).body[0].id;
+    assert.equal((await s.call('POST', `/bf-email/send/${id}`)).status, 502);
+    assert.deepEqual((await s.call('GET', '/signups')).body[0].bfDue, ['austria-fall']);
+    const t = await s2.call('POST', '/bf-email/test', { to: 'me@example.com' });
+    assert.equal(t.status, 503); assert.match(t.body.message, /isn.t set up/);
+  } finally { await s.close(); await s2.close(); }
+});
+
+test('smtp.js talks to a mail server and sends a proper message', async () => {
+  const seen = [];
+  const fake = net.createServer((sock) => {
+    let data = false, body = '';
+    sock.write('220 fake ready\r\n');
+    sock.on('data', (d) => {
+      for (const line of d.toString().split('\r\n').filter((l, i, a) => i < a.length - 1 || l)) {
+        if (data) { if (line === '.') { data = false; seen.push(['BODY', body]); sock.write('250 queued\r\n'); } else body += line + '\r\n'; continue; }
+        seen.push(line);
+        if (/^EHLO/.test(line)) sock.write('250-fake\r\n250 AUTH PLAIN\r\n');
+        else if (/^AUTH/.test(line)) sock.write('235 ok\r\n');
+        else if (/^DATA/.test(line)) { data = true; sock.write('354 go\r\n'); }
+        else if (/^QUIT/.test(line)) { sock.write('221 bye\r\n'); sock.end(); }
+        else sock.write('250 ok\r\n');
+      }
+    });
+  });
+  await new Promise((r) => fake.listen(0, '127.0.0.1', r));
+  try {
+    const cfg = { host: '127.0.0.1', port: fake.address().port, user: 'u', pass: 'p', from: 'no-reply@example.com', replyTo: 'booking@example.com' };
+    await sendMail(cfg, { to: 'fam@example.com', subject: 'Save €50 per person', text: 'hi', html: '<p>hi</p>' }, { insecure: true });
+    assert.ok(seen.includes('MAIL FROM:<no-reply@example.com>'));
+    assert.ok(seen.includes('RCPT TO:<fam@example.com>'));
+    const body = seen.find((x) => Array.isArray(x))[1];
+    assert.match(body, /Reply-To: <booking@example.com>/);
+    assert.match(body, /Subject: =\?UTF-8\?B\?/);
+    assert.match(body, /multipart\/alternative/);
+    await assert.rejects(sendMail(cfg, { to: 'not an email', subject: 's', text: 't', html: 'h' }, { insecure: true }), /doesn.t look right/);
+    await assert.rejects(sendMail(null, { to: 'a@b.co' }), /isn.t set up/);
+  } finally { fake.close(); }
+  assert.match(buildMessage({ from: 'a@b.co', fromName: 'W', to: 'c@d.co', subject: 's', text: 't', html: 'h' }), /^From: W <a@b.co>/);
 });
