@@ -77,21 +77,24 @@ function buildMessage({ from, fromName, to, replyTo, subject, text, html }) {
   ].join('\r\n');
 }
 
-// send one email; resolves when the mail server has accepted it. opts.insecure: tests only (local fake server, no TLS)
+// send one email; resolves when the mail server has accepted it. opts.insecure: tests only (local fake server, no TLS).
+// opts.checkOnly: connect + log in, then hang up without sending (smtp-check.js). opts.log: called with each step done.
 async function sendMail(config, msg, opts = {}) {
   if (!config) throw Object.assign(new Error('Email isn’t set up on the website server yet (SMTP settings missing in .env).'), { status: 503 });
-  const to = String(msg.to || '').trim();
-  if (!/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]{2,}$/.test(to)) throw Object.assign(new Error('That email address doesn’t look right.'), { status: 400 });
+  const log = opts.log || (() => {});
+  const to = opts.checkOnly ? '' : String(msg.to || '').trim();
+  if (!opts.checkOnly && !/^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]{2,}$/.test(to)) throw Object.assign(new Error('That email address doesn’t look right.'), { status: 400 });
   // port 465 = secure from the first byte ("SSL/TLS"); 587 = plain first, then STARTTLS
   const implicit = !opts.insecure && config.port === 465;
   let socket = implicit ? tls.connect({ host: config.host, port: config.port, servername: config.host }) : net.connect(config.port, config.host);
-  socket.setTimeout(60000, () => socket.destroy(new Error('Mail server connection timed out.')));
+  socket.setTimeout(25000, () => socket.destroy(new Error(`No answer from the mail server (${config.host}, port ${config.port}). The port may be blocked on this server.`)));
   const failed = new Promise((_, reject) => socket.once('error', reject));
   failed.catch(() => {});   // an error after a successful send must not crash the server
   const c = conversation(socket);
   c.attach(socket);
   const talk = (async () => {
     await c.reply('220');
+    log(`connected to the mail server on port ${config.port}${implicit ? ' (secure)' : ''}`);
     const name = 'worldschoolingjourneys.com';
     const ehlo = await c.cmd(`EHLO ${name}`, '250');
     if (!opts.insecure && !implicit) {
@@ -103,8 +106,11 @@ async function sendMail(config, msg, opts = {}) {
       await new Promise((resolve, reject) => { socket.once('secureConnect', resolve); socket.once('error', reject); });
       c.attach(socket);
       await c.cmd(`EHLO ${name}`, '250');
+      log('secure connection (STARTTLS) ok');
     }
     await c.cmd(`AUTH PLAIN ${Buffer.from(`\0${config.user}\0${config.pass}`).toString('base64')}`, '235');
+    log(`logged in as ${config.user}`);
+    if (opts.checkOnly) { c.cmd('QUIT', '221').catch(() => {}).finally(() => socket.end()); return { ok: true }; }
     await c.cmd(`MAIL FROM:<${config.from}>`, '250');
     await c.cmd(`RCPT TO:<${to}>`, '250|251');
     await c.cmd('DATA', '354');

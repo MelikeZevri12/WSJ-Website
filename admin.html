@@ -3925,7 +3925,7 @@ $('bfCsvBtn').addEventListener('click', () => {
 // sends (smtp.js), refuses to email a family twice for the same trip, and spaces the emails 2 seconds apart.
 let bfSending = false, bfStop = false;
 const bfReady = () => bfRows.filter((r) => (r.bfDue || []).length);
-function bfEmailError(msg) { $('bfEmailError').textContent = msg || ''; $('bfEmailError').hidden = !msg; }
+function bfEmailError(msg) { $('bfEmailError').textContent = msg || ''; $('bfEmailError').hidden = !msg; if (msg) $('bfEmailError').scrollIntoView({ block: 'nearest' }); }
 async function bfJson(res) { let b = {}; try { b = await res.json(); } catch (e) {} if (!res.ok) throw new Error(b.message || `HTTP ${res.status}`); return b; }
 function bfUpdateSendButton() {
   const n = bfReady().length;
@@ -3963,13 +3963,16 @@ $('bfEmailCloseBtn').addEventListener('click', () => { if (bfSending && !confirm
 $('bfEmailModal').addEventListener('cancel', (e) => { if (bfSending) e.preventDefault(); });
 $('bfTestBtn').addEventListener('click', async () => {
   const to = $('bfTestTo').value.trim();
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(to)) { bfEmailError('Please type the email address the test should go to.'); return; }
+  // the result shows right under the button (the error banner at the top of the window is out of view down here)
+  const note = (text, bad) => { $('bfTestNote').textContent = text; $('bfTestNote').style.color = bad ? '#c14a2f' : ''; $('bfTestNote').style.fontWeight = bad ? '700' : ''; };
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(to)) { note('Please type the email address the test should go to.', true); return; }
   bfEmailError(''); localStorage.setItem('bfTestTo', to);
   const btn = $('bfTestBtn'); btn.disabled = true; btn.textContent = 'Sending...';
+  note('Sending the test... this can take up to 30 seconds.');
   try {
     await bfJson(await apiFetch(`${SITE_API}/bf-email/test`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ to, signupId: $('bfPreviewSelect').value || undefined }) }));
-    $('bfTestNote').textContent = `Test sent to ${to}. Check the inbox (and the spam folder).`;
-  } catch (err) { if (err.message !== 'Unauthorized') bfEmailError(`The test didn't go out (${err.message}).`); }
+    note(`Test sent to ${to}. Check the inbox (and the spam folder).`);
+  } catch (err) { if (err.message !== 'Unauthorized') note(`The test didn't go out: ${err.message}`, true); }
   btn.disabled = false; btn.textContent = 'Send Test';
 });
 $('bfStopBtn').addEventListener('click', () => { bfStop = true; $('bfStopBtn').disabled = true; $('bfStopBtn').textContent = 'Stopping...'; });

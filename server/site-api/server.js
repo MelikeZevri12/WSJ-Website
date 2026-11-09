@@ -189,7 +189,10 @@ function createServer({ dataDir, seedDir, secret, mail = mailConfig(), mailer = 
       const wait = lastSent + SEND_GAP_MS - Date.now();
       if (wait > 0) await new Promise((r) => setTimeout(r, wait));
       // a mail server refusal goes back to the admin page word for word (502), not as a generic error
-      try { return await job(); } catch (err) { throw Object.assign(err, { status: err.status || 502 }); } finally { lastSent = Date.now(); }
+      try { return await job(); } catch (err) {
+        console.error(new Date().toISOString(), 'email not sent:', err.message);   // shows in: sudo journalctl -u site-api
+        throw Object.assign(err, { status: err.status || 502 });
+      } finally { lastSent = Date.now(); }
     });
     mailQueue = run.catch(() => {});
     return run;

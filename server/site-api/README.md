@@ -32,7 +32,8 @@ Each sign-up keeps `emailed: [{ slug, code, at }]`; the server never emails a fa
 Files: `bf-email.js` (design), `smtp.js` (sender, no packages). Upload all three files when updating:
 `scp server\site-api\server.js server\site-api\bf-email.js server\site-api\smtp.js melike@178.105.202.222:~/apps/site-api/`
 
-Mail settings in `~/apps/site-api/.env` (never print them): `SMTP_HOST`, `SMTP_PORT` (465 = SSL/TLS, what the noreply@ mailbox uses; 587 = STARTTLS), `SMTP_USER`, `SMTP_PASSWORD`,
+Check the settings on the VPS without sending: `cd ~/apps/site-api && node smtp-check.js`. Live setup (2026-11-10): SMTP_HOST mail.everyavenue.com, port 587, user noreply@worldschoolingjourneys.com.
+Mail settings in `~/apps/site-api/.env` (never print them): `SMTP_HOST`, `SMTP_PORT` (587 = STARTTLS; port 465 is BLOCKED going out from the VPS, checked 2026-11-10), `SMTP_USER`, `SMTP_PASSWORD`,
 `MAIL_FROM_ADDRESS`, optional `MAIL_REPLY_TO` (where replies go). Without them Admin says email isn't set up and sends nothing.
 The user wanted a no-reply sender (noreply@worldschoolingjourneys.com, a mailbox on the cPanel host 107.155.113.78, which signs
 worldschoolingjourneys.com mail with DKIM; SPF allows that IP), announcements only: NO reply-to (user's choice); the email sends questions and opt-outs to the /contact page. Note (2026-11-09): the domain's MX
