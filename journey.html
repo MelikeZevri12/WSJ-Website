@@ -988,6 +988,17 @@
               <option>Email Newsletter</option><option>Other</option>
             </select>
           </div>
+          <!-- "What kind of traveler are you?" (team request 2026-10-19). Same labels as TRAVELER_TYPES in
+               backend/src/modules/cruises/domain/traveler-types.util.ts (only those are saved); summed up in admin -> Statistics. -->
+          <div class="field"><label>What kind of traveler are you? <span style="font-weight:400;color:var(--muted);">(check all that apply)</span></label>
+            <div class="radio-row">
+              <label class="radio-opt"><input type="checkbox" name="travelerTypes" value="New to travel"> New to travel</label>
+              <label class="radio-opt"><input type="checkbox" name="travelerTypes" value="Seasoned traveler"> Seasoned traveler</label>
+              <label class="radio-opt"><input type="checkbox" name="travelerTypes" value="First time outside of home country"> First time outside of home country</label>
+              <label class="radio-opt"><input type="checkbox" name="travelerTypes" value="First time cruiser"> First time cruiser</label>
+              <label class="radio-opt"><input type="checkbox" name="travelerTypes" value="First time with Worldschooling Journeys"> First time with Worldschooling Journeys</label>
+            </div>
+          </div>
         </div>
 
         <div class="form-step" data-step="review" style="display:none;">
@@ -1648,6 +1659,9 @@ const bookingSteps = BookingSteps.create({
   onReview: renderReview,
 });
 
+// the ticked "What kind of traveler are you?" boxes
+function checkedTravelerTypes(){ return [...bookingForm.querySelectorAll('input[name="travelerTypes"]:checked')].map((i) => i.value); }
+
 function fieldValue(name){
   const el = bookingForm.elements[name];
   if(!el) return '';
@@ -1672,6 +1686,7 @@ function renderReview(){
     ['Segment', segLabel(formSel())],
     ['Cabin', fieldValue('cabinChoice')],
     ['Booked with us before', fieldValue('bookedBefore') === 'yes' ? 'Yes' : 'No'],
+    ['Traveler type', checkedTravelerTypes().join(', ')],
   ];
   document.getElementById('reviewBox').innerHTML = `
     <h4>Quick review before sending</h4>
@@ -1718,6 +1733,7 @@ bookingForm.addEventListener('submit', async (e) => {
         citizenship: fieldValue('citizenship'),
         bookedBefore: fieldValue('bookedBefore') === 'yes',
         hearAboutUs: fieldValue('hearAboutUs'),
+        travelerTypes: checkedTravelerTypes(),
         cabinChoice: fieldValue('cabinChoice'),
         comments,
         ...bookingSteps.data(),

@@ -2,9 +2,12 @@
 // which emails it to the inbox for the chosen reason (the reason → inbox list lives in
 // the API: backend/src/modules/contact/contact.controller.ts). The visitor's email is the
 // Reply-To. js/newsletter.js also adds the email to the newsletter once the form is complete.
+// Partnership / Work With Us / Press / General Question messages are also saved on the website's own server
+// (POST /site-api/messages, admin -> Messages) once the email has gone out.
 (function () {
   var API = 'https://api.worldschoolingjourneys.com';
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var SAVED_REASONS = ['partner', 'jobs', 'press', 'general'];   // same list as MESSAGE_REASONS in server/site-api/server.js
 
   function wire(form) {
     var btn = form.querySelector('button[type="submit"]');
@@ -44,6 +47,14 @@
         return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, status: r.status, body: j }; });
       }).then(function (res) {
         if (res.ok) {
+          // Partnership / Work With Us / Press / General Question: also kept on the website's own server
+          // (admin -> Messages). Best effort: the email already went out, so a failure here changes nothing for the visitor.
+          if (SAVED_REASONS.indexOf(reason) >= 0) {
+            fetch('/site-api/messages', {
+              method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ reason: reason, fullName: fullName, email: email, message: message, page: location.pathname }),
+            }).catch(function () {});
+          }
           var from = res.body.replyFrom;
           say('Message sent! ' + (from ? 'Please add ' + from + ' to your approved senders and check your spam folder. ' : '')
             + 'If you don’t hear back within 48 hours, reach out over WhatsApp or Facebook Messenger.', 'nl-ok');

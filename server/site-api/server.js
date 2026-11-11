@@ -25,7 +25,11 @@
 //   POST   /site-api/signups                          public (the /black-friday waitlist form)
 //   GET    /site-api/signups[?campaign=black-friday-2026]   staff login
 //   DELETE /site-api/signups/:id                      staff login
-//   GET    /site-api/bf-email/info                    staff login: the sale trips + codes, is email set up
+//   POST   /site-api/messages                         public (the "Send A Message" form; partner / jobs / press / general)
+//   GET    /site-api/messages[?reason=jobs]           staff login
+//   PATCH  /site-api/messages/:id  { handled }        staff login
+//   DELETE /site-api/messages/:id                     staff login
+//   GET    /site-api/bf-email/info                   staff login: the sale trips + codes, is email set up
 //   GET    /site-api/bf-email/preview/:signupId       staff login: { subject, html } of that family's email
 //   POST   /site-api/bf-email/test   { to, signupId? } staff login: a [Test] copy to any address (nothing is marked)
 //   POST   /site-api/bf-email/send/:signupId          staff login: the real email for the trips not emailed yet, then marked
@@ -162,6 +166,24 @@ function validateSignup(body) {
   return { value: { campaign, name, email, trips } };
 }
 
+// ---------- contact form messages (admin -> Messages, since 2026-11-12) ----------
+// The "Send A Message" form (js/contact-form.js) still emails the right inbox through the cruise API; after that
+// it also saves Partnership / Work With Us / Press / General Question messages here, so the team has a list.
+// Cruise and land trip questions aren't saved (they go to booking@ / landtrips@ as before).
+// A message (data/messages.json): { id, reason, name, email, message, page, handled, createdAt, updatedAt }
+const MESSAGE_REASONS = ['partner', 'jobs', 'press', 'general'];
+function validateMessage(body) {
+  const reason = clip(body.reason, 20);
+  if (!MESSAGE_REASONS.includes(reason)) return { error: 'This kind of message isn\'t saved here.' };
+  const name = clip(body.fullName || body.name, 120);
+  const email = clip(body.email, 200).toLowerCase();
+  const message = clip(body.message, 5000);
+  if (!name) return { error: 'Please add your name.' };
+  if (!EMAIL_RE.test(email)) return { error: 'Please add a valid email address.' };
+  if (!message) return { error: 'Please write a message.' };
+  return { value: { reason, name, email, message, page: clip(body.page, 200) } };
+}
+
 // ---------- HTTP ----------
 // Black Friday code emails: the sale trips a sign-up picked that haven't been emailed yet
 const BF_CAMPAIGN = 'black-friday-2026';
@@ -189,6 +211,7 @@ function unsubPage(title, body, form) {
 function createServer({ dataDir, seedDir, secret, mail = mailConfig(), mailer = sendMail, preview = createPreview() }) {
   const testimonials = createStore(dataDir, 'testimonials', seedDir && path.join(seedDir, 'testimonials.json'));
   const signups = createStore(dataDir, 'signups', null);
+  const messages = createStore(dataDir, 'messages', null);
   // sign-ups per visitor in the last hour (kept in memory only)
   const recent = new Map();
   function tooMany(req) {
@@ -298,6 +321,36 @@ function createServer({ dataDir, seedDir, secret, mail = mailConfig(), mailer = 
       });
       return send(res, 201, { ok: true });
     }
+    // contact form messages: saved by anyone (the form), listed / marked handled / deleted by staff
+    if (p === '/site-api/messages' && req.method === 'POST') {
+      const body = await readBody(req);
+      if (body.website) return send(res, 201, { ok: true });   // honeypot
+      if (tooMany(req)) return send(res, 429, { message: 'Too many messages from this connection. Please try again in an hour.' });
+      const { value, error } = validateMessage(body);
+      if (error) return send(res, 400, { message: error });
+      const now = new Date().toISOString();
+      await messages.change((rows) => { const row = { id: crypto.randomUUID(), ...value, handled: false, createdAt: now, updatedAt: now }; rows.push(row); return row; });
+      return send(res, 201, { ok: true });
+    }
+    const msgOne = p.match(/^\/site-api\/messages\/([A-Za-z0-9-]{1,64})$/);
+    if ((p === '/site-api/messages' && req.method === 'GET') || (msgOne && (req.method === 'PATCH' || req.method === 'DELETE'))) {
+      if (!isStaff(req)) return send(res, 401, { message: 'Please log in again.' });
+      if (req.method === 'GET') {
+        const reason = url.searchParams.get('reason');
+        const rows = (await messages.load()).filter((r) => !reason || r.reason === reason)
+          .sort((a, b) => String(b.createdAt).localeCompare(String(a.createdAt)));
+        return send(res, 200, rows);
+      }
+      if (req.method === 'PATCH') {
+        const body = await readBody(req);
+        if (typeof body.handled !== 'boolean') return send(res, 400, { message: 'handled must be true or false.' });
+        const row = await messages.change((rows) => { const r = rows.find((x) => x.id === msgOne[1]); if (!r) return null; r.handled = body.handled; r.updatedAt = new Date().toISOString(); return r; });
+        return row ? send(res, 200, row) : send(res, 404, { message: 'Message not found.' });
+      }
+      const gone = await messages.change((rows) => { const i = rows.findIndex((r) => r.id === msgOne[1]); if (i < 0) return false; rows.splice(i, 1); return true; });
+      return gone ? send(res, 200, { ok: true }) : send(res, 404, { message: 'Message not found.' });
+    }
+
     // the lists, for the admin page
     const signup = p.match(/^\/site-api\/signups\/([A-Za-z0-9-]{1,64})$/);
     if ((p === '/site-api/signups' && req.method === 'GET') || (signup && req.method === 'DELETE')) {
@@ -406,7 +459,7 @@ function createServer({ dataDir, seedDir, secret, mail = mailConfig(), mailer = 
   });
 }
 
-module.exports = { createServer, verifyToken, validateTestimonial, validateSignup, bfDue, unsubUrl, CATEGORIES, CAMPAIGNS };
+module.exports = { createServer, verifyToken, validateTestimonial, validateSignup, validateMessage, bfDue, unsubUrl, CATEGORIES, CAMPAIGNS, MESSAGE_REASONS };
 
 if (require.main === module) {
   const port = Number(process.env.SITE_API_PORT || 3100);

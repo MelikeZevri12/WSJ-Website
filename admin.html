@@ -210,6 +210,48 @@
   dialog#addCruiseModal[open], dialog#chooseImageModal[open], dialog#portModal[open], dialog#cruiseLineModal[open], dialog#shipsModal[open], dialog#portMergeModal[open], dialog#backToBackModal[open]{display:flex;flex-direction:column;}
   dialog#addCruiseModal form, dialog#portModal form, dialog#cruiseLineModal form, dialog#portMergeModal form, dialog#backToBackModal form{display:flex;flex-direction:column;min-height:0;}
   dialog#portMergeModal{max-width:480px;}
+  /* TWO-ROW MENU (since 2026-11-12): groups on top, the chosen group's items underneath */
+  .admin-groups{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px;}
+  .admin-group-btn{
+    background:none;border:1.5px solid transparent;border-radius:999px;cursor:pointer;padding:8px 16px;
+    font-family:'Titillium Web',sans-serif;font-weight:800;font-size:15px;color:var(--muted);letter-spacing:.02em;
+  }
+  .admin-group-btn:hover{color:var(--dark);border-color:var(--line);}
+  .admin-group-btn.active{background:var(--dark);color:#fff;}
+  .admin-badge{display:inline-block;min-width:20px;padding:1px 6px;margin-left:4px;border-radius:999px;background:#c14a2f;color:#fff;font-size:11.5px;font-weight:800;text-align:center;}
+  .admin-subnav{flex-wrap:wrap;column-gap:22px;}
+  .admin-subnav-btn[hidden]{display:none;}
+  /* MESSAGES */
+  .msg-text{white-space:pre-wrap;line-height:1.5;max-width:560px;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer;}
+  .msg-text.open{display:block;-webkit-line-clamp:unset;}
+  .msg-more{font-size:12px;color:var(--green-dark);font-weight:700;cursor:pointer;background:none;border:0;padding:4px 0 0;}
+  tr.msg-handled td{opacity:.55;}
+  /* STATISTICS */
+  .stat-filters{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px;}
+  .stat-filters select{min-width:200px;}
+  .stat-card{padding:24px 26px;margin-bottom:18px;}
+  .stat-card h3{font-size:18px;margin:0 0 4px;}
+  .stat-card .stat-sub{font-size:13px;color:var(--muted);margin:0 0 18px;}
+  .pie-wrap{display:grid;grid-template-columns:240px 1fr;gap:34px;align-items:center;}
+  .pie-wrap svg{width:240px;height:240px;display:block;}
+  .pie-wrap path{stroke:var(--white);stroke-width:2;}
+  .pie-wrap path:hover{opacity:.85;}
+  .meter-list{display:flex;flex-direction:column;gap:10px;}
+  .meter-row{display:grid;grid-template-columns:14px minmax(140px,220px) 1fr 92px;gap:10px;align-items:center;font-size:14px;}
+  .meter-row .sw{width:12px;height:12px;border-radius:3px;}
+  .meter-row .bar{height:8px;border-radius:4px;background:#eceae4;overflow:hidden;}
+  .meter-row .bar span{display:block;height:100%;border-radius:4px;}
+  .meter-row .num{text-align:right;color:var(--dark);font-variant-numeric:tabular-nums;}
+  .meter-row .num small{color:var(--muted);}
+  .meter-row.no-swatch{grid-template-columns:minmax(140px,260px) 1fr 92px;}
+  .stat-empty{color:var(--muted);font-size:14px;padding:6px 0;}
+  .stat-two{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media (max-width:860px){ .pie-wrap, .stat-two{grid-template-columns:1fr;} .pie-wrap svg{margin:0 auto;} 
+    /* phone: name + count on one line, the bar underneath */
+    .meter-row{grid-template-columns:14px 1fr auto;grid-template-areas:"sw nm num" "sw bar bar";row-gap:5px;}
+    .meter-row.no-swatch{grid-template-columns:1fr auto;grid-template-areas:"nm num" "bar bar";}
+    .meter-row .sw{grid-area:sw;align-self:start;margin-top:4px;} .meter-row .nm{grid-area:nm;} .meter-row .bar{grid-area:bar;} .meter-row .num{grid-area:num;}
+  }
   /* BLACK FRIDAY tab: code email status + the "Email the Codes" window */
   .bf-pill{display:inline-block;padding:4px 9px;border-radius:20px;border:1px solid;font-size:11.5px;font-weight:700;line-height:1.3;margin:2px 4px 2px 0;}
   .bf-pill-ready{background:#fdecef;border-color:#f0a9b5;color:#a10d26;}
@@ -487,14 +529,29 @@
 
 <div id="dashboardRoot" hidden>
 <div class="admin-wrap">
+  <!-- Two-row menu (since 2026-11-12): the groups on top, the items of the chosen group underneath.
+       A new item = one more button here (data-group + data-tab) + its admin-tab-panel. -->
+  <div class="admin-groups" id="adminGroups">
+    <button type="button" class="admin-group-btn active" data-group="trips">Trips</button>
+    <button type="button" class="admin-group-btn" data-group="promotions">Promotions</button>
+    <button type="button" class="admin-group-btn" data-group="messages">Messages <span class="admin-badge" id="msgBadge" hidden></span></button>
+    <button type="button" class="admin-group-btn" data-group="website">Website</button>
+    <button type="button" class="admin-group-btn" data-group="statistics">Statistics</button>
+  </div>
   <div class="admin-subnav" id="adminSubnav">
-    <button type="button" class="admin-subnav-btn active" data-tab="cruises">Cruises</button>
-    <button type="button" class="admin-subnav-btn" data-tab="ports">Ports</button>
-    <button type="button" class="admin-subnav-btn" data-tab="ships">Ships</button>
-    <button type="button" class="admin-subnav-btn" data-tab="backtoback">Back to Backs</button>
-    <button type="button" class="admin-subnav-btn" data-tab="waitlist">Waitlist</button>
-    <button type="button" class="admin-subnav-btn" data-tab="testimonials">Testimonials</button>
-    <button type="button" class="admin-subnav-btn" data-tab="blackfriday">Black Friday</button>
+    <button type="button" class="admin-subnav-btn active" data-group="trips" data-tab="cruises">Cruises</button>
+    <button type="button" class="admin-subnav-btn" data-group="trips" data-tab="backtoback">Back to Backs</button>
+    <button type="button" class="admin-subnav-btn" data-group="trips" data-tab="ports">Ports</button>
+    <button type="button" class="admin-subnav-btn" data-group="trips" data-tab="ships">Ships</button>
+    <button type="button" class="admin-subnav-btn" data-group="trips" data-tab="waitlist">Waitlist</button>
+    <button type="button" class="admin-subnav-btn" data-group="promotions" data-tab="blackfriday" hidden>Black Friday</button>
+    <button type="button" class="admin-subnav-btn" data-group="messages" data-tab="messages" data-reason="partner" hidden>Collaborations</button>
+    <button type="button" class="admin-subnav-btn" data-group="messages" data-tab="messages" data-reason="jobs" hidden>Jobs</button>
+    <button type="button" class="admin-subnav-btn" data-group="messages" data-tab="messages" data-reason="press" hidden>Press</button>
+    <button type="button" class="admin-subnav-btn" data-group="messages" data-tab="messages" data-reason="general" hidden>General Questions</button>
+    <button type="button" class="admin-subnav-btn" data-group="website" data-tab="testimonials" hidden>Testimonials</button>
+    <button type="button" class="admin-subnav-btn" data-group="statistics" data-tab="stats" data-view="hear" hidden>How Did You Hear About Us</button>
+    <button type="button" class="admin-subnav-btn" data-group="statistics" data-tab="stats" data-view="travelers" hidden>Who's Traveling</button>
   </div>
 
   <section class="admin-tab-panel" id="tab-cruises">
@@ -748,6 +805,78 @@
       <div class="empty-state" id="bfEmptyState" style="display:none;">
         <h3>No sign-ups yet</h3>
         <p>When someone fills out the form on the Black Friday page, they'll show up here.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MESSAGES: contact form messages saved on the website server (server/site-api, /site-api/messages).
+       One panel for the four kinds; the menu button's data-reason picks which. -->
+  <section class="admin-tab-panel" id="tab-messages" hidden>
+    <div class="admin-header">
+      <div>
+        <h1 id="msgTitle">Messages</h1>
+        <p id="msgIntro"></p>
+      </div>
+      <button type="button" class="btn btn-outline" id="msgCsvBtn">Download CSV</button>
+    </div>
+    <div class="cruises-toolbar">
+      <div class="admin-field" style="flex:1;max-width:380px;margin-bottom:0;">
+        <input id="msgSearch" type="text" placeholder="Search by name, email or message...">
+      </div>
+      <label class="attention-toggle"><input type="checkbox" id="msgHideHandled"> Hide handled</label>
+      <div class="admin-hint" id="msgCount" style="margin:0;"></div>
+    </div>
+    <div class="admin-card">
+      <table class="cruise-table" id="msgTable">
+        <thead><tr><th>Received</th><th>From</th><th>Message</th><th>Handled</th><th></th></tr></thead>
+        <tbody id="msgBody"></tbody>
+      </table>
+      <div class="empty-state" id="msgEmpty" style="display:none;">
+        <h3>No messages yet</h3>
+        <p>When someone sends one through the "Send A Message" form on the website, it shows up here.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATISTICS: from the cruise system's booking requests (GET /bookings/stats; no names or contact details).
+       Counted here in the page: by family (a back-to-back booking counts once across all cruises). -->
+  <section class="admin-tab-panel" id="tab-stats" hidden>
+    <div class="admin-header">
+      <div>
+        <h1 id="statTitle">Statistics</h1>
+        <p id="statIntro">From the booking requests sent through the cruise and back-to-back booking forms. Land trips are booked through WeTravel, so they aren't included.</p>
+      </div>
+    </div>
+    <div class="stat-filters">
+      <div class="admin-field" style="flex:0 1 380px;margin-bottom:0;"><select id="statCruise" aria-label="Cruise"><option value="">All cruises</option></select></div>
+      <div class="admin-field" style="flex:0 1 280px;margin-bottom:0;"><select id="statPeriod" aria-label="Period">
+        <option value="">All time</option>
+        <option value="365">Requests from the last 12 months</option>
+        <option value="90">Requests from the last 3 months</option>
+        <option value="30">Requests from the last 30 days</option>
+      </select></div>
+      <label class="attention-toggle"><input type="checkbox" id="statBookedOnly"> Booked families only</label>
+    </div>
+    <div id="statError" class="error-banner" hidden></div>
+    <div id="statHearView">
+      <div class="admin-card stat-card">
+        <h3>How did you hear about us?</h3>
+        <p class="stat-sub" id="statHearSub"></p>
+        <div id="statHear"></div>
+      </div>
+    </div>
+    <div id="statTravelersView" hidden>
+      <div class="stat-two">
+        <div class="admin-card stat-card">
+          <h3>What kind of travelers</h3>
+          <p class="stat-sub" id="statTypesSub"></p>
+          <div id="statTypes"></div>
+        </div>
+        <div class="admin-card stat-card">
+          <h3>Countries (citizenship)</h3>
+          <p class="stat-sub" id="statCountriesSub"></p>
+          <div id="statCountries"></div>
+        </div>
       </div>
     </div>
   </section>
@@ -3763,7 +3892,228 @@ $('deleteBackToBackBtn').addEventListener('click', async () => {
 // created as a side effect of saving a cruise, so the Ports tab's data can
 // go stale the moment a cruise is saved without a page reload - refetch on
 // switch is what keeps it honest.
-const TAB_LOADERS = { cruises: loadCruises, ports: loadPorts, ships: loadShipsTab, backtoback: loadBackToBacks, waitlist: loadWaitlist, testimonials: loadTestimonials, blackfriday: loadBlackFriday };
+const TAB_LOADERS = { cruises: loadCruises, ports: loadPorts, ships: loadShipsTab, backtoback: loadBackToBacks, waitlist: loadWaitlist, testimonials: loadTestimonials, blackfriday: loadBlackFriday, messages: loadMessages, stats: loadStats };
+
+// ---- Two-row menu (since 2026-11-12) ----
+// The group buttons (Trips, Promotions, Messages, Website, Statistics) show their own items in the row below;
+// an item shows its admin-tab-panel and runs its loader (TAB_LOADERS), passing the button so one panel can
+// serve several items (Messages: data-reason, Statistics: data-view).
+function showAdminTab(btn) {
+  document.querySelectorAll('.admin-subnav-btn').forEach((b) => b.classList.toggle('active', b === btn));
+  document.querySelectorAll('.admin-tab-panel').forEach((panel) => { panel.hidden = true; });
+  $(`tab-${btn.dataset.tab}`).hidden = false;
+  TAB_LOADERS[btn.dataset.tab]?.(btn);
+}
+function showAdminGroup(group) {
+  document.querySelectorAll('.admin-group-btn').forEach((b) => b.classList.toggle('active', b.dataset.group === group));
+  const items = [...document.querySelectorAll('.admin-subnav-btn')];
+  items.forEach((b) => { b.hidden = b.dataset.group !== group; });
+  showAdminTab(items.find((b) => b.dataset.group === group));
+}
+document.querySelectorAll('.admin-group-btn').forEach((b) => b.addEventListener('click', () => showAdminGroup(b.dataset.group)));
+document.querySelectorAll('.admin-subnav-btn').forEach((b) => b.addEventListener('click', () => showAdminTab(b)));
+
+// ---- Messages (contact form) ----
+// Saved by js/contact-form.js on the website server once the email has gone out. "Handled" is just a tick
+// for the team; deleting is permanent.
+const MESSAGE_KINDS = {
+  partner: { title: 'Collaborations', intro: 'Partnership messages from the website\'s "Send A Message" form. Each one was also emailed to collaborations@everyavenue.com.' },
+  jobs: { title: 'Jobs', intro: '"Work With Us" messages from the website\'s "Send A Message" form. Each one was also emailed to jobs@everyavenue.com.' },
+  press: { title: 'Press', intro: 'Press & media requests from the website\'s "Send A Message" form. Each one was also emailed to press@everyavenue.com.' },
+  general: { title: 'General Questions', intro: 'General questions from the website\'s "Send A Message" form. Each one was also emailed to booking@everyavenue.com.' },
+};
+let msgRows = [], msgReason = 'partner';
+async function loadMessages(btn) {
+  msgReason = (btn && btn.dataset.reason) || msgReason;
+  const kind = MESSAGE_KINDS[msgReason];
+  $('msgTitle').textContent = kind.title;
+  $('msgIntro').textContent = kind.intro;
+  $('msgBody').innerHTML = '<tr><td colspan="5" style="color:var(--muted);">Loading...</td></tr>';
+  try {
+    const res = await apiFetch(`${SITE_API}/messages`);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    msgRows = await res.json();
+  } catch (err) {
+    if (err.message === 'Unauthorized') return;
+    $('msgEmpty').style.display = 'none'; $('msgTable').style.display = '';
+    $('msgBody').innerHTML = `<tr><td colspan="5" style="color:#c14a2f;">Couldn't load the messages (${escapeHtml(err.message)}).</td></tr>`;
+    return;
+  }
+  updateMessageBadges();
+  renderMessages();
+}
+// unhandled messages: a red number on "Messages" and on each kind
+function updateMessageBadges() {
+  const open = msgRows.filter((m) => !m.handled);
+  $('msgBadge').textContent = open.length; $('msgBadge').hidden = !open.length;
+  document.querySelectorAll('.admin-subnav-btn[data-reason]').forEach((b) => {
+    const n = open.filter((m) => m.reason === b.dataset.reason).length;
+    b.textContent = MESSAGE_KINDS[b.dataset.reason].title + (n ? ` (${n})` : '');
+  });
+}
+async function refreshMessageBadge() {
+  try { const res = await apiFetch(`${SITE_API}/messages`); if (res.ok) { msgRows = await res.json(); updateMessageBadges(); } } catch (e) { /* not important */ }
+}
+function visibleMessages() {
+  const q = $('msgSearch').value.trim().toLowerCase(), hide = $('msgHideHandled').checked;
+  return msgRows.filter((m) => m.reason === msgReason && (!hide || !m.handled)
+    && (!q || [m.name, m.email, m.message].some((v) => String(v || '').toLowerCase().includes(q))));
+}
+function renderMessages() {
+  const all = msgRows.filter((m) => m.reason === msgReason), rows = visibleMessages();
+  $('msgEmpty').style.display = all.length ? 'none' : '';
+  $('msgTable').style.display = all.length ? '' : 'none';
+  $('msgCount').textContent = all.length ? `Showing ${rows.length} of ${all.length} · ${all.filter((m) => !m.handled).length} not handled yet` : '';
+  const fmt = (iso) => new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  $('msgBody').innerHTML = rows.length ? rows.map((m) => `
+    <tr class="${m.handled ? 'msg-handled' : ''}">
+      <td style="white-space:nowrap;vertical-align:top;">${fmt(m.createdAt)}</td>
+      <td style="vertical-align:top;"><strong>${escapeHtml(m.name)}</strong><br><a href="mailto:${escapeHtml(m.email)}">${escapeHtml(m.email)}</a></td>
+      <td style="vertical-align:top;"><div class="msg-text" title="Click to show it all">${escapeHtml(m.message)}</div></td>
+      <td style="vertical-align:top;"><label class="attention-toggle"><input type="checkbox" data-msg-handled="${escapeHtml(m.id)}" ${m.handled ? 'checked' : ''}> ${m.handled ? 'Yes' : 'No'}</label></td>
+      <td style="text-align:right;vertical-align:top;"><button type="button" class="btn-text-danger" data-msg-delete="${escapeHtml(m.id)}">Delete</button></td>
+    </tr>`).join('') : '<tr><td colspan="5" style="color:var(--muted);">No messages match.</td></tr>';
+}
+$('msgSearch').addEventListener('input', renderMessages);
+$('msgHideHandled').addEventListener('change', renderMessages);
+$('msgBody').addEventListener('click', async (e) => {
+  const text = e.target.closest('.msg-text');
+  if (text) { text.classList.toggle('open'); return; }
+  const del = e.target.closest('button[data-msg-delete]');
+  if (!del) return;
+  const m = msgRows.find((x) => x.id === del.dataset.msgDelete); if (!m) return;
+  if (!confirm(`Delete the message from ${m.name} (${m.email})? This cannot be undone.`)) return;
+  del.disabled = true;
+  try {
+    const res = await apiFetch(`${SITE_API}/messages/${encodeURIComponent(m.id)}`, { method: 'DELETE' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    msgRows = msgRows.filter((x) => x.id !== m.id); updateMessageBadges(); renderMessages();
+  } catch (err) { del.disabled = false; if (err.message !== 'Unauthorized') alert(`Couldn't delete it (${err.message}).`); }
+});
+$('msgBody').addEventListener('change', async (e) => {
+  const box = e.target.closest('input[data-msg-handled]'); if (!box) return;
+  const m = msgRows.find((x) => x.id === box.dataset.msgHandled); if (!m) return;
+  box.disabled = true;
+  try {
+    const res = await apiFetch(`${SITE_API}/messages/${encodeURIComponent(m.id)}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ handled: box.checked }) });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    m.handled = box.checked;
+  } catch (err) { box.checked = m.handled; if (err.message !== 'Unauthorized') alert(`Couldn't save it (${err.message}).`); }
+  updateMessageBadges(); renderMessages();
+});
+$('msgCsvBtn').addEventListener('click', () => {
+  const cell = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const lines = [['Received', 'Name', 'Email', 'Message', 'Handled', 'Sent from page'].map(cell).join(',')]
+    .concat(visibleMessages().map((m) => [m.createdAt.slice(0, 10), m.name, m.email, m.message, m.handled ? 'yes' : 'no', m.page].map(cell).join(',')));
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([lines.join('\r\n')], { type: 'text/csv' }));
+  a.download = `${MESSAGE_KINDS[msgReason].title.toLowerCase().replace(/\s+/g, '-')}-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click(); URL.revokeObjectURL(a.href);
+});
+
+// ---- Statistics (from the cruise system's booking requests) ----
+// GET /bookings/stats: one row per booking request (no names or contact details). Counted per FAMILY:
+// with "All cruises", a back-to-back or journey booking (one request per cruise, same bookingGroupId) counts once.
+// Waitlist sign-ups are left out (that form doesn't ask these questions).
+// Colors: one fixed color per answer (never by rank), from the validated reference palette (dataviz skill);
+// "Other" and the folded tail are grey. The pie shows the 5 biggest answers + Other; the list beside it has all.
+const HEAR_COLORS = { 'Facebook': '#2a78d6', 'Previous Customer': '#eb6834', 'Family/Friend Referral': '#1baf7a', 'Google Search': '#eda100',
+  'Instagram': '#e87ba4', 'WhatsApp': '#008300', 'TikTok': '#6250d6', 'Email Newsletter': '#e34948' };
+const STAT_GREY = '#9a988f', STAT_BLUE = '#2a78d6';
+let statRows = null, statView = 'hear';
+async function loadStats(btn) {
+  statView = (btn && btn.dataset.view) || statView;
+  $('statTitle').textContent = statView === 'hear' ? 'How Did You Hear About Us' : 'Who\'s Traveling';
+  $('statHearView').hidden = statView !== 'hear';
+  $('statTravelersView').hidden = statView !== 'travelers';
+  $('statError').hidden = true;
+  if (!statRows) {
+    try {
+      const res = await apiFetch(`${API}/bookings/stats`);
+      if (res.status === 404) throw new Error('the cruise system needs its update first (see the deploy steps)');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      statRows = await res.json();
+    } catch (err) {
+      if (err.message === 'Unauthorized') return;
+      $('statError').textContent = `Couldn't load the statistics: ${err.message}.`; $('statError').hidden = false;
+      return;
+    }
+    // cruise filter: every cruise that has requests, soonest departure first
+    const cruises = new Map();
+    statRows.forEach((r) => cruises.set(r.cruiseId, r.cruise));
+    $('statCruise').innerHTML = '<option value="">All cruises</option>' + [...cruises.entries()]
+      .sort((a, b) => String(a[1].departureDate).localeCompare(String(b[1].departureDate)))
+      .map(([id, c]) => `<option value="${escapeHtml(id)}">${escapeHtml(new Date(c.departureDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }))} · ${escapeHtml(c.title || c.businessId)}</option>`).join('');
+  }
+  renderStats();
+}
+// the families the current filters select
+function statFamilies() {
+  const cruise = $('statCruise').value, days = Number($('statPeriod').value) || 0, booked = $('statBookedOnly').checked;
+  const since = days ? Date.now() - days * 86400e3 : 0;
+  const rows = statRows.filter((r) => r.requestType !== 'waitlist' && (!cruise || r.cruiseId === cruise)
+    && (!since || Date.parse(r.createdAt) >= since) && (!booked || (r.status === 'booked' && !r.cancelled)));
+  if (cruise) return rows;
+  const seen = new Set();
+  return rows.filter((r) => { const k = r.bookingGroupId || r.id; if (seen.has(k)) return false; seen.add(k); return true; });
+}
+const pct = (n, total) => (total ? Math.round((n / total) * 100) : 0);
+function meterList(items, total, { swatches = true } = {}) {
+  return `<div class="meter-list">${items.map((it) => `
+    <div class="meter-row${swatches ? '' : ' no-swatch'}" title="${escapeHtml(it.label)}: ${it.n} (${pct(it.n, total)}%)">
+      ${swatches ? `<span class="sw" style="background:${it.color}"></span>` : ''}
+      <span class="nm">${escapeHtml(it.label)}</span>
+      <span class="bar"><span style="width:${pct(it.n, total)}%;background:${it.color || STAT_BLUE}"></span></span>
+      <span class="num">${it.n} <small>· ${pct(it.n, total)}%</small></span>
+    </div>`).join('')}</div>`;
+}
+function pieSvg(slices, total) {
+  const R = 118, C = 120;
+  if (slices.length === 1) return `<svg viewBox="0 0 240 240" role="img" aria-label="${escapeHtml(slices[0].label)}: 100%"><circle cx="${C}" cy="${C}" r="${R}" fill="${slices[0].color}"><title>${escapeHtml(slices[0].label)}: ${slices[0].n} (100%)</title></circle></svg>`;
+  let angle = -Math.PI / 2;
+  const paths = slices.map((s) => {
+    const a = (s.n / total) * Math.PI * 2, end = angle + a;
+    const [x1, y1, x2, y2] = [C + R * Math.cos(angle), C + R * Math.sin(angle), C + R * Math.cos(end), C + R * Math.sin(end)];
+    const d = `M${C},${C} L${x1.toFixed(2)},${y1.toFixed(2)} A${R},${R} 0 ${a > Math.PI ? 1 : 0} 1 ${x2.toFixed(2)},${y2.toFixed(2)} Z`;
+    angle = end;
+    return `<path d="${d}" fill="${s.color}"><title>${escapeHtml(s.label)}: ${s.n} (${pct(s.n, total)}%)</title></path>`;
+  });
+  return `<svg viewBox="0 0 240 240" role="img" aria-label="${escapeHtml(slices.map((s) => `${s.label} ${pct(s.n, total)}%`).join(', '))}">${paths.join('')}</svg>`;
+}
+function renderStats() {
+  if (!statRows) return;
+  const fam = statFamilies();
+  const famWord = (n) => `${n} ${n === 1 ? 'family' : 'families'}`;
+  // How did you hear about us?
+  const hear = new Map();
+  fam.forEach((r) => { const v = (r.hearAboutUs || '').trim(); if (v) hear.set(v, (hear.get(v) || 0) + 1); });
+  const answered = [...hear.values()].reduce((a, b) => a + b, 0);
+  const all = [...hear.entries()].map(([label, n]) => ({ label, n, color: HEAR_COLORS[label] || STAT_GREY })).sort((a, b) => b.n - a.n || a.label.localeCompare(b.label));
+  $('statHearSub').textContent = `${famWord(answered)} answered${fam.length - answered ? ` · ${famWord(fam.length - answered)} left it blank (not counted)` : ''}`;
+  if (!answered) $('statHear').innerHTML = '<p class="stat-empty">No answers for this selection yet.</p>';
+  else {
+    const top = all.filter((s) => s.label !== 'Other').slice(0, 5);
+    const rest = answered - top.reduce((a, s) => a + s.n, 0);
+    const slices = rest ? [...top, { label: 'Other', n: rest, color: STAT_GREY }] : top;
+    $('statHear').innerHTML = `<div class="pie-wrap">${pieSvg(slices, answered)}${meterList(all, answered)}</div>`;
+  }
+  // What kind of travelers (families who ticked at least one box; a family can tick several)
+  const typed = fam.filter((r) => (r.travelerTypes || []).length);
+  const TYPES = ['New to travel', 'Seasoned traveler', 'First time outside of home country', 'First time cruiser', 'First time with Worldschooling Journeys'];
+  $('statTypesSub').textContent = typed.length ? `${famWord(typed.length)} answered · a family can tick more than one, so the shares add up to more than 100%` : 'Asked on the booking forms since November 12, 2026.';
+  $('statTypes').innerHTML = typed.length
+    ? meterList(TYPES.map((t) => ({ label: t, n: typed.filter((r) => r.travelerTypes.includes(t)).length, color: STAT_BLUE })), typed.length, { swatches: false })
+    : '<p class="stat-empty">No answers for this selection yet.</p>';
+  // Countries: every traveler's citizenship (lead + passengers)
+  const countries = new Map(); let people = 0;
+  fam.forEach((r) => (r.citizenships || []).forEach((c) => { countries.set(c, (countries.get(c) || 0) + 1); people++; }));
+  const list = [...countries.entries()].map(([label, n]) => ({ label, n, color: STAT_BLUE })).sort((a, b) => b.n - a.n || a.label.localeCompare(b.label));
+  const shown = list.slice(0, 12), tail = list.slice(12).reduce((a, c) => a + c.n, 0);
+  if (tail) shown.push({ label: `${list.length - 12} other countries`, n: tail, color: STAT_GREY });
+  $('statCountriesSub').textContent = people ? `${people} ${people === 1 ? 'traveler' : 'travelers'} with a citizenship on file, from ${famWord(fam.length)}` : '';
+  $('statCountries').innerHTML = people ? meterList(shown, people, { swatches: false }) : '<p class="stat-empty">No citizenships for this selection yet.</p>';
+}
+['statCruise', 'statPeriod', 'statBookedOnly'].forEach((id) => $(id).addEventListener('change', renderStats));
 
 // ---- Waitlist (land trip "be the first to be notified" signups) ----
 // Saved by the land trip pages' waitlist popup (frontend/js/waitlist.js);
@@ -4161,15 +4511,6 @@ $('deleteTestimonialBtn').addEventListener('click', async () => {
   }
 });
 
-document.querySelectorAll('.admin-subnav-btn').forEach((btn) => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.admin-subnav-btn').forEach((b) => b.classList.remove('active'));
-    document.querySelectorAll('.admin-tab-panel').forEach((panel) => { panel.hidden = true; });
-    btn.classList.add('active');
-    $(`tab-${btn.dataset.tab}`).hidden = false;
-    TAB_LOADERS[btn.dataset.tab]?.();
-  });
-});
 
 // ---- Ports (Port Library) ----
 // Ports are created automatically as cruises are parsed (see
@@ -4940,6 +5281,7 @@ function showDashboard() {
 }
 
 function loadDashboard() {
+  refreshMessageBadge();
   showDashboard();
   loadCruiseLines();
   loadCruises();

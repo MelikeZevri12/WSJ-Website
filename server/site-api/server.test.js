@@ -369,3 +369,31 @@ test('cruise descriptions stay within 160 characters', () => {
   assert.ok(d.length <= 160, d.length);
   assert.ok(!/—/.test(d));
 });
+
+// ---------- contact form messages ----------
+test('contact messages: the form saves partner/jobs/press/general, staff list, mark handled and delete', async () => {
+  const s = await start(null);
+  try {
+    const post = (b) => s.call('POST', '/messages', { fullName: 'Ana Silva', email: 'Ana@Example.com', message: 'Hello!', page: '/contact', ...b }, null);
+    assert.equal((await post({ reason: 'jobs' })).status, 201);
+    assert.equal((await post({ reason: 'partner', message: 'Collab idea' })).status, 201);
+    assert.equal((await post({ reason: 'press' })).status, 201);
+    assert.equal((await post({ reason: 'general' })).status, 201);
+    assert.equal((await post({ reason: 'cruise' })).status, 400);          // cruise / land trip questions aren't saved
+    assert.equal((await post({ reason: 'jobs', email: 'nope' })).status, 400);
+    assert.equal((await post({ reason: 'jobs', message: '' })).status, 400);
+    assert.equal((await post({ reason: 'jobs', website: 'http://spam' })).status, 201);   // bot: "ok", not saved
+    assert.equal((await s.call('GET', '/messages', null, null)).status, 401);
+    const all = (await s.call('GET', '/messages')).body;
+    assert.equal(all.length, 4);
+    assert.equal(all[0].email, 'ana@example.com'); assert.equal(all[0].handled, false);
+    const jobs = (await s.call('GET', '/messages?reason=jobs')).body;
+    assert.equal(jobs.length, 1);
+    assert.equal((await s.call('PATCH', `/messages/${jobs[0].id}`, { handled: true }, null)).status, 401);
+    assert.equal((await s.call('PATCH', `/messages/${jobs[0].id}`, { handled: 'yes' })).status, 400);
+    assert.equal((await s.call('PATCH', `/messages/${jobs[0].id}`, { handled: true })).body.handled, true);
+    assert.equal((await s.call('DELETE', `/messages/${jobs[0].id}`)).status, 200);
+    assert.equal((await s.call('GET', '/messages')).body.length, 3);
+    assert.equal((await s.call('DELETE', `/messages/${jobs[0].id}`)).status, 404);
+  } finally { await s.close(); }
+});
