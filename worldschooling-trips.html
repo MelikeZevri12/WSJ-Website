@@ -584,7 +584,8 @@ window.TripsPage = (function(){
       let total = 0;
       for (const l of legs) {
         const row = l.cabinPrices.find(p => p.category === cat && p.guests === guests);
-        if (l.soldOut || !row || row.soldOut || row.price == null) return null;
+        // a back-to-back stays open while one of its cruises shows sold out (cabins come and go), so that cruise's listed prices still count
+        if (!row || row.price == null || (row.soldOut && !l.soldOut)) return null;
         total += row.price;
       }
       return total / guests;
@@ -595,7 +596,7 @@ window.TripsPage = (function(){
       dates: formatRange(first.departureDate, endIso),
       nights: legs.reduce((sum, l) => sum + (l.nights || 0), 0),
       sortDate: first.departureDate,
-      soldOut: legs.some(l => l.soldOut),
+      soldOut: legs.every(l => l.soldOut),   // sold out only when EVERY cruise is (same rule as journey.html)
       startingPrice: perPersonTotals.length ? Math.round(Math.min(...perPersonTotals)) : null,
       // "Tokyo → Benoa": where the first cruise leaves from and the last one ends.
       photoLabel: (first.destination && last.destination) ? `${first.destination.split(" → ")[0]} → ${last.destination.split(" → ").pop()}` : "Back-to-back journey",
@@ -1150,7 +1151,8 @@ window.TripsPage = (function(){
       let total = 0;
       for (const l of legs) {
         const row = l.cabinPrices.find(p => p.category === cat && p.guests === 2);
-        if (l.soldOut || !row || row.soldOut || row.price == null) return null;
+        // a back-to-back stays open while one of its cruises shows sold out (cabins come and go), so that cruise's listed prices still count
+        if (!row || row.price == null || (row.soldOut && !l.soldOut)) return null;
         total += row.price;
       }
       return total;
@@ -1161,7 +1163,7 @@ window.TripsPage = (function(){
       dates: formatRange(first.departureDate, endIso),
       nights: legs.reduce((sum, l) => sum + (l.nights || 0), 0),
       sortDate: first.departureDate,
-      soldOut: legs.some(l => l.soldOut),
+      soldOut: legs.every(l => l.soldOut),   // sold out only when EVERY cruise is (same rule as journey.html)
       startingPrice: totals.length ? perPerson(Math.min(...totals)) : null,
       // "Tokyo → Benoa": where the first cruise leaves from and the last one ends.
       photoLabel: (first.destination && last.destination) ? `${first.destination.split(" → ")[0]} → ${last.destination.split(" → ").pop()}` : "Back-to-back journey",

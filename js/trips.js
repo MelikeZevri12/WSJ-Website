@@ -120,15 +120,17 @@
       let total = 0;
       for (const l of legs) {
         const row = l.cabinPrices.find(p => p.category === cat && p.guests === guests);
-        if (l.soldOut || !row || row.soldOut || row.price == null) return null;
+        // a back-to-back stays open while one of its cruises shows sold out (cabins come and go), so that cruise's listed prices still count
+        if (!row || row.price == null || (row.soldOut && !l.soldOut)) return null;
         total += row.price;
       }
       return total / guests;
     })).filter(t => t != null);
+    // sold out only when EVERY cruise is (same rule as journey.html)
     return {
       kind: "journey", href: `/journeys/${j.slug}`, title: j.title || `${legs.length}-Cruise Back-to-Back Journey`,
       dates: formatRange(first.departureDate, endIso), sortDate: first.departureDate, year: Number(first.departureDate.slice(0, 4)),
-      soldOut: legs.some(l => l.soldOut), price: perPersonTotals.length ? money(Math.round(Math.min(...perPersonTotals))) : null, per: "person",
+      soldOut: legs.every(l => l.soldOut), price: perPersonTotals.length ? money(Math.round(Math.min(...perPersonTotals))) : null, per: "person",
       photo: j.heroImageUrl ? pictureUrl(j.heroImageUrl) : null, photoLabel: "Back-to-back journey",
       shipLine: [line, ships.length === 1 ? ships[0] : ships.length > 1 ? `${ships.length} ships` : null].filter(Boolean).join(" · "),
     };
