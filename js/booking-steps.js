@@ -5,7 +5,8 @@
 //   then the page's own steps (data-step="you", "you-more", "cabin", "about", "review"), with one step per
 //   other passenger (Passenger 2 of 5, 3 of 5...) inserted before "cabin".
 // Book now (or a pricing question with "Yes"): everyone's name, date of birth, gender and citizenship are
-// required (the lead's own fields are marked data-book-required). "No": those steps are skipped - the
+// required (the lead's date of birth + gender are marked data-book-required; the lead's citizenship sits on
+// 'Your details' and is always required, also for a pricing question answered 'later'). "No": those steps are skipped - the
 // team's reply email then carries the family's own link to add them later (it updates the same request).
 // Each page keeps its own submit; it reads BookingSteps' data() (requestType, travelers, kidAges, passengers).
 (function () {
@@ -168,7 +169,8 @@
           travelers: travelers() || null,
           kidAges: kidAges.slice(0, kids()).map((a) => parseInt(a, 10)).filter((a) => a >= 0),
           passengers: later ? [] : passengers.map((p) => ({ ...p })),
-          ...(later ? { dob: '', gender: '', citizenship: '' } : {}),
+          // the lead's citizenship is always asked (on 'Your details', user's choice 2026-11-11), so it's kept
+          ...(later ? { dob: '', gender: '' } : {}),
         };
       },
       // Rows for the page's "Quick review before sending" box.
