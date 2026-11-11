@@ -291,20 +291,20 @@
   </div>
 </section>
 
-<!-- FAQ -->
-<section id="faq" data-q="faq">
-  <div class="wrap">
-    <div class="section-head"><div class="eyebrow">Questions</div><h2>Frequently Asked Questions</h2></div>
-    <div id="faqBody"></div>
-  </div>
-</section>
-
 <!-- SALZBURGERLAND, ALL YEAR (links the Austria pages) -->
 <section id="allYear" data-q="allyear">
   <div class="wrap">
     <div class="section-head"><div class="eyebrow">Austria, all year</div><h2>Same valley, three very different seasons</h2>
       <p>Same resort, same hosts, same kind of families. Many of them come back for another season, and some stay for more than one.</p></div>
     <div class="ay-grid"><a class="ay-card spotlight-card style-photo trip-card has-photo" href="/land-trips/austria-summer.html" target="_blank" rel="noopener"><div class="sp-photo" style="background-image:url('/images/land-trips/austria-summer.webp')"></div><div class="sp-overlay"><div class="spotlight-dates"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>May 30 – Jul 11, 2027 · 3 sessions</span></div><div class="spotlight-title">Summer Mountain Retreat</div><div class="cc-foot"><div><div class="cc-price-label">Starting from</div><div class="cc-price">€1,852 <small>/ person</small></div></div><span class="cc-more">Learn More</span></div></div></a><div class="ay-card spotlight-card style-photo trip-card has-photo current"><div class="sp-photo" style="background-image:url('/images/land-trips/austria-fall.webp')"></div><span class="cc-tag">You’re here</span><div class="sp-overlay"><div class="spotlight-dates"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>Sep 11–25, 2027</span></div><div class="spotlight-title">Fall Mountain Retreat</div><div class="cc-foot"><div><div class="cc-price-label">Starting from</div><div class="cc-price">€1,740 <small>/ person</small></div></div><span class="cc-more">This page</span></div></div></div><a class="ay-card spotlight-card style-photo trip-card has-photo" href="/land-trips/austria-winter.html" target="_blank" rel="noopener"><div class="sp-photo" style="background-image:url('/images/land-trips/austria-winter.webp')"></div><div class="sp-overlay"><div class="spotlight-dates"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg><span>Dec 4–18, 2026 & Dec 5–19, 2027</span></div><div class="spotlight-title">Skiing & Christmas Markets Retreat</div><div class="cc-foot"><div><div class="cc-price-label">Starting from</div><div class="cc-price">€1,350 <small>/ person</small></div></div><span class="cc-more">Learn More</span></div></div></a></div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" data-q="faq">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">Questions</div><h2>Frequently Asked Questions</h2></div>
+    <div id="faqBody"></div>
   </div>
 </section>
 
@@ -740,7 +740,7 @@ function renderPolicy(){
     '<p>Every Avenue Travel, LLC is registered with the State of Florida as a Seller of Travel. Registration No. ST45213. IATA No. 10620400.</p>';
 }
 
-const NAV = [['overview','Overview'],['community','Community'],['itinerary','What You’ll Do'],['highlightsSec','Highlights'],['cost','Cost'],['included','What’s Included'],['stays','Stays'],['food','Food'],['faq','FAQ'],['allYear','Other Seasons']];
+const NAV = [['overview','Overview'],['community','Community'],['itinerary','What You’ll Do'],['highlightsSec','Highlights'],['cost','Cost'],['included','What’s Included'],['stays','Stays'],['food','Food'],['allYear','Other Seasons'],['faq','FAQ']];
 function hideEmptySections(){
   const empty = { highlightsSec: !TRIP.overview.highlights.length,
     itinerary: document.getElementById('itinerary').dataset.empty === '1',
