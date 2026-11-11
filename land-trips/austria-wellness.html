@@ -144,13 +144,21 @@
   
   
   
+  /* Autoimmune version, "What makes this retreat unique": short skimmable cards, 3 per row */
+  .text-cards.three{grid-template-columns:repeat(3,1fr);}
+  .text-cards.three .yoga-card{padding:22px 22px 20px;}
+  .text-cards.three .yoga-card h4{font-size:18px;margin-bottom:6px;}
+  .stat-grid.four{grid-template-columns:repeat(4,1fr);}
   @media (max-width:1000px){
+    .text-cards.three{grid-template-columns:1fr 1fr;}
+    .stat-grid.four{grid-template-columns:1fr 1fr;}
     .stat-grid{grid-template-columns:repeat(3,1fr);}
     .cond-grid, .steps.four, .amen-tiles{grid-template-columns:1fr 1fr;}
   }
   @media (max-width:760px){
     .sym-grid, .steps.three, .phase-grid, .imp-grid, .pkg-grid{grid-template-columns:1fr;}
     .stat-grid{grid-template-columns:1fr 1fr;}
+    .text-cards.three{grid-template-columns:1fr;}
   }
   #itinerary .sess-picker{display:none;}
   @media (max-width:520px){
@@ -271,26 +279,62 @@
   </div>
 </section>
 
-<!-- WHAT MAKES THE HEALING GALLERY UNIQUE (Autoimmune & Inflammatory version only since 2026-11-10) -->
-<section class="m-ai" id="unique">
+<!-- AUTOIMMUNE VERSION, reworked 2026-11-12 after reviewer feedback. Order: pain points (overview) -> what makes this
+     retreat unique (short cards) -> what the Healing Gallery is -> how it works (course + step by step) -> community,
+     health focus, conditions -> a session inside the mountain. -->
+<!-- WHAT MAKES THIS RETREAT UNIQUE (autoimmune; card texts from the team's Notion copy) -->
+<section class="tint m-ai" id="whyRetreat">
   <div class="wrap">
-    <div class="section-head"><div class="eyebrow">The Healing Gallery</div><h2>What Makes the Healing Gallery Unique</h2></div>
-    <div class="nat-grid"><div class="hl-card"><div class="photo-slot"><img src="/images/land-trips/austria/healing-gallery-rest.webp" alt="Resting inside the Healing Gallery" loading="lazy"></div><span class="cn">01</span><h4>A Unique Therapeutic Climate</h4><p>Deep inside the Radhausberg mountain, the Healing Gallery combines naturally occurring radon with temperatures of 37–41.5°C (98.6–106.7°F) and humidity of 75–100%. This combination is a globally unique healing climate.</p></div><div class="hl-card"><div class="photo-slot"><img src="/images/land-trips/austria/healing-gallery-train-group.webp" alt="Guests by the Healing Gallery train" loading="lazy"></div><span class="cn">02</span><h4>A Tradition Since 1952</h4><p>The therapeutic climate inside the mountain has been used since 1952. Today, the Healing Gallery operates as a medical therapy centre, with each participant’s treatment guided individually by its medical professionals.</p></div><div class="hl-card"><div class="photo-slot"><img src="/images/land-trips/austria/healing-gallery-train.webp" alt="Riding the train into the mountain" loading="lazy"></div><span class="cn">03</span><h4>The Therapy Experience</h4><p>Guests travel approximately 2.5 kilometres into the mountain by train before resting at designated therapy stations in the warm, humid environment. After returning from the mountain, the Healing Gallery recommends approximately 30 minutes of relaxation.</p></div><div class="hl-card"><div class="photo-slot"><img src="/images/land-trips/austria/healing-gallery-loungers.webp" alt="Loungers inside the Healing Gallery" loading="lazy"></div><span class="cn">04</span><h4>A Multi-Session Experience</h4><p>The Healing Gallery generally recommends 8–12 sessions over 2–3 weeks, although the appropriate program is determined individually. Our three-week retreat gives guests the time to experience their recommended sessions without rushing their stay.</p></div></div>
+    <div class="section-head"><div class="eyebrow">Why This Retreat</div><h2>What makes this retreat unique</h2></div>
+    <div class="text-cards three">
+      <div class="yoga-card"><h4>A therapy you won’t find anywhere else</h4><p>Discover the Healing Gallery, a medical therapy centre inside the Radhausberg mountain, known for its naturally occurring radon, heat, and humidity. There’s no other place like it in the world.</p></div>
+      <div class="yoga-card"><h4>Time to focus on your health</h4><p>With three weeks in Austria, you have time for a recommended Healing Gallery treatment course, rest, and a slower pace without rushing from one appointment to the next.</p></div>
+      <div class="yoga-card"><h4>Built around your health</h4><p>A wellness experience designed around parents’ health, including those living with autoimmune, inflammatory, rheumatic, or chronic conditions.</p></div>
+      <div class="yoga-card"><h4>Wellness for the whole family</h4><p>Enjoy thermal pools, saunas, steam rooms, mountain air, nature, and time to recharge.</p></div>
+      <div class="yoga-card"><h4>An adventure for your children too</h4><p>While you focus on your health, your children can enjoy swimming, play, supervised Kids Club activities, and new friendships with other worldschooling kids.</p></div>
+      <div class="yoga-card"><h4>A community that gets it</h4><p>Spend three weeks alongside families who value travel, learning, connection, and creating meaningful experiences together.</p></div>
+    </div>
+    <p class="closing-line">You don’t need to have an autoimmune diagnosis to join. Whether you’re exploring a particular therapy, looking for a wellness reset, or simply want to spend time prioritizing your family’s wellbeing, there’s room for you here.</p>
   </div>
 </section>
 
-<!-- WHY PEOPLE COME (autoimmune) -->
+<!-- WHAT IS THE HEALING GALLERY (autoimmune) -->
+<section class="m-ai" id="unique">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">The Healing Gallery</div><h2>What is the Healing Gallery?</h2>
+      <p>A medical therapy centre deep inside the Radhausberg mountain, where a natural healing climate has been used since 1952.</p></div>
+    <div class="nat-grid"><div class="hl-card"><div class="photo-slot"><img src="/images/land-trips/austria/healing-gallery-rest.webp" alt="Resting inside the Healing Gallery" loading="lazy"></div><span class="cn">01</span><h4>A Unique Therapeutic Climate</h4><p>Deep inside the Radhausberg mountain, the Healing Gallery combines naturally occurring radon with temperatures of 37–41.5°C (98.6–106.7°F) and humidity of 70–100%. This combination is a globally unique healing climate.</p></div><div class="hl-card"><div class="photo-slot"><img src="/images/land-trips/austria/healing-gallery-train-group.webp" alt="Guests by the Healing Gallery train" loading="lazy"></div><span class="cn">02</span><h4>A Tradition Since 1952</h4><p>The therapeutic climate inside the mountain has been used since 1952. Today, the Healing Gallery operates as a medical therapy centre, with each participant’s treatment guided individually by its medical professionals.</p></div><div class="hl-card"><div class="photo-slot"><img src="/images/land-trips/austria/healing-gallery-train.webp" alt="Riding the train into the mountain" loading="lazy"></div><span class="cn">03</span><h4>The Therapy Experience</h4><p>Guests travel approximately 2.5 kilometres into the mountain by train before resting at designated therapy stations in the warm, humid environment. After returning from the mountain, the Healing Gallery recommends approximately 30 minutes of relaxation.</p></div><div class="hl-card"><div class="photo-slot"><img src="/images/land-trips/austria/healing-gallery-loungers.webp" alt="Loungers inside the Healing Gallery" loading="lazy"></div><span class="cn">04</span><h4>What It’s Used For</h4><p>People come with chronic inflammatory, rheumatic, respiratory, skin, and pain conditions, with the aim of easing symptoms like pain, inflammation, stiffness, and fatigue. It is not a cure, and the Healing Gallery’s doctors assess every person first.</p></div></div>
+    <div class="note-box"><p id="galleryNoteAi"></p></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS (autoimmune; was "Why people come to the Healing Gallery") -->
 <section class="tint m-ai" id="whyGallery">
   <div class="wrap">
-    <div class="section-head"><div class="eyebrow">The Healing Gallery</div><h2>Why people come to the Healing Gallery</h2>
-      <p>The Healing Gallery is not a one-time spa treatment. People come for a structured course of therapy, often over several weeks, with the aim of improving symptoms associated with chronic inflammatory and rheumatic conditions.</p>
-      <p>A typical course may involve <strong>8–12 visits over 2–3 weeks</strong>, depending on the individual and the recommendations of the Healing Gallery’s medical team.</p></div>
-    <div class="stat-grid">
+    <div class="section-head"><div class="eyebrow">How It Works</div><h2>A course of therapy, not a one-time treatment</h2>
+      <p>The Healing Gallery is not a one-time spa treatment. It works as a structured course of therapy, often over several weeks, with the aim of improving symptoms associated with chronic inflammatory and rheumatic conditions.</p>
+      <p>A typical course may involve <strong>8–12 visits over 2–3 weeks</strong>, depending on the individual and the recommendations of the Healing Gallery’s medical team. Our three-week retreat gives you time for the whole course, with rest in between.</p></div>
+    <div class="stat-grid four">
       <div class="stat"><strong>2–3 weeks</strong><span>typical length of a Healing Gallery therapy course</span></div>
       <div class="stat"><strong>8–12 visits</strong><span>often recommended as part of a full course</span></div>
-      <div class="stat"><strong>37–41.5°C</strong><span>temperature inside the therapy areas</span></div>
-      <div class="stat"><strong>70–100%</strong><span>humidity, depending on the therapy station</span></div>
-      <div class="stat"><strong>Since 1952</strong><span>the Healing Gallery has operated as a healthcare facility</span></div>
+      <div class="stat"><strong>About 1 hour</strong><span>resting inside the mountain at each visit</span></div>
+      <div class="stat"><strong>30 minutes</strong><span>of rest recommended after each session</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- STEP BY STEP (autoimmune) -->
+<section class="m-ai" id="plan">
+  <div class="wrap">
+    <div class="section-head"><div class="eyebrow">How It Works, Step by Step</div><h2>You’ll be medically screened before you fully commit.</h2>
+      <p>You do not need to already have a specialist or a doctor who understands the Healing Gallery therapy.</p>
+      <p>Before you fully commit, you’ll have an <strong>online consultation with a local doctor familiar with the Healing Gallery</strong>. They’ll review your health history, symptoms, medications, previous treatments, and any factors that could affect whether the therapy is suitable for you.</p>
+      <p>This gives you a much clearer idea of whether the Healing Gallery makes sense for your health situation before you travel to Austria.</p></div>
+    <div class="steps four">
+      <div class="step"><span class="sn">1</span><h4>Start with an online doctor consultation</h4><p>You’ll first speak online with a local doctor who can review your health and discuss whether Healing Gallery therapy may be appropriate for you.</p></div>
+      <div class="step"><span class="sn">2</span><h4>Know before you travel</h4><p>The goal is to identify any concerns, contraindications, or reasons the therapy may not be suitable before you fully commit to the treatment.</p></div>
+      <div class="step"><span class="sn">3</span><h4>Meet the Healing Gallery doctors in Austria</h4><p>Once you arrive, you’ll complete the Healing Gallery’s own medical assessment. Their doctors will confirm whether the therapy is appropriate for you and recommend the course that makes sense for your individual situation.</p></div>
+      <div class="step"><span class="sn">4</span><h4>Begin your treatment course</h4><p>Once you’ve been medically cleared, you can begin your Healing Gallery sessions following the schedule recommended for you.</p></div>
     </div>
   </div>
 </section>
@@ -359,27 +403,11 @@
   </div>
 </section>
 
-<!-- TREATMENT PLAN (autoimmune) -->
-<section class="m-ai" id="plan">
-  <div class="wrap">
-    <div class="section-head"><div class="eyebrow">Your Healing Gallery Treatment Plan</div><h2>You’ll be medically screened before you fully commit.</h2>
-      <p>You do not need to already have a specialist or a doctor who understands the Healing Gallery therapy.</p>
-      <p>Before you fully commit, you’ll have an <strong>online consultation with a local doctor familiar with the Healing Gallery</strong>. They’ll review your health history, symptoms, medications, previous treatments, and any factors that could affect whether the therapy is suitable for you.</p>
-      <p>This gives you a much clearer idea of whether the Healing Gallery makes sense for your health situation before you travel to Austria.</p></div>
-    <div class="steps four">
-      <div class="step"><span class="sn">1</span><h4>Start with an online doctor consultation</h4><p>You’ll first speak online with a local doctor who can review your health and discuss whether Healing Gallery therapy may be appropriate for you.</p></div>
-      <div class="step"><span class="sn">2</span><h4>Know before you travel</h4><p>The goal is to identify any concerns, contraindications, or reasons the therapy may not be suitable before you fully commit to the treatment.</p></div>
-      <div class="step"><span class="sn">3</span><h4>Meet the Healing Gallery doctors in Austria</h4><p>Once you arrive, you’ll complete the Healing Gallery’s own medical assessment. Their doctors will confirm whether the therapy is appropriate for you and recommend the course that makes sense for your individual situation.</p></div>
-      <div class="step"><span class="sn">4</span><h4>Begin your treatment course</h4><p>Once you’ve been medically cleared, you can begin your Healing Gallery sessions following the schedule recommended for you.</p></div>
-    </div>
-  </div>
-</section>
-
 <!-- INSIDE THE MOUNTAIN (autoimmune) -->
 <section class="dark-section m-ai" id="mountain">
   <div class="wrap">
     <div class="section-head"><div class="eyebrow">Inside the Mountain</div><h2>What a Healing Gallery session actually looks like</h2>
-      <p>Once you’ve been medically cleared and have your treatment plan, a small train takes you around two kilometres into the Radhausberg mountain. Inside, different therapy stations combine naturally occurring radon, heat, and high humidity, with the setting chosen for you based on your individual health and heat tolerance.</p></div>
+      <p>Once you’ve been medically cleared and have your treatment plan, a small train takes you about 2.5 kilometres into the Radhausberg mountain. Inside, different therapy stations combine naturally occurring radon, heat, and high humidity, with the setting chosen for you based on your individual health and heat tolerance.</p></div>
     <div class="steps three">
       <div class="step"><span class="sn">01</span><h4>Travel into the mountain</h4><p>You board the small gallery train and travel deep into the mountain to your assigned therapy station.</p></div>
       <div class="step"><span class="sn">02</span><h4>Rest at your therapy station</h4><p>Once there, you spend about an hour resting in the warm, humid environment while the treatment takes place.</p></div>
@@ -1013,7 +1041,9 @@ function renderMode(){
   document.title = M.title;
   document.getElementById('ovHeading').textContent = M.heading;
   document.getElementById('ovStory').innerHTML = M.story.map(p => `<p class="lede">${p}</p>`).join('') +
-    (M.soft ? `<p class="lede note-soft">${M.soft}</p>` : '') + (mode === 'ai' ? `<p class="lede note-strong">${TRIP.galleryNote}</p>` : '');
+    (M.soft ? `<p class="lede note-soft">${M.soft}</p>` : '');
+  // "treatment isn't included": in "What is the Healing Gallery?", once the reader knows what it is (not in the overview)
+  document.getElementById('galleryNoteAi').textContent = TRIP.galleryNote;
   document.querySelectorAll('.mode-switch button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
 }
 document.querySelectorAll('.mode-switch button').forEach(b => b.addEventListener('click', () => { mode = b.dataset.mode; renderMode(); renderSelection(); writeUrl(); }));
@@ -1078,9 +1108,9 @@ function renderPolicy(){
     '<p>Every Avenue Travel, LLC is registered with the State of Florida as a Seller of Travel. Registration No. ST45213. IATA No. 10620400.</p>';
 }
 
-const NAV = [['overview','Overview'],['unique','Healing Gallery'],['community','Community'],['conditions','Conditions'],['yoga','Yoga'],['itinerary','21-Day Rhythm'],['important','Before Treatment'],['cost','Pricing'],['included','What’s Included'],['stays','Stays'],['food','Food'],['faq','FAQ']];
+const NAV = [['overview','Overview'],['unique','Healing Gallery'],['whyGallery','How It Works'],['community','Community'],['conditions','Conditions'],['yoga','Yoga'],['itinerary','21-Day Rhythm'],['important','Before Treatment'],['cost','Pricing'],['included','What’s Included'],['stays','Stays'],['food','Food'],['faq','FAQ']];
 function hideEmptySections(){
-  const empty = { highlightsSec: !TRIP.overview.highlights.length, conditions: mode !== 'ai', unique: mode !== 'ai',
+  const empty = { highlightsSec: !TRIP.overview.highlights.length, conditions: mode !== 'ai', unique: mode !== 'ai', whyGallery: mode !== 'ai',
     itinerary: document.getElementById('itinerary').dataset.empty === '1',
     stays: document.getElementById('stays').dataset.empty === '1', food: document.getElementById('food').dataset.empty === '1', included: !TRIP.included.length && !TRIP.notIncluded.length };
   NAV.forEach(([id]) => { const s = document.getElementById(id); if(s) s.style.display = empty[id] ? 'none' : ''; });
