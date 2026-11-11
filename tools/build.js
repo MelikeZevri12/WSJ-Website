@@ -62,3 +62,6 @@ console.log(`Built ${pages} pages + ${files} other files into ${OUT}`);
 
 // sitemap.xml + robots.txt (tools/sitemap.js)
 if (CLEAN_URLS) require('./sitemap').writeSitemap(OUT).then((info) => console.log(`Sitemap: ${info}`));
+
+// sharing pictures for every cruise / journey page (tools/share-cruise-images.js); a failure never stops the deploy
+require('./share-cruise-images').buildShareImages(OUT).then((info) => console.log(`Sharing pictures: ${info}`), (e) => console.log(`Sharing pictures skipped: ${e.message}`));

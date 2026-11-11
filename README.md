@@ -6,6 +6,7 @@
 |---|---|
 | Navbar (menu items, links) | `partials/nav.html` |
 | Footer (links, social icons, legal line) | `partials/footer.html` |
+| Google descriptions + sharing pictures (Facebook, WhatsApp...) of every page | `tools/seo-pages.js` (edit, then run `node tools/seo-pages.js`; pictures go to `images/share/`) |
 | Phone menu behaviour | `js/nav.js` |
 | Navbar styles | `css/nav.css` |
 | Footer styles | `css/footer.css` |

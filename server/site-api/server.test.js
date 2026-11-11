@@ -322,3 +322,50 @@ test('smtp.js talks to a mail server and sends a proper message', async () => {
   } finally { fake.close(); }
   assert.match(buildMessage({ from: 'a@b.co', fromName: 'W', to: 'c@d.co', subject: 's', text: 't', html: 'h' }), /^From: W <a@b.co>/);
 });
+
+// ---------- link previews for cruise / journey pages ----------
+const { createPreview, describeCruise } = require('./preview');
+
+test('link previews: each cruise and journey gets its own title, description and picture', async () => {
+  const calls = [];
+  const fetchJson = async (url) => {
+    calls.push(url);
+    if (url.endsWith('/cruises/by-slug/med-cruise-sep-2027')) return { title: '8-day Worldschooling Mediterranean Cruise', slug: 'med-cruise-sep-2027', subtitle: 'Ten ports, five countries, one floating classroom', sailDates: 'Sep 5 – 13, 2027', ship: { name: 'Sun Princess' }, heroImageUrl: '/uploads/med.webp' };
+    if (url.endsWith('/cruises/by-business-id/RC-19SEP2026-MIA-MIA')) return { title: 'Icon Cruise', slug: 'icon-cruise-sep-2026', subtitle: 'Big ship fun', sailDates: 'Sep 19 – 26, 2026', ship: { name: 'Icon of the Seas' }, heroImageUrl: 'https://example.com/icon.jpg' };
+    if (url.endsWith('/back-to-backs/by-slug/BB-X')) return { title: 'Asia Journey', slug: 'BB-X', headline: 'Fifty-seven nights from Tokyo to Auckland on one ship', cruises: [{}, {}, {}, {}], heroImageUrl: '/uploads/nz.webp' };
+    if (url.includes('/by-slug/broken')) throw new Error('API down');
+    return null;
+  };
+  const preview = createPreview({ fetchJson });
+  const s = await start(null, { preview });
+  try {
+    const get = async (p, ua) => { const r = await fetch(s.base + p); return { status: r.status, text: await r.text() }; };
+    const med = await get('/preview/cruises/med-cruise-sep-2027');
+    assert.equal(med.status, 200);
+    assert.match(med.text, /<meta property="og:title" content="8-day Worldschooling Mediterranean Cruise \| Worldschooling Journeys">/);
+    assert.match(med.text, /<meta name="description" content="Ten ports, five countries, one floating classroom\. Sep 5 – 13, 2027 on Sun Princess\. A community-led worldschooling cruise for homeschool families\.">/);
+    assert.match(med.text, /og:image" content="https:\/\/api\.worldschoolingjourneys\.com\/uploads\/med\.webp"/);   // no deploy-made JPG here: the header photo
+    assert.match(med.text, /og:url" content="https:\/\/worldschoolingjourneys\.com\/cruises\/med-cruise-sep-2027"/);
+    // an old booking-code link: looked up by code, canonical address = the cruise's slug
+    const old = await get('/preview/cruises/RC-19SEP2026-MIA-MIA');
+    assert.match(old.text, /og:url" content="https:\/\/worldschoolingjourneys\.com\/cruises\/icon-cruise-sep-2026"/);
+    assert.match(old.text, /og:image" content="https:\/\/example\.com\/icon\.jpg"/);
+    const j = await get('/preview/journeys/BB-X');
+    assert.match(j.text, /Fifty-seven nights from Tokyo to Auckland on one ship\. 4 back-to-back community-led cruises for homeschool families\./);
+    // unknown cruise or the cruise system down: still a valid general preview, never an error
+    for (const p of ['/preview/cruises/nope', '/preview/cruises/broken']) {
+      const g = await get(p);
+      assert.equal(g.status, 200); assert.match(g.text, /images\/share\/worldschooling-journeys\.jpg/);
+    }
+    // cached: asking again doesn't call the cruise system again
+    const before = calls.length; await get('/preview/cruises/med-cruise-sep-2027'); assert.equal(calls.length, before);
+    // titles/descriptions are escaped
+    assert.ok(!/<script/i.test((await get('/preview/cruises/%3Cscript%3E')).text.replace(/<\/?(html|head|body|meta|title|link|h1|p|img|a)\b[^>]*>/g, '')));
+  } finally { await s.close(); }
+});
+
+test('cruise descriptions stay within 160 characters', () => {
+  const d = describeCruise({ subtitle: 'x'.repeat(50) + ' ' + 'word '.repeat(40), sailDates: 'Oct 30 – Nov 21, 2027', ship: { name: 'Majestic Princess' } });
+  assert.ok(d.length <= 160, d.length);
+  assert.ok(!/—/.test(d));
+});

@@ -23,6 +23,15 @@ Endpoints: `GET /site-api/health`, `GET /site-api/testimonials[?category=cruise|
 A testimonial: `{ id, name, fullText, shortVersion, category, featured, carousel, sortOrder, createdAt, updatedAt }`
 (`featured` = marked as one of the best in admin; shown first on the website; missing on older rows = not featured; `carousel` = picked for the website carousels with the admin Carousel switch, same rules).
 
+## Link previews for cruise and back-to-back pages (since 2026-11-11)
+
+`preview.js`: `GET /site-api/preview/cruises/<slug>` and `/preview/journeys/<slug>` answer with a tiny page carrying that cruise's own
+title, description (its Admin subtitle + dates + ship; journeys: the headline) and picture. Caddy (`server/Caddyfile.site`, `@previewBot`)
+sends only link-preview robots there (Facebook, WhatsApp, iMessage, LinkedIn, X, Slack...), because they don't run the page's scripts.
+Looked up live in the cruise API (cached 10 minutes), so new cruises work at once. Picture: `~/apps/website/images/share/cruises/<slug>.jpg`
+(made at every deploy by `tools/share-cruise-images.js`), otherwise the header photo as it is. If the cruise API is down: a general preview.
+Test on the VPS: `curl -s -A facebookexternalhit/1.1 https://worldschoolingjourneys.com/cruises/<slug> | grep og:`
+
 ## Sending emails (Black Friday code emails, since 2026-11-09)
 
 Admin → Black Friday → **Email the Codes**: one email per family listing only their sale trips (codes + trips in
@@ -85,7 +94,7 @@ Both `curl` lines should print `{"ok":true}`.
 
 ## Updating the server code later
 
-PC: `scp server\site-api\server.js melike@178.105.202.222:~/apps/site-api/`
+PC: `scp server\site-api\server.js server\site-api\preview.js server\site-api\bf-email.js server\site-api\smtp.js server\site-api\smtp-check.js melike@178.105.202.222:~/apps/site-api/`
 VPS: `sudo systemctl restart site-api && sudo systemctl status site-api --no-pager`
 
 The data file is never overwritten by an update (the seed file is only read when there's no data file).

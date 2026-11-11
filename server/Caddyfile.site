@@ -23,6 +23,18 @@
     }
     # Booking-form links: /RC-19SEP2026-MIA-MIA (a cruise's booking code)
     @booking path_regexp ^/[A-Z]{2}-\d{2}[A-Z]{3}\d{4}-[A-Z0-9]+-[A-Z0-9]+$
+    # Link previews (since 2026-11-11): when Facebook, WhatsApp, iMessage, LinkedIn, X... fetch a cruise or
+    # back-to-back page, they get a small page with THAT cruise's title, description and picture from the
+    # website's own server (frontend/server/site-api/preview.js), because they don't run the page's scripts.
+    # Visitors and search engines get the normal page.
+    @previewBot {
+        path_regexp preview ^/(cruises|journeys)/([^/]+)/?$
+        header_regexp User-Agent (?i)(facebookexternalhit|facebot|meta-externalagent|twitterbot|whatsapp|linkedinbot|slackbot|discordbot|telegrambot|pinterest|skypeuripreview|redditbot|embedly|iframely|vkshare|snapchat)
+    }
+    handle @previewBot {
+        rewrite * /site-api/preview/{re.preview.1}/{re.preview.2}
+        reverse_proxy 127.0.0.1:3100
+    }
     # The website's own small server (testimonials, admin -> Testimonials tab; NOT the cruise API):
     # frontend/server/site-api, on the VPS the systemd service "site-api" on 127.0.0.1:3100
     handle /site-api/* {

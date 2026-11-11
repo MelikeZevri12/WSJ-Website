@@ -8,6 +8,18 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <title>Cruise | Worldschooling Journeys</title>
+<!-- seo -->
+<meta name="description" content="A community-led worldschooling cruise for homeschool families: see the itinerary, cabin prices, port excursions and which families are already coming.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Worldschooling Journeys">
+<meta property="og:title" content="Cruise | Worldschooling Journeys">
+<meta property="og:description" content="A community-led worldschooling cruise for homeschool families: see the itinerary, cabin prices, port excursions and which families are already coming.">
+<meta property="og:image" content="https://worldschoolingjourneys.com/images/share/worldschooling-journeys.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://worldschoolingjourneys.com/images/share/worldschooling-journeys.jpg">
+<!-- /seo -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Titillium+Web:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/nav.css?v=20261013">
@@ -1583,6 +1595,28 @@ function setAddonOn(on){
   updateSummary();
 }
 
+// Search + sharing tags for THIS cruise (the page's <!-- seo --> tags are the fallback; tools/seo-pages.js).
+// Google reads these; Facebook/WhatsApp previews don't run scripts, so they show the fallback picture.
+function setShareTags({ title, desc, image }) {
+  const set = (sel, attr, key, value) => {
+    if (!value) return;
+    let el = document.head.querySelector(sel);
+    if (!el) { el = document.createElement('meta'); el.setAttribute(attr, key); document.head.appendChild(el); }
+    el.setAttribute('content', value);
+  };
+  const d = desc && desc.length > 160 ? desc.slice(0, 157).replace(/\s+\S*$/, '') + '...' : desc;
+  set('meta[name="description"]', 'name', 'description', d);
+  set('meta[property="og:description"]', 'property', 'og:description', d);
+  set('meta[property="og:title"]', 'property', 'og:title', title);
+  set('meta[property="og:url"]', 'property', 'og:url', location.origin + location.pathname);
+  if (image) {
+    const abs = new URL(image, location.origin).href;
+    set('meta[property="og:image"]', 'property', 'og:image', abs);
+    set('meta[name="twitter:image"]', 'name', 'twitter:image', abs);
+    document.head.querySelectorAll('meta[property="og:image:width"], meta[property="og:image:height"]').forEach((m) => m.remove());
+  }
+}
+
 async function loadCruise(){
   // /cruises/<slug> (title + month, e.g. icon-of-the-seas-miami-roundtrip-cruise-sep-2026).
   // Older links use the business id (/cruises/RC-19SEP2026-MIA-MIA): still loaded, then
@@ -1629,6 +1663,8 @@ async function loadCruise(){
     renderRoster(cruise.id, cruise); // fire-and-forget - a secondary widget, shouldn't block the rest of the page
 
     document.title = cruise.title ? `${cruise.title} | Worldschooling Journeys` : 'Cruise | Worldschooling Journeys';
+    setShareTags({ title: document.title, image: cruise.heroImageUrl ? pictureUrl(cruise.heroImageUrl) : null,
+      desc: `A community-led worldschooling cruise for homeschool families${cruise.sailDates ? `, ${cruise.sailDates}` : ''}${cruise.ship && cruise.ship.name ? ` on ${cruise.ship.name}` : ''}. See the itinerary, cabin prices and who's coming.` });
     document.getElementById('heroTitle').textContent = cruise.title || '';
     flightsCruise = cruise;
     mainHeroStats = {

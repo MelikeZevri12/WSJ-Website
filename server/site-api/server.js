@@ -29,6 +29,8 @@
 //   GET    /site-api/bf-email/preview/:signupId       staff login: { subject, html } of that family's email
 //   POST   /site-api/bf-email/test   { to, signupId? } staff login: a [Test] copy to any address (nothing is marked)
 //   POST   /site-api/bf-email/send/:signupId          staff login: the real email for the trips not emailed yet, then marked
+//   GET    /site-api/preview/cruises/:slug, /preview/journeys/:slug   public: link-preview page for Facebook/WhatsApp/...
+//          robots only (Caddy @previewBot sends them here); that cruise's own title, description and picture (preview.js)
 //   GET    /site-api/unsubscribe?id=&t=               public: "Unsubscribe me" page (a button, so link scanners can't unsubscribe anyone)
 //   POST   /site-api/unsubscribe?id=&t=               public: unsubscribes (the button, or a mail app's one-click Unsubscribe)
 //
@@ -46,6 +48,7 @@ const path = require('path');
 const crypto = require('crypto');
 const { renderBlackFridayEmail, saleTripsFor, SALE_TRIPS } = require('./bf-email');
 const { sendMail, mailConfig } = require('./smtp');
+const { createPreview } = require('./preview');
 
 const CATEGORIES = ['cruise', 'land_trip', 'port_excursion', 'austria_retreat'];
 const MAX_BODY = 200 * 1024;
@@ -183,7 +186,7 @@ function unsubPage(title, body, form) {
 <p style="font-size:14px;margin:22px 0 0;"><a href="${SITE_URL}" style="color:#708F53;font-weight:700;">worldschoolingjourneys.com</a></p></div></body></html>`;
 }
 
-function createServer({ dataDir, seedDir, secret, mail = mailConfig(), mailer = sendMail }) {
+function createServer({ dataDir, seedDir, secret, mail = mailConfig(), mailer = sendMail, preview = createPreview() }) {
   const testimonials = createStore(dataDir, 'testimonials', seedDir && path.join(seedDir, 'testimonials.json'));
   const signups = createStore(dataDir, 'signups', null);
   // sign-ups per visitor in the last hour (kept in memory only)
@@ -240,6 +243,15 @@ function createServer({ dataDir, seedDir, secret, mail = mailConfig(), mailer = 
     const url = new URL(req.url, 'http://local');
     const p = url.pathname.replace(/\/+$/, '');
     if (p === '/site-api/health' && req.method === 'GET') return send(res, 200, { ok: true });
+
+    // link previews for cruise / back-to-back pages (preview.js)
+    const pv = p.match(/^\/site-api\/preview\/(cruises|journeys)\/([^/]{1,200})$/);
+    if (pv && (req.method === 'GET' || req.method === 'HEAD')) {
+      let slug; try { slug = decodeURIComponent(pv[2]); } catch { slug = ''; }
+      const html = await preview(pv[1], slug);
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'public, max-age=600', 'X-Content-Type-Options': 'nosniff' });
+      return res.end(req.method === 'HEAD' ? undefined : html);
+    }
 
     // unsubscribe link from the Black Friday emails (public; checked by the link's signature)
     if (p === '/site-api/unsubscribe' && (req.method === 'GET' || req.method === 'POST')) {
