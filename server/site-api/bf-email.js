@@ -11,7 +11,7 @@ const SALE_TRIPS = {
     title: 'Austria Health & Wellness Retreat', dates: 'May 4–25, 2027', length: '21 days', place: 'Salzburgerland, Austria',
     highlights: 'Thermal spas · Mountain air · Time for your health while the kids explore',
     price: '€1,802', code: 'BFAUSTRIA', saving: '€50', family: '€200',
-    photo: '/images/land-trips/austria-wellness.webp', page: '/land-trips/austria-health-wellness-retreat?year=2027', book: WETRAVEL('21359722'),
+    photo: '/images/land-trips/austria/wellness-header.webp', page: '/land-trips/austria-health-wellness-retreat?year=2027', book: WETRAVEL('21359722'),
   },
   'austria-summer': {
     title: 'Austrian Mountain Summer Retreat', dates: 'May 30 – Jul 11, 2027 (3 sessions)', length: '14 days per session', place: 'Salzburgerland, Austria',

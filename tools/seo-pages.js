@@ -55,7 +55,7 @@ const PAGES = {
     desc: 'A two-week worldschooling retreat among Salzburgerland’s golden peaks: alpine traditions, thermal spas, hikes and lifelong friendships. All ages welcome.' },
   'land-trips/austria-winter.html': { land: true, photo: 'images/land-trips/austria-winter.webp', share: 'austria-winter',
     desc: 'Ski, snowboard and explore Austrian Christmas markets with other homeschool families on our two-week winter retreat in Salzburgerland. All ages welcome.' },
-  'land-trips/austria-wellness.html': { land: true, photo: 'images/land-trips/austria-wellness.webp', share: 'austria-wellness',
+  'land-trips/austria-wellness.html': { land: true, photo: 'images/land-trips/austria/wellness-header.webp', share: 'austria-wellness',
     desc: 'A three-week family wellness retreat in the Austrian Alps: thermal spas, mountain air, optional Healing Gallery therapy and a Kids Club while you rest.' },
   'land-trips/dude-ranch.html': { land: true, photo: 'images/land-trips/dude-ranch.webp', share: 'dude-ranch',
     desc: 'A week at a Wyoming guest ranch with other homeschool families: your own horse, cattle drives, private river fishing, archery and trap shooting.' },
