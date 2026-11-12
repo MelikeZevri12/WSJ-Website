@@ -363,7 +363,8 @@
         <p>Your children can find new friends. You can connect with other parents. And your family can enjoy an experience that makes room for individual needs as well as shared memories.</p>
         <p>You don’t need to have the same wellness goals or follow the same schedule as everyone else to belong here. You simply need to want a family experience with more room for well-being, connection, and a different way of spending time together.</p>
       </div>
-      <p id="leadersText"></p>
+      <!-- general community line: Autoimmune version only (the Family Wellness copy above already covers it) -->
+      <p id="leadersText" class="m-ai"></p>
     </div>
     <div class="value-props" id="pillars"></div>
     <div class="roster-full-card" id="rosterCard"></div>
@@ -1228,6 +1229,27 @@ document.addEventListener('click', e => { const a = e.target.closest('a[href^="#
 document.querySelectorAll('[data-open-picker]').forEach(a => a.addEventListener('click', e => {
   e.preventDefault(); e.stopPropagation();
   document.getElementById('cost').scrollIntoView({behavior:'smooth', block:'start'}); }));
+
+// Long text sections (4+ paragraphs and over 700 characters, e.g. the Family Wellness copy): show the first 2
+// paragraphs, the rest behind "Read more" - same as the overview (asked for 2026-11-12). Short ones stay open.
+function foldLongCopy(col) {
+  const paras = [...col.children].filter((el) => el.tagName === 'P');
+  if (paras.length < 4 || paras.reduce((n, p) => n + p.textContent.length, 0) <= 700) return;
+  const more = document.createElement('div');
+  more.className = 'ov-more'; more.hidden = true;
+  more.id = `more-${col.closest('section').id}`;
+  paras.slice(2).forEach((p) => more.appendChild(p));
+  const btn = document.createElement('button');
+  btn.type = 'button'; btn.className = 'ov-more-btn'; btn.textContent = 'Read more';
+  btn.setAttribute('aria-expanded', 'false'); btn.setAttribute('aria-controls', more.id);
+  btn.addEventListener('click', () => {
+    more.hidden = !more.hidden;
+    btn.textContent = more.hidden ? 'Read more' : 'Read less';
+    btn.setAttribute('aria-expanded', String(!more.hidden));
+  });
+  col.append(more, btn);
+}
+document.querySelectorAll('section .copy-col').forEach(foldLongCopy);
 
 renderStatic();
 renderMode();
