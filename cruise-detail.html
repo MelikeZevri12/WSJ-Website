@@ -1788,6 +1788,7 @@ async function loadCruise(){
     // if it also happens to still be flagged soldOut in the data.
     if (isSetSail) applySetSailState(cruise);
     else applySoldOutState(cruise); // no-op unless cruise.soldOut - see its own comment
+    if (!isSetSail) applyAllCabinsSoldOutState(cruise);
   } catch (e) {
     document.getElementById('heroTitle').textContent = 'Cruise not found';
     document.getElementById('overviewSubtitle').textContent = '';
@@ -2548,6 +2549,22 @@ async function loadDepartures(cruise){
 }
 
 // ---------- SOLD OUT STATE (applies the sold-out page design - see templates/page-template-sold-out.html) ----------
+// Every cabin category marked sold out, but the cruise itself is not (cabins come back, and the
+// team can often still find one): the booking buttons say "Contact for Availability" instead of
+// "Book Now" / "Book Your Spot". They still open the booking form, where "Ask about pricing &
+// availability" is one of the two choices. A cruise marked Sold Out as a whole gets the waitlist instead.
+function allCabinsSoldOut(cruise){
+  const rows = cruise.cabinPrices ?? [];
+  return rows.some((r) => r.soldOut) && !rows.some((r) => !r.soldOut && r.price != null);
+}
+function applyAllCabinsSoldOutState(cruise){
+  if (cruise.soldOut || !allCabinsSoldOut(cruise)) return;
+  for (const id of ["heroReserveLink", "subnavReserveLink", "reserveBtn", "joinMidLink", "joinLink"]) {
+    const el = document.getElementById(id);
+    if (el) el.textContent = "Contact for Availability";
+  }
+}
+
 function applySoldOutState(cruise){
   if(!cruise.soldOut) return;
 
