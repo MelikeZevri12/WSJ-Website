@@ -336,6 +336,7 @@
   }
   /* PRICING ADDITIONS */
   .cabin-tile .cprice-wait{font-size:12.5px;font-weight:700;color:var(--sunset-1);}
+  .cabin-tile .cprice-wait-sub{font-size:12px;color:var(--muted);margin-top:2px;}
   .price-breakdown{list-style:none;margin:10px 0 0;padding:0;font-size:12.5px;color:var(--muted);}
   .price-breakdown li{display:flex;justify-content:space-between;gap:18px;padding:2px 0;}
   .price-breakdown li strong{color:var(--dark);font-weight:700;}
@@ -1213,7 +1214,7 @@ function statsFor(s){
 }
 // One cruise's price inside segment s. Picking the whole journey ignores a cruise's sold-out
 // mark (the full journey can still be booked; same rule as the listing cards), a shorter
-// segment doesn't: a sold-out cruise in it makes that cabin Waitlist.
+// segment doesn't: a sold-out cruise in it makes that cabin "Contact for Availability".
 function legPrice(l, s, g, c){
   const p = (isFull(s) ? l.listed : l.pricing)[g];
   return p && p[c] != null ? p[c] : null;
@@ -1251,7 +1252,7 @@ function cheapest(s, g){
 // actually sold out; if a cruise just has no prices entered yet, say so.
 function noPriceLabel(s, g){
   const unpriced = legsIn(s).some(l => CABINS.filter(c => !c.stretchOnly).every(c => l.pricing[g]?.[c.key] == null && !l.soldOut[g]?.[c.key]));
-  return unpriced ? 'Price coming soon' : 'Waitlist';
+  return unpriced ? 'Price coming soon' : 'Contact for Availability';
 }
 // cheapest per person over every party size (a 4-guest cabin is often cheaper per person than a 2-guest one)
 function cheapestPerPerson(s){
@@ -1469,10 +1470,9 @@ function renderPricing(){
     // Whole journey: a cruise's sold-out mark only blocks a cabin when that cabin has no price at all on it.
     const waitlisted = p == null && !!blockedLeg.soldOut[guests]?.[c.key];
     return `<div class="cabin-tile ${c.key === cabin ? 'active' : ''} ${p == null ? 'sold-out' : ''}" data-cabin="${escapeHtml(c.key)}">
-      ${waitlisted ? '<div class="sold-out-ribbon">Waitlist</div>' : ''}
       ${c.photo ? `<div class="photo-slot cabin-photo has-image"><img src="${pictureUrl(c.photo)}" alt="${escapeHtml(c.name)} cabin"></div>` : `<div class="photo-slot cabin-photo"><span>${escapeHtml(c.name)} photo</span></div>`}
       <div class="cname">${escapeHtml(c.name)}</div>
-      ${p == null ? `<div class="cprice-wait">${waitlisted ? 'Waitlisted' : 'Price coming soon'} on ${blockedLeg.from} → ${blockedLeg.to}</div>`
+      ${p == null ? (waitlisted ? `<div class="cprice-wait">Contact for Availability</div><div class="cprice-wait-sub">Sold out on ${blockedLeg.from} → ${blockedLeg.to}</div>` : `<div class="cprice-wait">Price coming soon on ${blockedLeg.from} → ${blockedLeg.to}</div>`)
                   : `<div class="cprice">${fmt(p)} <small>/ family</small></div>`}
     </div>`;
   }).join('');
