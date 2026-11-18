@@ -967,6 +967,7 @@
               <label class="radio-opt"><input type="checkbox" name="cabinChoice" value="Interior"> Interior</label>
               <label class="radio-opt"><input type="checkbox" name="cabinChoice" value="Balcony"> Balcony</label>
               <label class="radio-opt"><input type="checkbox" name="cabinChoice" value="Oceanview"> Oceanview</label>
+              <label class="radio-opt" id="cabinChoiceObstructed" hidden><input type="checkbox" name="cabinChoice" value="Obstructed Ocean View"> Obstructed Ocean View</label>
               <label class="radio-opt"><input type="checkbox" name="cabinChoice" value="Mini Suite"> Mini Suite</label>
             </div>
           </div>
@@ -1067,6 +1068,7 @@
 </div>
 
 <script src="/js/picture-url.js"></script>
+<script src="/js/journey-prices.js"></script>
 <script src="/js/form-check.js"></script>
 <script src="/js/booking-steps.js"></script>
 <script>
@@ -1124,12 +1126,16 @@ function toLeg(c, families){
   const end = c.nights != null ? isoPlusDays(start, c.nights) : (c.stops.length ? c.stops[c.stops.length - 1].date.slice(0, 10) : start);
   // pricing: price, or null when it can't be booked. soldOut tells the two
   // "null" cases apart (sold out vs. no price entered yet) - see noPriceLabel.
-  const pricing = {}, soldOut = {};
+  // listed: the price entered for the cabin even when it shows sold out. The WHOLE journey
+  // can still be booked while one of its cruises is sold out (the cruise line sells the full
+  // voyage separately; cabins come and go), so the whole-journey price uses these - see legPrice.
+  const pricing = {}, soldOut = {}, listed = {};
   for(const g of [2, 3, 4]){
-    pricing[g] = {}; soldOut[g] = {};
+    pricing[g] = {}; soldOut[g] = {}; listed[g] = {};
     for(const row of (c.cabinPrices || []).filter(r => r.guests === g)){
       soldOut[g][row.category] = !!(c.soldOut || row.soldOut);
       pricing[g][row.category] = (c.soldOut || row.soldOut || row.price == null) ? null : row.price;
+      listed[g][row.category] = row.price ?? null;
     }
   }
   const name = c.segmentName || c.destination || portShortName(c.departurePort?.name);
@@ -1147,6 +1153,7 @@ function toLeg(c, families){
     photoLabel: name,
     pricing,
     soldOut,
+    listed,
     stops: c.stops.map(s => [
       s.date.slice(0, 10),
       s.port || 'At Sea',
@@ -1204,20 +1211,44 @@ function statsFor(s){
   return { nights: legs.reduce((a,l) => a + nightsOf(l), 0), ports: ports.size, sea, countries: countries.size,
            start: legs[0].start, end: legs[legs.length-1].end };
 }
-// price for party size + cabin across the segment; null if any leg can't offer it
+// One cruise's price inside segment s. Picking the whole journey ignores a cruise's sold-out
+// mark (the full journey can still be booked; same rule as the listing cards), a shorter
+// segment doesn't: a sold-out cruise in it makes that cabin Waitlist.
+function legPrice(l, s, g, c){
+  const p = (isFull(s) ? l.listed : l.pricing)[g];
+  return p && p[c] != null ? p[c] : null;
+}
+// A fixed price for exactly this stretch (js/journey-prices.js), or null. Matched on the first
+// cruise's departure date and the last cruise's arrival date.
+function stretchPrices(s){
+  const list = (window.JOURNEY_PRICES || {})[JOURNEY && JOURNEY.slug] || [];
+  const hit = list.find(x => x.from === LEGS[s.start].start && x.to === LEGS[s.end].end);
+  return hit ? hit.prices : null;
+}
+// Cabin types the page shows for segment s: a type only the fixed stretch price has (Obstructed
+// Ocean View) appears just for that stretch.
+function cabinsFor(s){
+  const sp = stretchPrices(s);
+  return CABINS.filter(c => !c.stretchOnly || (sp && [2, 3, 4].some(g => sp[g]?.[c.key] != null)));
+}
+// price for party size + cabin across the segment; null if any leg can't offer it.
+// A fixed stretch price wins over adding up the cruises (sold-out marks on them don't matter then).
 function priceFor(s, g, c){
+  const sp = stretchPrices(s);
+  if(sp && sp[g]?.[c] != null) return sp[g][c];
+  if(CABINS.find(x => x.key === c)?.stretchOnly) return null;
   let total = 0;
-  for(const l of legsIn(s)){ const p = l.pricing[g] && l.pricing[g][c]; if(p == null) return null; total += p; }
+  for(const l of legsIn(s)){ const p = legPrice(l, s, g, c); if(p == null) return null; total += p; }
   return total;
 }
 function cheapest(s, g){
-  const opts = CABINS.map(c => priceFor(s, g, c.key)).filter(p => p != null);
+  const opts = cabinsFor(s).map(c => priceFor(s, g, c.key)).filter(p => p != null);
   return opts.length ? Math.min(...opts) : null;
 }
 // When nothing in the segment can be priced: Waitlist only if a cruise is
 // actually sold out; if a cruise just has no prices entered yet, say so.
 function noPriceLabel(s, g){
-  const unpriced = legsIn(s).some(l => CABINS.every(c => l.pricing[g]?.[c.key] == null && !l.soldOut[g]?.[c.key]));
+  const unpriced = legsIn(s).some(l => CABINS.filter(c => !c.stretchOnly).every(c => l.pricing[g]?.[c.key] == null && !l.soldOut[g]?.[c.key]));
   return unpriced ? 'Price coming soon' : 'Waitlist';
 }
 // cheapest per person over every party size (a 4-guest cabin is often cheaper per person than a 2-guest one)
@@ -1419,18 +1450,24 @@ const cabinGrid = document.getElementById('cabinGrid');
 function renderPricing(){
   document.getElementById('pricingSegmentLabel').textContent = segLabel(sel) + ` (${fmtRange(statsFor(sel).start, statsFor(sel).end)})`;
   if(guests === 5) return;
-  const avail = CABINS.filter(c => priceFor(sel, guests, c.key) != null);
+  const shownCabins = cabinsFor(sel);
+  // The booking form only offers Obstructed Ocean View when the picked stretch has a price for it.
+  const obstructed = document.getElementById('cabinChoiceObstructed');
+  if(obstructed){ obstructed.hidden = !shownCabins.some(c => /obstructed/i.test(c.key)); if(obstructed.hidden) obstructed.querySelector('input').checked = false; }
+  const avail = shownCabins.filter(c => priceFor(sel, guests, c.key) != null);
   if(!cabin || priceFor(sel, guests, cabin) == null){
     cabin = avail.length ? avail.reduce((a, c) => priceFor(sel, guests, c.key) < priceFor(sel, guests, a.key) ? c : a).key : null;
   }
-  cabinGrid.innerHTML = CABINS.map(c => {
+  cabinGrid.innerHTML = shownCabins.map(c => {
     const p = priceFor(sel, guests, c.key);
-    const blockedLeg = p == null ? legsIn(sel).find(l => !(l.pricing[guests] && l.pricing[guests][c.key] != null)) : null;
+    const blockedLeg = p == null ? legsIn(sel).find(l => legPrice(l, sel, guests, c.key) == null) : null;
+    // Whole journey: a cruise's sold-out mark only blocks a cabin when that cabin has no price at all on it.
+    const waitlisted = p == null && !!blockedLeg.soldOut[guests]?.[c.key];
     return `<div class="cabin-tile ${c.key === cabin ? 'active' : ''} ${p == null ? 'sold-out' : ''}" data-cabin="${escapeHtml(c.key)}">
-      ${p == null && blockedLeg.soldOut[guests][c.key] ? '<div class="sold-out-ribbon">Waitlist</div>' : ''}
+      ${waitlisted ? '<div class="sold-out-ribbon">Waitlist</div>' : ''}
       ${c.photo ? `<div class="photo-slot cabin-photo has-image"><img src="${pictureUrl(c.photo)}" alt="${escapeHtml(c.name)} cabin"></div>` : `<div class="photo-slot cabin-photo"><span>${escapeHtml(c.name)} photo</span></div>`}
       <div class="cname">${escapeHtml(c.name)}</div>
-      ${p == null ? `<div class="cprice-wait">${blockedLeg.soldOut[guests][c.key] ? 'Waitlisted' : 'Price coming soon'} on ${blockedLeg.from} → ${blockedLeg.to}</div>`
+      ${p == null ? `<div class="cprice-wait">${waitlisted ? 'Waitlisted' : 'Price coming soon'} on ${blockedLeg.from} → ${blockedLeg.to}</div>`
                   : `<div class="cprice">${fmt(p)} <small>/ family</small></div>`}
     </div>`;
   }).join('');
@@ -1444,9 +1481,13 @@ function renderPricing(){
   const pb = document.getElementById('priceBreakdown');
   const segLegs = legsIn(sel);
   const fold = segLegs.length > 3;
-  pb.innerHTML = (cabin && sel.end > sel.start)
+  // A fixed stretch price is one booking: no per-cruise breakdown to show.
+  const fixed = cabin && stretchPrices(sel)?.[guests]?.[cabin] != null;
+  pb.innerHTML = fixed
+    ? `<li class="pb-item"><span>One price for the whole ${segLabel(sel)} stretch</span><strong>${fmt(total)}</strong></li>`
+    : (cabin && sel.end > sel.start)
     ? (fold ? `<li class="pb-toggle"><button type="button">${breakdownOpen ? 'Hide' : 'See'} the price for each of the ${segLegs.length} cruises ${breakdownOpen ? '▴' : '▾'}</button></li>` : '')
-      + segLegs.map(l => `<li class="pb-item"><span>${l.from} → ${l.to}</span><strong>${fmt(l.pricing[guests][cabin])}</strong></li>`).join('')
+      + segLegs.map(l => `<li class="pb-item"><span>${l.from} → ${l.to}</span><strong>${fmt(legPrice(l, sel, guests, cabin))}</strong></li>`).join('')
     : '';
   pb.classList.toggle('collapsed', fold && !breakdownOpen);
   const tg = pb.querySelector('.pb-toggle button');
@@ -1493,7 +1534,8 @@ function readUrl(){
     const f = q.get('from'), t = q.get('to');
     if(!f && !t) return;
     const s = f ? STOPS_LINE.findIndex(p => p.toLowerCase() === f.toLowerCase()) : 0;
-    const e = t ? STOPS_LINE.findIndex(p => p.toLowerCase() === t.toLowerCase()) : STOPS_LINE.length - 1;
+    // the first matching port AFTER the start (a journey can pass the same port twice: Los Angeles -> ... -> Los Angeles)
+    const e = t ? STOPS_LINE.findIndex((p, i) => i > s && p.toLowerCase() === t.toLowerCase()) : STOPS_LINE.length - 1;
     if(s >= 0 && e > s && validSel({start:s, end:e-1})) sel = {start:s, end:e-1};
   }catch(err){}
 }
@@ -2212,7 +2254,12 @@ async function loadJourney(){
   const baseCabin = (n) => /balcony|suite/i.test(n) ? 'Balcony' : /ocean ?view|oceanview/i.test(n) ? 'Ocean View' : /interior|inside/i.test(n) ? 'Interior' : null;
   for(const [name, url] of photos) if(!url && photos.get(baseCabin(name))) photos.set(name, photos.get(baseCabin(name)));
   const rank = (n) => { const i = CABIN_ORDER.indexOf(n); return i === -1 ? CABIN_ORDER.length : i; };
-  CABINS = [...photos.keys()].sort((a, b) => rank(a) - rank(b)).map(name => ({ key: name, name, photo: photos.get(name) }));
+  // Cabin types that only a fixed stretch price has (js/journey-prices.js), e.g. Obstructed Ocean View.
+  const stretchOnly = new Set();
+  for(const st of (window.JOURNEY_PRICES || {})[group.slug] || []) for(const g of [2, 3, 4]) for(const name of Object.keys(st.prices[g] || {})) if(!photos.has(name)) stretchOnly.add(name);
+  for(const name of stretchOnly) photos.set(name, photos.get(baseCabin(name)) || null);
+  const rankOf = (n) => /obstructed/i.test(n) ? rank(n.replace(/^obstructed\s+/i, '')) - 0.5 : rank(n);
+  CABINS = [...photos.keys()].sort((a, b) => rankOf(a) - rankOf(b)).map(name => ({ key: name, name, photo: photos.get(name), stretchOnly: stretchOnly.has(name) }));
 
   sel = {start: 0, end: LEGS.length - 1};
   segScroll.style.setProperty('--n', LEGS.length);
