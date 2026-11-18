@@ -593,10 +593,10 @@
 
         <div class="price-summary">
           <div class="total">
-            <div class="t-label">Total for your family</div>
+            <div class="t-label" id="totalLabel">Total for your family</div>
             <div class="t-value" id="totalPrice"></div>
             <div class="t-sub" id="perPerson"></div>
-            <p class="availability-note" id="availabilityNote" hidden><strong>Some cabins on these cruises are showing as sold out right now, but availability changes all the time.</strong> Contact us and we'll check what we can find for your family.</p>
+            <p class="availability-note" id="availabilityNote" hidden><strong>All cabins are showing as sold out right now, but availability changes all the time.</strong> Contact us and we'll check what we can find for your family.</p>
             <ul class="price-breakdown" id="priceBreakdown"></ul>
           </div>
           <div class="price-meta">
@@ -1482,13 +1482,12 @@ function renderPricing(){
   cabinGrid.querySelectorAll('.cabin-tile:not(.sold-out)').forEach(t => t.addEventListener('click', () => { cabin = t.dataset.cabin; renderPricing(); }));
 
   const total = cabin ? priceFor(sel, guests, cabin) : null;
-  // A price that adds up cruises where some cabins show sold out: the team has to check before
-  // booking, so the button says "Contact for Availability" and the total gets a short note.
-  // Not for a fixed stretch price (js/journey-prices.js): that stretch is known to be bookable.
-  const checkFirst = total != null && !(stretchPrices(sel)?.[guests]?.[cabin] != null)
-    && legsIn(sel).some(l => CABINS.some(c => l.soldOut[guests]?.[c.key]));
+  // No cabin can be booked for this party size because cabins are sold out (the total would say
+  // "Waitlist"): the button says "Contact for Availability" and a short note replaces the total.
+  const checkFirst = total == null && noPriceLabel(sel, guests) === 'Waitlist';
   document.getElementById('reserveBtn').textContent = checkFirst ? 'Contact for Availability' : 'Book This Cabin';
   document.getElementById('availabilityNote').hidden = !checkFirst;
+  for (const id of ['totalLabel', 'totalPrice', 'perPerson']) document.getElementById(id).style.display = checkFirst ? 'none' : '';
   const st = statsFor(sel);
   document.getElementById('totalPrice').textContent = total != null ? fmt(total) : noPriceLabel(sel, guests);
   document.getElementById('perPerson').textContent = total != null
