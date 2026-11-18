@@ -6,7 +6,7 @@
 // cruise's arrival date (to), YYYY-MM-DD; it only applies when a family picks exactly that stretch.
 // prices: party size (2 / 3 / 4 guests) -> cabin type -> total price for the cabin, in dollars.
 // A cabin type listed here but not on the cruises (Obstructed Ocean View) only shows for this stretch.
-// Cabin types left out here (Mini Suite) keep the normal added-up price / Waitlist.
+// The stretch shows exactly the cabin types listed here: types left out (Mini Suite) don't show for it.
 // The "1 or 2 guests" price from the cruise line goes under 2.
 window.JOURNEY_PRICES = {
   'BB-PC-06JAN2027-FOR-LOS': [ // Grand Circle World Cruise

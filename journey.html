@@ -968,7 +968,7 @@
               <label class="radio-opt"><input type="checkbox" name="cabinChoice" value="Balcony"> Balcony</label>
               <label class="radio-opt"><input type="checkbox" name="cabinChoice" value="Oceanview"> Oceanview</label>
               <label class="radio-opt" id="cabinChoiceObstructed" hidden><input type="checkbox" name="cabinChoice" value="Obstructed Ocean View"> Obstructed Ocean View</label>
-              <label class="radio-opt"><input type="checkbox" name="cabinChoice" value="Mini Suite"> Mini Suite</label>
+              <label class="radio-opt" id="cabinChoiceMiniSuite"><input type="checkbox" name="cabinChoice" value="Mini Suite"> Mini Suite</label>
             </div>
           </div>
         </div>
@@ -1225,11 +1225,13 @@ function stretchPrices(s){
   const hit = list.find(x => x.from === LEGS[s.start].start && x.to === LEGS[s.end].end);
   return hit ? hit.prices : null;
 }
-// Cabin types the page shows for segment s: a type only the fixed stretch price has (Obstructed
-// Ocean View) appears just for that stretch.
+// Cabin types the page shows for segment s. A stretch with a fixed price shows exactly the types
+// it lists (so Obstructed Ocean View appears, Mini Suite doesn't); other segments show every type
+// the cruises have.
 function cabinsFor(s){
   const sp = stretchPrices(s);
-  return CABINS.filter(c => !c.stretchOnly || (sp && [2, 3, 4].some(g => sp[g]?.[c.key] != null)));
+  if(sp) return CABINS.filter(c => [2, 3, 4].some(g => sp[g]?.[c.key] != null));
+  return CABINS.filter(c => !c.stretchOnly);
 }
 // price for party size + cabin across the segment; null if any leg can't offer it.
 // A fixed stretch price wins over adding up the cruises (sold-out marks on them don't matter then).
@@ -1454,6 +1456,9 @@ function renderPricing(){
   // The booking form only offers Obstructed Ocean View when the picked stretch has a price for it.
   const obstructed = document.getElementById('cabinChoiceObstructed');
   if(obstructed){ obstructed.hidden = !shownCabins.some(c => /obstructed/i.test(c.key)); if(obstructed.hidden) obstructed.querySelector('input').checked = false; }
+  // ...and no Mini Suite on a fixed-price stretch that doesn't list it.
+  const mini = document.getElementById('cabinChoiceMiniSuite');
+  if(mini){ mini.hidden = !!stretchPrices(sel) && !shownCabins.some(c => /mini ?suite/i.test(c.key)); if(mini.hidden) mini.querySelector('input').checked = false; }
   const avail = shownCabins.filter(c => priceFor(sel, guests, c.key) != null);
   if(!cabin || priceFor(sel, guests, cabin) == null){
     cabin = avail.length ? avail.reduce((a, c) => priceFor(sel, guests, c.key) < priceFor(sel, guests, a.key) ? c : a).key : null;
