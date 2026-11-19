@@ -165,6 +165,7 @@ map {old_path} {old_site_target} {
         /austria-retreats                                                          /worldschooling-trips?filter=austria-retreats#landtrips
         /cancellation-refund-policy/                                               /cancellation-policy                                   # page
         /cancellation-refund-policy                                                /cancellation-policy
+        /booking/                                                                  /booking                                               # page (the general booking form, on the new site since 2026-11-19)
         default                                    ""
 }
 @oldSite expression {old_site_target} != ""
@@ -366,8 +367,6 @@ map {path} {old_wp_page} {
         /press                                                                     /travel/press/
         /waitlist/                                                                 /travel/waitlist/                                      # page
         /waitlist                                                                  /travel/waitlist/
-        /booking/                                                                  /travel/booking/                                       # page
-        /booking                                                                   /travel/booking/
         /group-cruise-intake/                                                      /travel/group-cruise-intake/                           # page
         /group-cruise-intake                                                       /travel/group-cruise-intake/
         /individual-cruise-form/                                                   /travel/individual-cruise-form/                        # page
