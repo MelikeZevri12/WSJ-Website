@@ -32,7 +32,7 @@ const SALE_TRIPS = {
     photo: '/images/land-trips/austria-winter.webp', page: '/land-trips/austrian-skiing-christmas-markets-retreat?year=2027', book: WETRAVEL('64756176'),
   },
   'new-zealand': {
-    title: 'New Zealand Roadtrip', dates: 'Oct 19 – Nov 8, 2027', length: '21 days', place: 'North & South Islands, New Zealand',
+    title: 'New Zealand Roadtrip', dates: 'Oct 19 – Nov 7, 2027', length: '20 days', place: 'North & South Islands, New Zealand',
     highlights: 'Glaciers & national parks · Māori culture · Hobbiton',
     price: '$4,997', code: 'BFNEWZEALAND', saving: '$50', family: '$200',
     photo: '/images/land-trips/new-zealand.webp', page: '/land-trips/new-zealand-roadtrip?departure=2027-10', book: WETRAVEL('5999768167'),

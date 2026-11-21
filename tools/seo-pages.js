@@ -66,7 +66,7 @@ const PAGES = {
   'land-trips/morocco.html': { land: true, photo: 'images/land-trips/morocco.webp', share: 'morocco',
     desc: 'A 12-day guided family journey through Morocco: ancient medinas, mountain villages, a camel trek and a desert camp. For worldschooling families, ages 4+.' },
   'land-trips/new-zealand.html': { land: true, photo: 'images/land-trips/new-zealand.webp', share: 'new-zealand',
-    desc: 'A 21-day guided road trip across New Zealand’s North and South Islands with homeschool families: glaciers, national parks, Māori culture and Hobbiton.' },
+    desc: 'A 20-day guided road trip across New Zealand’s North and South Islands with homeschool families: glaciers, national parks, Māori culture and Hobbiton.' },
   'land-trips/xcaret.html': { land: true, photo: 'images/land-trips/xcaret.webp', share: 'xcaret',
     desc: 'A family adventure in Mexico’s Riviera Maya with other worldschooling families, exploring the Xcaret parks: Xcaret Plus, Xel-Há, Xplor and Xenses.' },
 };
